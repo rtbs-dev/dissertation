@@ -1,0 +1,23 @@
+department: Computer Science
+committee:
+  - name: Rajarshi Roy
+    title: Professor.
+    role: Chair/Advisor
+  - name: Parvez N. Guzdar
+    title: Dr.
+    role: Co-advisor
+  - name: Robert W. Gammon
+    title: Professor
+  - name: Thomas M. Antonsen, Jr.
+    title: Professor
+  - name: Edward Ott
+    title: Professor
+prelim:
+  Acknowledgements: |
+    I would like to acknowledge...
+  Preface: | 
+    Preface content
+  Foreward:  # add a fwd here
+    Fwd content
+  Dedication: |
+    to my friends and family 
