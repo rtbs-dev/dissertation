@@ -49,17 +49,15 @@
 \makesavenoteenv{longtable}
 \usepackage{graphicx}
 \makeatletter
-\newsavebox\pandoc@box
-\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
-  \sbox\pandoc@box{#1}%
-  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
-  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
-  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
-  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
-  \else\usebox{\pandoc@box}%
-  \fi%
-}
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
 % Set default figure placement to htbp
+\makeatletter
 \def\fps@figure{htbp}
 \makeatother
 
@@ -152,7 +150,9 @@
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
-
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
 \usepackage[style=ieee,]{biblatex}
 \addbibresource{pubs.bib}
 \usepackage{bookmark}
@@ -168,7 +168,6 @@
   citecolor={Blue},
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
-
 
 \title{Measuring Network Dependencies from Node Activations}
 \author{Rachael T.B. Sexton}
@@ -345,8 +344,7 @@ Preface content
 
 %Pages from this point start at Arabic numeral 1
 
-\pagenumbering{arabic}
-\bookmarksetup{startatroot}
+\pagenumbering{arabic}\bookmarksetup{startatroot}
 
 \chapter{Introduction}\label{sec-intro}
 
@@ -427,7 +425,7 @@ Observations}\label{graphs-from-relation-observations}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/relation-observations.png}}
+{\centering \includegraphics{images/relation-observations.png}
 
 }
 
@@ -440,7 +438,7 @@ Observations}\label{hypergraphs-from-coocurrence-observations}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/hypergraph-observations.png}}
+{\centering \includegraphics{images/hypergraph-observations.png}
 
 }
 
@@ -468,7 +466,7 @@ i.e.~Network Recovery as an Inverse Problem
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/adjoint-cheatsheet.png}}
+{\centering \includegraphics{images/adjoint-cheatsheet.png}
 
 }
 
@@ -508,7 +506,7 @@ Specification}\label{generative-model-specification}
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/random-spanning-forests.png}}
+{\centering \includegraphics{images/random-spanning-forests.png}
 
 }
 
@@ -543,7 +541,6 @@ activated with a particular partial order.
 
 
 \printbibliography[title=References]
-
 
 
 \end{document}
