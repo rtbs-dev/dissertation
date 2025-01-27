@@ -4,90 +4,129 @@
     "href": "index.html",
     "title": "Measuring Network Dependencies from Node Activations",
     "section": "",
-    "text": "1 Introduction\nA wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [1], [2].\nHowever, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[3], treatment of error as purely aleatory, rather than epistemic [4], or simply ignoring measurement error in network reconstruction, entirely [2]."
+    "text": "1 Introduction\nA wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [1], [2].\nHowever, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[3], treatment of error as purely aleatory, rather than epistemic [4], or simply ignoring measurement error in network reconstruction, entirely [2].",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
   },
   {
     "objectID": "index.html#intro-part-1",
     "href": "index.html#intro-part-1",
     "title": "Measuring Network Dependencies from Node Activations",
     "section": "1.1 Intro part 1",
-    "text": "1.1 Intro part 1\nA salient point is brought up by [5], in that many times our observations are more appropriately thought of as different classes of incidence structures.[5] The dependencies in the data generation and observation processes, as well as are assumptions are difficult to preserve when we model data as a simple graph that is better represented as, say, a hypergraph.\nA common type of data used in network recovery is often called co-occurrence data, where nodes are observed as being in an “on” or “off” state in any given data point. From these, we might wish to recover the latent relationships or dependencies between them. An argument could be made in the style of [5], that this data is fundamentally bipartite (and, thus, hypergraphical) in nature. However, in a large number of cases, we observe such co-occurrences as the result of underlying dynamical processes, like diffusion, on a carrier graph. Further, an increasing amount of literature is dedicated to capturing statistical properties of very large graphs, e.g. through variations on random-walk sampling. If our only snapshot of a large graph originates from samples generated on it by random walk (and other diffusive dynamic sampling strategies), then we must be able to perform and normalize the practice of epistemic uncertainty of edge existence from co-occurrence data.\nHow do we provide the needed metrological foundation to direct future research in this area? I hope that by unifying the interpretations of several classes of network recovery techniques into a single, non-parametric framework, we can re-unify methodology and theory. Much like the ubiquity of kernel density estimates for exploratory data analysis, with the right tools analysts can better reason about what they don’t know, while researchers can use that reported, mutually understood experience to work on extending the things we can know: i.e. what they actually want to measure.\n\n\n\n\n[1] M. Gomez-Rodriguez, J. Leskovec, and A. Krause, “Inferring networks of diffusion and influence,” ACM Transactions on Knowledge Discovery from Data (TKDD), vol. 5, no. 4, pp. 1–37, 2012, doi: 10.1145/2086737.2086741.\n\n\n[2] T. P. Peixoto, “Reconstructing networks with unknown and heterogeneous errors,” Phys. Rev. X, vol. 8, no. 4, p. 041011, Oct. 2018, doi: 10.1103/PhysRevX.8.041011.\n\n\n[3] L. Peel, T. P. Peixoto, and M. De Domenico, “Statistical inference links data and theory in network science,” Nature Communications, vol. 13, no. 1, Nov. 2022, doi: 10.1038/s41467-022-34267-9.\n\n\n[4] D. J. Wang, X. Shi, D. A. McFarland, and J. Leskovec, “Measurement error in network data: A re-classification,” Social Networks, vol. 34, no. 4, pp. 396–409, Oct. 2012, doi: 10.1016/j.socnet.2012.01.003.\n\n\n[5] L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, “The why, how, and when of representations for complex systems,” SIAM Rev., vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: 10.1137/20M1355896."
+    "text": "1.1 Intro part 1\nA salient point is brought up by [5], in that many times our observations are more appropriately thought of as different classes of incidence structures.[5] The dependencies in the data generation and observation processes, as well as are assumptions are difficult to preserve when we model data as a simple graph that is better represented as, say, a hypergraph.\nA common type of data used in network recovery is often called co-occurrence data, where nodes are observed as being in an “on” or “off” state in any given data point. From these, we might wish to recover the latent relationships or dependencies between them. An argument could be made in the style of [5], that this data is fundamentally bipartite (and, thus, hypergraphical) in nature. However, in a large number of cases, we observe such co-occurrences as the result of underlying dynamical processes, like diffusion, on a carrier graph. Further, an increasing amount of literature is dedicated to capturing statistical properties of very large graphs, e.g. through variations on random-walk sampling. If our only snapshot of a large graph originates from samples generated on it by random walk (and other diffusive dynamic sampling strategies), then we must be able to perform and normalize the practice of epistemic uncertainty of edge existence from co-occurrence data.\nHow do we provide the needed metrological foundation to direct future research in this area? I hope that by unifying the interpretations of several classes of network recovery techniques into a single, non-parametric framework, we can re-unify methodology and theory. Much like the ubiquity of kernel density estimates for exploratory data analysis, with the right tools analysts can better reason about what they don’t know, while researchers can use that reported, mutually understood experience to work on extending the things we can know: i.e. what they actually want to measure.\n\n\n\n\n[1] M. Gomez-Rodriguez, J. Leskovec, and A. Krause, “Inferring networks of diffusion and influence,” ACM Transactions on Knowledge Discovery from Data (TKDD), vol. 5, no. 4, pp. 1–37, 2012, doi: 10.1145/2086737.2086741.\n\n\n[2] T. P. Peixoto, “Reconstructing networks with unknown and heterogeneous errors,” Phys. Rev. X, vol. 8, no. 4, p. 041011, Oct. 2018, doi: 10.1103/PhysRevX.8.041011.\n\n\n[3] L. Peel, T. P. Peixoto, and M. De Domenico, “Statistical inference links data and theory in network science,” Nature Communications, vol. 13, no. 1, Nov. 2022, doi: 10.1038/s41467-022-34267-9.\n\n\n[4] D. J. Wang, X. Shi, D. A. McFarland, and J. Leskovec, “Measurement error in network data: A re-classification,” Social Networks, vol. 34, no. 4, pp. 396–409, Oct. 2012, doi: 10.1016/j.socnet.2012.01.003.\n\n\n[5] L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, “The why, how, and when of representations for complex systems,” SIAM Rev., vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: 10.1137/20M1355896.",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
+    ]
   },
   {
     "objectID": "02-structures-spaces.html",
     "href": "02-structures-spaces.html",
     "title": "2  Background: Graph and Hypergraph Structures as Inner Product Spaces",
     "section": "",
-    "text": "2.1 Graphs from Relation Observations\nFor each, describe the meaning of"
+    "text": "2.1 Graphs from Relation Observations\nFor each, describe the meaning of",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Background: Graph and Hypergraph Structures as Inner Product Spaces</span>"
+    ]
   },
   {
     "objectID": "02-structures-spaces.html#graphs-from-relation-observations",
     "href": "02-structures-spaces.html#graphs-from-relation-observations",
     "title": "2  Background: Graph and Hypergraph Structures as Inner Product Spaces",
     "section": "",
-    "text": "Edge Relation Observational Model"
+    "text": "Edge Relation Observational Model",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Background: Graph and Hypergraph Structures as Inner Product Spaces</span>"
+    ]
   },
   {
     "objectID": "02-structures-spaces.html#hypergraphs-from-coocurrence-observations",
     "href": "02-structures-spaces.html#hypergraphs-from-coocurrence-observations",
     "title": "2  Background: Graph and Hypergraph Structures as Inner Product Spaces",
     "section": "2.2 Hypergraphs from Coocurrence Observations",
-    "text": "2.2 Hypergraphs from Coocurrence Observations\n\n\n\nHyperedge Relation Observational Model"
+    "text": "2.2 Hypergraphs from Coocurrence Observations\n\n\n\nHyperedge Relation Observational Model",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Background: Graph and Hypergraph Structures as Inner Product Spaces</span>"
+    ]
   },
   {
     "objectID": "03-proj-inverse.html",
     "href": "03-proj-inverse.html",
     "title": "3  Review: Projections and Inverse Problems",
     "section": "",
-    "text": "3.1 Connecting Graphs & Hypergraphs as Adjoint\nI.e. trying to “recover” one from the other. In a way, proceduralizing the precautions described in [1].\ni.e. Network Recovery as an Inverse Problem"
+    "text": "3.1 Connecting Graphs & Hypergraphs as Adjoint\nI.e. trying to “recover” one from the other. In a way, proceduralizing the precautions described in [1].\ni.e. Network Recovery as an Inverse Problem",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Review: Projections and Inverse Problems</span>"
+    ]
   },
   {
     "objectID": "03-proj-inverse.html#connecting-graphs-hypergraphs-as-adjoint",
     "href": "03-proj-inverse.html#connecting-graphs-hypergraphs-as-adjoint",
     "title": "3  Review: Projections and Inverse Problems",
     "section": "",
-    "text": "Relating Graphs and Hypergraph/bipartite structures as adjoint operators"
+    "text": "Relating Graphs and Hypergraph/bipartite structures as adjoint operators",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Review: Projections and Inverse Problems</span>"
+    ]
   },
   {
     "objectID": "03-proj-inverse.html#algorithmic-information-loss-in-literature",
     "href": "03-proj-inverse.html#algorithmic-information-loss-in-literature",
     "title": "3  Review: Projections and Inverse Problems",
     "section": "3.2 Algorithmic Information Loss in Literature",
-    "text": "3.2 Algorithmic Information Loss in Literature\n\nObservation-level loss (starting with the inner product or kernel)\nNon-generative model loss (no projection of data into model space)\nno uncertainty quantification\n\nSorting algorithms… none address all three!\ni.e. MOTIVATES FOREST PURSUIT\n\n\n\n\n[1] L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, “The why, how, and when of representations for complex systems,” SIAM Rev., vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: 10.1137/20M1355896."
+    "text": "3.2 Algorithmic Information Loss in Literature\n\nObservation-level loss (starting with the inner product or kernel)\nNon-generative model loss (no projection of data into model space)\nno uncertainty quantification\n\nSorting algorithms… none address all three!\ni.e. MOTIVATES FOREST PURSUIT\n\n\n\n\n[1] L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, “The why, how, and when of representations for complex systems,” SIAM Rev., vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: 10.1137/20M1355896.",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Review: Projections and Inverse Problems</span>"
+    ]
   },
   {
     "objectID": "04-forest-pursuit.html",
     "href": "04-forest-pursuit.html",
     "title": "4  Nonparametric Network Recovery With Random Spanning Forests",
     "section": "",
-    "text": "4.1 Generative Model Specification"
+    "text": "4.1 Generative Model Specification",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Nonparametric Network Recovery With Random Spanning Forests</span>"
+    ]
   },
   {
     "objectID": "04-forest-pursuit.html#generative-model-specification",
     "href": "04-forest-pursuit.html#generative-model-specification",
     "title": "4  Nonparametric Network Recovery With Random Spanning Forests",
     "section": "",
-    "text": "Explanation of the Random Spanning Forest generative model for binary activation observations"
+    "text": "Explanation of the Random Spanning Forest generative model for binary activation observations",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Nonparametric Network Recovery With Random Spanning Forests</span>"
+    ]
   },
   {
     "objectID": "04-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
     "href": "04-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
     "title": "4  Nonparametric Network Recovery With Random Spanning Forests",
     "section": "4.2 Forest Pursuit: Approximate Recovery in Near-linear Time",
-    "text": "4.2 Forest Pursuit: Approximate Recovery in Near-linear Time\nI.e. the PLOS paper (modified basis-pursuit via MSTs)"
+    "text": "4.2 Forest Pursuit: Approximate Recovery in Near-linear Time\nI.e. the PLOS paper (modified basis-pursuit via MSTs)",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Nonparametric Network Recovery With Random Spanning Forests</span>"
+    ]
   },
   {
     "objectID": "04-forest-pursuit.html#bayesian-estimation-by-gibbs-sampling",
     "href": "04-forest-pursuit.html#bayesian-estimation-by-gibbs-sampling",
     "title": "4  Nonparametric Network Recovery With Random Spanning Forests",
     "section": "4.3 Bayesian Estimation by Gibbs Sampling",
-    "text": "4.3 Bayesian Estimation by Gibbs Sampling\nI.e. the unwritten paper, modifying technique by [1] for RSF instead of RSTs\n\n\n\n\n[1] L. L. Duan and D. B. Dunson, “Bayesian spanning tree: Estimating the backbone of the dependence graph,” arXiv, arXiv:2106.16120, Jun. 2021. doi: 10.48550/arXiv.2106.16120."
+    "text": "4.3 Bayesian Estimation by Gibbs Sampling\nI.e. the unwritten paper, modifying technique by [1] for RSF instead of RSTs\n\n\n\n\n[1] L. L. Duan and D. B. Dunson, “Bayesian spanning tree: Estimating the backbone of the dependence graph,” arXiv, arXiv:2106.16120, Jun. 2021. doi: 10.48550/arXiv.2106.16120.",
+    "crumbs": [
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Nonparametric Network Recovery With Random Spanning Forests</span>"
+    ]
   },
   {
     "objectID": "05-ordered.html",
     "href": "05-ordered.html",
     "title": "5  Recovery from Ordered Random-Walk Observation Sets",
     "section": "",
-    "text": "Like before, but with the added twist of knowing our nodes were activated with a particular partial order.\ninsert from [1], [2]\n\n\n\n\n[1] R. Sexton and M. Fuge, “Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,” Journal of Mechanical Design, vol. 142, no. 3, Jan. 2020, doi: 10.1115/1.4045686.\n\n\n[2] R. Sexton and M. Fuge, “Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,” in Volume 2A: 45th design automation conference, American Society of Mechanical Engineers, Aug. 2019. doi: 10.1115/detc2019-98429."
+    "text": "Like before, but with the added twist of knowing our nodes were activated with a particular partial order.\ninsert from [1], [2]\n\n\n\n\n[1] R. Sexton and M. Fuge, “Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,” Journal of Mechanical Design, vol. 142, no. 3, Jan. 2020, doi: 10.1115/1.4045686.\n\n\n[2] R. Sexton and M. Fuge, “Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,” in Volume 2A: 45th design automation conference, American Society of Mechanical Engineers, Aug. 2019. doi: 10.1115/detc2019-98429.",
+    "crumbs": [
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Recovery from Ordered Random-Walk Observation Sets</span>"
+    ]
   }
 ]
