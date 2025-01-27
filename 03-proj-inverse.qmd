@@ -1,8 +1,25 @@
-# Projections and Inverse Problems
+# Review: Projections and Inverse Problems
 
-## Connecting Graphs \& Hypergraphs
+I.e. trying to "recover" one from the other.
+In a way, proceduralizing the precautions described in @WhyHowWhen_Torres2021. 
 
-## Dual spaces and Kernel Inversions
+> Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve
 
-## Observations and Information Loss
-(3 kinds of algorithm)
+
+## Connecting Graphs \& Hypergraphs as Adjoint
+
+i.e. Network Recovery as an Inverse Problem
+
+![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](images/adjoint-cheatsheet.png)
+
+
+
+## Algorithmic Information Loss in Literature 
+
+- Observation-level loss (starting with the inner product or kernel)
+- Non-generative model loss (no projection of data into model space)
+- no uncertainty quantification 
+
+Sorting algorithms... _none address all three!_
+
+i.e. MOTIVATES FOREST PURSUIT

@@ -1,8 +1,24 @@
 # Introduction {#sec-intro}
 
-*TODO* Create a template that demonstrates the appearance, formatting, layout, and functionality of your format. Learn more about journal formats at <https://quarto.org/docs/journals/>.
+A wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [@Inferringnetworksdiffusion_GomezRodriguez2012;@ReconstructingNetworksUnknown_Peixoto2018].
+
+However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. 
+This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[@Statisticalinferencelinks_Peel2022], treatment of error as purely aleatory, rather than epistemic [@Measurementerrornetwork_Wang2012], or simply ignoring measurement error in network reconstruction, entirely [@ReconstructingNetworksUnknown_Peixoto2018]. 
 
 ## Intro part 1
 
-hello
-[@CameronTrivedi2013]
+
+A salient point is brought up by @WhyHowWhen_Torres2021, in that many times our observations are more appropriately thought of as _different classes of incidence structures_.[@WhyHowWhen_Torres2021]
+The dependencies in the data generation and observation processes, as well as are assumptions are difficult to preserve when we model data as a simple graph that is better represented as, say, a hypergraph. 
+
+A common type of data used in network recovery is often called _co-occurrence_ data, where nodes are observed as being in an "on" or "off" state in any given data point. 
+From these, we might wish to recover the latent relationships or dependencies between them. 
+An argument could be made in the style of @WhyHowWhen_Torres2021, that this data is fundamentally bipartite (and, thus, hypergraphical) in nature. 
+However, in a large number of cases, we observe such co-occurrences as the result of underlying dynamical processes, like diffusion, on a carrier graph. 
+_Further_, an increasing amount of literature is dedicated to capturing statistical properties of very large graphs, e.g. through variations on random-walk sampling.
+If our only snapshot of a large graph originates from samples generated on it by random walk (and other diffusive dynamic sampling strategies), then we must be able to perform _and normalize the practice of_ epistemic uncertainty of edge existence from co-occurrence data.
+
+How do we provide the needed metrological foundation to direct future research in this area? 
+I hope that by unifying the interpretations of several classes of network recovery techniques into a single, non-parametric framework, we can re-unify methodology and theory. 
+Much like the ubiquity of kernel density estimates for exploratory data analysis, with the right tools analysts can better reason about what they don't know, while researchers can use that reported, mutually understood experience to work on extending the things we _can know_: i.e. what they _actually want to measure_. 
+

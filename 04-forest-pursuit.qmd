@@ -1,0 +1,17 @@
+# Nonparametric Network Recovery With Random Spanning Forests 
+
+> filling the gap we saw in the literature
+
+## Generative Model Specification
+
+![Explanation of the Random Spanning Forest generative model for binary activation observations](images/random-spanning-forests.png)
+
+
+## Forest Pursuit: Approximate Recovery in Near-linear Time
+
+I.e. the PLOS paper (modified basis-pursuit via MSTs)
+
+## Bayesian Estimation by Gibbs Sampling 
+
+I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 for RSF instead of RSTs
+

@@ -3,10 +3,7 @@ project:
   output-dir: _book
 
 book:
-  output-file: "2025-rtbs-thesis"
-  title: |
-    Measuring Network Dependencies 
-    from Random Walk Activations
+  title: "Measuring Network Dependencies from Node Activations"
   author: "Rachael T.B. Sexton"
   date: "2025"
 
@@ -17,17 +14,19 @@ book:
     # - 01-intro.qmd
     - 02-structures-spaces.qmd
     - 03-proj-inverse.qmd
-    - 04-ordered.qmd
+    - 04-forest-pursuit.qmd
+    - 05-ordered.qmd
     - references.qmd
   keyword: "demo,test"
   downloads: "pdf"
-bibliography: bibliography.bib  
+bibliography: pubs.bib  
+csl: ieee.csl
 format:
   umd-thesis-pdf:
     keep-tex: true  
+    indent: true
     pdf-engine: lualatex
     pdf-engine-opts: 
       - '--no-shell-escape'
       - '--halt-on-error'
   umd-thesis-html: default
-  html: default

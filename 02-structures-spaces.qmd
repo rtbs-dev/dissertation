@@ -1,6 +1,21 @@
-# Graph and Hypergraph Structures as Inner Product Spaces
+# Background: Graph and Hypergraph Structures as Inner Product Spaces
 
-## Graphs from Edge Observations
+For each, describe the meaning of
 
-## Hypergraphs from Bipartite Observations
+1. Observation model
+2. Vector space representation
+3. Inner product (linear kernel)
+3. Induced Norms
+
+
+## Graphs from Relation Observations
+
+
+
+![Edge Relation Observational Model](images/relation-observations.png)
+
+
+## Hypergraphs from Coocurrence Observations
+
+![Hyperedge Relation Observational Model](images/hypergraph-observations.png)
 
