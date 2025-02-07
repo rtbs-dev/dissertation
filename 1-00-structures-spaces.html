@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Rachael T.B. Sexton">
-<meta name="dcterms.date" content="2024-12-31">
 
-<title>Measuring Network Dependencies from Node Activations</title>
+<title>Background: Graph and Hypergraph Structures as Inner Product Spaces – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -32,7 +50,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1-00-structures-spaces.html" rel="next">
+<link href="./1-01-graph-obs.html" rel="next">
+<link href="./index.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -74,7 +93,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -83,7 +102,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-00-structures-spaces.html">Background: Graph and Hypergraph Structures as Inner Product Spaces</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -113,13 +132,13 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./1-00-structures-spaces.html" class="sidebar-item-text sidebar-link">
+            <a href="./1-00-structures-spaces.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -203,49 +222,71 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#intro-part-1" id="toc-intro-part-1" class="nav-link active" data-scroll-target="#intro-part-1">Intro part 1</a></li>
+  </ul>
+</nav>
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Measuring Network Dependencies from Node Activations</h1>
+<h1 class="title">Background: Graph and Hypergraph Structures as Inner Product Spaces</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Rachael T.B. Sexton </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">December 31, 2024</p>
-    </div>
-  </div>
   
     
   </div>
   
-<div>
-  <div class="abstract">
-    <div class="block-title">Abstract</div>
-    <p>My abstract for this dissertation.</p>
-  </div>
-</div>
 
 
 </header>
 
 
+<p>For each, describe the meaning of</p>
+<ol type="1">
+<li>Observation model</li>
+<li>Vector space representation</li>
+<li>Inner product (linear kernel)</li>
+<li>Induced Norms</li>
+</ol>
+<p>A wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. <span class="citation" data-cites="Inferringnetworksdiffusion_GomezRodriguez2012 ReconstructingNetworksUnknown_Peixoto2018"><a href="#ref-Inferringnetworksdiffusion_GomezRodriguez2012" role="doc-biblioref">[1]</a>, <a href="#ref-ReconstructingNetworksUnknown_Peixoto2018" role="doc-biblioref">[2]</a></span>.</p>
+<p>However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. This includes rampant disconnects between the theoretical and methodological network analysis sub-communities<span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[3]</a></span>, treatment of error as purely aleatory, rather than epistemic <span class="citation" data-cites="Measurementerrornetwork_Wang2012"><a href="#ref-Measurementerrornetwork_Wang2012" role="doc-biblioref">[4]</a></span>, or simply ignoring measurement error in network reconstruction, entirely <span class="citation" data-cites="ReconstructingNetworksUnknown_Peixoto2018"><a href="#ref-ReconstructingNetworksUnknown_Peixoto2018" role="doc-biblioref">[2]</a></span>.</p>
+<section id="intro-part-1" class="level2">
+<h2 class="anchored" data-anchor-id="intro-part-1">Intro part 1</h2>
+<p>A salient point is brought up by <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[5]</a></span>, in that many times our observations are more appropriately thought of as <em>different classes of incidence structures</em>.<span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[5]</a></span> The dependencies in the data generation and observation processes, as well as are assumptions are difficult to preserve when we model data as a simple graph that is better represented as, say, a hypergraph.</p>
+<p>A common type of data used in network recovery is often called <em>co-occurrence</em> data, where nodes are observed as being in an “on” or “off” state in any given data point. From these, we might wish to recover the latent relationships or dependencies between them. An argument could be made in the style of <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[5]</a></span>, that this data is fundamentally bipartite (and, thus, hypergraphical) in nature. However, in a large number of cases, we observe such co-occurrences as the result of underlying dynamical processes, like diffusion, on a carrier graph. <em>Further</em>, an increasing amount of literature is dedicated to capturing statistical properties of very large graphs, e.g.&nbsp;through variations on random-walk sampling. If our only snapshot of a large graph originates from samples generated on it by random walk (and other diffusive dynamic sampling strategies), then we must be able to perform <em>and normalize the practice of</em> epistemic uncertainty of edge existence from co-occurrence data.</p>
+<p>How do we provide the needed metrological foundation to direct future research in this area? I hope that by unifying the interpretations of several classes of network recovery techniques into a single, non-parametric framework, we can re-unify methodology and theory. Much like the ubiquity of kernel density estimates for exploratory data analysis, with the right tools analysts can better reason about what they don’t know, while researchers can use that reported, mutually understood experience to work on extending the things we <em>can know</em>: i.e.&nbsp;what they <em>actually want to measure</em>.</p>
 
 
+<div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-Inferringnetworksdiffusion_GomezRodriguez2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. Gomez-Rodriguez, J. Leskovec, and A. Krause, <span>“Inferring networks of diffusion and influence,”</span> <em>ACM Transactions on Knowledge Discovery from Data (TKDD)</em>, vol. 5, no. 4, pp. 1–37, 2012, doi: <a href="https://doi.org/10.1145/2086737.2086741">10.1145/2086737.2086741</a>.</div>
+</div>
+<div id="ref-ReconstructingNetworksUnknown_Peixoto2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">T. P. Peixoto, <span>“Reconstructing networks with unknown and heterogeneous errors,”</span> <em>Phys. Rev. X</em>, vol. 8, no. 4, p. 041011, Oct. 2018, doi: <a href="https://doi.org/10.1103/PhysRevX.8.041011">10.1103/PhysRevX.8.041011</a>.</div>
+</div>
+<div id="ref-Statisticalinferencelinks_Peel2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">L. Peel, T. P. Peixoto, and M. De Domenico, <span>“Statistical inference links data and theory in network science,”</span> <em>Nature Communications</em>, vol. 13, no. 1, Nov. 2022, doi: <a href="https://doi.org/10.1038/s41467-022-34267-9">10.1038/s41467-022-34267-9</a>.</div>
+</div>
+<div id="ref-Measurementerrornetwork_Wang2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">D. J. Wang, X. Shi, D. A. McFarland, and J. Leskovec, <span>“Measurement error in network data: A re-classification,”</span> <em>Social Networks</em>, vol. 34, no. 4, pp. 396–409, Oct. 2012, doi: <a href="https://doi.org/10.1016/j.socnet.2012.01.003">10.1016/j.socnet.2012.01.003</a>.</div>
+</div>
+<div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div>
+</div>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -667,10 +708,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="index.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1-00-structures-spaces.html" class="pagination-link" aria-label="Background: Graph and Hypergraph Structures as Inner Product Spaces">
-        <span class="nav-page-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./1-01-graph-obs.html" class="pagination-link" aria-label="Graphs from Relation Observations">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

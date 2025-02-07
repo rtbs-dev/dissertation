@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Rachael T.B. Sexton">
-<meta name="dcterms.date" content="2024-12-31">
 
-<title>Measuring Network Dependencies from Node Activations</title>
+<title>2&nbsp; Graphs from Relation Observations – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1-00-structures-spaces.html" rel="next">
+<link href="./1-02-hyper-cooc.html" rel="next">
+<link href="./1-00-structures-spaces.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -74,7 +73,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating fullcontent">
+<body class="nav-sidebar floating">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -83,7 +82,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-00-structures-spaces.html">Background: Graph and Hypergraph Structures as Inner Product Spaces</a></li><li class="breadcrumb-item"><a href="./1-01-graph-obs.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -113,7 +112,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
   </div>
 </li>
@@ -128,7 +127,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./1-01-graph-obs.html" class="sidebar-item-text sidebar-link">
+  <a href="./1-01-graph-obs.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></span></a>
   </div>
 </li>
@@ -203,47 +202,37 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+        
+    </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-00-structures-spaces.html">Background: Graph and Hypergraph Structures as Inner Product Spaces</a></li><li class="breadcrumb-item"><a href="./1-01-graph-obs.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Measuring Network Dependencies from Node Activations</h1>
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Rachael T.B. Sexton </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">December 31, 2024</p>
-    </div>
-  </div>
   
     
   </div>
   
-<div>
-  <div class="abstract">
-    <div class="block-title">Abstract</div>
-    <p>My abstract for this dissertation.</p>
-  </div>
-</div>
 
 
 </header>
 
 
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/relation-observations.png" class="img-fluid figure-img"></p>
+<figcaption>Edge Relation Observational Model</figcaption>
+</figure>
+</div>
 
 
 
@@ -667,10 +656,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./1-00-structures-spaces.html" class="pagination-link" aria-label="Background: Graph and Hypergraph Structures as Inner Product Spaces">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1-00-structures-spaces.html" class="pagination-link" aria-label="Background: Graph and Hypergraph Structures as Inner Product Spaces">
-        <span class="nav-page-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./1-02-hyper-cooc.html" class="pagination-link" aria-label="Hypergraphs from Coocurrence Observations">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Hypergraphs from Coocurrence Observations</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
