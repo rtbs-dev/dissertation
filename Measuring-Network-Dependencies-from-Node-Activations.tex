@@ -349,7 +349,25 @@ Preface content
 \pagenumbering{arabic}
 \bookmarksetup{startatroot}
 
-\chapter{Introduction}\label{sec-intro}
+\chapter{}\label{section}
+
+\part{Background: Graph and Hypergraph Structures as Inner Product
+Spaces}
+
+For each, describe the meaning of
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Observation model
+\item
+  Vector space representation
+\item
+  Inner product (linear kernel)
+\item
+  Induced Norms
+\end{enumerate}
 
 A wide variety of fields show consistent interest in inferring latent
 network structure from observed interactions, from human cognition and
@@ -366,7 +384,10 @@ of error as purely aleatory, rather than epistemic
 measurement error in network reconstruction, entirely
 \autocite{ReconstructingNetworksUnknown_Peixoto2018}.
 
-\section{Intro part 1}\label{intro-part-1}
+\section*{Intro part 1}\label{intro-part-1}
+\addcontentsline{toc}{section}{Intro part 1}
+
+\markright{Intro part 1}
 
 A salient point is brought up by \textcite{WhyHowWhen_Torres2021}, in
 that many times our observations are more appropriately thought of as
@@ -403,27 +424,7 @@ they don't know, while researchers can use that reported, mutually
 understood experience to work on extending the things we \emph{can
 know}: i.e.~what they \emph{actually want to measure}.
 
-\bookmarksetup{startatroot}
-
-\chapter{Background: Graph and Hypergraph Structures as Inner Product
-Spaces}\label{background-graph-and-hypergraph-structures-as-inner-product-spaces}
-
-For each, describe the meaning of
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Observation model
-\item
-  Vector space representation
-\item
-  Inner product (linear kernel)
-\item
-  Induced Norms
-\end{enumerate}
-
-\section{Graphs from Relation
+\chapter{Graphs from Relation
 Observations}\label{graphs-from-relation-observations}
 
 \begin{figure}[H]
@@ -436,7 +437,7 @@ Observations}\label{graphs-from-relation-observations}
 
 \end{figure}%
 
-\section{Hypergraphs from Coocurrence
+\chapter{Hypergraphs from Coocurrence
 Observations}\label{hypergraphs-from-coocurrence-observations}
 
 \begin{figure}[H]
@@ -448,8 +449,6 @@ Observations}\label{hypergraphs-from-coocurrence-observations}
 \caption{Hyperedge Relation Observational Model}
 
 \end{figure}%
-
-\bookmarksetup{startatroot}
 
 \chapter{Review: Projections and Inverse
 Problems}\label{review-projections-and-inverse-problems}
@@ -495,7 +494,7 @@ Sorting algorithms\ldots{} \emph{none address all three!}
 
 i.e.~MOTIVATES FOREST PURSUIT
 
-\bookmarksetup{startatroot}
+\part{Recovery from Bipartite Occurrence Records}
 
 \chapter{Nonparametric Network Recovery With Random Spanning
 Forests}\label{nonparametric-network-recovery-with-random-spanning-forests}
@@ -529,7 +528,13 @@ Sampling}\label{bayesian-estimation-by-gibbs-sampling}
 I.e. the unwritten paper, modifying technique by
 \textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
 
-\bookmarksetup{startatroot}
+\chapter{LFA: Latent Forest
+Allocation}\label{lfa-latent-forest-allocation}
+
+\part{Application and Future Development}
+
+\chapter{Qualitative Application of Relationship
+Recovery}\label{qualitative-application-of-relationship-recovery}
 
 \chapter{Recovery from Ordered Random-Walk Observation
 Sets}\label{recovery-from-ordered-random-walk-observation-sets}
@@ -540,10 +545,8 @@ activated with a particular partial order.
 \emph{insert from
 \autocite{OrganizingTaggedKnowledge_Sexton2020,UsingSemanticFluency_Sexton2019}}
 
-\bookmarksetup{startatroot}
 
-
-\printbibliography[title=References]
+\printbibliography
 
 
 

@@ -1,5 +1,3 @@
-# Introduction {#sec-intro}
-
 A wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [@Inferringnetworksdiffusion_GomezRodriguez2012;@ReconstructingNetworksUnknown_Peixoto2018].
 
 However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. 
@@ -21,4 +19,5 @@ If our only snapshot of a large graph originates from samples generated on it by
 How do we provide the needed metrological foundation to direct future research in this area? 
 I hope that by unifying the interpretations of several classes of network recovery techniques into a single, non-parametric framework, we can re-unify methodology and theory. 
 Much like the ubiquity of kernel density estimates for exploratory data analysis, with the right tools analysts can better reason about what they don't know, while researchers can use that reported, mutually understood experience to work on extending the things we _can know_: i.e. what they _actually want to measure_. 
+
 

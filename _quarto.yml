@@ -10,13 +10,27 @@ book:
   abstract: |
       My abstract for this dissertation.
   chapters:
-    - index.qmd
+    # - index.qmd
     # - 01-intro.qmd
-    - 02-structures-spaces.qmd
-    - 03-proj-inverse.qmd
-    - 04-forest-pursuit.qmd
-    - 05-ordered.qmd
-    - references.qmd
+    - part: index.md # 1-00-structures-spaces.qmd
+      chapters:
+        - 1-01-graph-obs.qmd
+        - 1-02-hyper-cooc.qmd
+        - 1-03-proj-inverse.qmd
+    - part: 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
+      chapters:
+        - 2-04-forest-pursuit.qmd
+        - 2-05-latent-forest-alloc.qmd
+    - part: 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
+      chapters: 
+        - 3-06-qualitative.qmd
+        - 3-07-ordered.qmd
+        - 3-08-conclusion.qmd
+    # - part: "conclusion"
+      # chapters:
+        # - 
+    # - appendices:
+      
   keyword: "demo,test"
   downloads: "pdf"
 bibliography: pubs.bib  
