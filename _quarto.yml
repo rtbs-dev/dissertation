@@ -11,7 +11,7 @@ book:
       My abstract for this dissertation.
   chapters:
     - index.qmd
-    # - 01-intro.qmd
+    - 01-intro.qmd
     - 02-structures-spaces.qmd
     - 03-proj-inverse.qmd
     - 04-forest-pursuit.qmd
