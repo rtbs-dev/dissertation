@@ -10,9 +10,8 @@ book:
   abstract: |
       My abstract for this dissertation.
   chapters:
-    # - index.qmd
-    # - 01-intro.qmd
-    - part: index.md # 1-00-structures-spaces.qmd
+    - index.qmd
+    - part: 1-00-structures-spaces.qmd
       chapters:
         - 1-01-graph-obs.qmd
         - 1-02-hyper-cooc.qmd
@@ -30,7 +29,6 @@ book:
       # chapters:
         # - 
     # - appendices:
-      
   keyword: "demo,test"
   downloads: "pdf"
 bibliography: pubs.bib  

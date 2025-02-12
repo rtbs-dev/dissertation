@@ -244,75 +244,37 @@ Doctor of Philosophy \\
 \hbox{\ }\hspace{.5in}Professor Maria K. Cameron \\
 \hbox{\ }\hspace{.5in}Professor Michelle Girvan \\
 \hbox{\ }\hspace{.5in}Professor Vincent P. Lyzinski \\
- 
+ \doublespacing
 
-\pagestyle{plain} \pagenumbering{roman} \setcounter{page}{2}
+% \pagestyle{plain} \pagenumbering{roman} \setcounter{page}{2}
 
+% 
 
+% 
+% \cleardoublepage
 
-\clearpage
-\phantomsection %create the correct anchor for the bookmark
-\addcontentsline{toc}{chapter}{Acknowledgements}
-\small\normalsize
-\hbox{\ }
- 
-\vspace{.5in}
+\bookmarksetup{startatroot}
 
-\begin{center}
-\large{Acknowledgements} 
-\end{center} 
-
-\vspace{1ex}
-
-I would like to acknowledge\ldots{}
-\clearpage
-\phantomsection %create the correct anchor for the bookmark
-\addcontentsline{toc}{chapter}{Dedication}
-\small\normalsize
-\hbox{\ }
- 
-\vspace{.5in}
-
-\begin{center}
-\large{Dedication} 
-\end{center} 
-
-\vspace{1ex}
-
-to my friends and family
-\clearpage
-\phantomsection %create the correct anchor for the bookmark
-\addcontentsline{toc}{chapter}{Foreward}
-\small\normalsize
-\hbox{\ }
- 
-\vspace{.5in}
-
-\begin{center}
-\large{Foreward} 
-\end{center} 
-
-\vspace{1ex}
-
-Fwd content
-\clearpage
-\phantomsection %create the correct anchor for the bookmark
+\chapter*{Preface}\label{preface}
 \addcontentsline{toc}{chapter}{Preface}
-\small\normalsize
-\hbox{\ }
- 
-\vspace{.5in}
 
-\begin{center}
-\large{Preface} 
-\end{center} 
+\markboth{Preface}{Preface}
 
-\vspace{1ex}
+\pagenumbering{roman}
 
-Preface content
+\bookmarksetup{startatroot}
 
-\cleardoublepage
+\chapter*{Foreward}\label{foreward}
+\addcontentsline{toc}{chapter}{Foreward}
 
+\markboth{Foreward}{Foreward}
+
+\bookmarksetup{startatroot}
+
+\chapter*{Acknowledgements}\label{acknowledgements}
+\addcontentsline{toc}{chapter}{Acknowledgements}
+
+\markboth{Acknowledgements}{Acknowledgements}
 
 \addcontentsline{toc}{chapter}{Table of Contents}
     \renewcommand{\contentsname}{Table of Contents}
@@ -322,13 +284,13 @@ Preface content
 \newpage
 
 \phantomsection %create the correct anchor for the bookmark
-% \addcontentsline{toc}{chapter}{List of Tables}
+\addcontentsline{toc}{chapter}{List of Tables}
     \renewcommand{\contentsname}{List of Tables}
 \listoftables %(if present, lower-case Roman)
 \newpage
 
 \phantomsection %create the correct anchor for the bookmark
-% \addcontentsline{toc}{chapter}{List of Figures}
+\addcontentsline{toc}{chapter}{List of Figures}
     \renewcommand{\contentsname}{List of Figures}
 \listoffigures %(if present, lower-case Roman)
 \newpage
@@ -346,7 +308,10 @@ Preface content
 
 %Pages from this point start at Arabic numeral 1
 
+% \pagenumbering{arabic}
+
 \pagenumbering{arabic}
+
 \bookmarksetup{startatroot}
 
 \chapter{}\label{section}
@@ -372,8 +337,8 @@ For each, describe the meaning of
 A wide variety of fields show consistent interest in inferring latent
 network structure from observed interactions, from human cognition and
 social infection networks, to marketing, traffic, finance, and many
-others.
-\autocite{Inferringnetworksdiffusion_GomezRodriguez2012,ReconstructingNetworksUnknown_Peixoto2018}.
+others. \autocite{Inferringnetworksdiffusion_GomezRodriguez2012} \%
+\autocite{ReconstructingNetworksUnknown_Peixoto2018}.
 
 However, an increasing number of authors are noting a lack of agreement
 in how to approach the metrology of this problem. This includes rampant
@@ -399,13 +364,13 @@ better represented as, say, a hypergraph.
 
 A common type of data used in network recovery is often called
 \emph{co-occurrence} data, where nodes are observed as being in an
-``on'' or ``off'' state in any given data point. From these, we might
-wish to recover the latent relationships or dependencies between them.
-An argument could be made in the style of
-\textcite{WhyHowWhen_Torres2021}, that this data is fundamentally
-bipartite (and, thus, hypergraphical) in nature. However, in a large
-number of cases, we observe such co-occurrences as the result of
-underlying dynamical processes, like diffusion, on a carrier graph.
+\texttt{on\textquotesingle{}\textquotesingle{}\ or}off'\,' state in any
+given data point. From these, we might wish to recover the latent
+relationships or dependencies between them. An argument could be made in
+the style of \textcite{WhyHowWhen_Torres2021}, that this data is
+fundamentally bipartite (and, thus, hypergraphical) in nature. However,
+in a large number of cases, we observe such co-occurrences as the result
+of underlying dynamical processes, like diffusion, on a carrier graph.
 \emph{Further}, an increasing amount of literature is dedicated to
 capturing statistical properties of very large graphs, e.g.~through
 variations on random-walk sampling. If our only snapshot of a large

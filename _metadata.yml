@@ -11,12 +11,12 @@ committee:
     title: Professor
   - name: Vincent P. Lyzinski
     title: Professor
-prelim:
-  Acknowledgements: |
-    I would like to acknowledge...
-  Preface: | 
-    Preface content
-  Foreward:  # add a fwd here
-    Fwd content
-  Dedication: |
-    to my friends and family 
+# prelim:
+#   Acknowledgements: |
+#     I would like to acknowledge...
+#   Preface: | 
+#     Preface content
+#   Foreward:  # add a fwd here
+#     Fwd content
+#   Dedication: |
+#     to my friends and family 
