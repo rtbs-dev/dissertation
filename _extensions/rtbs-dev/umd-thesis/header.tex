@@ -41,5 +41,8 @@
 % \newbool{doublespaced}
 \usepackage{titlesec}
    
+
+\titleformat{\part}[display]{\normalfont\large}{Part \ \thepart}{2em}{}[]
 \titleformat{\chapter}[block]{\normalfont\large}{Chapter \ \thechapter:}{1em}{}[]
+\titleformat{name=\chapter,numberless}[block]{\normalfont\large}{}{1em}{\centering}[]
 \titleformat{\section}{\normalfont\large}{\thesection}{1em}{}
