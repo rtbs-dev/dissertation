@@ -11,6 +11,7 @@ book:
       My abstract for this dissertation.
   chapters:
     - index.qmd
+    - 0-intro.qmd
     - part: 1-00-structures-spaces.qmd
       chapters:
         - 1-01-graph-obs.qmd

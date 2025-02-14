@@ -1,5 +1,7 @@
 
-`{=latex} \pagenumbering{roman}`
+```{=latex} 
+\pagenumbering{roman}
+```
 
 # Preface {-}
 
@@ -11,4 +13,6 @@
 
 {{< include _toc.qmd >}}
 
-`{=latex} \pagenumbering{arabic}`
+```{=latex} 
+\pagenumbering{arabic}
+```

@@ -106,7 +106,10 @@
 % \newbool{doublespaced}
 \usepackage{titlesec}
    
+
+\titleformat{\part}[display]{\normalfont\large}{Part \ \thepart}{2em}{}[]
 \titleformat{\chapter}[block]{\normalfont\large}{Chapter \ \thechapter:}{1em}{}[]
+\titleformat{name=\chapter,numberless}[block]{\normalfont\large}{}{1em}{\centering}[]
 \titleformat{\section}{\normalfont\large}{\thesection}{1em}{}
 \makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
@@ -308,8 +311,13 @@ Doctor of Philosophy \\
 
 \pagenumbering{arabic}
 
-\part{Background: Graph and Hypergraph Structures as Inner Product
-Spaces}
+\bookmarksetup{startatroot}
+
+\chapter{Introduction}\label{introduction}
+
+Welcome to the hydraulic press channel\ldots.today:
+
+\part{Incidence Structures as Inner Product Spaces}
 
 For each, describe the meaning of
 
@@ -326,8 +334,8 @@ For each, describe the meaning of
   Induced Norms
 \end{enumerate}
 
-\chapter{Graphs from Relation
-Observations}\label{graphs-from-relation-observations}
+\chapter{Background: Graphs from Relation
+Observations}\label{background-graphs-from-relation-observations}
 
 \begin{figure}[H]
 
@@ -339,8 +347,8 @@ Observations}\label{graphs-from-relation-observations}
 
 \end{figure}%
 
-\chapter{Hypergraphs from Coocurrence
-Observations}\label{hypergraphs-from-coocurrence-observations}
+\chapter{Background: Hypergraphs from Coocurrence
+Observations}\label{background-hypergraphs-from-coocurrence-observations}
 
 \begin{figure}[H]
 
