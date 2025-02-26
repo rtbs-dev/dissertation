@@ -1,3 +1,56 @@
 # Introduction
 
 Welcome to the hydraulic press channel....today: 
+
+## Measuring relations through observation
+
+We're interested in figuring out how "stuff" is connected to other "stuff" by watching the behavior of "stuff" with other "stuff".
+
+
+### Observation and Feature "Space"
+
+Encode measurements in _design matrix_.
+
+Rows and columns depend on domain...we chose one. 
+
+### Model, Data, & Linear Operators
+
+Forward model/operator maps model into data space, vs. Adjoint Model/Operator maps data into model space.
+Inverse problems involve removing the effect of the operator $A$ from the data $y$  to recover the model $x$. 
+
+### Measurement Quantification & Error 
+
+- type I and II Error
+- Epistemic and Alleatoric Uncertainty
+
+Ultimately we are not great at specifying what "being related" actually means...
+
+
+## What does "relation" mean?
+
+### Incidence & Dependency
+
+foundational model of graph theory and incidence structures more broadly.
+More to come, but get the terminology down.
+
+Spring example, road example, etc.
+Discuss Complex Systems and their representation. 
+
+
+### Proximities, Distances, & Kernels 
+
+How "close" or "far away" things are.... Avrachenkov et al. 
+
+
+Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for _inverse problems_, structure learning, etc., they are more often applied in terms of the features/operators.
+
+Example with doc-term matrices 
+
+### Ambiguity or Causality
+Usually dependencies are taken as causing or enabling proximity.
+E.g. shortest paths, vs. edges.
+
+
+The approach taken by researchers/investigators...do they assume a level of interchangeability between the two kinds of "relation"?
+Do they define
+Or do they 
