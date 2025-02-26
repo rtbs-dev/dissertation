@@ -1,25 +1,35 @@
-# Review: Projections and Inverse Problems
+# Practitioner's Guide to  Graph Recovery Methods
 
-I.e. trying to "recover" one from the other.
-In a way, proceduralizing the precautions described in @WhyHowWhen_Torres2021. 
+
 
 > Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve
 
 
-## Connecting Graphs \& Hypergraphs as Adjoint
+## Organizing Recovery Methods
 
-i.e. Network Recovery as an Inverse Problem
+i.e. Network Recovery as an Inverse Problem, and what information is had at each point. 
 
 ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](images/adjoint-cheatsheet.png)
 
+### Observing Nodes vs Edges
+
+### Embeddings, Inner Products, & Preprocessing
 
 
-## Algorithmic Information Loss in Literature 
+
+## Tracing Information Loss Paths
+
+### Table of Existing Approaches  
 
 - Observation-level loss (starting with the inner product or kernel)
 - Non-generative model loss (no projection of data into model space)
 - no uncertainty quantification 
 
+
+### A Path Forward
+
 Sorting algorithms... _none address all three!_
 
+
 i.e. MOTIVATES FOREST PURSUIT
+

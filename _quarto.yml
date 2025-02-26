@@ -15,8 +15,8 @@ book:
     - part: 1-00-structures-spaces.qmd
       chapters:
         - 1-01-graph-obs.qmd
-        - 1-02-hyper-cooc.qmd
-        - 1-03-proj-inverse.qmd
+        - 1-02-projection.qmd
+        - 1-03-inverse.qmd
     - part: 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
         - 2-04-forest-pursuit.qmd

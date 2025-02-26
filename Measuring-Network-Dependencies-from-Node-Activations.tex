@@ -317,6 +317,72 @@ Doctor of Philosophy \\
 
 Welcome to the hydraulic press channel\ldots.today:
 
+\section{Measuring relations through
+observation}\label{measuring-relations-through-observation}
+
+We're interested in figuring out how ``stuff'' is connected to other
+``stuff'' by watching the behavior of ``stuff'' with other ``stuff''.
+
+\subsection{Observation and Feature
+``Space''}\label{observation-and-feature-space}
+
+Encode measurements in \emph{design matrix}.
+
+Rows and columns depend on domain\ldots we chose one.
+
+\subsection{Model, Data, \& Linear
+Operators}\label{model-data-linear-operators}
+
+Forward model/operator maps model into data space, vs.~Adjoint
+Model/Operator maps data into model space. Inverse problems involve
+removing the effect of the operator \(A\) from the data \(y\) to recover
+the model \(x\).
+
+\subsection{Measurement Quantification \&
+Error}\label{measurement-quantification-error}
+
+\begin{itemize}
+\tightlist
+\item
+  type I and II Error
+\item
+  Epistemic and Alleatoric Uncertainty
+\end{itemize}
+
+Ultimately we are not great at specifying what ``being related''
+actually means\ldots{}
+
+\section{What does ``relation'' mean?}\label{what-does-relation-mean}
+
+\subsection{Incidence \& Dependency}\label{incidence-dependency}
+
+foundational model of graph theory and incidence structures more
+broadly. More to come, but get the terminology down.
+
+Spring example, road example, etc. Discuss Complex Systems and their
+representation.
+
+\subsection{Proximities, Distances, \&
+Kernels}\label{proximities-distances-kernels}
+
+How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
+
+Important: these measurements often assume distance is defined in terms
+of the measurements/objects/data, but for \emph{inverse problems},
+structure learning, etc., they are more often applied in terms of the
+features/operators.
+
+Example with doc-term matrices
+
+\subsection{Ambiguity or Causality}\label{ambiguity-or-causality}
+
+Usually dependencies are taken as causing or enabling proximity. E.g.
+shortest paths, vs.~edges.
+
+The approach taken by researchers/investigators\ldots do they assume a
+level of interchangeability between the two kinds of ``relation''? Do
+they define Or do they
+
 \part{Incidence Structures as Inner Product Spaces}
 
 For each, describe the meaning of
@@ -325,7 +391,7 @@ For each, describe the meaning of
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Observation model
+  Observation model (and connection to node activation data)
 \item
   Vector space representation
 \item
@@ -334,8 +400,15 @@ For each, describe the meaning of
   Induced Norms
 \end{enumerate}
 
-\chapter{Background: Graphs from Relation
-Observations}\label{background-graphs-from-relation-observations}
+\chapter{Background: Observing
+Incidences}\label{background-observing-incidences}
+
+From \autocite{WhyHowWhen_Torres2021}, and linalg book, and hypergraph
+incidence model
+
+\section{Graphs}\label{graphs}
+
+Initial notation (set-based) and outline of section
 
 \begin{figure}[H]
 
@@ -347,8 +420,35 @@ Observations}\label{background-graphs-from-relation-observations}
 
 \end{figure}%
 
-\chapter{Background: Hypergraphs from Coocurrence
-Observations}\label{background-hypergraphs-from-coocurrence-observations}
+\subsection{Edges as Vectors of Nodes}\label{edges-as-vectors-of-nodes}
+
+\subsection{Inner Product on Edges}\label{inner-product-on-edges}
+
+Laplacian as inner product on incidence observations. Associated objects
+(degree vector, o)
+
+Rescaling to achieve normaalization.
+
+Use to define kernels (and application e.g.~soft-cosine measure)
+
+\subsection{From Edge Observations to Node
+Activations}\label{from-edge-observations-to-node-activations}
+
+Strictly speaking, we can't say that nodes are directly observed in this
+space\ldots{} edges are. Collections of nodes are measured two-at-a-time
+(one-per-edge being traversed).
+
+Another way to approach is to view inner products as a sum of outer
+products. A each edge uniquely corresponds to 2 nodes (in a simple
+graph). Use triangle unfolding for closed form bijection.
+
+Unrolling 3D tensor of subgraphs along eads to a secondary
+representation of graphs as an \emph{edgelist}, having binary activation
+vectors on edges rather than nodes. Then each observation in this model
+is necessarily a set of activated edges. The non-zero (visited) nodes
+are found using the incidence matrix as an operator.
+
+\section{Hypergraphs}\label{hypergraphs}
 
 \begin{figure}[H]
 
@@ -360,21 +460,68 @@ Observations}\label{background-hypergraphs-from-coocurrence-observations}
 
 \end{figure}%
 
-\chapter{Review: Projections and Inverse
-Problems}\label{review-projections-and-inverse-problems}
+\subsection{Hyperedges as Vectors of
+Nodes}\label{hyperedges-as-vectors-of-nodes}
 
-I.e. trying to ``recover'' one from the other. In a way, proceduralizing
-the precautions described in \textcite{WhyHowWhen_Torres2021}.
+\subsection{Inner product on
+Hyperedges}\label{inner-product-on-hyperedges}
+
+Roundabout way of describing binary/occurrence data. Inner product is
+co-occurrences.
+
+Leads to correlation/covariance, etc.
+
+\chapter{Projection between Complex System
+Representations}\label{projection-between-complex-system-representations}
+
+I.e. trying to ``recover'' one from the other. In a way, expounds on the
+precautions described in \textcite{WhyHowWhen_Torres2021}.
+
+\section{Connecting Graph \& Hypergraph
+Observations}\label{connecting-graph-hypergraph-observations}
+
+Operates on the data space itself
+
+\subsection{Bipartite Projection}\label{bipartite-projection}
+
+Various ways of ``counting'' edges from nodes.
+
+\subsection{Sparse Approximations}\label{sparse-approximations}
+
+and relation to deconvolution?
+
+It's what we will use, up next
+
+\section{Manipulation of Kernels}\label{manipulation-of-kernels}
+
+Modifies the inner products directly, without using the data as-observed
+
+\subsection{Network Backboning}\label{network-backboning}
+
+trimming the hairball
+
+Note ensemble methods do use data, but are not generative.
+
+\subsection{Convariance, Precision, \&
+Shrinkage}\label{convariance-precision-shrinkage}
+
+I.e. GLasso.
+
+This is defetinitely the problem we want to solve, but is not estimating
+uncertainty (barring cross-validation-style bootstrapping)
+
+\chapter{Practitioner's Guide to Graph Recovery
+Methods}\label{practitioners-guide-to-graph-recovery-methods}
 
 \begin{quote}
 Takeaway: a way to organize existing algorithms, AND highlight unique
 set of problems we set out to solve
 \end{quote}
 
-\section{Connecting Graphs \& Hypergraphs as
-Adjoint}\label{connecting-graphs-hypergraphs-as-adjoint}
+\section{Organizing Recovery Methods}\label{organizing-recovery-methods}
 
-i.e.~Network Recovery as an Inverse Problem
+i.e.~Network Recovery as an Inverse Problem, and what information is had
+at each point.
 
 \begin{figure}[H]
 
@@ -387,8 +534,16 @@ operators}
 
 \end{figure}%
 
-\section{Algorithmic Information Loss in
-Literature}\label{algorithmic-information-loss-in-literature}
+\subsection{Observing Nodes vs Edges}\label{observing-nodes-vs-edges}
+
+\subsection{Embeddings, Inner Products, \&
+Preprocessing}\label{embeddings-inner-products-preprocessing}
+
+\section{Tracing Information Loss
+Paths}\label{tracing-information-loss-paths}
+
+\subsection{Table of Existing
+Approaches}\label{table-of-existing-approaches}
 
 \begin{itemize}
 \tightlist
@@ -399,6 +554,8 @@ Literature}\label{algorithmic-information-loss-in-literature}
 \item
   no uncertainty quantification
 \end{itemize}
+
+\subsection{A Path Forward}\label{a-path-forward}
 
 Sorting algorithms\ldots{} \emph{none address all three!}
 
