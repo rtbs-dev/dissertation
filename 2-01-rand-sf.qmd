@@ -1,0 +1,14 @@
+# Random Spanning Forests
+
+## Node Activation by Diffusive Processes 
+
+### Dependencies as Trees
+
+### Matrix-Forest Theorem 
+
+## Generative Model Specification
+
+![Explanation of the Random Spanning Forest generative model for binary activation observations](images/random-spanning-forests.png)
+- hierarchical model
+- marginalize over the root node. 
+

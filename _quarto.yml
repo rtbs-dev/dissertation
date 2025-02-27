@@ -19,8 +19,9 @@ book:
         - 1-03-inverse.qmd
     - part: 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
-        - 2-04-forest-pursuit.qmd
-        - 2-05-latent-forest-alloc.qmd
+        - 2-01-rand-sf.qmd
+        - 2-02-forest-pursuit.qmd
+        - 2-03-latent-forest-alloc.qmd
     - part: 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
       chapters: 
         - 3-06-qualitative.qmd
