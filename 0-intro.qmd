@@ -1,10 +1,18 @@
 # Introduction
 
+A wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [@Inferringnetworksdiffusion_GomezRodriguez2012]
+However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. 
+This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[@Statisticalinferencelinks_Peel2022], treatment of error as purely aleatory, rather than epistemic [@Measurementerrornetwork_Wang2012], or simply ignoring measurement error in network reconstruction entirely[@ReconstructingNetworksUnknown_Peixoto2018].
+
+To begin adressing these issues, this introductory section returns to foundational statistical measurment concepts and terminology, while clarifying each concepts potential relationships to the problems of network structure metrology.  
+First, what "measurement" means in this context, and specifically the ways we encode observations, operations, and uncertainties numerically.
+Second, what "relation" means, since network structure is intended to encode such relations as a mathematical object, despite common ambiguities and confusion around what practitioners intend on communicating through them. 
+
 
 ## Measuring relations through observation
 
 We're interested in figuring out how "stuff" is connected to other "stuff" by watching the behavior of "stuff" with other "stuff".
-
+...karate club
 
 ### Observation and Feature "Space"
 
