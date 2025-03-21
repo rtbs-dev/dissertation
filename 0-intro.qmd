@@ -11,14 +11,22 @@ Second, what "relation" means, since network structure is intended to encode suc
 
 ## Measuring relations through observation
 
-We're interested in figuring out how "stuff" is connected to other "stuff" by watching the behavior of "stuff" with other "stuff".
-...karate club
+Networks in the "wild" rarely exist of and by themsleves. 
+Rather, they are a model of interaction or relation _between_ things that were observed. 
+One of the most beloved examples of a network, the famed _Zachary's Karate Club_[CITE], is in fact reported as a list of pairwise interactions: every time a club member interacted with another (outside of the club), Zachary recorded it as two integers (the IDs of the members).
+The final list of pairs can be _interpreted_ as an "edge list", which can be modeled with a network: a simple graph.
+
+Where metrology is concerned, the actual unit of observation and how it is encoded for us is critical to how analysts may proceed with quantifying, modeling, and measuring uncertainty around observed phenomena. 
 
 ### Observation and Feature "Space"
 
-Encode measurements in _design matrix_.
+One common format for observations to be recorded in the broader world of statistics is as a design matrix.
+In this scheme, a "data point" is a vector having some number of "features" $k$ that assign values to each of the relevant attributes.
+Thus a single observation can be thought to exist at some coordinate in $k$-dimensional space.
+There are various tenchniques for dealign with e.g. categorical data, which include one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature).
+A collection of $n$  data points, then, can be thought of as a matrix $X\in\mathbb{R}^{n\times k}$, such that each row is an observation and each column reflects the location of each observation along that feature's coordinate. 
 
-Rows and columns depend on domain...we chose one. 
+Rows and columns depend on domain...we chose one. [FOOTNOTE]
 
 ### Model, Data, & Linear Operators
 
