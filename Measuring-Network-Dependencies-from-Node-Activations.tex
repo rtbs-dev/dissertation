@@ -64,10 +64,11 @@
 \makeatother
 
 \directlua{pdf.setminorversion(6)}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
+% \usepackage[T1]{fontenc}
+% \usepackage[utf8]{inputenc}
 
 \usepackage[english]{babel}
+\usepackage[otfmath]{XCharter}
 \usepackage[strict]{csquotes}
 
 % Change contents title to Table of Contents
@@ -365,13 +366,12 @@ of statistics is as a design matrix. In this scheme, a ``data point'' is
 a vector having some number of ``features'' \(k\) that assign values to
 each of the relevant attributes. Thus a single observation can be
 thought to exist at some coordinate in \(k\)-dimensional space. There
-are various tenchniques for dealign with e.g.~categorical data, which
-include one-hot encoding (where \(k\) is the number of possible
-categories, with boolean entries for each feature). A collection of
-\(n\) data points, then, can be thought of as a matrix
-\(X\in\mathbb{R}^{n\times k}\), such that each row is an observation and
-each column reflects the location of each observation along that
-feature's coordinate.
+are various techniques for dealign with e.g.~categorical data, such as
+one-hot encoding (where \(k\) is the number of possible categories, with
+boolean entries for each feature). A collection of \(n\) data points,
+then, can be thought of as a matrix \(X\in\mathbb{R}^{n\times k}\), such
+that each row is an observation and each column reflects the location of
+each observation along that feature's coordinate.
 
 Rows and columns depend on domain\ldots we chose one. {[}FOOTNOTE{]}
 

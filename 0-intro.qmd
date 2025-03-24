@@ -23,7 +23,7 @@ Where metrology is concerned, the actual unit of observation and how it is encod
 One common format for observations to be recorded in the broader world of statistics is as a design matrix.
 In this scheme, a "data point" is a vector having some number of "features" $k$ that assign values to each of the relevant attributes.
 Thus a single observation can be thought to exist at some coordinate in $k$-dimensional space.
-There are various tenchniques for dealign with e.g. categorical data, which include one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature).
+There are various techniques for dealign with e.g. categorical data, such as one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature).
 A collection of $n$  data points, then, can be thought of as a matrix $X\in\mathbb{R}^{n\times k}$, such that each row is an observation and each column reflects the location of each observation along that feature's coordinate. 
 
 Rows and columns depend on domain...we chose one. [FOOTNOTE]
