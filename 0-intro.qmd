@@ -26,10 +26,14 @@ Where metrology is concerned, the actual unit of observation and how it is encod
 
 ### Observation and Feature "Spaces"
 
-One common format for observations to be recorded in the broader world of statistics is as a design matrix.
-In this scheme, a "data point" is a vector having some number of "features" $k$ that assign values to each of the relevant attributes.
-Thus a single observation can be thought to exist at some coordinate in $k$-dimensional space.
-There are various techniques for dealign with e.g. categorical data, such as one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature).
+Experiment and observation tends to be organized as inputs and outputs, or, independent variables and dependent variables, specifically.
+Independent variables are observed, multiple times ("observations"), and changes in outcome can be compared to the varying values associated with the input ("features")
+The structure most often used to record observational data on the independent/input variables is as a design matrix $X$.
+In this scheme, a "data point" $\mathbf{x}_i=\left(X_{i1}, X_{i2}, \cdots X_{ik}\right)$ is a vector having some number $k$ of features that assign values to each of the relevant independent variables.
+$X_{ij}$ is the measured value of the $j$th independent variable on the $i$th observation.^[
+  There are various techniques for dealign with e.g. categorical data, such as one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature)
+]
+Thus a single observation can be thought to exist at some coordinate in $k$-dimensional space, known as the _feature space_.
 Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product [EQUATION].
 Each data point can then be thought of as a $k$-dimensional vector in this "feature space". 
 A collection of $n$  data points over a semiring , then, is represented by a so-called "design" matrix over a ring $X\in\mathcal{M}_{n\times k}(R)$, such that each row corresponds to one observation and each column reflects the location of every observation along that feature's coordinate.^[Sometimes vectors are said to form the column-space of a matrix, especially when using them as transformations in physics or deep learning layers. We generally follow a one-observation-per-row rule, unless otherwise stated]
