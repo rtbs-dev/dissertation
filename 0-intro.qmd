@@ -4,43 +4,53 @@ A wide variety of fields show consistent interest in inferring latent network st
 However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. 
 This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[@Statisticalinferencelinks_Peel2022], treatment of error as purely aleatory, rather than epistemic [@Measurementerrornetwork_Wang2012], or simply ignoring measurement error in network reconstruction entirely[@ReconstructingNetworksUnknown_Peixoto2018].
 
-To begin adressing these issues, this introductory section returns to foundational statistical measurment concepts and terminology, while clarifying each concepts potential relationships to the problems of network structure metrology.  
-First, what "measurement" means in this context, and specifically the ways we encode observations, operations, and uncertainties numerically.
-Second, what "relation" means, since network structure is intended to encode such relations as a mathematical object, despite common ambiguities and confusion around what practitioners intend on communicating through them. 
-
-
-## Measuring relations through observation
-
 Networks in the "wild" rarely exist of and by themsleves. 
-Rather, they are a model of interaction or relation _between_ things that were observed. 
+Rather, they are a model of interaction or relation _between_ things that were observed.
 One of the most beloved examples of a network, the famed _Zachary's Karate Club_[CITE], is in fact reported as a list of pairwise interactions: every time a club member interacted with another (outside of the club), Zachary recorded it as two integers (the IDs of the members).
 The final list of pairs can be _interpreted_ as an "edge list", which can be modeled with a network: a simple graph.
-This was famously used to show natural community structure that nicely matches the group separation that eventually took place when the club split into two. 
+This was famously used to show natural community structure that nicely matches the group separation that eventually took place when the club split into two.[CITE]
 
 Note, however, that we could have just as easily taken note of the instigating student for each interaction (i.e. which student initiated conversation, or invited the other to socialize, etc.).
 If that relational asymmetry is available, our "edges" are now _directed_, and we might be able to ask questions about the rates that certain students are asked vs. do the asking, and what that implies about group cohesion.
 Additionally, the time span is assumed to be "for the duration of observation" (did the students _ever_ interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split.
 This is now a "dynamic" graph; or, if we only measure relative to the time of separation, at the very least a "weighted" one.  
 
+_We do not know if any of these are true_.
+In fact, do to ambiguous reporting in the original work, we do not know if the network being described from the original edge data even has 77 or 78 edges.
+Lacking a precise definition of what the graph's components (i.e. it's edges) are, _as measurable entities_, means we cannot estimate the measurement error in the graph.  
+
+To begin adressing these issues, this introductory section returns to foundational statistical measurment concepts and terminology, while clarifying each concepts potential relationships to the problems of network structure metrology.  
+First, what "measurement" means in this context, and specifically the ways we encode observations, operations, and uncertainties numerically.
+Second, what "relation" means, since network structure is intended to encode such relations as a mathematical object, despite common ambiguities and confusion around what practitioners intend on communicating through them. 
+
+
+## Metrology as matrices
+
+
+
 Where metrology is concerned, the actual unit of observation and how it is encoded for us is critical to how analysts may proceed with quantifying, modeling, and measuring uncertainty around observed phenomena. 
-
-### Observation and Feature "Spaces"
-
 Experiment and observation tends to be organized as inputs and outputs, or, independent variables and dependent variables, specifically.
-Independent variables are observed, multiple times ("observations"), and changes in outcome can be compared to the varying values associated with the input ("features")
-The structure most often used to record observational data on the independent/input variables is as a design matrix $X$.
-In this scheme, a "data point" $\mathbf{x}_i=\left(X_{i1}, X_{i2}, \cdots X_{ik}\right)$ is a vector having some number $m$ of features that assign values to each of the relevant independent variables.
-$X_{ij}$ is the measured value of the $j$th independent variable on the $i$th observation.^[
-  There are various techniques for dealign with e.g. categorical data, such as one-hot encoding (where $k$ is the number of possible categories, with boolean entries for each feature)
+Independent variables are observed, multiple times ("observations"), and changes in outcome for each can be compared to the varying values associated with the independent variable input ("features").
+For generality, say a practitioner records their measurements as scalar values, i.e. $x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}$.
+The structure most often used to record scalar values of  $n$ independent/input variable features over the course of $m$ observations is called a design matrix $X:\mathbb{S}^{m\times n}$.^[
+  Not all observations are scalar, but they can become so.
+  If individual measurments are higher-dimensional (e.g. images are 2D), X is a tensor, which can be transformed through unrolling or embedding into a lower dimensional representation before proceeding. 
+  There are other techniques for dealing with e.g. categorical data, such as one-hot encoding (where the features are binary for each possible category, with boolean entries for each observation).
 ]
+
+
+### Observation and feature "spaces"
+
+If we index a set of observations and features, respectively, as
+$$ i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}$$
+then the design matrix can map the index of an observation and a feature to the corresponding measurement.
+$$x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}$$
+i.e.  the measured value of the $j$th independent variable from the $i$th observation.
+In this scheme, an "observation" is a single row vector of features in $\mathbb{S}^{n\times 1}$ (or simply $\mathbb{S}^{n}$), such that each observation encodes a position in the space defined by the features, i.e. the _feature space_, and extracting a specific observation vector $i$ from the entire matrix can be denoted as
+$$\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}$$
+Similarly, every "feature" is associated with a single column vector in $\mathbb{S}^{1\times m}$, which can likewise be interpreted as a position in the space of observations (the _data space_):
+$$\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}$$
 Thus a single observation can be thought to exist at some coordinate in $m$-dimensional space, known as the _feature space_.
-Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product.
-The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:
-
-$$G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} $$
-
-such that real-valued entries and a traditional "plus-times" inner product recovers the Gram matrix $G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}$, or simply $G=X^TX$.  
-
 A collection of $n$  data points over a semiring , then, is represented by a so-called "design" matrix over a ring $X\in\mathcal{M}_{n\times k}(R)$, such that each row corresponds to one observation and each column reflects the location of every observation along that feature's coordinate.^[
   Sometimes vectors are said to form the column-space of a matrix, especially when using them as transformations in physics or deep learning layers. We generally follow a one-observation-per-row rule, unless otherwise stated
 ]
@@ -61,12 +71,12 @@ Similarly, if our goal is to determine a network of "whether two authors ever co
 It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
 
 
-### Model, Data, & Linear Operators
+### Model, data, & linear operators
 
 Forward model/operator maps model into data space, vs. Adjoint Model/Operator maps data into model space.
 Inverse problems involve removing the effect of the operator $A$ from the data $y$  to recover the model $x$. 
 
-### Measurement Quantification & Error 
+### Measurement quantification & error 
 
 - type I and II Error
 - Epistemic and Alleatoric Uncertainty
@@ -76,7 +86,7 @@ Ultimately we are not great at specifying what "being related" actually means...
 
 ## What does "relation" mean?
 
-### Incidence & Dependency
+### Incidence & dependency
 
 foundational model of graph theory and incidence structures more broadly.
 More to come, but get the terminology down.
@@ -85,7 +95,14 @@ Spring example, road example, etc.
 Discuss Complex Systems and their representation. 
 
 
-### Proximities, Distances, & Kernels 
+### Proximities, distances, & kernels 
+
+Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product.
+The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:
+
+$$G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} $$
+
+such that real-valued entries and a traditional "plus-times" inner product recovers the Gram matrix $G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}$, or simply $G=X^TX$.  
 
 How "close" or "far away" things are.... Avrachenkov et al. 
 
@@ -94,7 +111,7 @@ Important: these measurements often assume distance is defined in terms of the m
 
 Example with doc-term matrices 
 
-### Ambiguity or Causality
+### Ambiguity or causality
 Usually dependencies are taken as causing or enabling proximity.
 E.g. shortest paths, vs. edges.
 
