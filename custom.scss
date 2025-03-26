@@ -3,7 +3,7 @@
 $font-family-sans-serif:  "Cooper Hewitt";
 $headings-font-family:  "Cooper Hewitt", sans-serif;
 
-$headings-font-weight:  500 !default;
+/* $headings-font-weight:  500 !default; */
 $h2-font-size:          1rem !default;
 $h3-font-size: 1rem !default;
 $link-color: maroon !default;
@@ -18,7 +18,7 @@ $link-color: maroon !default;
 
 header .chapter-title {
     text-transform: none;
-    font-size: 1.1rem;
+    font-size: 1.25rem;
     letter-spacing: normal;
 }
 
@@ -45,15 +45,16 @@ header .chapter-title {
 }
 
 .sidebar-navigation .sidebar-item .chapter-title {
-    font-size: 0.7rem;
+    font-size: 0.9rem;
     text-transform: initial;
     font-style: normal;
-    /* font-weight: 800; */
+    /* font-weight: 200; */
 }
 
 .sidebar-navigation .sidebar-item {
-    font-size: 0.8rem;
+    font-size: 1rem;
     font-style: italic;
+    /* font-weight: 500; */
     /* text-transform: uppercase; */
 }
 .navbar-brand > a{
