@@ -376,7 +376,9 @@ communicating through them.
 
 {[}FUTURE SECTIONS?{]}
 
-\section{Metrology as matrices}\label{metrology-as-matrices}
+\part{A Practitioner's Guide to Network Recovery}
+
+\chapter{Metrology as matrices}\label{metrology-as-matrices}
 
 Where metrology is concerned, the actual unit of observation and how it
 is encoded for us is critical to how analysts may proceed with
@@ -400,7 +402,7 @@ features over the course of \(m\) observations is called a design matrix
   the features are binary for each possible category, with boolean
   entries for each observation).}
 
-\subsection{Observation and feature
+\section{Observation and feature
 ``spaces''}\label{observation-and-feature-spaces}
 
 If we index a set of observations and features, respectively, as
@@ -451,7 +453,7 @@ communities, we could equally use the feature vectors for each paper,
 this time represented in a vector
 \(\mathbf{x}^*_j:\mathbb{B}^{1\times m}\).
 
-\subsection{Models \& linear operators}\label{models-linear-operators}
+\section{Models \& linear operators}\label{models-linear-operators}
 
 Another powerful tool an analyst has is \emph{modeling} the observation
 process. This is relevant when the observed data is hypothesized to be
@@ -472,9 +474,10 @@ where \(P\) is the space of possible parameter vectors, i.e.~the
 a location in data space.
 
 Of critical importance, then, is our ability to recover some model
-parameters from our observed data. If \(F\) is invertible, the most
-direct solution might be to apply the operator to the data, as the
-\emph{adjoint map}:
+parameters from our observed data, e.g.~if our images were blurred
+through convolution with a blurring kernel, then we are interested in
+\emph{deconvolution}. If \(F\) is invertible, the most direct solution
+might be to apply the operator to the data, as the \emph{adjoint map}:
 \[ \mathbf{p} = F^H\mathbf{x}\qquad F^H:\mathbb{R}^{n}\rightarrow \mathbb{R}^l\]
 which removes the effect of \(F\) from the data \(\mathbf{x}\) to
 recover the desired model \(\mathbf{p}\).
@@ -482,25 +485,52 @@ recover the desired model \(\mathbf{p}\).
 Trivially we might have an orthogonal matrix \(F\), so \(F^H=F^{-1}\) is
 available directly. In practice, other approaches are used to minimize
 the \emph{residual}:
-\(\mathbf{p}^*=\min_{\mathbf{p}} F\mathbf{p}-\mathbf{x}\)
+\(\hat{\mathbf{p}}^=\min_{\mathbf{p}} F\mathbf{p}-\mathbf{x}\). Setting
+the gradient to 0 yeilds the normal equation, such that
+\[ \hat{\mathbf{p}}=(F^TF)^{-1}F^T\mathbf{x}\] This should be familiar
+to readers as equivalent to solving ordinary least-squares (OLS).
+However, in that case it is more often shown as having the \emph{design
+matrix} \(X\) in place of the operator \(F\).
 
-\subsection{Measurement quantification \&
+\emph{This is a critical distinction to make:} OLS as a ``supervised''
+learning method treats some of the observed data we represented as a
+design matrix previously as a target to be modeled, \(y=X(\cdot,j)\),
+and the rest maps parameters into data space, \(F=X(\cdot,J/j)\). With
+this paradigm, only the target is being ``modeled'' and the rest of the
+data is used to create the operator. In the citation network example, it
+would be equivalent to trying to predict one author's participation in
+every paper, \emph{given} every other author's participation in them.
+
+For simplicity, most work in the supervised setting treats the reduced
+data matrix as X, opting to treat \(y\) as a separate \emph{dependent
+variable}. However, our setting will remain \emph{unsupervised}, since
+no single target variable is of specific interest---all observations are
+``data''. In this, we more closely align with the deconvolution
+literature, such that we are seeking a model and an operation on it that
+will produce the observed behavior in an ``optimal'' way.
+
+\section{Measurement quantification \&
 error}\label{measurement-quantification-error}
 
 \begin{itemize}
 \tightlist
 \item
-  type I and II Error
+  marginal sums
 \item
-  Epistemic and Alleatoric Uncertainty
+  rule of succession
+\item
+  type I and II Error?
+\item
+  Epistemic and Alleatoric Uncertainty?
 \end{itemize}
 
 Ultimately we are not great at specifying what ``being related''
 actually means\ldots{}
 
-\section{What does ``relation'' mean?}\label{what-does-relation-mean}
+\section{Incidence vs.~Proximity}\label{incidence-vs.-proximity}
 
-\subsection{Incidence \& dependency}\label{incidence-dependency}
+\subsection{Incidence structures \&
+dependency}\label{incidence-structures-dependency}
 
 foundational model of graph theory and incidence structures more
 broadly. More to come, but get the terminology down.
@@ -508,8 +538,7 @@ broadly. More to come, but get the terminology down.
 Spring example, road example, etc. Discuss Complex Systems and their
 representation.
 
-\subsection{Proximities, distances, \&
-kernels}\label{proximities-distances-kernels}
+\subsection{Kernels \& distances}\label{kernels-distances}
 
 Importantly for the use of linear algebra, these values assigned for
 each feature are assumed to exist in a field (or, more generally, a
@@ -548,7 +577,7 @@ primarily concerned with in this work, since it is the view that most
 closely resembles the concept of covariance or correlation between
 independent variables (features) in statistics more generally.
 
-\subsection{Ambiguity or causality}\label{ambiguity-or-causality}
+\subsection{Implications for networks}\label{implications-for-networks}
 
 Usually dependencies are taken as causing or enabling proximity. E.g.
 shortest paths, vs.~edges.
@@ -556,8 +585,6 @@ shortest paths, vs.~edges.
 The approach taken by researchers/investigators\ldots do they assume a
 level of interchangeability between the two kinds of ``relation''? Do
 they define Or do they
-
-\part{A Practitioner's Guide to Network Recovery}
 
 \chapter{Incidence in Vector Space}\label{incidence-in-vector-space}
 
@@ -644,46 +671,9 @@ co-occurrences.
 
 Leads to correlation/covariance, etc.
 
-\chapter{Projections and Structure
-Maps}\label{projections-and-structure-maps}
+\chapter{Roads to Network Recovery}\label{roads-to-network-recovery}
 
-I.e. trying to ``recover'' one from the other. In a way, expounds on the
-precautions described in \textcite{WhyHowWhen_Torres2021}.
-
-\section{Connecting Graph \& Hypergraph
-Observations}\label{connecting-graph-hypergraph-observations}
-
-Operates on the data space itself
-
-\subsection{Bipartite Projection}\label{bipartite-projection}
-
-Various ways of ``counting'' edges from nodes.
-
-\subsection{Sparse Approximations}\label{sparse-approximations}
-
-and relation to deconvolution?
-
-It's what we will use, up next
-
-\section{Manipulation of Kernels}\label{manipulation-of-kernels}
-
-Modifies the inner products directly, without using the data as-observed
-
-\subsection{Network Backboning}\label{network-backboning}
-
-trimming the hairball
-
-Note ensemble methods do use data, but are not generative.
-
-\subsection{Convariance, Precision, \&
-Shrinkage}\label{convariance-precision-shrinkage}
-
-I.e. GLasso.
-
-This is defetinitely the problem we want to solve, but is not estimating
-uncertainty (barring cross-validation-style bootstrapping)
-
-\chapter{Choosing a structure recovery
+\section{Choosing a structure recovery
 method}\label{choosing-a-structure-recovery-method}
 
 \begin{quote}
