@@ -50,25 +50,22 @@ In this scheme, an "observation" is a single row vector of features in $\mathbb{
 $$\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}$$
 Similarly, every "feature" is associated with a single column vector in $\mathbb{S}^{1\times m}$, which can likewise be interpreted as a position in the space of observations (the _data space_):
 $$\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}$$
-Thus a single observation can be thought to exist at some coordinate in $m$-dimensional space, known as the _feature space_.
-A collection of $n$  data points over a semiring , then, is represented by a so-called "design" matrix over a ring $X\in\mathcal{M}_{n\times k}(R)$, such that each row corresponds to one observation and each column reflects the location of every observation along that feature's coordinate.^[
-  Sometimes vectors are said to form the column-space of a matrix, especially when using them as transformations in physics or deep learning layers. We generally follow a one-observation-per-row rule, unless otherwise stated
+Note that this definition could be swapped without loss of generality.
+In other words, $\mathbf{x}$ and $\mathbf{x}^*$ being in row and column spaces is somewhat arbitrary, having more to do with the logistics of experiment design and data collection.
+We could have measured our feature vectors one-at-a-time, measuring their values over an entire "population", in effect treating that as the independent variable set.^[
+  In fact, vectors are often said to be in the column-space of a matrix, especially when using them as transformations in physics or deep learning layers.
+  We generally follow a one-observation-per-row rule, unless otherwise stated.
 ]
-Note that this definition admits symmetry in application.
-In other words, we could treat each observation as an independent variable, such that  each original "feature" (column) is itself a vector with independent variables being the state of each original "observation".
-These are valid vectors over the same field/semiring, but now in an $n$-dimensional space we will call the _ data points (rows), i.e. the or "observation space".
-The observation space will also have a well-defined inner-product. 
 
-To illustrate this, let's take another classic network example from academia: co-citation networks.
-List of co-authors on publications is often reported as "network" data, and subjected to network analysis techniques.
-For each paper, some subset of known authors are all "active" participants. However, we are not given information about which author was invited by which other one, or when each author signed on.
-In fact, this lack of pairwise information is a good reason to call such activation-type data _bipartite_, since we can represent our data as a bipartite graph, with $n$ papers and $k$ authors being bipartite sets, and a paper is connected to an author if that author was listed on that paper.
-As a matrix, we could represent this as $X\in\mathcal{M}_{n\times k}(\mathbb{B})$, so that every paper is a vector on the boolean semiring.
-The inner product between two papers will yield a "true" only if two papers share at least one author in common. 
-This is called a _bipartite projection_[CITE], specifically the "papers" projection. 
-
-Similarly, if our goal is to determine a network of "whether two authors ever coauthored", we could perform a bipartite projection using the boolean inner product in the observation space i.e. the "authors" projection.
-It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
+To illustrate this formalism in a relevant domain, let's take another classic network example from academia: co-citation networks.
+Lists of co-authors on publications is often reported as "network" data, and subjected to network analysis techniques.
+For $m$ papers we might be aware of a total of $n$ authors. 
+For a given paper, we are able to see which authors are involved, and we say those authors "activated" for that paper.
+It makes sense that our observations are individual papers, while the features might be the set of possible authors. 
+However, we are not given information about which author was invited by which other one, or when each author signed on.
+In other words, the measured values are strictly boolean, and we can structure our dataset as a design matrix $X:\mathbb{B}^{m\times n}$.
+We can then think of the $i^{\mathrm{th}}$ paper as being represented by a vector $\mathbf{x}_i:\mathbb{B}^n$, and proceed using it in our various statistical models.
+If we desired to analyze the set of authors, say, in order to determine their relative neighborhoods or latent author communities, we could equally use the feature vectors for each paper, this time represented in a vector $\mathbf{x}^*_j:\mathbb{B}^{1\times m}$.
 
 
 ### Model, data, & linear operators
@@ -110,6 +107,13 @@ How "close" or "far away" things are.... Avrachenkov et al.
 Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for _inverse problems_, structure learning, etc., they are more often applied in terms of the features/operators.
 
 Example with doc-term matrices 
+
+
+The inner product between two papers will yield a "true" only if two papers share at least one author in common. 
+This is called a _bipartite projection_[CITE], specifically the "papers" projection. 
+
+Similarly, if our goal is to determine a network of "whether two authors ever coauthored", we could perform a bipartite projection using the boolean inner product in the observation space i.e. the "authors" projection.
+It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
 
 ### Ambiguity or causality
 Usually dependencies are taken as causing or enabling proximity.
