@@ -330,20 +330,6 @@ of error as purely aleatory, rather than epistemic
 measurement error in network reconstruction
 entirely\autocite{ReconstructingNetworksUnknown_Peixoto2018}.
 
-To begin adressing these issues, this introductory section returns to
-foundational statistical measurment concepts and terminology, while
-clarifying each concepts potential relationships to the problems of
-network structure metrology.\\
-First, what ``measurement'' means in this context, and specifically the
-ways we encode observations, operations, and uncertainties numerically.
-Second, what ``relation'' means, since network structure is intended to
-encode such relations as a mathematical object, despite common
-ambiguities and confusion around what practitioners intend on
-communicating through them.
-
-\section{Measuring relations through
-observation}\label{measuring-relations-through-observation}
-
 Networks in the ``wild'' rarely exist of and by themsleves. Rather, they
 are a model of interaction or relation \emph{between} things that were
 observed. One of the most beloved examples of a network, the famed
@@ -354,7 +340,7 @@ the members). The final list of pairs can be \emph{interpreted} as an
 ``edge list'', which can be modeled with a network: a simple graph. This
 was famously used to show natural community structure that nicely
 matches the group separation that eventually took place when the club
-split into two.
+split into two.{[}CITE{]}
 
 Note, however, that we could have just as easily taken note of the
 instigating student for each interaction (i.e.~which student initiated
@@ -367,79 +353,139 @@ the duration of observation'' (did the students \emph{ever} interact),
 but if observation time was significantly longer, say, multiple years,
 we might question the credulity of treating a social interaction 2 years
 ago as equally important to an interaction immediately preceding the
-split. This is now a ``dynamic'' graph\ldots or if we only measure
-relative to the time of separation, at the very least a ``weighted''
-one.
+split. This is now a ``dynamic'' graph; or, if we only measure relative
+to the time of separation, at the very least a ``weighted'' one.
+
+\emph{We do not know if any of these are true}. In fact, do to ambiguous
+reporting in the original work, we do not know if the network being
+described from the original edge data even has 77 or 78 edges. Lacking a
+precise definition of what the graph's components (i.e.~it's edges) are,
+\emph{as measurable entities}, means we cannot estimate the measurement
+error in the graph.
+
+To begin adressing these issues, this introductory section returns to
+foundational statistical measurment concepts and terminology, while
+clarifying each concepts potential relationships to the problems of
+network structure metrology.\\
+First, what ``measurement'' means in this context, and specifically the
+ways we encode observations, operations, and uncertainties numerically.
+Second, what ``relation'' means, since network structure is intended to
+encode such relations as a mathematical object, despite common
+ambiguities and confusion around what practitioners intend on
+communicating through them.
+
+{[}FUTURE SECTIONS?{]}
+
+\section{Metrology as matrices}\label{metrology-as-matrices}
 
 Where metrology is concerned, the actual unit of observation and how it
 is encoded for us is critical to how analysts may proceed with
 quantifying, modeling, and measuring uncertainty around observed
-phenomena.
+phenomena. Experiment and observation tends to be organized as inputs
+and outputs, or, independent variables and dependent variables,
+specifically. Independent variables are observed, multiple times
+(``observations''), and changes in outcome for each can be compared to
+the varying values associated with the independent variable input
+(``features''). For generality, say a practitioner records their
+measurements as scalar values,
+i.e.~\(x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}\). The structure most
+often used to record scalar values of \(n\) independent/input variable
+features over the course of \(m\) observations is called a design matrix
+\(X:\mathbb{S}^{m\times n}\).\footnote{ Not all observations are scalar,
+  but they can become so. If individual measurments are
+  higher-dimensional (e.g.~images are 2D), X is a tensor, which can be
+  transformed through unrolling or embedding into a lower dimensional
+  representation before proceeding. There are other techniques for
+  dealing with e.g.~categorical data, such as one-hot encoding (where
+  the features are binary for each possible category, with boolean
+  entries for each observation).}
 
-\subsection{Observation and Feature
-``Spaces''}\label{observation-and-feature-spaces}
+\subsection{Observation and feature
+``spaces''}\label{observation-and-feature-spaces}
 
-One common format for observations to be recorded in the broader world
-of statistics is as a design matrix. In this scheme, a ``data point'' is
-a vector having some number of ``features'' \(k\) that assign values to
-each of the relevant attributes. Thus a single observation can be
-thought to exist at some coordinate in \(k\)-dimensional space. There
-are various techniques for dealign with e.g.~categorical data, such as
-one-hot encoding (where \(k\) is the number of possible categories, with
-boolean entries for each feature). Importantly for the use of linear
-algebra, these values assigned for each feature are assumed to exist in
-a field (or, more generally, a semiring) \(R\), equipped with operators
-analogous to addition (\(\oplus\)) and multiplication (\(\otimes\)) that
-allow for values to be aggregated through an inner product
-{[}EQUATION{]}. Each data point can then be thought of as a
-\(k\)-dimensional vector in this ``feature space''. A collection of
-\(n\) data points over a semiring , then, is represented by a so-called
-``design'' matrix over a ring \(X\in\mathcal{M}_{n\times k}(R)\), such
-that each row corresponds to one observation and each column reflects
-the location of every observation along that feature's
-coordinate.\footnote{Sometimes vectors are said to form the column-space
-  of a matrix, especially when using them as transformations in physics
-  or deep learning layers. We generally follow a one-observation-per-row
-  rule, unless otherwise stated} However, given this definition, we can
-just as easily use each ``feature'' (column) as a vector with
-coordinates given by the data points (rows), i.e.~the dual or
-``observation space''. The dual will also have a well-defined
-inner-product.
+If we index a set of observations and features, respectively, as
+\[ i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}\]
+then the design matrix can map the index of an observation and a feature
+to the corresponding measurement.
+\[x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}\] i.e.~the
+measured value of the \(j\)th independent variable from the \(i\)th
+observation. In this scheme, an ``observation'' is a single row vector
+of features in \(\mathbb{S}^{n\times 1}\) (or simply
+\(\mathbb{S}^{n}\)), such that each observation encodes a position in
+the space defined by the features, i.e.~the \emph{feature space}, and
+extracting a specific observation vector \(i\) from the entire matrix
+can be denoted as
+\[\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}\]
+Similarly, every ``feature'' is associated with a single column vector
+in \(\mathbb{S}^{1\times m}\), which can likewise be interpreted as a
+position in the space of observations (the \emph{data space}):
+\[\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}\]
+Note that this definition could be swapped without loss of generality.
+In other words, \(\mathbf{x}\) and \(\mathbf{x}^*\) being in row and
+column spaces is somewhat arbitrary, having more to do with the
+logistics of experiment design and data collection. We could have
+measured our feature vectors one-at-a-time, measuring their values over
+an entire ``population'', in effect treating that as the independent
+variable set.\footnote{ In fact, vectors are often said to be in the
+  column-space of a matrix, especially when using them as
+  transformations in physics or deep learning layers. We generally
+  follow a one-observation-per-row rule, unless otherwise stated.}
 
-Take another classic network example from academia: co-citation
-networks. List of co-authors on publications is often reported as
-``network'' data, and subjected to network analysis techniques. For each
-paper, some subset of known authors are all ``active'' participants.
-However, we are not given information about which author was invited by
-which other one, or when each author signed on. In fact, this lack of
-pairwise information is a good reason to call such activation-type data
-\emph{bipartite}, since we can represent our data as a bipartite graph,
-with \(n\) papers and \(k\) authors being bipartite sets, and a paper is
-connected to an author if that author was listed on that paper. As a
-matrix, we could represent this as
-\(X\in\mathcal{M}_{n\times k}(\mathbb{B})\), so that every paper is a
-vector on the boolean semiring. The inner product between two papers
-will yield \(1\) only if two papers share at least one author in common.
-This is called a \emph{bipartite projection}{[}CITE{]}, specifically the
-``papers'' projection. Similarly, if our goal is to determine a network
-of ``whether two authors ever coauthored'', we could perform a bipartite
-projection using the boolean inner product in the feature space i.e.~the
-``authors'' projection. It is this second projection, for determining a
-structure between features embedded into the dual ``observation'' space,
-that we are primarily concerned with in this work, since it is the view
-that most closely resembles the concept of covariance or correlation
-between independent variables (features) in statistics more generally.
+To illustrate this formalism in a relevant domain, let's take another
+classic network example from academia: co-citation networks. {[}DRAW
+BIPARTITE{]} Lists of co-authors on publications is often reported as
+``network'' data, and subjected to network analysis techniques. For
+\(m\) papers we might be aware of a total of \(n\) authors. For a given
+paper, we are able to see which authors are involved, and we say those
+authors ``activated'' for that paper. It makes sense that our
+observations are individual papers, while the features might be the set
+of possible authors. However, we are not given information about which
+author was invited by which other one, or when each author signed on. In
+other words, the measured values are strictly boolean, and we can
+structure our dataset as a design matrix \(X:\mathbb{B}^{m\times n}\).
+We can then think of the \(i^{\mathrm{th}}\) paper as being represented
+by a vector \(\mathbf{x}_i:\mathbb{B}^n\), and proceed using it in our
+various statistical models. If we desired to analyze the set of authors,
+say, in order to determine their relative neighborhoods or latent author
+communities, we could equally use the feature vectors for each paper,
+this time represented in a vector
+\(\mathbf{x}^*_j:\mathbb{B}^{1\times m}\).
 
-\subsection{Model, Data, \& Linear
-Operators}\label{model-data-linear-operators}
+\subsection{Models \& linear operators}\label{models-linear-operators}
 
-Forward model/operator maps model into data space, vs.~Adjoint
-Model/Operator maps data into model space. Inverse problems involve
-removing the effect of the operator \(A\) from the data \(y\) to recover
-the model \(x\).
+Another powerful tool an analyst has is \emph{modeling} the observation
+process. This is relevant when the observed data is hypothesized to be
+generated by a process we can represent mathematically, but we do not
+know the parameter values to best represent the observations (or the
+observations are ``noisy'' and we want to find a ``best'' parameters
+that account for this noise). This is applicable to much of scientific
+inquiry, though one common use-case is the de-blurring of observed
+images (or de-noising of signals), since we might have a model for how
+blurring ``operated'' on the original image to give us the blurred one.
+We call this ``blurring'' a \emph{linear operator} if it can be
+represented as a matrix\footnote{in the finite-dimensional case}, and
+applying it to a model with \(l\) parameters is called the \emph{forward
+map}:
+\[\mathbf{x} = F\mathbf{p}\qquad F:\mathbb{R}^{l}\rightarrow \mathbb{R}^n\]
+where \(P\) is the space of possible parameter vectors, i.e.~the
+\emph{model space}. The forward map takes a modeled vector and predicts
+a location in data space.
 
-\subsection{Measurement Quantification \&
-Error}\label{measurement-quantification-error}
+Of critical importance, then, is our ability to recover some model
+parameters from our observed data. If \(F\) is invertible, the most
+direct solution might be to apply the operator to the data, as the
+\emph{adjoint map}:
+\[ \mathbf{p} = F^H\mathbf{x}\qquad F^H:\mathbb{R}^{n}\rightarrow \mathbb{R}^l\]
+which removes the effect of \(F\) from the data \(\mathbf{x}\) to
+recover the desired model \(\mathbf{p}\).
+
+Trivially we might have an orthogonal matrix \(F\), so \(F^H=F^{-1}\) is
+available directly. In practice, other approaches are used to minimize
+the \emph{residual}:
+\(\mathbf{p}^*=\min_{\mathbf{p}} F\mathbf{p}-\mathbf{x}\)
+
+\subsection{Measurement quantification \&
+error}\label{measurement-quantification-error}
 
 \begin{itemize}
 \tightlist
@@ -454,7 +500,7 @@ actually means\ldots{}
 
 \section{What does ``relation'' mean?}\label{what-does-relation-mean}
 
-\subsection{Incidence \& Dependency}\label{incidence-dependency}
+\subsection{Incidence \& dependency}\label{incidence-dependency}
 
 foundational model of graph theory and incidence structures more
 broadly. More to come, but get the terminology down.
@@ -462,8 +508,22 @@ broadly. More to come, but get the terminology down.
 Spring example, road example, etc. Discuss Complex Systems and their
 representation.
 
-\subsection{Proximities, Distances, \&
-Kernels}\label{proximities-distances-kernels}
+\subsection{Proximities, distances, \&
+kernels}\label{proximities-distances-kernels}
+
+Importantly for the use of linear algebra, these values assigned for
+each feature are assumed to exist in a field (or, more generally, a
+semiring) \(R\), equipped with operators analogous to addition
+(\(\oplus\)) and multiplication (\(\otimes\)) that allow for values to
+be aggregated through an inner product. The matrix of all pairs of
+inner-products found by matrix multiplication (contracting over the
+feature space) is given by:
+
+\[G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} \]
+
+such that real-valued entries and a traditional ``plus-times'' inner
+product recovers the Gram matrix \(G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}\),
+or simply \(G=X^TX\).
 
 How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
 
@@ -474,7 +534,21 @@ features/operators.
 
 Example with doc-term matrices
 
-\subsection{Ambiguity or Causality}\label{ambiguity-or-causality}
+The inner product between two papers will yield a ``true'' only if two
+papers share at least one author in common. This is called a
+\emph{bipartite projection}{[}CITE{]}, specifically the ``papers''
+projection.
+
+Similarly, if our goal is to determine a network of ``whether two
+authors ever coauthored'', we could perform a bipartite projection using
+the boolean inner product in the observation space i.e.~the ``authors''
+projection. It is this second projection, for determining a structure
+between features embedded into the ``observation'' space, that we are
+primarily concerned with in this work, since it is the view that most
+closely resembles the concept of covariance or correlation between
+independent variables (features) in statistics more generally.
+
+\subsection{Ambiguity or causality}\label{ambiguity-or-causality}
 
 Usually dependencies are taken as causing or enabling proximity. E.g.
 shortest paths, vs.~edges.
@@ -483,7 +557,12 @@ The approach taken by researchers/investigators\ldots do they assume a
 level of interchangeability between the two kinds of ``relation''? Do
 they define Or do they
 
-\part{Incidence Structures as Inner Product Spaces}
+\part{A Practitioner's Guide to Network Recovery}
+
+\chapter{Incidence in Vector Space}\label{incidence-in-vector-space}
+
+From \autocite{WhyHowWhen_Torres2021}, and linalg book, and hypergraph
+incidence model
 
 For each, describe the meaning of
 
@@ -499,12 +578,6 @@ For each, describe the meaning of
 \item
   Induced Norms
 \end{enumerate}
-
-\chapter{Background: Observing
-Incidences}\label{background-observing-incidences}
-
-From \autocite{WhyHowWhen_Torres2021}, and linalg book, and hypergraph
-incidence model
 
 \section{Graphs}\label{graphs}
 
@@ -571,8 +644,8 @@ co-occurrences.
 
 Leads to correlation/covariance, etc.
 
-\chapter{Projection between Complex System
-Representations}\label{projection-between-complex-system-representations}
+\chapter{Projections and Structure
+Maps}\label{projections-and-structure-maps}
 
 I.e. trying to ``recover'' one from the other. In a way, expounds on the
 precautions described in \textcite{WhyHowWhen_Torres2021}.
@@ -610,8 +683,8 @@ I.e. GLasso.
 This is defetinitely the problem we want to solve, but is not estimating
 uncertainty (barring cross-validation-style bootstrapping)
 
-\chapter{Practitioner's Guide to Graph Recovery
-Methods}\label{practitioners-guide-to-graph-recovery-methods}
+\chapter{Choosing a structure recovery
+method}\label{choosing-a-structure-recovery-method}
 
 \begin{quote}
 Takeaway: a way to organize existing algorithms, AND highlight unique

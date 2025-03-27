@@ -12,11 +12,13 @@ book:
   chapters:
     - index.qmd
     - 0-intro.qmd
-    - part: 1-00-structures-spaces.qmd
+    # - part: 1-00-structures-spaces.qmd
+    - part: "A Practitioner's Guide to Network Recovery"
       chapters:
-        - 1-01-graph-obs.qmd
-        - 1-02-projection.qmd
-        - 1-03-inverse.qmd
+        - 1-01-matrix-meas.qmd
+        - 1-02-graph-obs.qmd
+        - 1-03-recovery-road.qmd
+        # - 1-03-inverse.qmd
     - part: 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
         - 2-01-rand-sf.qmd
@@ -56,7 +58,7 @@ format:
     linkcolor: maroon
     # fontsize: 0.9rem
     linestretch: 1.35
-    # max-width: 750px
+    max-width: 750px
     page-layout: full
     toc-location: right
     toc-title: "Contents"
