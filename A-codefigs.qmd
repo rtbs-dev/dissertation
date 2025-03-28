@@ -1,38 +1,76 @@
 ---
-title: "Source for figures"
-jupyter: "mendr"
+title: Source for figures
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python (Pixi)
+    language: python
+    name: pixi-kernel-python3
 ---
 
 ```{python}
 # IMPORTS
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
 import networkx as nx
+import netgraph as ng
+matplotlib.rcParams['font.family']=['serif']
+matplotlib.rcParams['font.serif']=['Bitstream Charter']
+# fm = matplotlib.font_manager
+# sorted(fm.get_font_names())
 ```
+
 ```{python}
 # DEFAULT STYLES
-
-options = {
-    "node_size": 500, 
-    "node_color": "xkcd:slate",
-    "edge_color": "xkcd:slate",
-    "edgecolors": "white",
-    "font_color": "white",
-    "linewidths": 2,
+my_orange="#e7c38a"
+my_green ="#8dcba0"
+my_red   ="#fc628e"
+my_blue  ="#abd7e6"
+nxdraw_kws = {
+    #"node_size": 500, 
+    # "node_color": "xkcd:slate",
+    "edge_color": "0.4",
+    # "edgecolors": "white",
+    "edgecolors": "0.3",
+    # "font_color": "white",
+    "font_color": "0.3",
+    "font_family":"Bitstream Charter",
+    "font_weight":'bold',
+    "font_size": 8,
+    "linewidths": 1,
     "width": 2,
 }
+
+grphvz_kws = "-Goverlap=false"
 ```
 
 ```{python}
 #| label: fig-karate-club
-#| fig-cap: "Zachary's Karate Club, with ambiguously extant edge 78 highlighted."
+#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
+#| editable: true
+#| slideshow: {slide_type: ''}
 kcg = nx.karate_club_graph()
-kcg_layout = nx.spring_layout(kcg,k=1.5, seed=2, iterations=200)
+kcg_layout = nx.spring_layout(kcg,k=1.1, seed=2, iterations=200)
+kcg_cmap={
+    'Mr. Hi':my_orange,
+    'Officer':my_blue,
+    
+}
+# kcg_layout = nx.nx_agraph.pygraphviz_layout(kcg, args=grphvz_kws)
+#kcg_layout = nx.kamada_kawai_layout(kcg)
+#kcg_layout = nx.arf_layout(kcg,pos=kcg_layout,a=1.8, seed=2, scaling=2)
 nx.draw_networkx(
     kcg,
+    node_color=[kcg_cmap[i['club']] for i in kcg.nodes.values()],
     pos=kcg_layout,
     labels=dict(zip(range(34), range(1,35))),
-    **options
+    **nxdraw_kws
 )
 nx.draw_networkx_edges(kcg, kcg_layout, edgelist={(33,22)}, edge_color='red')
 ax = plt.gca()
@@ -40,3 +78,9 @@ ax.margins(0.05)
 plt.axis('off')
 plt.show()
 ```
+
+```{python}
+#| label: fig-bipartite
+#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
+```
+
