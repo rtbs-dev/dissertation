@@ -19,7 +19,6 @@ _We do not know if any of these are true_.
 In fact, do to ambiguous reporting in the original work, we do not know if the network being described from the original edge data even has 77 or 78 edges.
 Lacking a precise definition of what the graph's components (i.e. it's edges) are, _as measurable entities_, means we cannot estimate the measurement error in the graph.  
 
-
 {{< embed A-codefigs.qmd#fig-karate-club >}}
 
 To begin adressing these issues, this introductory section returns to foundational statistical measurment concepts and terminology, while clarifying each concepts potential relationships to the problems of network structure metrology.  

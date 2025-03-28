@@ -13,9 +13,12 @@ import networkx as nx
 # DEFAULT STYLES
 
 options = {
-    "node_color": "white",
-    "edgecolors": "black",
-    "linewidths": 3,
+    "node_size": 500, 
+    "node_color": "xkcd:slate",
+    "edge_color": "xkcd:slate",
+    "edgecolors": "white",
+    "font_color": "white",
+    "linewidths": 2,
     "width": 2,
 }
 ```
@@ -23,14 +26,17 @@ options = {
 ```{python}
 #| label: fig-karate-club
 #| fig-cap: "Zachary's Karate Club, with ambiguously extant edge 78 highlighted."
-#| fig-cap-location: margin
-#plt.plot(np.arange(10),np.arange(10)**2)
-plt.figure(figsize=(8,5))
 kcg = nx.karate_club_graph()
-kcg_layout = nx.spring_layout(kcg, seed=2)
-nx.draw_networkx(kcg, pos=kcg_layout, **options)
+kcg_layout = nx.spring_layout(kcg,k=1.5, seed=2, iterations=200)
+nx.draw_networkx(
+    kcg,
+    pos=kcg_layout,
+    labels=dict(zip(range(34), range(1,35))),
+    **options
+)
+nx.draw_networkx_edges(kcg, kcg_layout, edgelist={(33,22)}, edge_color='red')
 ax = plt.gca()
-ax.margins(0.20)
+ax.margins(0.05)
 plt.axis('off')
 plt.show()
 ```
