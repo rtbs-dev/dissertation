@@ -93,6 +93,26 @@ Ultimately we are not great at specifying what "being related" actually means...
 foundational model of graph theory and incidence structures more broadly.
 More to come, but get the terminology down.
 
+::::{#fig-incidence-struct layout_ncol=2}
+
+::: {#fig-biadj-mat}
+$$
+X(\{1,2,3\})=
+\begin{pmatrix}
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0&0&1&0&1&1&1&0&0&0 \\
+0&1&0&1&0&1&0&0&1&0 
+\end{pmatrix}
+$$
+:::
+
+{{< embed A-codefigs.qmd#fig-bipartite >}}
+
+
+::::
+
+
+
 Spring example, road example, etc.
 Discuss Complex Systems and their representation. 
 

@@ -40,6 +40,15 @@ book:
     collapse-level: 1
 bibliography: pubs.bib  
 csl: ieee.csl
+# filters:
+#   - diagram
+# diagram:
+#   engine:
+#     tikz:
+#       execpath: "~/.TinyTeX/bin/x86_64-linux/pdflatex"
+#       header-includes:
+#         - '\usepackage{tikz-network}'
+#         - '\usetikzlibrary{arrows, shapes}'
 format:
   umd-thesis-pdf:
     keep-tex: true  

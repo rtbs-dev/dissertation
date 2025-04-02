@@ -22,8 +22,18 @@ import networkx as nx
 import netgraph as ng
 matplotlib.rcParams['font.family']=['serif']
 matplotlib.rcParams['font.serif']=['Bitstream Charter']
+
+%config InlineBackend.figure_formats = ['svg']
+# %load_ext jupyter_tikz
 # fm = matplotlib.font_manager
 # sorted(fm.get_font_names())
+```
+
+```{python}
+# preamble = r"""
+# \usepackage{tikz}
+# \usepackage{tikz-network}
+# """
 ```
 
 ```{python}
@@ -37,7 +47,7 @@ nxdraw_kws = {
     # "node_color": "xkcd:slate",
     "edge_color": "0.4",
     # "edgecolors": "white",
-    "edgecolors": "0.3",
+    "edgecolors": "0.4",
     # "font_color": "white",
     "font_color": "0.3",
     "font_family":"Bitstream Charter",
@@ -48,6 +58,11 @@ nxdraw_kws = {
 }
 
 grphvz_kws = "-Goverlap=false"
+
+def node_attr_arr(G, attr):
+    return [G.nodes[node][attr] for node in list(G.nodes())]
+def node_attr_map(G, attr):
+    return {node:G.nodes[node][attr] for node in list(G.nodes())}
 ```
 
 ```{python}
@@ -60,11 +75,11 @@ kcg_layout = nx.spring_layout(kcg,k=1.1, seed=2, iterations=200)
 kcg_cmap={
     'Mr. Hi':my_orange,
     'Officer':my_blue,
-    
 }
 # kcg_layout = nx.nx_agraph.pygraphviz_layout(kcg, args=grphvz_kws)
 #kcg_layout = nx.kamada_kawai_layout(kcg)
 #kcg_layout = nx.arf_layout(kcg,pos=kcg_layout,a=1.8, seed=2, scaling=2)
+# plt.figure(figsize=(6,4))
 nx.draw_networkx(
     kcg,
     node_color=[kcg_cmap[i['club']] for i in kcg.nodes.values()],
@@ -80,7 +95,88 @@ plt.show()
 ```
 
 ```{python}
-#| label: fig-bipartite
-#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
+# matplotlib.rcParams
 ```
 
+```{python}
+#| label: fig-bipartite
+#| editable: true
+#| slideshow: {slide_type: ''}
+# Bipartite representation of node "activation" data
+B = nx.Graph()
+
+x1s = 'CEGH'
+x2s = 'AEFH'
+x3s = 'BFIJ'
+# Add nodes with the node attribute "bipartite"
+
+B.add_nodes_from([
+    ('$x_1$',{'color':my_orange, 'pos':(-1,0), 'bipartite':0}), 
+    ('$x_2$',{'color':my_green, 'pos':(0,0), 'bipartite':0}),
+    ('$x_3$',{'color':my_red, 'pos':(1,0), 'bipartite':0})
+], bipartite=0)
+
+B.add_nodes_from([(a, {'bipartite':1, 'color':my_blue,'pos':(0.5*(i-4.5),1)}) for i,a in enumerate('ABCDEFGHIJ')])
+
+# Add edges only between nodes of opposite node sets
+
+B.add_edges_from(
+    [('$x_1$',n) for n in x1s] +\
+    [('$x_2$',n) for n in x2s] +\
+    [('$x_3$',n) for n in x3s]
+)
+
+# bp_pos = nx.layout.bipartite_layout(B, ['x1', 'x2', 'x3'], aspect_ratio=0.1)
+plt.figure(figsize=(4,3))
+nx.draw_networkx(
+    B, pos=node_attr_map(B,'pos'),
+    node_color = node_attr_arr(B,'color'),
+    **nxdraw_kws
+)
+ax = plt.gca()
+ax.set_aspect('equal')
+ax.margins(x=0,y=0.2)
+# ax.set_clip_on('off')
+plt.axis('off');
+
+
+# plt.tight_layout()
+```
+
+```{python}
+nx.bipartite.biadjacency_matrix(B, ['$x_1$', '$x_2$', '$x_3$']).todense()
+```
+
+$$
+X(\{1,2,3\})=
+\begin{pmatrix}
+1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+0&0&1&0&1&1&1&0&0&0 \\
+0&1&0&1&0&1&0&0&1&0 
+\end{pmatrix}
+$$
+
+```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
+# %%tikz -tp="$QUARTO_PDFLATEX" -t="tikz-network"
+# \begin{tikzpicture}
+# \Vertex[x=0.5,label=$x_1$]{x1}
+# \Vertex[x=2.5,label=$x_2$]{x2}
+# \Vertex[y=1,IdAsLabel]{03}
+# \Vertex[y=1,x=-1,IdAsLabel]{07}
+# \Vertex[y=1,IdAsLabel]{08}
+# \Vertex[y=1,x=1,IdAsLabel]{05}
+# \Vertex[y=1,x=2,IdAsLabel]{06}
+# \Vertex[y=1,x=3,IdAsLabel]{01}
+
+# \Edge(x1)(03)
+# \Edge(x1)(07)
+# \Edge(x1)(05)
+# \Edge(x1)(08)
+# \Edge(x2)(08)
+# \Edge(x2)(05)
+# \Edge(x2)(01)
+# \Edge(x2)(06)
+# \end{tikzpicture}
+```
