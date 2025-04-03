@@ -1,5 +1,7 @@
 ---
 title: Source for figures
+execute:
+  cache: true
 jupyter:
   jupytext:
     text_representation:
@@ -19,7 +21,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 import networkx as nx
-import netgraph as ng
+# import netgraph as ng
+from network2tikz import plot
+from jupyter_tikz import TexFragment, TexDocument
+
 matplotlib.rcParams['font.family']=['serif']
 matplotlib.rcParams['font.serif']=['Bitstream Charter']
 
@@ -34,6 +39,9 @@ matplotlib.rcParams['font.serif']=['Bitstream Charter']
 # \usepackage{tikz}
 # \usepackage{tikz-network}
 # """
+
+import os
+tex = os.getenv('QUARTO_PDFLATEX')
 ```
 
 ```{python}
@@ -45,7 +53,7 @@ my_blue  ="#abd7e6"
 nxdraw_kws = {
     #"node_size": 500, 
     # "node_color": "xkcd:slate",
-    "edge_color": "0.4",
+    # "edge_color": "0.4",
     # "edgecolors": "white",
     "edgecolors": "0.4",
     # "font_color": "white",
@@ -61,33 +69,53 @@ grphvz_kws = "-Goverlap=false"
 
 def node_attr_arr(G, attr):
     return [G.nodes[node][attr] for node in list(G.nodes())]
+def edge_attr_arr(G, attr):
+    return [G.edges[edge][attr] for edge in list(G.edges())]
+
 def node_attr_map(G, attr):
     return {node:G.nodes[node][attr] for node in list(G.nodes())}
+
+def run_tikz(G): 
+    return TexFragment(
+        nx.to_latex_raw(kcg),
+        tex_packages="tikz-network",
+        scale=2,
+    ).run_latex(tex_program=tex)
 ```
 
 ```{python}
-#| label: fig-karate-club
-#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
 #| editable: true
 #| slideshow: {slide_type: ''}
+
 kcg = nx.karate_club_graph()
 kcg_layout = nx.spring_layout(kcg,k=1.1, seed=2, iterations=200)
 kcg_cmap={
-    'Mr. Hi':my_orange,
-    'Officer':my_blue,
+    'Mr. Hi':np.array(matplotlib.colors.to_rgb(my_orange)),
+    'Officer':np.array(matplotlib.colors.to_rgb(my_blue)),
 }
+kcg.add_nodes_from([(
+    i,{
+        "label": n+1,
+        'pos': 5*kcg_layout[i],
+        # 'node_options':{} 
+    }
+) for n,i in enumerate(kcg.nodes())])
+kcg.add_edges_from(kcg.edges.keys(), color='gray')
+kcg.add_edge(33,22,color='red')
+# kcg.add_nodes_from([(
 # kcg_layout = nx.nx_agraph.pygraphviz_layout(kcg, args=grphvz_kws)
 #kcg_layout = nx.kamada_kawai_layout(kcg)
 #kcg_layout = nx.arf_layout(kcg,pos=kcg_layout,a=1.8, seed=2, scaling=2)
 # plt.figure(figsize=(6,4))
 nx.draw_networkx(
     kcg,
-    node_color=[kcg_cmap[i['club']] for i in kcg.nodes.values()],
+    node_color=[kcg_cmap[i] for i in node_attr_arr(kcg,'club')],
     pos=kcg_layout,
     labels=dict(zip(range(34), range(1,35))),
+    edge_color=edge_attr_arr(kcg, 'color'),
     **nxdraw_kws
 )
-nx.draw_networkx_edges(kcg, kcg_layout, edgelist={(33,22)}, edge_color='red')
+# nx.draw_networkx_edges(kcg, kcg_layout, edgelist={(33,22)}, edge_color='red')
 ax = plt.gca()
 ax.margins(0.05)
 plt.axis('off')
@@ -95,7 +123,43 @@ plt.show()
 ```
 
 ```{python}
-# matplotlib.rcParams
+[tuple(np.round(kcg_cmap[c]*256,0).tolist()) for c in node_attr_arr(kcg,'club')]
+```
+
+```{python}
+#| label: fig-karate-club
+#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
+
+# TexFragment(nx.to_latex_raw(kcg)).run_latex(tex_program='$QUARTO_PDFLATEX')
+# run_tikz(kcg)
+plot(
+    kcg, 'codefigs/kcg.tex',  
+    layout=kcg_layout,
+    # layout='FR',
+    node_label=dict(zip(range(34), range(1,35))),
+    type='tex',
+    canvas=(8,8),
+    standalone=False,
+    node_size=0.4,
+    # seed=23,
+    node_color=[tuple(np.round(kcg_cmap[c]*256,0).tolist()) for c in node_attr_arr(kcg,'club')],
+    edge_color=edge_attr_arr(kcg, 'color'),
+
+)
+with open('codefigs/kcg.tex') as f: 
+    # print()
+    # print(f.read())
+    fig =TexFragment(
+        f.read(),
+        preamble=r"""
+        \usepackage[otfmath]{XCharter}
+        \usepackage{tikz-network}
+        """,
+        # tex_packages="tikz-network",
+        # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
+        scale=2,
+    ).run_latex(tex_program='$QUARTO_PDFLATEX')
+fig
 ```
 
 ```{python}
@@ -157,26 +221,44 @@ X(\{1,2,3\})=
 $$
 
 ```{python}
+#| label: fig-tikz-test
 #| editable: true
 #| slideshow: {slide_type: ''}
-# %%tikz -tp="$QUARTO_PDFLATEX" -t="tikz-network"
-# \begin{tikzpicture}
-# \Vertex[x=0.5,label=$x_1$]{x1}
-# \Vertex[x=2.5,label=$x_2$]{x2}
-# \Vertex[y=1,IdAsLabel]{03}
-# \Vertex[y=1,x=-1,IdAsLabel]{07}
-# \Vertex[y=1,IdAsLabel]{08}
-# \Vertex[y=1,x=1,IdAsLabel]{05}
-# \Vertex[y=1,x=2,IdAsLabel]{06}
-# \Vertex[y=1,x=3,IdAsLabel]{01}
+from jupyter_tikz import TexFragment, TexDocument
 
-# \Edge(x1)(03)
-# \Edge(x1)(07)
-# \Edge(x1)(05)
-# \Edge(x1)(08)
-# \Edge(x2)(08)
-# \Edge(x2)(05)
-# \Edge(x2)(01)
-# \Edge(x2)(06)
-# \end{tikzpicture}
+# The code
+tex_template_code = r"""
+\begin{tikzpicture}
+\Vertex[x=0.5,label=$x_1$]{x1}
+\Vertex[x=2.5,label=$x_2$]{x2}
+\Vertex[y=1,IdAsLabel]{03}
+\Vertex[y=1,x=-1,IdAsLabel]{07}
+\Vertex[y=1,IdAsLabel]{08}
+\Vertex[y=1,x=1,IdAsLabel]{05}
+\Vertex[y=1,x=2,IdAsLabel]{06}
+\Vertex[y=1,x=3,IdAsLabel]{01}
+
+\Edge(x1)(03)
+\Edge(x1)(07)
+\Edge(x1)(05)
+\Edge(x1)(08)
+\Edge(x2)(08)
+\Edge(x2)(05)
+\Edge(x2)(01)
+\Edge(x2)(06)
+\end{tikzpicture}
+"""
+
+# The tikz object
+tikz_picture = TexFragment(
+    tex_template_code,
+    tex_packages="tikz-network",
+    # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
+    scale=1.8,
+    # tex_packages="pgfplots",
+    # no_tikz=True,
+)
+
+# Run LaTeX
+tikz_picture.run_latex(tex_program='$QUARTO_PDFLATEX')
 ```

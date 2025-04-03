@@ -4,6 +4,7 @@ A wide variety of fields show consistent interest in inferring latent network st
 However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. 
 This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[@Statisticalinferencelinks_Peel2022], treatment of error as purely aleatory, rather than epistemic [@Measurementerrornetwork_Wang2012], or simply ignoring measurement error in network reconstruction entirely[@ReconstructingNetworksUnknown_Peixoto2018].
 
+## Ambiguous Metrology
 Networks in the "wild" rarely exist of and by themsleves. 
 Rather, they are a model of interaction or relation _between_ things that were observed.
 One of the most beloved examples of a network, the famed _Zachary's Karate Club_[CITE], is in fact reported as a list of pairwise interactions: every time a club member interacted with another (outside of the club), Zachary recorded it as two integers (the IDs of the members).
@@ -15,11 +16,36 @@ If that relational asymmetry is available, our "edges" are now _directed_, and w
 Additionally, the time span is assumed to be "for the duration of observation" (did the students _ever_ interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split.
 This is now a "dynamic" graph; or, if we only measure relative to the time of separation, at the very least a "weighted" one.  
 
+{{< embed A-codefigs.qmd#fig-karate-club >}}
+
+
 _We do not know if any of these are true_.
-In fact, do to ambiguous reporting in the original work, we do not know if the network being described from the original edge data even has 77 or 78 edges.
+In fact, as illustrated in [@fig-karate-club],  we do not know if the network being described from the original edge data even has 77 or 78 edges, due to ambiguous reporting in the original work.
 Lacking a precise definition of what the graph's components (i.e. it's edges) are, _as measurable entities_, means we cannot estimate the measurement error in the graph.  
 
-{{< embed A-codefigs.qmd#fig-karate-club >}}
+
+## Indirect Network Measurement
+
+While the karate club graph has unquantified edge uncertainty derived from ambiguous edge measurements, we are fortunate that we _have edge measurements_.
+Regardless of how the data was collected, it is de facto reported as a list of pairs.
+In many cases, we simply do not have such luxury.
+Instead, our edges are only measured _indirectly_, and instead we are left with lists of node co-ocurrences.
+Networks connecting movies as being "similar" might be derived from data that lists sets of movies watched by each user;
+networks of disease spread pathways might be implied from patient infection records;
+famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together. 
+
+[document graphic]
+
+Such networks are derived from what we will call _node activation_ data, i.e., records of what entities happened "together", whether contemporaneously, or in some other context or artifact.
+These are naturally represented as "bipartite" networks, having separate entites for, say, "papers" and "authors", and connecting them with edges as needed.
+But analysts are typically seeking the collaboration network connecting authors, something not so directly observed, but which _if recovered_ can provide estimates for community structure, importance of individual authors as controling information flows, and the "distances" that separate authors from each other, in their respective domains. [CITE Newman]
+
+blah
+
+
+## Scope of this work 
+
+rewrite
 
 To begin adressing these issues, this introductory section returns to foundational statistical measurment concepts and terminology, while clarifying each concepts potential relationships to the problems of network structure metrology.  
 First, what "measurement" means in this context, and specifically the ways we encode observations, operations, and uncertainties numerically.
