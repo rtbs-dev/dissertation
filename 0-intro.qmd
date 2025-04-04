@@ -35,12 +35,15 @@ networks of disease spread pathways might be implied from patient infection reco
 famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together. 
 
 [document graphic]
+{{< embed A-codefigs.qmd#fig-collab  >}}
 
 Such networks are derived from what we will call _node activation_ data, i.e., records of what entities happened "together", whether contemporaneously, or in some other context or artifact.
 These are naturally represented as "bipartite" networks, having separate entites for, say, "papers" and "authors", and connecting them with edges as needed.
 But analysts are typically seeking the collaboration network connecting authors, something not so directly observed, but which _if recovered_ can provide estimates for community structure, importance of individual authors as controling information flows, and the "distances" that separate authors from each other, in their respective domains. [CITE Newman]
 
 blah
+
+{{< embed A-codefigs.qmd#fig-colleague  >}}
 
 
 ## Scope of this work 

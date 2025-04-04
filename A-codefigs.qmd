@@ -24,6 +24,8 @@ import networkx as nx
 # import netgraph as ng
 from network2tikz import plot
 from jupyter_tikz import TexFragment, TexDocument
+from numpyarray_to_latex import to_ltx as np2tex
+import pandas as pd
 
 matplotlib.rcParams['font.family']=['serif']
 matplotlib.rcParams['font.serif']=['Bitstream Charter']
@@ -46,10 +48,12 @@ tex = os.getenv('QUARTO_PDFLATEX')
 
 ```{python}
 # DEFAULT STYLES
-my_orange="#e7c38a"
-my_green ="#8dcba0"
-my_red   ="#fc628e"
-my_blue  ="#abd7e6"
+my_orange=(231., 195., 138.)  # "#e7c38a"
+my_green =(141., 203., 160.)  # "#8dcba0"
+my_red   =(252.,  98., 142.)  # "#fc628e"
+my_blue  =(171., 215., 230.)  # "#abd7e6"
+my_grey = (200,200,200)
+
 nxdraw_kws = {
     #"node_size": 500, 
     # "node_color": "xkcd:slate",
@@ -65,6 +69,20 @@ nxdraw_kws = {
     "width": 2,
 }
 
+tikz_kws =  dict(
+    canvas=(8,8),
+    standalone=False,
+    node_size=0.4,
+)
+tex_kws = dict(
+    preamble=r"""
+    \usepackage[otfmath]{XCharter}
+    \usepackage{tikz-network}
+    """,
+    # tex_packages="tikz-network",
+    # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
+    scale=2,
+)
 grphvz_kws = "-Goverlap=false"
 
 def node_attr_arr(G, attr):
@@ -89,8 +107,8 @@ def run_tikz(G):
 kcg = nx.karate_club_graph()
 kcg_layout = nx.spring_layout(kcg,k=1.1, seed=2, iterations=200)
 kcg_cmap={
-    'Mr. Hi':np.array(matplotlib.colors.to_rgb(my_orange)),
-    'Officer':np.array(matplotlib.colors.to_rgb(my_blue)),
+    'Mr. Hi':my_orange,
+    'Officer':my_blue,
 }
 kcg.add_nodes_from([(
     i,{
@@ -108,7 +126,7 @@ kcg.add_edge(33,22,color='red')
 # plt.figure(figsize=(6,4))
 nx.draw_networkx(
     kcg,
-    node_color=[kcg_cmap[i] for i in node_attr_arr(kcg,'club')],
+    node_color=[np.array(kcg_cmap[i])/255 for i in node_attr_arr(kcg,'club')],
     pos=kcg_layout,
     labels=dict(zip(range(34), range(1,35))),
     edge_color=edge_attr_arr(kcg, 'color'),
@@ -122,82 +140,94 @@ plt.show()
 ```
 
 ```{python}
-!echo $QUARTO_PDFLATEX
-```
-
-```{python}
 # TexFragment(nx.to_latex_raw(kcg)).run_latex(tex_program='$QUARTO_PDFLATEX')
 # run_tikz(kcg)
-plot(
-    kcg, 'codefigs/kcg.tex',  
-    layout=kcg_layout,
-    # layout='FR',
-    node_label=dict(zip(range(34), range(1,35))),
-    canvas=(8,8),
-    standalone=False,
-    node_size=0.4,
-    # seed=23,
-    node_color=[tuple(np.round(kcg_cmap[c]*256,0).tolist()) for c in node_attr_arr(kcg,'club')],
-    edge_color=edge_attr_arr(kcg, 'color'),
-
-)
 ```
 
 ```{python}
 #| label: fig-karate-club
 #| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
 
+plot(
+    kcg, 'codefigs/kcg.tex',  
+    layout=kcg_layout,
+    # layout='FR',
+    node_label=dict(zip(range(34), range(1,35))),
+    node_color=[kcg_cmap[c] for c in node_attr_arr(kcg,'club')],
+    edge_color=edge_attr_arr(kcg, 'color'),
+    # seed=23,
+    **tikz_kws
+)
+
 with open('codefigs/kcg.tex') as f: 
-    # print()
     # print(f.read())
     fig =TexFragment(
         f.read(),
-        preamble=r"""
-        \usepackage[otfmath]{XCharter}
-        \usepackage{tikz-network}
-        """,
-        # tex_packages="tikz-network",
-        # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
-        scale=2,
-    ).run_latex(tex_program='$QUARTO_PDFLATEX')
+        **tex_kws
+    ).run_latex(tex_program=tex)
 fig
 ```
 
 ```{python}
-#| label: fig-bipartite
+base_data = pd.read_csv('codefigs/resources/vertices_.csv', index_col=0)
+```
+
+```{python}
+#| label: fig-colleague
+
+base_network = r"""
+\begin{tikzpicture}[scale=1.1]
+    \Vertices[layer=1, size=0.4, RGB]{codefigs/resources/vertices_.csv}
+    \Edges{codefigs/resources/edges.csv}
+\end{tikzpicture}
+"""
+
+TexFragment(
+    base_network,
+    **tex_kws
+).run_latex(tex_program=tex)
+```
+
+```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
+# fig-bipartite
 # Bipartite representation of node "activation" data
 B = nx.Graph()
 
 x1s = 'CEGH'
-x2s = 'AEFH'
+x2s = 'AEF'
 x3s = 'BFIJ'
+x4s = 'DHE'
 # Add nodes with the node attribute "bipartite"
 
 B.add_nodes_from([
-    ('$x_1$',{'color':my_orange, 'pos':(-1,0), 'bipartite':0}), 
-    ('$x_2$',{'color':my_green, 'pos':(0,0), 'bipartite':0}),
-    ('$x_3$',{'color':my_red, 'pos':(1,0), 'bipartite':0})
+    ('x_1',{'color':my_orange, 'pos':(-1.5,0), 'bipartite':0}), 
+    ('x_2',{'color':my_green, 'pos':(-0.5,0), 'bipartite':0}),
+    ('x_3',{'color':my_red, 'pos':(0.5,0), 'bipartite':0}),
+    ('x_4',{'color':my_blue, 'pos':(1.5,0), 'bipartite':0})
 ], bipartite=0)
 
-B.add_nodes_from([(a, {'bipartite':1, 'color':my_blue,'pos':(0.5*(i-4.5),1)}) for i,a in enumerate('ABCDEFGHIJ')])
+B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(0.5*(i-4.5),1)}) for i,a in enumerate('ABCDEFGHIJ')])
 
 # Add edges only between nodes of opposite node sets
 
 B.add_edges_from(
-    [('$x_1$',n) for n in x1s] +\
-    [('$x_2$',n) for n in x2s] +\
-    [('$x_3$',n) for n in x3s]
+    [('x_1',n, dict(color=my_orange)) for n in x1s] +\
+    [('x_2',n, dict(color=my_green)) for n in x2s] +\
+    [('x_3',n, dict(color=my_red)) for n in x3s] +\
+    [('x_4',n, dict(color=my_blue)) for n in x4s]
 )
 
 # bp_pos = nx.layout.bipartite_layout(B, ['x1', 'x2', 'x3'], aspect_ratio=0.1)
 plt.figure(figsize=(4,3))
 nx.draw_networkx(
     B, pos=node_attr_map(B,'pos'),
-    node_color = node_attr_arr(B,'color'),
-    **nxdraw_kws
+    node_color = [np.array(i)/255 for i in node_attr_arr(B,'color')],
+    edge_color = [np.array(i)/255 for i in edge_attr_arr(B, 'color')],
+    **(nxdraw_kws|{'width':4.})
 )
+# nx.draw_networkx_edges(B, pos=node_attr_map(B, 'pos'))
 ax = plt.gca()
 ax.set_aspect('equal')
 ax.margins(x=0,y=0.2)
@@ -209,17 +239,101 @@ plt.axis('off');
 ```
 
 ```{python}
-nx.bipartite.biadjacency_matrix(B, ['$x_1$', '$x_2$', '$x_3$']).todense()
+biadj = nx.bipartite.biadjacency_matrix(
+    B, ['x_1', 'x_2', 'x_3', 'x_4'], column_order='ABCDEFGHIJ'
+).todense().astype(int)
+
+print(r"""$$
+X(\{1,2,3,4\})=
+"""+np2tex(biadj, latexarraytype='pmatrix', fmt='{:d}')+"\n$$")
 ```
 
 $$
-X(\{1,2,3\})=
-\begin{pmatrix}
-1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
-0&0&1&0&1&1&1&0&0&0 \\
-0&1&0&1&0&1&0&0&1&0 
+X(\{1,2,3,4\})=
+\begin{pmatrix}{}
+  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
+  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
+  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
 \end{pmatrix}
 $$
+
+```{python}
+#| label: fig-bipartite
+#| fig-cap: Bipartite representation of node "activation" data
+
+plot(
+    B, 'codefigs/bp.tex',  
+    layout=node_attr_map(B,'pos'),
+    # layout='FR',
+    node_label=list(B.nodes()),
+    node_color=node_attr_arr(B,'color'),
+    edge_color=edge_attr_arr(B, 'color'),
+    node_math_mode=True,
+    # seed=23,
+    **(tikz_kws|dict(canvas=(6,3)))
+)
+
+with open('codefigs/bp.tex') as f: 
+    # print(f.read())
+    fig =TexFragment(
+        f.read(),
+        **tex_kws
+    ).run_latex(tex_program=tex)
+fig
+```
+
+```{python}
+{k:(x,y) for k,x,y in base_data[['x','y']].itertuples()}
+```
+
+```{python}
+Bproj = nx.bipartite.collaboration_weighted_projected_graph(B, 'ABCDEFGHIJ')
+# Bproj = nx.bipartite.weighted_projected_graph(B, 'ABCDEFGHIJ')
+
+nx.draw_networkx(
+    Bproj, 
+    node_color=np.array(my_grey)/255, 
+    # pos=node_attr_map(B,'pos'),
+    pos = {k:(x,y) for k,x,y in base_data[['x','y']].itertuples()},
+    connectionstyle='arc3,rad=0.4',
+    arrows=True,
+    **(nxdraw_kws|{'width':3*np.array(edge_attr_arr(Bproj, 'weight'))}),
+)
+ax = plt.gca()
+ax.set_aspect('equal')
+ax.margins(x=0,y=0.)
+# ax.set_clip_on('off')
+plt.axis('off');
+# nx.draw_networkx_edges(
+```
+
+```{python}
+#| label: fig-collab
+plot(
+    Bproj, 'codefigs/collab.tex',  
+    # layout=node_attr_map(Bproj,'pos'),
+    layout={k:(y,x) for k,x,y in base_data[['x','y']].itertuples()},
+    node_label=list(Bproj.nodes()),
+    node_color=node_attr_arr(Bproj,'color'),
+    # edge_color=edge_attr_arr(B, 'color'),
+    node_math_mode=True,
+    edge_curved=-0.4,
+    edge_width=[3*i for i in edge_attr_arr(Bproj,'weight')],
+    # seed=23,
+    
+    # **tikz_kws
+    **(tikz_kws|dict(canvas=(6,6)))
+)
+with open('codefigs/collab.tex') as f: 
+    # print(f.read())
+    fig =TexFragment(
+        f.read(),
+        
+        **(tex_kws|dict(scale=2.1)),
+    ).run_latex(tex_program=tex)
+fig
+```
 
 ```{python}
 #| label: fig-tikz-test
@@ -263,4 +377,3 @@ tikz_picture = TexFragment(
 # Run LaTeX
 tikz_picture.run_latex(tex_program='$QUARTO_PDFLATEX')
 ```
-
