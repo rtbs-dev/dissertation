@@ -86,7 +86,6 @@ def run_tikz(G):
 ```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
-
 kcg = nx.karate_club_graph()
 kcg_layout = nx.spring_layout(kcg,k=1.1, seed=2, iterations=200)
 kcg_cmap={
@@ -123,13 +122,10 @@ plt.show()
 ```
 
 ```{python}
-[tuple(np.round(kcg_cmap[c]*256,0).tolist()) for c in node_attr_arr(kcg,'club')]
+!echo $QUARTO_PDFLATEX
 ```
 
 ```{python}
-#| label: fig-karate-club
-#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
-
 # TexFragment(nx.to_latex_raw(kcg)).run_latex(tex_program='$QUARTO_PDFLATEX')
 # run_tikz(kcg)
 plot(
@@ -137,7 +133,6 @@ plot(
     layout=kcg_layout,
     # layout='FR',
     node_label=dict(zip(range(34), range(1,35))),
-    type='tex',
     canvas=(8,8),
     standalone=False,
     node_size=0.4,
@@ -146,6 +141,12 @@ plot(
     edge_color=edge_attr_arr(kcg, 'color'),
 
 )
+```
+
+```{python}
+#| label: fig-karate-club
+#| fig-cap: Zachary's Karate Club, with ambiguously extant edge 78 highlighted.
+
 with open('codefigs/kcg.tex') as f: 
     # print()
     # print(f.read())
@@ -262,3 +263,4 @@ tikz_picture = TexFragment(
 # Run LaTeX
 tikz_picture.run_latex(tex_program='$QUARTO_PDFLATEX')
 ```
+
