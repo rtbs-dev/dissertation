@@ -70,7 +70,7 @@
 \usepackage[english]{babel}
 \usepackage[otfmath]{XCharter}
 \usepackage[strict]{csquotes}
-
+\usepackage{tikz-network}
 % Change contents title to Table of Contents
 \addto\captionsenglish{% Replace "english" with the language you use
   \renewcommand{\contentsname}%
@@ -394,21 +394,106 @@ pathways might be implied from patient infection records; famously, we
 might build a network of collaboration strength between academic authors
 by mining datasets of the papers they co-author together.
 
-{[}document graphic{]}
-
 Such networks are derived from what we will call \emph{node activation}
 data, i.e., records of what entities happened ``together'', whether
-contemporaneously, or in some other context or artifact. These are
-naturally represented as ``bipartite'' networks, having separate entites
-for, say, ``papers'' and ``authors'', and connecting them with edges as
-needed. But analysts are typically seeking the collaboration network
-connecting authors, something not so directly observed, but which
-\emph{if recovered} can provide estimates for community structure,
-importance of individual authors as controling information flows, and
-the ``distances'' that separate authors from each other, in their
-respective domains. {[}CITE Newman{]}
+contemporaneously, or in some other context or artifact.
 
-blah
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-obs-set-output-1.pdf}}
+
+}
+
+\caption{\label{fig-obs-set}}
+
+\end{figure}%
+
+These are naturally represented as ``bipartite'' networks, having
+separate entites for, say, ``papers'' and ``authors'', and connecting
+them with edges as needed. But analysts are typically seeking the
+collaboration network connecting authors, something not so directly
+observed, but which \emph{if recovered} can provide estimates for
+community structure, importance of individual authors as controling
+information flows, and the ``distances'' that separate authors from each
+other, in their respective domains. {[}CITE Newman{]} Common practice
+assumes that co-authorship in any paper is sufficient evidence of at
+least some level of social ``acquaintance''.
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-bipartite-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-bipartite}Bipartite representation of node
+``activation'' data}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-collab-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-collab}}
+
+\end{minipage}%
+
+\caption{\label{fig-collab-projection}The goal is to project STUFF}
+
+\end{figure}%
+
+Thus our social collaboration network is borne out of indirect
+measurements of ``occaisions when collaboration occurred''. However,
+let's imagine we wished to study the social network of collaboration
+more directly: if we had the luxury of being in situ as, say, a
+sociologists performing an academic ethnography, we might have been more
+strict with our definitions of ``collaboration strength''.
+
+{[}ETC{]}
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  G asks E,H,C
+\item
+  E asks A,F
+\item
+  I asks F,J; J asks B
+\item
+  D asks H; H asks E
+\end{enumerate}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-colleague-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-colleague}graph of mutual collaboration
+relationships i.e.~the ``ground truth'' social network}
+
+\end{minipage}%
+
+\end{figure}%
 
 \section{Scope of this work}\label{scope-of-this-work}
 
@@ -611,7 +696,8 @@ X(\{1,2,3\})=
 
 }
 
-\subcaption{\label{fig-bipartite}}
+\subcaption{\label{fig-bipartite}Bipartite representation of node
+``activation'' data}
 
 \centering{
 

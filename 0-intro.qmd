@@ -34,17 +34,38 @@ Networks connecting movies as being "similar" might be derived from data that li
 networks of disease spread pathways might be implied from patient infection records;
 famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together. 
 
-[document graphic]
-{{< embed A-codefigs.qmd#fig-collab  >}}
-
 Such networks are derived from what we will call _node activation_ data, i.e., records of what entities happened "together", whether contemporaneously, or in some other context or artifact.
+
+{{< embed A-codefigs.qmd#fig-obs-set >}}
+
 These are naturally represented as "bipartite" networks, having separate entites for, say, "papers" and "authors", and connecting them with edges as needed.
 But analysts are typically seeking the collaboration network connecting authors, something not so directly observed, but which _if recovered_ can provide estimates for community structure, importance of individual authors as controling information flows, and the "distances" that separate authors from each other, in their respective domains. [CITE Newman]
+Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social "acquaintance". 
 
-blah
+:::{#fig-collab-projection layout="[[1,1]]"}
 
-{{< embed A-codefigs.qmd#fig-colleague  >}}
+{{< embed A-codefigs.qmd#fig-bipartite  >}}
+{{< embed A-codefigs.qmd#fig-collab  >}}
 
+The goal is to project STUFF 
+:::
+
+Thus our social collaboration network is borne out of indirect measurements of "occaisions when collaboration occurred".
+However, let's imagine we wished to study the social network of collaboration more directly: if we had the luxury of being in situ as, say, a sociologists performing an academic ethnography, we might have been more strict with our definitions of "collaboration strength". 
+
+[ETC]
+
+
+:::: {#fig-colleague-groundtruth layout="[[1,1]]" layout-valign='center'}
+
+1. G asks E,H,C
+2. E asks A,F
+3. I asks F,J; J asks B
+4. D asks H; H asks E
+
+{{< embed A-codefigs.qmd#fig-colleague >}}
+
+::::
 
 ## Scope of this work 
 

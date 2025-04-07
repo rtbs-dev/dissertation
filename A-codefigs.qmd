@@ -37,6 +37,10 @@ matplotlib.rcParams['font.serif']=['Bitstream Charter']
 ```
 
 ```{python}
+figsize = matplotlib.rcParams['figure.figsize']
+```
+
+```{python}
 # preamble = r"""
 # \usepackage{tikz}
 # \usepackage{tikz-network}
@@ -70,7 +74,7 @@ nxdraw_kws = {
 }
 
 tikz_kws =  dict(
-    canvas=(8,8),
+    canvas=figsize,
     standalone=False,
     node_size=0.4,
 )
@@ -81,7 +85,7 @@ tex_kws = dict(
     """,
     # tex_packages="tikz-network",
     # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
-    scale=2,
+    scale=1.6,
 )
 grphvz_kws = "-Goverlap=false"
 
@@ -168,12 +172,18 @@ with open('codefigs/kcg.tex') as f:
 fig
 ```
 
+1. G asks E,H,C
+2. E asks A,F
+3. I asks F,J; J asks B
+4. D asks H; H asks E
+
 ```{python}
 base_data = pd.read_csv('codefigs/resources/vertices_.csv', index_col=0)
 ```
 
 ```{python}
 #| label: fig-colleague
+#| fig-cap: graph of mutual collaboration relationships i.e. the "ground truth" social network
 
 base_network = r"""
 \begin{tikzpicture}[scale=1.1]
@@ -189,26 +199,37 @@ TexFragment(
 ```
 
 ```{python}
+#| label: fig-obs-set
+with open('codefigs/obs-set.tex') as f: 
+    # print(f.read())
+    fig =TexFragment(
+        f.read(),
+        
+        **(tex_kws|dict(scale=1.1)),
+    ).run_latex(tex_program=tex)
+fig
+```
+
+```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
-# fig-bipartite
 # Bipartite representation of node "activation" data
 B = nx.Graph()
 
-x1s = 'CEGH'
-x2s = 'AEF'
-x3s = 'BFIJ'
+x1s = 'GCEH'
+x2s = 'FEA'
+x3s = 'IJFB'
 x4s = 'DHE'
 # Add nodes with the node attribute "bipartite"
 
 B.add_nodes_from([
-    ('x_1',{'color':my_orange, 'pos':(-1.5,0), 'bipartite':0}), 
-    ('x_2',{'color':my_green, 'pos':(-0.5,0), 'bipartite':0}),
-    ('x_3',{'color':my_red, 'pos':(0.5,0), 'bipartite':0}),
-    ('x_4',{'color':my_blue, 'pos':(1.5,0), 'bipartite':0})
+    ('x_1',{'color':my_orange, 'pos':(0,-1.5), 'bipartite':0}), 
+    ('x_2',{'color':my_green, 'pos':(0,-0.5), 'bipartite':0}),
+    ('x_3',{'color':my_red, 'pos':(0,0.5), 'bipartite':0}),
+    ('x_4',{'color':my_blue, 'pos':(0,1.5), 'bipartite':0})
 ], bipartite=0)
 
-B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(0.5*(i-4.5),1)}) for i,a in enumerate('ABCDEFGHIJ')])
+B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(1,0.5*(i-4.5))}) for i,a in enumerate('ABCDEFGHIJ')])
 
 # Add edges only between nodes of opposite node sets
 
@@ -220,7 +241,7 @@ B.add_edges_from(
 )
 
 # bp_pos = nx.layout.bipartite_layout(B, ['x1', 'x2', 'x3'], aspect_ratio=0.1)
-plt.figure(figsize=(4,3))
+plt.figure(figsize=(3,4))
 nx.draw_networkx(
     B, pos=node_attr_map(B,'pos'),
     node_color = [np.array(i)/255 for i in node_attr_arr(B,'color')],
@@ -230,7 +251,7 @@ nx.draw_networkx(
 # nx.draw_networkx_edges(B, pos=node_attr_map(B, 'pos'))
 ax = plt.gca()
 ax.set_aspect('equal')
-ax.margins(x=0,y=0.2)
+ax.margins(x=0.2,y=0)
 # ax.set_clip_on('off')
 plt.axis('off');
 
@@ -271,7 +292,8 @@ plot(
     edge_color=edge_attr_arr(B, 'color'),
     node_math_mode=True,
     # seed=23,
-    **(tikz_kws|dict(canvas=(6,3)))
+    # **tikz_kws
+    **(tikz_kws|dict(canvas=(figsize[0]/2, figsize[1])))
 )
 
 with open('codefigs/bp.tex') as f: 
@@ -284,25 +306,28 @@ fig
 ```
 
 ```{python}
-{k:(x,y) for k,x,y in base_data[['x','y']].itertuples()}
-```
+# Bproj = nx.bipartite.collaboration_weighted_projected_graph(B, 'ABCDEFGHIJ')
+Bproj = nx.bipartite.weighted_projected_graph(B, 'ABCDEFGHIJ')
 
-```{python}
-Bproj = nx.bipartite.collaboration_weighted_projected_graph(B, 'ABCDEFGHIJ')
-# Bproj = nx.bipartite.weighted_projected_graph(B, 'ABCDEFGHIJ')
+Bproj.add_edges_from([(u,v,{'bend':-.40}) if {u,v} in [
+    {'F','J'},{'F','B'},{'E','D'},{'H','C'}
+] else (u,v,{'bend':0}) for u,v in list(Bproj.edges())] )
+Bproj.edges['E','C']['bend'] = 0.4
+collab_layout = kcg_layout = nx.spring_layout(Bproj,k=1.1, seed=4, iterations=200)
 
 nx.draw_networkx(
     Bproj, 
-    node_color=np.array(my_grey)/255, 
+    node_color=np.array(my_grey)/255,
+    pos = collab_layout,
     # pos=node_attr_map(B,'pos'),
-    pos = {k:(x,y) for k,x,y in base_data[['x','y']].itertuples()},
-    connectionstyle='arc3,rad=0.4',
+    # pos = {k:(x,y) for k,x,y in base_data[['x','y']].itertuples()},
+    # connectionstyle='arc3,rad=0.4',
     arrows=True,
     **(nxdraw_kws|{'width':3*np.array(edge_attr_arr(Bproj, 'weight'))}),
 )
 ax = plt.gca()
 ax.set_aspect('equal')
-ax.margins(x=0,y=0.)
+ax.margins(x=0.1,y=0.)
 # ax.set_clip_on('off')
 plt.axis('off');
 # nx.draw_networkx_edges(
@@ -313,24 +338,25 @@ plt.axis('off');
 plot(
     Bproj, 'codefigs/collab.tex',  
     # layout=node_attr_map(Bproj,'pos'),
-    layout={k:(y,x) for k,x,y in base_data[['x','y']].itertuples()},
+    # layout={k:(y,x) for k,x,y in base_data[['x','y']].itertuples()},
+    layout = collab_layout,
     node_label=list(Bproj.nodes()),
     node_color=node_attr_arr(Bproj,'color'),
     # edge_color=edge_attr_arr(B, 'color'),
     node_math_mode=True,
-    edge_curved=-0.4,
-    edge_width=[3*i for i in edge_attr_arr(Bproj,'weight')],
+    # edge_curved=edge_attr_arr(Bproj, 'bend'),
+    edge_width=[2*i for i in edge_attr_arr(Bproj,'weight')],
     # seed=23,
     
     # **tikz_kws
-    **(tikz_kws|dict(canvas=(6,6)))
+    **(tikz_kws|dict(canvas=(figsize[0]/2, figsize[1])))
 )
 with open('codefigs/collab.tex') as f: 
     # print(f.read())
     fig =TexFragment(
         f.read(),
-        
-        **(tex_kws|dict(scale=2.1)),
+        **tex_kws
+        # **(tex_kws|dict(scale=2.1)),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -339,7 +365,7 @@ fig
 #| label: fig-tikz-test
 #| editable: true
 #| slideshow: {slide_type: ''}
-from jupyter_tikz import TexFragment, TexDocument
+# from jupyter_tikz import TexFragment, TexDocument
 
 # The code
 tex_template_code = r"""

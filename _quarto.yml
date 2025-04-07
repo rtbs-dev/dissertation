@@ -73,7 +73,7 @@ format:
     toc-title: "Contents"
     number-sections: false
     reference-location: margin
-    fig-cap-location: margin
+    # fig-cap-location: margin
     citation-location: margin
     grid:
       sidebar-width: 300px
