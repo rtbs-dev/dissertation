@@ -1,8 +1,10 @@
 /.quarto/
 /_book/
+/out/
 /site_libs/
 /.ipynb_checkpoints/
-
+/.jupyter_cache/
+*_files
 # pixi environments
 .pixi
 *.egg-info
