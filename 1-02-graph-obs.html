@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.13">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Graphs from Relation Observations – Measuring Network Dependencies from Node Activations</title>
+<title>Incidence in Vector Space – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -30,18 +50,17 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./1-02-hyper-cooc.html" rel="next">
-<link href="./1-00-structures-spaces.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js" type="module"></script>
-<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<link href="./1-03-recovery-road.html" rel="next">
+<link href="./1-01-matrix-meas.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-66ab7fd5e73b7f0a764e0d49b3e29ab1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-965f0cfc8094ffa94b7cdf40751b3a22.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-ce24ca7680242d7c2d49e74b32eebbab.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -73,7 +92,7 @@ ul.task-list li input[type="checkbox"] {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -82,7 +101,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-00-structures-spaces.html">Background: Graph and Hypergraph Structures as Inner Product Spaces</a></li><li class="breadcrumb-item"><a href="./1-01-graph-obs.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="./1-02-graph-obs.html"><span class="chapter-title">Incidence in Vector Space</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -92,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
@@ -113,13 +132,18 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">index.html</span></span></a>
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./0-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./1-00-structures-spaces.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span></a>
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">A Practitioner’s Guide to Network Recovery</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -127,20 +151,17 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./1-01-graph-obs.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></span></a>
+  <a href="./1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology as matrices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./1-02-hyper-cooc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Hypergraphs from Coocurrence Observations</span></span></a>
+  <a href="./1-02-graph-obs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Incidence in Vector Space</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./1-03-proj-inverse.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Review: Projections and Inverse Problems</span></span></a>
+  <a href="./1-03-recovery-road.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Roads to Network Recovery</span></a>
   </div>
 </li>
       </ul>
@@ -148,22 +169,25 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a href="./2-00-recovery.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Recovery from Bipartite Occurrence Records</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+ <span class="menu-text">Nonparametric Network Recovery With Random Spanning Forests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2-04-forest-pursuit.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Nonparametric Network Recovery With Random Spanning Forests</span></span></a>
+  <a href="./2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Random Spanning Forests</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./2-05-latent-forest-alloc.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LFA: Latent Forest Allocation</span></span></a>
+  <a href="./2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LFA: Latent Forest Allocation</span></a>
   </div>
 </li>
       </ul>
@@ -172,27 +196,24 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="./3-00-application-future.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Application and Future Development</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-06-qualitative.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Qualitative Application of Relationship Recovery</span></span></a>
+  <a href="./3-06-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-07-ordered.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Recovery from Ordered Random-Walk Observation Sets</span></span></a>
+  <a href="./3-07-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Ordered Random-Walk Observation Sets</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-08-conclusion.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">3-08-conclusion.html</span></span></a>
+  <a href="./3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3-08-conclusion.html</span></a>
   </div>
 </li>
       </ul>
@@ -202,20 +223,36 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#graphs" id="toc-graphs" class="nav-link active" data-scroll-target="#graphs">Graphs</a>
+  <ul class="collapse">
+  <li><a href="#edges-as-vectors-of-nodes" id="toc-edges-as-vectors-of-nodes" class="nav-link" data-scroll-target="#edges-as-vectors-of-nodes">Edges as Vectors of Nodes</a></li>
+  <li><a href="#inner-product-on-edges" id="toc-inner-product-on-edges" class="nav-link" data-scroll-target="#inner-product-on-edges">Inner Product on Edges</a></li>
+  <li><a href="#from-edge-observations-to-node-activations" id="toc-from-edge-observations-to-node-activations" class="nav-link" data-scroll-target="#from-edge-observations-to-node-activations">From Edge Observations to Node Activations</a></li>
+  </ul></li>
+  <li><a href="#hypergraphs" id="toc-hypergraphs" class="nav-link" data-scroll-target="#hypergraphs">Hypergraphs</a>
+  <ul class="collapse">
+  <li><a href="#hyperedges-as-vectors-of-nodes" id="toc-hyperedges-as-vectors-of-nodes" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-nodes">Hyperedges as Vectors of Nodes</a></li>
+  <li><a href="#inner-product-on-hyperedges" id="toc-inner-product-on-hyperedges" class="nav-link" data-scroll-target="#inner-product-on-hyperedges">Inner product on Hyperedges</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-00-structures-spaces.html">Background: Graph and Hypergraph Structures as Inner Product Spaces</a></li><li class="breadcrumb-item"><a href="./1-01-graph-obs.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="./1-02-graph-obs.html"><span class="chapter-title">Incidence in Vector Space</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Graphs from Relation Observations</span></h1>
+<h1 class="title"><span class="chapter-title">Incidence in Vector Space</span></h1>
 </div>
 
 
 
-<div class="quarto-title-meta">
+<div class="quarto-title-meta column-body">
 
     
   
@@ -227,14 +264,61 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<p>From <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[1]</a></span>, and linalg book, and hypergraph incidence model</p>
+<div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div></div><p>For each, describe the meaning of</p>
+<ol type="1">
+<li>Observation model (and connection to node activation data)</li>
+<li>Vector space representation</li>
+<li>Inner product (linear kernel)</li>
+<li>Induced Norms</li>
+</ol>
+<section id="graphs" class="level2">
+<h2 class="anchored" data-anchor-id="graphs">Graphs</h2>
+<p>Initial notation (set-based) and outline of section</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/relation-observations.png" class="img-fluid figure-img"></p>
 <figcaption>Edge Relation Observational Model</figcaption>
 </figure>
 </div>
+<section id="edges-as-vectors-of-nodes" class="level3">
+<h3 class="anchored" data-anchor-id="edges-as-vectors-of-nodes">Edges as Vectors of Nodes</h3>
+</section>
+<section id="inner-product-on-edges" class="level3">
+<h3 class="anchored" data-anchor-id="inner-product-on-edges">Inner Product on Edges</h3>
+<p>Laplacian as inner product on incidence observations. Associated objects (degree vector, o)</p>
+<p>Rescaling to achieve normaalization.</p>
+<p>Use to define kernels (and application e.g.&nbsp;soft-cosine measure)</p>
+</section>
+<section id="from-edge-observations-to-node-activations" class="level3">
+<h3 class="anchored" data-anchor-id="from-edge-observations-to-node-activations">From Edge Observations to Node Activations</h3>
+<p>Strictly speaking, we can’t say that nodes are directly observed in this space… edges are. Collections of nodes are measured two-at-a-time (one-per-edge being traversed).</p>
+<p>Another way to approach is to view inner products as a sum of outer products. A each edge uniquely corresponds to 2 nodes (in a simple graph). Use triangle unfolding for closed form bijection.</p>
+<p>Unrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an <em>edgelist</em>, having binary activation vectors on edges rather than nodes. Then each observation in this model is necessarily a set of activated edges. The non-zero (visited) nodes are found using the incidence matrix as an operator.</p>
+</section>
+</section>
+<section id="hypergraphs" class="level2">
+<h2 class="anchored" data-anchor-id="hypergraphs">Hypergraphs</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/hypergraph-observations.png" class="img-fluid figure-img"></p>
+<figcaption>Hyperedge Relation Observational Model</figcaption>
+</figure>
+</div>
+<section id="hyperedges-as-vectors-of-nodes" class="level3">
+<h3 class="anchored" data-anchor-id="hyperedges-as-vectors-of-nodes">Hyperedges as Vectors of Nodes</h3>
+</section>
+<section id="inner-product-on-hyperedges" class="level3">
+<h3 class="anchored" data-anchor-id="inner-product-on-hyperedges">Inner product on Hyperedges</h3>
+<p>Roundabout way of describing binary/occurrence data. Inner product is co-occurrences.</p>
+<p>Leads to correlation/covariance, etc.</p>
 
 
+
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -654,15 +738,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./1-00-structures-spaces.html" class="pagination-link" aria-label="Background: Graph and Hypergraph Structures as Inner Product Spaces">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Background: Graph and Hypergraph Structures as Inner Product Spaces</span>
+      <a href="./1-01-matrix-meas.html" class="pagination-link" aria-label="Metrology as matrices">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Metrology as matrices</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./1-02-hyper-cooc.html" class="pagination-link" aria-label="Hypergraphs from Coocurrence Observations">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Hypergraphs from Coocurrence Observations</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./1-03-recovery-road.html" class="pagination-link" aria-label="Roads to Network Recovery">
+        <span class="nav-page-text"><span class="chapter-title">Roads to Network Recovery</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

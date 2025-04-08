@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>conclusion – Measuring Network Dependencies from Node Activations</title>
+<title>Metrology as matrices – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./3-07-ordered.html" rel="prev">
+<link href="./1-02-graph-obs.html" rel="next">
+<link href="./0-intro.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -68,10 +69,39 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -80,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3-00-application-future.html">Application and Future Development</a></li><li class="breadcrumb-item"><a href="./3-08-conclusion.html"><span class="chapter-title">3-08-conclusion.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html"><span class="chapter-title">Metrology as matrices</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,16 +151,16 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">A Practitioner’s Guide to Network Recovery</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology as matrices</span></a>
+  <a href="./1-01-matrix-meas.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Metrology as matrices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -175,11 +205,11 @@ ul.task-list li input[type="checkbox"] {
       <div class="sidebar-item-container"> 
             <a href="./3-00-application-future.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Application and Future Development</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./3-06-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
@@ -192,7 +222,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./3-08-conclusion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">3-08-conclusion.html</span></a>
+  <a href="./3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3-08-conclusion.html</span></a>
   </div>
 </li>
       </ul>
@@ -202,16 +232,140 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#observation-and-feature-spaces" id="toc-observation-and-feature-spaces" class="nav-link active" data-scroll-target="#observation-and-feature-spaces">Observation and feature “spaces”</a></li>
+  <li><a href="#models-linear-operators" id="toc-models-linear-operators" class="nav-link" data-scroll-target="#models-linear-operators">Models &amp; linear operators</a></li>
+  <li><a href="#measurement-quantification-error" id="toc-measurement-quantification-error" class="nav-link" data-scroll-target="#measurement-quantification-error">Measurement quantification &amp; error</a></li>
+  <li><a href="#incidence-vs.-proximity" id="toc-incidence-vs.-proximity" class="nav-link" data-scroll-target="#incidence-vs.-proximity">Incidence vs.&nbsp;Proximity</a>
+  <ul class="collapse">
+  <li><a href="#incidence-structures-dependency" id="toc-incidence-structures-dependency" class="nav-link" data-scroll-target="#incidence-structures-dependency">Incidence structures &amp; dependency</a></li>
+  <li><a href="#kernels-distances" id="toc-kernels-distances" class="nav-link" data-scroll-target="#kernels-distances">Kernels &amp; distances</a></li>
+  <li><a href="#implications-for-networks" id="toc-implications-for-networks" class="nav-link" data-scroll-target="#implications-for-networks">Implications for networks</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./3-00-application-future.html">Application and Future Development</a></li><li class="breadcrumb-item"><a href="./3-08-conclusion.html"><span class="chapter-title">3-08-conclusion.html</span></a></li></ol></nav></header>
+<main class="content page-columns page-full column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="./1-01-matrix-meas.html"><span class="chapter-title">Metrology as matrices</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Metrology as matrices</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
+
+
+<p>Where metrology is concerned, the actual unit of observation and how it is encoded for us is critical to how analysts may proceed with quantifying, modeling, and measuring uncertainty around observed phenomena. Experiment and observation tends to be organized as inputs and outputs, or, independent variables and dependent variables, specifically. Independent variables are observed, multiple times (“observations”), and changes in outcome for each can be compared to the varying values associated with the independent variable input (“features”). For generality, say a practitioner records their measurements as scalar values, i.e.&nbsp;<span class="math inline">\(x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}\)</span>. The structure most often used to record scalar values of <span class="math inline">\(n\)</span> independent/input variable features over the course of <span class="math inline">\(m\)</span> observations is called a design matrix <span class="math inline">\(X:\mathbb{S}^{m\times n}\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp; Not all observations are scalar, but they can become so. If individual measurments are higher-dimensional (e.g.&nbsp;images are 2D), X is a tensor, which can be transformed through unrolling or embedding into a lower dimensional representation before proceeding. There are other techniques for dealing with e.g.&nbsp;categorical data, such as one-hot encoding (where the features are binary for each possible category, with boolean entries for each observation).</p></div></div><section id="observation-and-feature-spaces" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="observation-and-feature-spaces">Observation and feature “spaces”</h2>
+<p>If we index a set of observations and features, respectively, as <span class="math display">\[ i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}\]</span> then the design matrix can map the index of an observation and a feature to the corresponding measurement. <span class="math display">\[x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}\]</span> i.e.&nbsp;the measured value of the <span class="math inline">\(j\)</span>th independent variable from the <span class="math inline">\(i\)</span>th observation. In this scheme, an “observation” is a single row vector of features in <span class="math inline">\(\mathbb{S}^{n\times 1}\)</span> (or simply <span class="math inline">\(\mathbb{S}^{n}\)</span>), such that each observation encodes a position in the space defined by the features, i.e.&nbsp;the <em>feature space</em>, and extracting a specific observation vector <span class="math inline">\(i\)</span> from the entire matrix can be denoted as <span class="math display">\[\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}\]</span> Similarly, every “feature” is associated with a single column vector in <span class="math inline">\(\mathbb{S}^{1\times m}\)</span>, which can likewise be interpreted as a position in the space of observations (the <em>data space</em>): <span class="math display">\[\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}\]</span> Note that this definition could be swapped without loss of generality. In other words, <span class="math inline">\(\mathbf{x}\)</span> and <span class="math inline">\(\mathbf{x}^*\)</span> being in row and column spaces is somewhat arbitrary, having more to do with the logistics of experiment design and data collection. We could have measured our feature vectors one-at-a-time, measuring their values over an entire “population”, in effect treating that as the independent variable set.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; In fact, vectors are often said to be in the column-space of a matrix, especially when using them as transformations in physics or deep learning layers. We generally follow a one-observation-per-row rule, unless otherwise stated.</p></div></div><p>To illustrate this formalism in a relevant domain, let’s take another classic network example from academia: co-citation networks. [DRAW BIPARTITE] Lists of co-authors on publications is often reported as “network” data, and subjected to network analysis techniques. For <span class="math inline">\(m\)</span> papers we might be aware of a total of <span class="math inline">\(n\)</span> authors. For a given paper, we are able to see which authors are involved, and we say those authors “activated” for that paper. It makes sense that our observations are individual papers, while the features might be the set of possible authors. However, we are not given information about which author was invited by which other one, or when each author signed on. In other words, the measured values are strictly boolean, and we can structure our dataset as a design matrix <span class="math inline">\(X:\mathbb{B}^{m\times n}\)</span>. We can then think of the <span class="math inline">\(i^{\mathrm{th}}\)</span> paper as being represented by a vector <span class="math inline">\(\mathbf{x}_i:\mathbb{B}^n\)</span>, and proceed using it in our various statistical models. If we desired to analyze the set of authors, say, in order to determine their relative neighborhoods or latent author communities, we could equally use the feature vectors for each paper, this time represented in a vector <span class="math inline">\(\mathbf{x}^*_j:\mathbb{B}^{1\times m}\)</span>.</p>
+</section>
+<section id="models-linear-operators" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="models-linear-operators">Models &amp; linear operators</h2>
+<p>Another powerful tool an analyst has is <em>modeling</em> the observation process. This is relevant when the observed data is hypothesized to be generated by a process we can represent mathematically, but we do not know the parameter values to best represent the observations (or the observations are “noisy” and we want to find a “best” parameters that account for this noise). This is applicable to much of scientific inquiry, though one common use-case is the de-blurring of observed images (or de-noising of signals), since we might have a model for how blurring “operated” on the original image to give us the blurred one. We call this “blurring” a <em>linear operator</em> if it can be represented as a matrix<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, and applying it to a model with <span class="math inline">\(l\)</span> parameters is called the <em>forward map</em>: <span class="math display">\[\mathbf{x} = F\mathbf{p}\qquad F:\mathbb{R}^{l}\rightarrow \mathbb{R}^n\]</span> where <span class="math inline">\(P\)</span> is the space of possible parameter vectors, i.e.&nbsp;the <em>model space</em>. The forward map takes a modeled vector and predicts a location in data space.</p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;in the finite-dimensional case</p></div></div><p>Of critical importance, then, is our ability to recover some model parameters from our observed data, e.g.&nbsp;if our images were blurred through convolution with a blurring kernel, then we are interested in <em>deconvolution</em>. If <span class="math inline">\(F\)</span> is invertible, the most direct solution might be to apply the operator to the data, as the <em>adjoint map</em>: <span class="math display">\[ \mathbf{p} = F^H\mathbf{x}\qquad F^H:\mathbb{R}^{n}\rightarrow \mathbb{R}^l\]</span> which removes the effect of <span class="math inline">\(F\)</span> from the data <span class="math inline">\(\mathbf{x}\)</span> to recover the desired model <span class="math inline">\(\mathbf{p}\)</span>.</p>
+<p>Trivially we might have an orthogonal matrix <span class="math inline">\(F\)</span>, so <span class="math inline">\(F^H=F^{-1}\)</span> is available directly. In practice, other approaches are used to minimize the <em>residual</em>: <span class="math inline">\(\hat{\mathbf{p}}^=\min_{\mathbf{p}} F\mathbf{p}-\mathbf{x}\)</span>. Setting the gradient to 0 yeilds the normal equation, such that <span class="math display">\[ \hat{\mathbf{p}}=(F^TF)^{-1}F^T\mathbf{x}\]</span> This should be familiar to readers as equivalent to solving ordinary least-squares (OLS). However, in that case it is more often shown as having the <em>design matrix</em> <span class="math inline">\(X\)</span> in place of the operator <span class="math inline">\(F\)</span>.</p>
+<p><em>This is a critical distinction to make:</em> OLS as a “supervised” learning method treats some of the observed data we represented as a design matrix previously as a target to be modeled, <span class="math inline">\(y=X(\cdot,j)\)</span>, and the rest maps parameters into data space, <span class="math inline">\(F=X(\cdot,J/j)\)</span>. With this paradigm, only the target is being “modeled” and the rest of the data is used to create the operator. In the citation network example, it would be equivalent to trying to predict one author’s participation in every paper, <em>given</em> every other author’s participation in them.</p>
+<p>For simplicity, most work in the supervised setting treats the reduced data matrix as X, opting to treat <span class="math inline">\(y\)</span> as a separate <em>dependent variable</em>. However, our setting will remain <em>unsupervised</em>, since no single target variable is of specific interest—all observations are “data”. In this, we more closely align with the deconvolution literature, such that we are seeking a model and an operation on it that will produce the observed behavior in an “optimal” way.</p>
+</section>
+<section id="measurement-quantification-error" class="level2">
+<h2 class="anchored" data-anchor-id="measurement-quantification-error">Measurement quantification &amp; error</h2>
+<ul>
+<li>marginal sums</li>
+<li>rule of succession</li>
+<li>type I and II Error?</li>
+<li>Epistemic and Alleatoric Uncertainty?</li>
+</ul>
+<p>Ultimately we are not great at specifying what “being related” actually means…</p>
+</section>
+<section id="incidence-vs.-proximity" class="level2">
+<h2 class="anchored" data-anchor-id="incidence-vs.-proximity">Incidence vs.&nbsp;Proximity</h2>
+<section id="incidence-structures-dependency" class="level3">
+<h3 class="anchored" data-anchor-id="incidence-structures-dependency">Incidence structures &amp; dependency</h3>
+<p>foundational model of graph theory and incidence structures more broadly. More to come, but get the terminology down.</p>
+<div id="fig-incidence-struct" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-incidence-struct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-incidence-struct" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-biadj-mat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-biadj-mat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math display">\[X(\{1,2,3,4\})=\begin{pmatrix}{}
+  0  &amp;  0  &amp;  1  &amp;  0  &amp;  1  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0 \\
+  1  &amp;  0  &amp;  0  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0  &amp;  0  &amp;  0 \\
+  0  &amp;  1  &amp;  0  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0  &amp;  1  &amp;  1 \\
+  0  &amp;  0  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0
+\end{pmatrix}
+\]</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-biadj-mat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/A-codefigs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-bipartite" data-ref-parent="fig-incidence-struct" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="cell-fig-bipartite" class="cell quarto-layout-cell-subref" data-execution_count="13" data-ref-parent="fig-incidence-struct">
+<div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-incidence-struct">
+<div id="fig-bipartite" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-bipartite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="1-01-matrix-meas_files/figure-html/A-codefigs-fig-bipartite-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-incidence-struct">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bipartite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Bipartite representation of node “activation” data
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-incidence-struct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1
+</figcaption>
+</figure>
+</div>
+<p>Spring example, road example, etc. Discuss Complex Systems and their representation.</p>
+</section>
+<section id="kernels-distances" class="level3">
+<h3 class="anchored" data-anchor-id="kernels-distances">Kernels &amp; distances</h3>
+<p>Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) <span class="math inline">\(R\)</span>, equipped with operators analogous to addition (<span class="math inline">\(\oplus\)</span>) and multiplication (<span class="math inline">\(\otimes\)</span>) that allow for values to be aggregated through an inner product. The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:</p>
+<p><span class="math display">\[G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} \]</span></p>
+<p>such that real-valued entries and a traditional “plus-times” inner product recovers the Gram matrix <span class="math inline">\(G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}\)</span>, or simply <span class="math inline">\(G=X^TX\)</span>.</p>
+<p>How “close” or “far away” things are…. Avrachenkov et al.&nbsp;</p>
+<p>Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for <em>inverse problems</em>, structure learning, etc., they are more often applied in terms of the features/operators.</p>
+<p>Example with doc-term matrices</p>
+<p>The inner product between two papers will yield a “true” only if two papers share at least one author in common. This is called a <em>bipartite projection</em>[CITE], specifically the “papers” projection.</p>
+<p>Similarly, if our goal is to determine a network of “whether two authors ever coauthored”, we could perform a bipartite projection using the boolean inner product in the observation space i.e.&nbsp;the “authors” projection. It is this second projection, for determining a structure between features embedded into the “observation” space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally.</p>
+</section>
+<section id="implications-for-networks" class="level3">
+<h3 class="anchored" data-anchor-id="implications-for-networks">Implications for networks</h3>
+<p>Usually dependencies are taken as causing or enabling proximity. E.g. shortest paths, vs.&nbsp;edges.</p>
+<p>The approach taken by researchers/investigators…do they assume a level of interchangeability between the two kinds of “relation”? Do they define Or do they</p>
+
+
+</section>
+</section>
 
 
 </main> <!-- /main -->
@@ -632,13 +786,16 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="./3-07-ordered.html" class="pagination-link" aria-label="Recovery from Ordered Random-Walk Observation Sets">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Recovery from Ordered Random-Walk Observation Sets</span></span>
+      <a href="./0-intro.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Introduction</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="./1-02-graph-obs.html" class="pagination-link" aria-label="Incidence in Vector Space">
+        <span class="nav-page-text"><span class="chapter-title">Incidence in Vector Space</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
