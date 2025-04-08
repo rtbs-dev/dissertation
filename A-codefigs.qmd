@@ -20,6 +20,7 @@ jupyter:
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
+from IPython.core.display import HTML, display_svg, Latex, Markdown
 import networkx as nx
 # import netgraph as ng
 from network2tikz import plot
@@ -82,6 +83,8 @@ tex_kws = dict(
     preamble=r"""
     \usepackage[otfmath]{XCharter}
     \usepackage{tikz-network}
+    \usetikzlibrary{positioning}
+    \SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
     """,
     # tex_packages="tikz-network",
     # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
@@ -173,7 +176,7 @@ fig
 ```
 
 1. G asks E,H,C
-2. E asks A,F
+2. E asks A,F,G
 3. I asks F,J; J asks B
 4. D asks H; H asks E
 
@@ -187,15 +190,16 @@ base_data = pd.read_csv('codefigs/resources/vertices_.csv', index_col=0)
 
 base_network = r"""
 \begin{tikzpicture}[scale=1.1]
-    \Vertices[layer=1, size=0.4, RGB]{codefigs/resources/vertices_.csv}
+    \Vertices[size=0.4, RGB]{codefigs/resources/vertices_.csv}
     \Edges{codefigs/resources/edges.csv}
 \end{tikzpicture}
 """
 
-TexFragment(
+fig_colleague = TexFragment(
     base_network,
     **tex_kws
 ).run_latex(tex_program=tex)
+fig_colleague
 ```
 
 ```{python}
@@ -217,7 +221,7 @@ fig
 B = nx.Graph()
 
 x1s = 'GCEH'
-x2s = 'FEA'
+x2s = 'FEAH'
 x3s = 'IJFB'
 x4s = 'DHE'
 # Add nodes with the node attribute "bipartite"
@@ -260,24 +264,16 @@ plt.axis('off');
 ```
 
 ```{python}
+#| label: fig-biadjacency-matrix
+#| fig-cap: biadjacency matrix representation of node-occurrences, or equivalently, the incidence matrix between papers and authors.
+
 biadj = nx.bipartite.biadjacency_matrix(
     B, ['x_1', 'x_2', 'x_3', 'x_4'], column_order='ABCDEFGHIJ'
 ).todense().astype(int)
 
-print(r"""$$
-X(\{1,2,3,4\})=
-"""+np2tex(biadj, latexarraytype='pmatrix', fmt='{:d}')+"\n$$")
+print(biadj_eq :="$$X(\\{1,2,3,4\\})="+np2tex(biadj, latexarraytype='pmatrix', fmt='{:d}')+"\n$$")
+Latex(biadj_eq)
 ```
-
-$$
-X(\{1,2,3,4\})=
-\begin{pmatrix}{}
-  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
-  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
-  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
-\end{pmatrix}
-$$
 
 ```{python}
 #| label: fig-bipartite
@@ -345,7 +341,7 @@ plot(
     # edge_color=edge_attr_arr(B, 'color'),
     node_math_mode=True,
     # edge_curved=edge_attr_arr(Bproj, 'bend'),
-    edge_width=[2*i for i in edge_attr_arr(Bproj,'weight')],
+    edge_width=[i for i in edge_attr_arr(Bproj,'weight')],
     # seed=23,
     
     # **tikz_kws
@@ -353,8 +349,39 @@ plot(
 )
 with open('codefigs/collab.tex') as f: 
     # print(f.read())
-    fig =TexFragment(
+    fig_collab =TexFragment(
         f.read(),
+        **tex_kws
+        # **(tex_kws|dict(scale=2.1)),
+    ).run_latex(tex_program=tex)
+fig_collab
+```
+
+```{python}
+#| label: fig-recover
+#| fig-cap: Recovering underlying dependency networks from node-cooccurrences.
+# display(fig_colleague)
+# display(Latex(r'$\Large\stackrel{?}{\leftarrow}$'))
+# display(fig_collab)
+
+base_net = r"""\end{scope}
+\begin{scope}[local bounding box=scope2,shift={(scope1.base east)},xshift=-200 ]
+    \Vertices[size=0.4, RGB]{codefigs/resources/vertices_.csv}
+    \Edges{codefigs/resources/edges.csv}
+\end{scope}
+ \draw [thick,->,black] (scope1.west) -- (scope1.east -| scope2.east) node[midway,above] {?};
+"""
+
+with open('codefigs/collab.tex') as f: 
+    lines = f.readlines()
+    # print(lines)
+    lines.pop(1)
+    lines.insert(1, '\\begin{scope}[local bounding box=scope1]\n')
+    lines.insert(-1, base_net)
+    # lines.insert(1, r'\clip (0,0) rectangle (15.0,13.5);')
+    # print(r''.join(lines))
+    fig = TexFragment(
+        r''.join(lines),
         **tex_kws
         # **(tex_kws|dict(scale=2.1)),
     ).run_latex(tex_program=tex)
@@ -362,44 +389,11 @@ fig
 ```
 
 ```{python}
-#| label: fig-tikz-test
-#| editable: true
-#| slideshow: {slide_type: ''}
-# from jupyter_tikz import TexFragment, TexDocument
-
-# The code
-tex_template_code = r"""
-\begin{tikzpicture}
-\Vertex[x=0.5,label=$x_1$]{x1}
-\Vertex[x=2.5,label=$x_2$]{x2}
-\Vertex[y=1,IdAsLabel]{03}
-\Vertex[y=1,x=-1,IdAsLabel]{07}
-\Vertex[y=1,IdAsLabel]{08}
-\Vertex[y=1,x=1,IdAsLabel]{05}
-\Vertex[y=1,x=2,IdAsLabel]{06}
-\Vertex[y=1,x=3,IdAsLabel]{01}
-
-\Edge(x1)(03)
-\Edge(x1)(07)
-\Edge(x1)(05)
-\Edge(x1)(08)
-\Edge(x2)(08)
-\Edge(x2)(05)
-\Edge(x2)(01)
-\Edge(x2)(06)
-\end{tikzpicture}
-"""
-
-# The tikz object
-tikz_picture = TexFragment(
-    tex_template_code,
-    tex_packages="tikz-network",
-    # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
-    scale=1.8,
-    # tex_packages="pgfplots",
-    # no_tikz=True,
-)
-
-# Run LaTeX
-tikz_picture.run_latex(tex_program='$QUARTO_PDFLATEX')
+with open('codefigs/stack-bow.tex') as f: 
+    fig = TexFragment(
+        f.read(),
+        # implicit_tikzpicture=True,
+        **tex_kws,
+    ).run_latex(tex_program=tex)
+fig
 ```

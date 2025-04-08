@@ -1,28 +1,31 @@
 \SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
 \begin{tikzpicture}[scale=1.3,multilayer=3d]
-    \subimport{./}{stack-net.tex}
-    \Edge[lw=1,path={c05,c08,c07,c03}](c05)(c03)
-    \Edge[lw=1,bend=-30](c05)(c03)
-    \Edge[lw=1](c05)(c07)
-    \Edge[lw=1](c03)(c08)
+    \input{codefigs/stack-net.tex}
+    \Edge[lw=1,path={dD,dH,dE}](dD)(dE)
+    \Edge[lw=1, bend=30](dE)(dD)
+    
+    \Edge[lw=1,path={cE,cH,cG,cC}](cE)(cC)
+    \Edge[lw=1,bend=-30](cE)(cC)
+    \Edge[lw=1](cE)(cG)
+    \Edge[lw=1](cC)(cH)
    
-    \Edge[lw=1,path={b05,b08,b06,b01}](b05)(b01)   
-    \Edge[lw=1](b05)(b01)
-    \Edge[lw=1,bend=30](b08)(b01)
-    \Edge[lw=1](b05)(b06)
+    \Edge[lw=1,path={bE,bH,bF,bA}](bE)(bA)   
+    \Edge[lw=1](bE)(bA)
+    \Edge[lw=1,bend=30](bH)(bA)
+    \Edge[lw=1](bE)(bF)
    
-    \Edge[lw=1,path={a06,a09,a10,a02}](a06)(a02)
-    \Edge[lw=1,bend=30](a06)(a02)
-    \Edge[lw=1,bend=30](a06)(a10)
-    \Edge[lw=1,bend=30](a09)(a02)
+    \Edge[lw=1,path={aF,aI,aJ,aB}](aF)(aB)
+    \Edge[lw=1,bend=30](aF)(aB)
+    \Edge[lw=1,bend=30](aF)(aJ)
+    \Edge[lw=1,bend=30](aI)(aB)
     
 
    
-    \Edge[lw=1,bend=30,color=orange](06)(02)
-    \Edge[lw=1,bend=30,color=orange](06)(10)
-    \Edge[lw=1,bend=30,color=orange](09)(02)
-    \Edge[lw=1,color=orange,bend=30](08)(01)  
-    \Edge[lw=1,color=orange](08)(06)  
-    \Edge[lw=1,color=orange,bend=-30](05)(03)
-    \Edge[lw=1,color=orange](03)(08)
+    \Edge[lw=1,bend=30,color=orange](F)(B)
+    \Edge[lw=1,bend=30,color=orange](F)(J)
+    \Edge[lw=1,bend=30,color=orange](I)(B)
+    \Edge[lw=1,color=orange,bend=30](H)(A)  
+    \Edge[lw=1,color=orange](H)(F)  
+    \Edge[lw=1,color=orange,bend=-30](E)(C)
+    \Edge[lw=1,color=orange](C)(H)
 \end{tikzpicture}
