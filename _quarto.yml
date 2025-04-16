@@ -19,7 +19,7 @@ book:
         - 1-02-graph-obs.qmd
         - 1-03-recovery-road.qmd
         # - 1-03-inverse.qmd
-    - part: 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
+    - part: Nonparametric Network Recovery With Random Spanning Forests # 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
         - 2-01-rand-sf.qmd
         - 2-02-forest-pursuit.qmd

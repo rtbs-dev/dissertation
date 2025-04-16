@@ -96,12 +96,21 @@ More to come, but get the terminology down.
 ::::{#fig-incidence-struct layout="[[1,1]]"}
 
 ::: {#fig-biadj-mat}
-$$X(\{1,2,3,4\})=\begin{pmatrix}{}
+$$
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
   0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
   1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
   0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
-\end{pmatrix}
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
 $$
 
 :::

@@ -43,13 +43,8 @@ But analysts are typically seeking the collaboration network connecting authors 
 Networks of relationships in this situation are not directly observed, but which _if recovered_ could provide estimates for community structure, importances of individual authors (e.g. as controlling flow of information), and the "distances" that separate authors from each other, in their respective domains. [@Scientificcollaborationnetworks._Newman2001]
 Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social "acquaintance", where more papers shared means more "connected".  
 
-:::{#fig-collab-projection layout="[[1,1]]"}
-
-{{< embed A-codefigs.qmd#fig-bipartite  >}}
 {{< embed A-codefigs.qmd#fig-collab  >}}
  
-:::
-
 Thus our social collaboration network is borne out of indirect measurements: author connection is implied through "occasions when co-authorship occurred".
 However, authors of papers may recall times that others were added, not by their choice, but by someone else already involved.
 In fact, the final author list of most papers is reasonably a result of individuals choosing to invite others, not a unanimous, simultaneous decision by all members. 
@@ -57,26 +52,17 @@ Let's imagine we wished to study the social network of collaboration more direct
 If the goal is a meaningful social network reflecting the strength of interraction between colleages, perhaps the we prefer our edges  represent "mutual willingness to collaborate".
 Edge "measurement", then, could involve records of events that show willingness to seek or participate in collaboration event, such as:
 
-- _author G asked E, H, and C to co-author a paper, all of whom agreed_
-- _I asked F and J, but J wanted to add B's expertise before writing one of the sections_
+- _author (g) asked (e), (h), and (c) to co-author a paper, all of whom agreed_
+- _(i) asked (f) and (j), but (j) wanted to add (b)'s expertise before writing one of the sections_
 
 and so on.
 Each time two colleagues had an opportunity to work together _and it was seized upon_ we might conclude that evidence of their relationship strengthed.
 With data like this, we could be more confident in claiming our collaboration network can serve as "ground truth," as far as empirically confirmed collaborations go.
 However, even if the underlying "activations" are identical, our new, directly measured graph looks very different.  
 
-:::: {#fig-colleague-groundtruth layout="[[1,1]]" layout-valign='center'}
-
-1. $G\rightarrow E,H,C$
-2. $E\rightarrow A,F$
-3. $I \rightarrow F,J\quad J\rightarrow B$
-4. $D \rightarrow H\quad H\rightarrow E$
-
 {{< embed A-codefigs.qmd#fig-colleague >}}
 
-::::
-
-Fundamentally, the network in [@fig-colleague-groundtruth] shows which relationships the authors _depend_ on to accomplish their publishing activity.
+Fundamentally, the network in [@fig-colleague] shows which relationships the authors _depend_ on to accomplish their publishing activity.
 When causal relations between nodes are being modeled as edges, we call such a graph a _dependency network_.
 We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is _how do we recover dependency networks from node activations?_
 Additionally, what goes wrong when we use co-occurence/activation data to estimate the dependency network, especially when we wish to use it for metrics like centrality, shortest path distances, and community belonging?
@@ -92,8 +78,10 @@ Accessing the dependency _backbone_ in a principled way is difficult, but doing 
 
 ## Scope of this work
 
-The purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations. 
-To begin adressing these issues, we present a guide to current practices,pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner's Guide to Network Recovery.
+The purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations.
+We give special focus to binary activations that occur due to spreading processes, such as random walks or cascades on an underlying carrier graph.
+Recovering the carrier, or, "dependency" network from node activations is of great interest to the network backboning and causal modeling communities, but often involves wither unspoken sources of epistemic and alleatoric error, or  high computation costs (or both). 
+To begin adressing these issues, we present a guide to current practices,pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner's Guide to Network Recovery_.
 We cover what "measurement" means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically
 Clarifying what different versions of what "relation" means (whether proximity or incidence), since network structure is intended to encode such relations as mathematical objects, despite common ambiguities and confusion around what practitioners intend on communicating through them.
 Then we use this structure to present a cohesive framework for selecting a useful network recovery technique, based on the available data and where in the data processing pipeline is acceptable to admit either extra modeling assumptions or information loss.
@@ -108,6 +96,7 @@ Last, we apply Forest Pursuit to several qualitative case-studies, including a s
 We investigate its use as a low-cost preprocessor for other methods of network recovery,like GLASSO, improving their stability and interpretability. 
 Finally we discuss the special case when node activations are reported as an ordered set, where accounting for cascade-like effects becomes crucial to balance false positive and false-negative edge prediction.
 Along with application of this idea to knowledge-graph creation from technical language in the form maintenance work-order data, we discuss more broadly the future needs of network recovery, specifically in the context of embeddings and gradient-based machine learning toolkits.
+
 
 
 

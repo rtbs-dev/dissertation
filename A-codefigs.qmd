@@ -79,12 +79,16 @@ tikz_kws =  dict(
     standalone=False,
     node_size=0.4,
 )
+
+#\SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
+
 tex_kws = dict(
     preamble=r"""
     \usepackage[otfmath]{XCharter}
     \usepackage{tikz-network}
     \usetikzlibrary{positioning}
-    \SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
+    \SetCoordinates[xAngle=0, yAngle=70, yLength=0.5]
+
     """,
     # tex_packages="tikz-network",
     # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
@@ -220,10 +224,10 @@ fig
 # Bipartite representation of node "activation" data
 B = nx.Graph()
 
-x1s = 'GCEH'
-x2s = 'FEAH'
-x3s = 'IJFB'
-x4s = 'DHE'
+x1s = 'gceh'
+x2s = 'feah'
+x3s = 'ijfb'
+x4s = 'dhe'
 # Add nodes with the node attribute "bipartite"
 
 B.add_nodes_from([
@@ -233,7 +237,7 @@ B.add_nodes_from([
     ('x_4',{'color':my_blue, 'pos':(0,1.5), 'bipartite':0})
 ], bipartite=0)
 
-B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(1,0.5*(i-4.5))}) for i,a in enumerate('ABCDEFGHIJ')])
+B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(1,0.5*(i-4.5))}) for i,a in enumerate('abcdefghij')])
 
 # Add edges only between nodes of opposite node sets
 
@@ -268,7 +272,7 @@ plt.axis('off');
 #| fig-cap: biadjacency matrix representation of node-occurrences, or equivalently, the incidence matrix between papers and authors.
 
 biadj = nx.bipartite.biadjacency_matrix(
-    B, ['x_1', 'x_2', 'x_3', 'x_4'], column_order='ABCDEFGHIJ'
+    B, ['x_1', 'x_2', 'x_3', 'x_4'], column_order='abcdefghij'
 ).todense().astype(int)
 
 print(biadj_eq :="$$X(\\{1,2,3,4\\})="+np2tex(biadj, latexarraytype='pmatrix', fmt='{:d}')+"\n$$")
@@ -296,19 +300,20 @@ with open('codefigs/bp.tex') as f:
     # print(f.read())
     fig =TexFragment(
         f.read(),
-        **tex_kws
+        # **tex_kws
+        **(tex_kws|dict(scale=2)),
     ).run_latex(tex_program=tex)
 fig
 ```
 
 ```{python}
 # Bproj = nx.bipartite.collaboration_weighted_projected_graph(B, 'ABCDEFGHIJ')
-Bproj = nx.bipartite.weighted_projected_graph(B, 'ABCDEFGHIJ')
+Bproj = nx.bipartite.weighted_projected_graph(B, 'abcdefghij')
 
 Bproj.add_edges_from([(u,v,{'bend':-.40}) if {u,v} in [
-    {'F','J'},{'F','B'},{'E','D'},{'H','C'}
+    {'f','j'},{'f','b'},{'e','d'},{'h','c'}
 ] else (u,v,{'bend':0}) for u,v in list(Bproj.edges())] )
-Bproj.edges['E','C']['bend'] = 0.4
+Bproj.edges['e','c']['bend'] = 0.4
 collab_layout = kcg_layout = nx.spring_layout(Bproj,k=1.1, seed=4, iterations=200)
 
 nx.draw_networkx(
