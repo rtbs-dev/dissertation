@@ -1,0 +1,450 @@
+---
+title: Source for results
+execute:
+  cache: true
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python (Pixi)
+    language: python
+    name: pixi-kernel-python3
+---
+
+```{python}
+import pandas as pd
+import awkward as ak
+import akimbo.pandas
+import seaborn as sns
+import seaborn.objects as so
+# from great_tables import GT
+import json
+from pathlib import Path
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib as m
+# from mendr.experiments import (
+#     load_graph, _datasets#,_estimators, _metrics,_sq, _dataset_paths
+# )
+```
+
+```{python}
+m.rcParams['font.family']=['serif']
+m.rcParams['font.serif']=['Bitstream Charter']
+figsize = m.rcParams['figure.figsize']
+
+%config InlineBackend.figure_formats = ['svg']
+
+sns.set_theme(font='serif',palette='Set2', context='paper', style='ticks')
+# list(Path('../results').glob('*.jsonl'))
+my_orange=(231., 195., 138.)  # "#e7c38a"
+my_green =(141., 203., 160.)  # "#8dcba0"
+my_red   =(252.,  98., 142.)  # "#fc628e"
+my_blue  =(171., 215., 230.)  # "#abd7e6"
+my_grey = (200,200,200)
+
+datapath = Path('../../data')
+```
+
+```{python}
+df = pd.concat([pd.read_json(p, lines=True) for p in datapath.glob('evaluations/*.jsonl')])
+df.head()
+```
+
+```{python}
+alg_order=['FP','GL','HSS','RP','eOT','CS','CoOc']
+graph_order=['Tree', 'Block', 'ScaleFree']
+metric_order=['MCC','F-M','APS']
+```
+
+```{python}
+tidy = (
+    df
+    # .drop(['thres-vals', 'F1','matthews_corrcoef', 'fowlkes_mallows'], axis=1)
+    .melt(
+        id_vars=['ID', 'kind','name','n-nodes','n-edges','n-walks','n-jumps',
+                 'med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct',
+                 'seconds'], 
+        value_vars=['F-M','MCC','F1', 'APS'],
+        value_name='score', var_name='metric'
+    )
+    .astype({
+        'kind':'category', 
+        'name':'category', 
+        'metric': 'category',
+        'ID':str,
+    })
+    .assign(**{
+        'kind': lambda df: df['kind'].cat.rename_categories({'TR':'Tree','BL':'Block', 'SC':'ScaleFree'}),
+        'seconds-log': lambda df: np.log10(df['seconds']),
+        # 'jump-density':lambda df: df['n-jumps']/df['n-nodes'],
+        'edge-density': lambda df: df['n-edges']/(df['n-nodes']*(df['n-nodes']-1)/2.),
+        'edge-sparsity': lambda df: 1-df['edge-density'],
+
+        'actv-fraction': lambda df: df['med-actv-ct']/df['n-nodes'],
+        'node-baseprob': lambda df: df['med-node-ct']/df['n-walks'],
+        # 'walk-density': lambda df: df['n-walks']/df['n-nodes'],
+        # 'nodes-norm': lambda df: 1/df['walk-density'],
+        # https://www.researchgate.net/publication/271685622_User%27s_Guide_to_Ratio_Variables
+        'sec-per-walk': lambda df: df['seconds']/df['n-walks'],
+        'logsec-per-walk': lambda df: np.log(df['sec-per-walk']),
+        'node-exposure': lambda df: df['n-nodes']/df['n-walks'],
+        'inv-walks': lambda df: 1/df['n-walks'],
+        # 'jump-sparsity'
+        'tot-jumps': lambda df: df['n-jumps']*df['n-walks'],
+        'MIR': lambda df: 1/df.query('name in @alg_order').groupby(['ID','metric'], observed=True)['score'].rank(ascending=False),
+        'failed': lambda df: df['score'].isna()
+    })
+    
+)
+tidy.dtypes#.kind
+```
+
+```{python}
+tidy.query('metric=="APS"').groupby('name', observed=True)['score'].mean().sort_values(ascending=False)
+```
+
+```{python}
+avg_scores= tidy.query('metric=="MCC"').groupby('name', observed=True)['score'].mean().sort_values(ascending=False)
+avg_scores
+```
+
+```{python}
+# alg_order=['TS','TSi','GL','HSS','RP','CS','eOT',]
+
+# alg_order = avg_scores.index.tolist()
+# metric_order=['MCC', ']
+g = sns.FacetGrid(
+    tidy, 
+    col="metric", row="kind",
+    margin_titles=True, aspect=1, height=2,
+    col_order=metric_order,
+    row_order=graph_order,
+    # hue='name',
+    # hue_order=alg_order,
+    # hue = 'kind',
+    # hue_kws={
+    #     'marker':['1','2'], 
+    # }
+)
+
+g.set(
+    ylim=(-0.1,1.1), 
+    # xlim=(0.09,11), 
+    # xscale="log", 
+    clip_on=False,
+
+)
+
+g.map(
+    sns.pointplot, "score", "name", 
+    order=alg_order,
+    estimator='median', 
+    # errorbar='pi',
+    errorbar=None,
+    linestyle='',
+    color='k',
+    marker='|',
+    markersize=15,
+)
+
+g.map(
+    sns.stripplot, "score","name",
+    order=alg_order,
+    dodge=True, alpha=.2, marker='.',
+    color='grey',
+
+)
+```
+
+```{python}
+pd.concat([
+    tidy.groupby(['metric','name'], observed=True)['score'].mean().unstack()[alg_order],#.round(2)
+    tidy.groupby('name', observed=True)['MIR'].mean().to_frame().T[alg_order]
+]).T.round(2)
+```
+
+```{python}
+sns.catplot(
+    tidy.query('metric=="MCC"'), 
+    y='name', 
+    # x='MIR',
+    x='score',
+    orient='h',
+    kind='bar', 
+    # hue='metric',
+    estimator='mean',
+    errorbar=('pi',50),
+    # col='kind', 
+    # row='n-nodes',
+    # col_order=['TR','BL'],
+    order=alg_order,
+    # hue_order=metric_order,
+    aspect=1.618, height=2,
+    
+    # margin_titles=True,
+)
+plt.xlabel('avg. E[MCC]');
+```
+
+```{python}
+sns.catplot(
+    tidy,#.query('metric=="MCC"'), 
+    y='name', 
+    x='MIR',
+    orient='h',
+    kind='bar', 
+    # hue='metric',
+    estimator='median',
+    errorbar=('pi',50),
+    # col='kind', 
+    # row='n-nodes',
+    # col_order=['TR','BL'],
+    order=alg_order,
+    # hue_order=metric_order,
+    aspect=1.618, height=2,
+    
+    # margin_titles=True,
+)
+plt.xlabel('median MIR');
+```
+
+```{python}
+def plot_median(data, *args, **kwargs):
+    # my = data[kwargs.get(y,data.columns[1])].median()
+    # mx = data[kwargs.get(x,data.columns[1])].median()
+    plt.axhline(data.median(), **kwargs)
+    # plt.axvline(mx**kwargs)
+
+def compare_scores_vs(xvar, alg_order=alg_order, metric='MCC'):
+    g = sns.FacetGrid(
+        tidy.query(f'metric=="{metric}"'), 
+        col="name",
+        col_wrap=4,
+        # margin_titles=True, 
+        aspect=1, height=2,
+        col_order=alg_order,
+    
+    )
+    g.set(
+        ylim=(-0.1,1.1), 
+        # xlim=(0.09,11), 
+        xscale="log", 
+        clip_on=False
+    )
+    
+    g.map(plot_median,'score', color='r', alpha=0.5, clip_on=False, label='median score')
+    g.map(
+        sns.regplot, xvar, "score", 
+        color=".3", 
+        logx=True, 
+        scatter_kws={'alpha':0.2},
+        line_kws={'ls':'--','color':'k','label':'OLS trend line'},
+        marker='.', label='experiment',
+    
+    )
+    g.add_legend(loc=(0.35,0.), ncols=3)
+    return g
+```
+
+```{python}
+compare_scores_vs('n-nodes', metric='MCC')
+```
+
+```{python}
+compare_scores_vs('n-walks')
+```
+
+```{python}
+compare_scores_vs('n-jumps')
+```
+
+```{python}
+compare_scores_vs('edge-density', metric='MCC')
+```
+
+```{python}
+g = sns.FacetGrid(
+    tidy, row="metric", col="name",
+    margin_titles=True, aspect=1, height=2,
+    row_order=metric_order,
+    col_order=alg_order,
+    hue='metric',
+    hue_order=metric_order,
+    # hue = 'kind', 
+    # hue_kws={
+    #     'marker':['1','2'], 
+    #     # 'line_kws':[{'color':sns.color_palette('dark')[0],'ls':':'},{'color':'sienna','ls':':'}]},
+    # }
+)
+g.set(
+    ylim=(-0.1,1.1),
+    # xlim=(0.09,11), 
+    xscale="log", 
+    clip_on=False
+)
+g.map(plot_median, 'score', color='r', alpha=0.2)
+
+g.map(
+    sns.regplot, "med-node-ct", "score", 
+    # color=".3", 
+    logx=True, 
+    scatter_kws={'alpha':0.5},
+    # line_kws={'alpha':1.}
+    line_kws={'ls':'--','color':'k'},
+    marker='1',
+    # marker='.'#,scatter_kws={'fillstyle':'none'}
+
+)
+g.add_legend()
+```
+
+```{python}
+sns.boxplot(
+    data=(tidy
+     .pivot(index=['ID','metric'], columns='name', values='score')
+     # .pipe(lambda df: df[['FP', 'FPi']].max(axis=1) - df['GL'])
+     .pipe(lambda df: df['FP'] - df['GL'])
+
+     .rename('score')
+     .reset_index()
+    ),
+    x='score',
+    y='metric'
+)
+```
+
+```{python}
+df_improv = pd.DataFrame([
+    tidy.pivot(index=['ID','metric'], columns='name', values='score').pipe(lambda df: df['EFM']>df['FP']).rename('score-better'),
+    tidy.pivot(index=['ID','metric'], columns='name', values='seconds').pipe(lambda df: df['FP']<df['EFM']).rename('time-better')
+]).T.reset_index().query("metric=='MCC'")
+df_improv
+pd.crosstab(df_improv['ID'], [df_improv['score-better'], df_improv['time-better']]).sum(axis=0).unstack()
+```
+
+```{python}
+sns.histplot(
+    data=(tidy
+     .pivot(index=['ID','metric'], columns='name', values='score')
+     .pipe(lambda df: df['EFM']/df['FP'] )
+     .rename('score')
+     .reset_index()
+     .assign(improved=lambda df: df['score']>=1)
+    ),
+    x='score',
+    hue='improved',
+    log_scale=True,
+    # y='metric'
+)
+```
+
+```python
+# ak.to_arrow(a).to_pandas()
+# df.groupby(.pipe(lambda df: df.set_index('name').)
+from sklearn.linear_model import LogisticRegression
+from affinis.utils import _sq
+from tqdm import tqdm
+betas = []
+diffs = []
+
+dats = []
+# df.query('name=="EFM"').estimate.ak.array- df.query('name=="FP"').estimate.ak.array
+for dat in tqdm(_datasets): 
+    df_sub = df.query(f'ID=="{dat}"').set_index('name')
+    gT = _sq(load_graph(dat).graph.to_array().todense()).astype(bool)
+    dats.append(gT)
+    diff = np.array(df_sub.loc['EFM'].estimate)-np.array(df_sub.loc['FP'].estimate)
+    diffs.append(diff)
+    jitter_t = 0.2*np.random.rand(gT.sum())
+    jitter_f = 0.2*np.random.rand((~gT).sum())
+    # plt.scatter(diff[gT], np.ones_like(jitter_t)+jitter_t, color='k', alpha=0.1, marker='.')
+    # plt.scatter(diff[~gT],np.zeros_like(jitter_f)+jitter_f, color='r', alpha=0.1, marker='.')
+
+    betas+=[LogisticRegression(fit_intercept=False).fit(diff.reshape(-1,1), gT).coef_[0][0]]
+
+delta = pd.DataFrame({'label':np.hstack(dats), 'diff':np.hstack(diffs)})
+    # .estimate.ak.array- df.query('name=="FP"').estimate.ak.array
+# df.query('name=="EFM"').estimate.ak.array- df.query('name=="FP"').estimate.ak.array
+sns.displot(np.array(betas))
+```
+
+## Complexity and Runtime
+
+```{python}
+f = m.figure.Figure(figsize=(8, 6))
+sf1, sf2 = f.subfigures(2, 1, height_ratios=(2,3))
+
+theme_config = {**sns.axes_style('ticks')}|{"axes.spines.top": False, "axes.spines.right": False}
+
+# med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct'
+
+(so.Plot(tidy, x='n-nodes',y='seconds',color='name')
+ # .add(so.Dots(marker='.'), so.Dodge(), so.Jitter(.3))
+ .add(so.Range(),so.Est(errorbar=("pi",50)), so.Dodge())
+ .add(so.Dot(marker='o', pointsize=10), so.Agg('median'), so.Dodge())
+ .add(so.Dots(alpha=0.1, pointsize=2), so.Dodge(gap=-1.5), so.Jitter(0.3) )
+ .scale(
+     x=(so.Nominal()
+        # .tick(at=[10,30,100,300])
+        # .label(like="{x:.0f}")
+       ), 
+     y='log',
+     # marker=so.Nominal(["_", "."]),
+     color=so.Nominal('Set2',order=['FP', 'EFM', 'GL'])
+ )
+ .theme(theme_config)
+ .on(sf1)
+ .plot()
+ # .add(so.Range(
+)
+
+
+p = (so.Plot(tidy, y='seconds',color='name',marker='failed', pointsize='failed')
+ .pair(x=['edge-density','n-jumps'])
+ # .facet(row='name', order=['TS', 'GL','HSS'])
+ .add(so.Dots(), so.Jitter(0.3))
+ .scale(
+     x='log', y='log',
+     marker=so.Nominal([".", "x"]),
+     color=so.Nominal('Set2',order=['FP', 'EFM','GL']),
+     pointsize=so.Nominal([2.,5.],order=[False,True]),
+ )
+ .theme(theme_config)
+ .on(sf2)
+ .layout(engine='constrained',extent=(0, 0, 0.95, 1))
+ .plot()
+ # .add(so.Line(color=".2"), so.PolyFit())
+)
+f.legends.pop(0)
+# f.legends[0].get_bbox_to_anchor()#set_bbox_to_anchor((0.9,0.5)).
+p
+```
+
+```{python}
+g = sns.PairGrid(
+    tidy[tidy['name'].isin(['FP'])], #row="metric", col="name",
+    x_vars=['med-actv-ct', 'edge-density'],
+    y_vars=['sec-per-walk'],
+    hue = 'n-nodes', 
+    palette='Set2',
+
+)
+g.set(
+    # ylim=(-0.1,1.1), 
+    # xlim=(0.09,11), 
+    xscale="log", 
+    yscale='log',
+    clip_on=False,
+)
+
+g.map(
+    sns.scatterplot, marker='.'#, logx=True, truncate=True,
+)
+g.add_legend()
+```
+

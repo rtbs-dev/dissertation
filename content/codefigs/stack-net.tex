@@ -1,0 +1,30 @@
+\SetLayerDistance{0.4mm}
+\Plane[width=4.5,height=4,grid=5mm,NoFill]  
+\begin{Layer}[layer=2]
+  \node at (0,0)[above left]{$x_4$};
+\end{Layer}  
+\begin{Layer}[layer=3]
+  \node at (0,0)[above left]{$x_3$};
+\end{Layer}
+\begin{Layer}[layer=4]
+  \node at (0,0)[above left]{$x_2$};
+\end{Layer}
+\begin{Layer}[layer=5]
+  \node at (0,0)[above left]{$x_1$};
+\end{Layer}
+\Plane[width=4.5,height=4,layer=2,NoBorder,opacity=0.2]
+\Plane[width=4.5,height=4,layer=3,NoBorder,opacity=0.2]
+\Plane[width=4.5,height=4,layer=4,NoBorder,opacity=0.2]
+\Plane[width=4.5,height=4,layer=5,NoBorder,opacity=0.2]
+\Vertices[size=0.4,RGB]{resources/vertices.csv}
+\Edges{resources/edges.csv}
+
+\Edge[style=dashed](dd)(d)
+\Edge[style=dashed](dh)(h)
+\Edge[style=dashed](cc)(c)
+\Edge[style=dashed](af)(f)
+\Edge[style=dashed](af)(bf)
+
+% \Vertices[size=0.4,layer=2,RGB]{resources/vertices_a.csv}
+% \Vertices[size=0.4,layer=3,RGB]{resources/vertices_b.csv}
+% \Vertices[size=0.4,layer=4,RGB]{resources/vertices_c.csv}

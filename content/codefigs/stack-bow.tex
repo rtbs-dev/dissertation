@@ -1,0 +1,30 @@
+\begin{tikzpicture}[scale=1.3,multilayer=3d]
+    \input{stack-net.tex}
+    \Edge[lw=1,path={dd,dh,de}](dd)(de)
+    \Edge[lw=1, bend=30](de)(dd)
+    
+    \Edge[lw=1,path={ce,ch,cg,cc}](ce)(cc)
+    \Edge[lw=1,bend=-30](ce)(cc)
+    \Edge[lw=1](ce)(cg)
+    \Edge[lw=1](cc)(ch)
+   
+    \Edge[lw=1,path={be,bh,bf,ba}](be)(ba)   
+    \Edge[lw=1](be)(ba)
+    \Edge[lw=1,bend=30](bh)(ba)
+    \Edge[lw=1](be)(bf)
+   
+    \Edge[lw=1,path={af,ai,aj,ab}](af)(ab)
+    \Edge[lw=1,bend=30](af)(ab)
+    \Edge[lw=1,bend=30](af)(aj)
+    \Edge[lw=1,bend=30](ai)(ab)
+    
+
+   
+    \Edge[lw=1,bend=30,color=orange](f)(b)
+    \Edge[lw=1,bend=30,color=orange](f)(j)
+    \Edge[lw=1,bend=30,color=orange](i)(b)
+    \Edge[lw=1,color=orange,bend=30](h)(a)  
+    \Edge[lw=1,color=orange](h)(f)  
+    \Edge[lw=1,color=orange,bend=-30](e)(c)
+    \Edge[lw=1,color=orange](c)(h)
+\end{tikzpicture}

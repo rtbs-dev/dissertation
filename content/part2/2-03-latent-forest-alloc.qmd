@@ -1,0 +1,18 @@
+# LFA: Latent Forest Allocation 
+
+## Radom Spanning Trees
+
+- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
+- Tree Likelihoods, other facts 
+
+## Bayesian Estimation by Gibbs Sampling 
+
+- comparison with LDA
+- Simplifying Assumptions (conditional prob IS prob for this)
+
+
+I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 for RSF instead of RSTs
+
+## Simulation Study
+
+Kind of unsure here. 
