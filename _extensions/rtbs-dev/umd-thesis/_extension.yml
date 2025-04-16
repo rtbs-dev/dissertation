@@ -24,8 +24,12 @@ contributes:
         # - partials/toc.tex
       format-resources: 
         - thesis.cls
-      cite-method: biblatex
+      cite-method: "biblatex"
       biblio-style: ieee
+      biblatexoptions:
+        - "backend=biber"
+        - "sorting=ydnt"
+        - "isbn=true"
     html:
       css: styles.css
 

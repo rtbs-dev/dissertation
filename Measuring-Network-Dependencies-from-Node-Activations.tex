@@ -78,13 +78,13 @@
 }
 
 % Bibliography
-\usepackage[%
-	backend=biber,
-	style=ieee, % pick whatever style you want
-	sorting=ydnt,
-	isbn=true,
-]{biblatex}
-\addbibresource{pubs.bib}
+% \usepackage[%
+% 	backend=biber,
+% 	style=ieee, % pick whatever style you want
+% 	sorting=ydnt,
+% 	isbn=true,
+% ]{biblatex}
+% \addbibresource{resources/pubs.bib}
 
 % Line spacing
 \usepackage{setspace}
@@ -158,8 +158,8 @@
 \@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
 \makeatother
 
-\usepackage[style=ieee,]{biblatex}
-\addbibresource{pubs.bib}
+\usepackage[style=ieee,backend=biber,sorting=ydnt,isbn=true]{biblatex}
+\addbibresource{resource/pubs.bib}
 \usepackage{bookmark}
 
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
@@ -363,7 +363,7 @@ to the time of separation, at the very least a ``weighted'' one.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-karate-club-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-karate-club-output-1.pdf}}
 
 }
 
@@ -403,7 +403,7 @@ contemporaneously, or in some other context or artifact.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-obs-set-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-obs-set-output-1.pdf}}
 
 }
 
@@ -427,30 +427,13 @@ means more ``connected''.
 
 \begin{figure}
 
-\begin{minipage}{0.50\linewidth}
-
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-bipartite-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-collab-output-1.pdf}}
 
 }
 
-\subcaption{\label{fig-bipartite}Bipartite representation of node
-``activation'' data}
-
-\end{minipage}%
-%
-\begin{minipage}{0.50\linewidth}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-collab-output-1.pdf}}
-
-}
-
-\subcaption{\label{fig-collab}}
-
-\end{minipage}%
+\caption{\label{fig-collab}}
 
 \end{figure}%
 
@@ -473,11 +456,11 @@ willingness to seek or participate in collaboration event, such as:
 \begin{itemize}
 \tightlist
 \item
-  \emph{author G asked E, H, and C to co-author a paper, all of whom
-  agreed}
+  \emph{author (g) asked (e), (h), and (c) to co-author a paper, all of
+  whom agreed}
 \item
-  \emph{I asked F and J, but J wanted to add B's expertise before
-  writing one of the sections}
+  \emph{(i) asked (f) and (j), but (j) wanted to add (b)'s expertise
+  before writing one of the sections}
 \end{itemize}
 
 and so on. Each time two colleagues had an opportunity to work together
@@ -490,41 +473,20 @@ graph looks very different.
 
 \begin{figure}
 
-\begin{minipage}{0.50\linewidth}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \(G\rightarrow E,H,C\)
-\item
-  \(E\rightarrow A,F\)
-\item
-  \(I \rightarrow F,J\quad J\rightarrow B\)
-\item
-  \(D \rightarrow H\quad H\rightarrow E\)
-\end{enumerate}
-
-\end{minipage}%
-%
-\begin{minipage}{0.50\linewidth}
-
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-colleague-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-colleague-output-1.pdf}}
 
 }
 
-\subcaption{\label{fig-colleague}graph of mutual collaboration
+\caption{\label{fig-colleague}graph of mutual collaboration
 relationships i.e.~the ``ground truth'' social network}
-
-\end{minipage}%
 
 \end{figure}%
 
-Fundamentally, the network in Figure~\ref{fig-colleague-groundtruth}
-shows which relationships the authors \emph{depend} on to accomplish
-their publishing activity. When causal relations between nodes are being
+Fundamentally, the network in Figure~\ref{fig-colleague} shows which
+relationships the authors \emph{depend} on to accomplish their
+publishing activity. When causal relations between nodes are being
 modeled as edges, we call such a graph a \emph{dependency network}. We
 will investigate this idea further later on, but ultimately, if a
 network of dependencies is desired (or implied, based on analysis
@@ -538,7 +500,7 @@ centrality, shortest path distances, and community belonging?
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-recover-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-recover-output-1.pdf}}
 
 }
 
@@ -562,20 +524,27 @@ practitioners to be able to make use of it to trim their hairballs.
 \section{Scope of this work}\label{scope-of-this-work}
 
 The purpose of this thesis is to provide a solid foundation for basic
-edge metrology when our data consists of binary node activations. To
+edge metrology when our data consists of binary node activations. We
+give special focus to binary activations that occur due to spreading
+processes, such as random walks or cascades on an underlying carrier
+graph. Recovering the carrier, or, ``dependency'' network from node
+activations is of great interest to the network backboning and causal
+modeling communities, but often involves wither unspoken sources of
+epistemic and alleatoric error, or high computation costs (or both). To
 begin adressing these issues, we present a guide to current
 practices,pitfalls, and how common statistical tools apply to the
-network recovery problem: a \_Practitioner's Guide to Network Recovery.
-We cover what ``measurement'' means in our context, and specifically the
-ways we encode observations, operations, and uncertainties numerically
-Clarifying what different versions of what ``relation'' means (whether
-proximity or incidence), since network structure is intended to encode
-such relations as mathematical objects, despite common ambiguities and
-confusion around what practitioners intend on communicating through
-them. Then we use this structure to present a cohesive framework for
-selecting a useful network recovery technique, based on the available
-data and where in the data processing pipeline is acceptable to admit
-either extra modeling assumptions or information loss.
+network recovery problem: a \emph{Practitioner's Guide to Network
+Recovery}. We cover what ``measurement'' means in our context, and
+specifically the ways we encode observations, operations, and
+uncertainties numerically Clarifying what different versions of what
+``relation'' means (whether proximity or incidence), since network
+structure is intended to encode such relations as mathematical objects,
+despite common ambiguities and confusion around what practitioners
+intend on communicating through them. Then we use this structure to
+present a cohesive framework for selecting a useful network recovery
+technique, based on the available data and where in the data processing
+pipeline is acceptable to admit either extra modeling assumptions or
+information loss.
 
 Next, building on a gap found in the first part, we present a novel
 method, \emph{Forest Pursuit}, to extract depencency networks when we
@@ -772,12 +741,21 @@ broadly. More to come, but get the terminology down.
 
 \centering{
 
-\[X(\{1,2,3,4\})=\begin{pmatrix}{}
+\[
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
   0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
   1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
   0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
-\end{pmatrix}
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
 \]
 
 }
@@ -790,7 +768,7 @@ broadly. More to come, but get the terminology down.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/1-01-matrix-meas_files/figure-latex/A-codefigs-fig-bipartite-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-01-matrix-meas_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
 
 }
 
@@ -878,7 +856,7 @@ Initial notation (set-based) and outline of section
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/relation-observations.png}}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{content/part1/../images/relation-observations.png}}
 
 }
 
@@ -918,7 +896,7 @@ are found using the incidence matrix as an operator.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/hypergraph-observations.png}}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{content/part1/../images/hypergraph-observations.png}}
 
 }
 
@@ -954,7 +932,7 @@ at each point.
 
 \begin{figure}[H]
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{images/adjoint-cheatsheet.png}}
+{\centering \pandocbounded{\includegraphics[keepaspectratio]{content/part1/../images/adjoint-cheatsheet.png}}
 
 }
 
@@ -992,19 +970,6 @@ i.e.~MOTIVATES FOREST PURSUIT
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
-\texttt{\#\ Recovery\ from\ Bipartite\ Occurrence\ Records}
-
-\begin{itemize}
-\tightlist
-\item
-  A generative model for multi-output binary observations under
-  diffusion
-\item
-  Edge Recovery through Sparse Approximation by Empirical Bayes
-\item
-  Gibbs Sampling a hierarchical bayesian model
-\end{itemize}
-
 \chapter{Random Spanning Forests}\label{random-spanning-forests}
 
 \section{Node Activation by Diffusive
@@ -1036,7 +1001,7 @@ the underlying structure of the relationships between nodes.
 \section{Generative Model
 Specification}\label{generative-model-specification}
 
-\pandocbounded{\includegraphics[keepaspectratio]{images/random-spanning-forests.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/../images/random-spanning-forests.png}}
 - hierarchical model - marginalize over the root node.
 
 \chapter{Forest Pursuit: Approximate Recovery in Near-linear
@@ -1103,13 +1068,13 @@ I.e. the unwritten paper, modifying technique by
 
 Kind of unsure here.
 
-\part{Application and Future Development}
+\part{Applications \& Extentions}
 
 \chapter{Qualitative Application of Relationship
 Recovery}\label{qualitative-application-of-relationship-recovery}
 
-\chapter{Recovery from Ordered Random-Walk Observation
-Sets}\label{recovery-from-ordered-random-walk-observation-sets}
+\chapter{Recovery from Partial
+Orders}\label{recovery-from-partial-orders}
 
 Like before, but with the added twist of \emph{knowing} our nodes were
 activated with a particular partial order.

@@ -11,24 +11,24 @@ book:
       My abstract for this dissertation.
   chapters:
     - index.qmd
-    - 0-intro.qmd
+    - content/0-intro.qmd
     # - part: 1-00-structures-spaces.qmd
     - part: "A Practitioner's Guide to Network Recovery"
       chapters:
-        - 1-01-matrix-meas.qmd
-        - 1-02-graph-obs.qmd
-        - 1-03-recovery-road.qmd
+        - content/part1/1-01-matrix-meas.qmd
+        - content/part1/1-02-graph-obs.qmd
+        - content/part1/1-03-recovery-road.qmd
         # - 1-03-inverse.qmd
     - part: Nonparametric Network Recovery With Random Spanning Forests # 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
-        - 2-01-rand-sf.qmd
-        - 2-02-forest-pursuit.qmd
-        - 2-03-latent-forest-alloc.qmd
-    - part: 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
+        - content/part2/2-01-rand-sf.qmd
+        - content/part2/2-02-forest-pursuit.qmd
+        - content/part2/2-03-latent-forest-alloc.qmd
+    - part: Applications & Extentions # 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
       chapters: 
-        - 3-06-qualitative.qmd
-        - 3-07-ordered.qmd
-        - 3-08-conclusion.qmd
+        - content/part3/3-06-qualitative.qmd
+        - content/part3/3-07-ordered.qmd
+        - content/part3/3-08-conclusion.qmd
     # - part: "conclusion"
       # chapters:
         # - 
@@ -38,8 +38,8 @@ book:
   page-navigation: true
   sidebar:
     collapse-level: 1
-bibliography: pubs.bib  
-csl: ieee.csl
+bibliography: resource/pubs.bib  
+csl: resource/ieee.csl
 # filters:
 #   - diagram
 # diagram:
@@ -61,7 +61,7 @@ format:
     theme: 
       - pandoc
     # css:
-      - custom.scss
+      - resource/custom.scss
     sansfont: Cooper Hewitt
     mainfont: Charter
     linkcolor: maroon
