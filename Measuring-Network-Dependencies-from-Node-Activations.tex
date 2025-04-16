@@ -84,7 +84,7 @@
 	sorting=ydnt,
 	isbn=true,
 ]{biblatex}
-\addbibresource{bibliography.bib}
+\addbibresource{pubs.bib}
 
 % Line spacing
 \usepackage{setspace}
@@ -335,14 +335,15 @@ entirely\autocite{ReconstructingNetworksUnknown_Peixoto2018}.
 Networks in the ``wild'' rarely exist of and by themsleves. Rather, they
 are a model of interaction or relation \emph{between} things that were
 observed. One of the most beloved examples of a network, the famed
-\emph{Zachary's Karate Club}{[}CITE{]}, is in fact reported as a list of
-pairwise interactions: every time a club member interacted with another
-(outside of the club), Zachary recorded it as two integers (the IDs of
-the members). The final list of pairs can be \emph{interpreted} as an
-``edge list'', which can be modeled with a network: a simple graph. This
-was famously used to show natural community structure that nicely
-matches the group separation that eventually took place when the club
-split into two.{[}CITE{]}
+\emph{Zachary's Karate Club}\autocite{InformationFlowModel_Zachary1977},
+is in fact reported as a list of pairwise interactions: every time a
+club member interacted with another (outside of the club), Zachary
+recorded it as two integers (the IDs of the members). The final list of
+pairs can be \emph{interpreted} as an ``edge list'', which can be
+modeled with a network: a simple graph. This was famously used to show
+natural community structure that nicely matches the group separation
+that eventually took place when the club split into
+two.\autocite{Communitystructuresocial_Girvan2002}
 
 Note, however, that we could have just as easily taken note of the
 instigating student for each interaction (i.e.~which student initiated
@@ -412,14 +413,17 @@ contemporaneously, or in some other context or artifact.
 
 These are naturally represented as ``bipartite'' networks, having
 separate entites for, say, ``papers'' and ``authors'', and connecting
-them with edges as needed. But analysts are typically seeking the
-collaboration network connecting authors, something not so directly
-observed, but which \emph{if recovered} can provide estimates for
-community structure, importance of individual authors as controling
-information flows, and the ``distances'' that separate authors from each
-other, in their respective domains. {[}CITE Newman{]} Common practice
+them with edges (paper 1 is ``connected'' to its authors E,H,C, etc.).
+But analysts are typically seeking the collaboration network connecting
+authors (or papers) themselves! Networks of relationships in this
+situation are not directly observed, but which \emph{if recovered} could
+provide estimates for community structure, importances of individual
+authors (e.g.~as controlling flow of information), and the ``distances''
+that separate authors from each other, in their respective domains.
+\autocite{Scientificcollaborationnetworks._Newman2001} Common practice
 assumes that co-authorship in any paper is sufficient evidence of at
-least some level of social ``acquaintance''.
+least some level of social ``acquaintance'', where more papers shared
+means more ``connected''.
 
 \begin{figure}
 
@@ -448,18 +452,41 @@ least some level of social ``acquaintance''.
 
 \end{minipage}%
 
-\caption{\label{fig-collab-projection}The goal is to project STUFF}
-
 \end{figure}%
 
 Thus our social collaboration network is borne out of indirect
-measurements of ``occaisions when collaboration occurred''. However,
-let's imagine we wished to study the social network of collaboration
-more directly: if we had the luxury of being in situ as, say, a
-sociologists performing an academic ethnography, we might have been more
-strict with our definitions of ``collaboration strength''.
+measurements: author connection is implied through ``occasions when
+co-authorship occurred''. However, authors of papers may recall times
+that others were added, not by their choice, but by someone else already
+involved. In fact, the final author list of most papers is reasonably a
+result of individuals choosing to invite others, not a unanimous,
+simultaneous decision by all members. Let's imagine we wished to study
+the social network of collaboration more directly: if we had the luxury
+of being in situ as, say, a sociologist performing an academic
+ethnography, we might have been more strict with our definition of
+``connection''. If the goal is a meaningful social network reflecting
+the strength of interraction between colleages, perhaps the we prefer
+our edges represent ``mutual willingness to collaborate''. Edge
+``measurement'', then, could involve records of events that show
+willingness to seek or participate in collaboration event, such as:
 
-{[}ETC{]}
+\begin{itemize}
+\tightlist
+\item
+  \emph{author G asked E, H, and C to co-author a paper, all of whom
+  agreed}
+\item
+  \emph{I asked F and J, but J wanted to add B's expertise before
+  writing one of the sections}
+\end{itemize}
+
+and so on. Each time two colleagues had an opportunity to work together
+\emph{and it was seized upon} we might conclude that evidence of their
+relationship strengthed. With data like this, we could be more confident
+in claiming our collaboration network can serve as ``ground truth,'' as
+far as empirically confirmed collaborations go. However, even if the
+underlying ``activations'' are identical, our new, directly measured
+graph looks very different.
 
 \begin{figure}
 
@@ -469,13 +496,13 @@ strict with our definitions of ``collaboration strength''.
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  G asks E,H,C
+  \(G\rightarrow E,H,C\)
 \item
-  E asks A,F
+  \(E\rightarrow A,F\)
 \item
-  I asks F,J; J asks B
+  \(I \rightarrow F,J\quad J\rightarrow B\)
 \item
-  D asks H; H asks E
+  \(D \rightarrow H\quad H\rightarrow E\)
 \end{enumerate}
 
 \end{minipage}%
@@ -495,22 +522,90 @@ relationships i.e.~the ``ground truth'' social network}
 
 \end{figure}%
 
+Fundamentally, the network in Figure~\ref{fig-colleague-groundtruth}
+shows which relationships the authors \emph{depend} on to accomplish
+their publishing activity. When causal relations between nodes are being
+modeled as edges, we call such a graph a \emph{dependency network}. We
+will investigate this idea further later on, but ultimately, if a
+network of dependencies is desired (or implied, based on analysis
+needs), then the critical problem remaining is \emph{how do we recover
+dependency networks from node activations?} Additionally, what goes
+wrong when we use co-occurence/activation data to estimate the
+dependency network, especially when we wish to use it for metrics like
+centrality, shortest path distances, and community belonging?
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/0-intro_files/figure-latex/A-codefigs-fig-recover-output-1.pdf}}
+
+}
+
+\caption{\label{fig-recover}Recovering underlying dependency networks
+from node-cooccurrences.}
+
+\end{figure}%
+
+Even more practically, networks created directly from bipartite-style
+data are notorious for quickly becoming far too dense for useful
+analysis, earning them the (not-so-)loving moniker ``hairballs''.
+Network ``backboning,'' as it has come to be called {[}CITE{]} tries to
+find a subset of edges in this hairball that still captures it's core
+topology in a way that's easier to visualize. Meanwhile, underlying
+networks of dependencies that \emph{cause} node activation patterns can
+provide this: they are almost always more sparse than their hairballs.
+Accessing the dependency \emph{backbone} in a principled way is
+difficult, but doing so in a rapid, scalable manner is critical for
+practitioners to be able to make use of it to trim their hairballs.
+
 \section{Scope of this work}\label{scope-of-this-work}
 
-rewrite
+The purpose of this thesis is to provide a solid foundation for basic
+edge metrology when our data consists of binary node activations. To
+begin adressing these issues, we present a guide to current
+practices,pitfalls, and how common statistical tools apply to the
+network recovery problem: a \_Practitioner's Guide to Network Recovery.
+We cover what ``measurement'' means in our context, and specifically the
+ways we encode observations, operations, and uncertainties numerically
+Clarifying what different versions of what ``relation'' means (whether
+proximity or incidence), since network structure is intended to encode
+such relations as mathematical objects, despite common ambiguities and
+confusion around what practitioners intend on communicating through
+them. Then we use this structure to present a cohesive framework for
+selecting a useful network recovery technique, based on the available
+data and where in the data processing pipeline is acceptable to admit
+either extra modeling assumptions or information loss.
 
-To begin adressing these issues, this introductory section returns to
-foundational statistical measurment concepts and terminology, while
-clarifying each concepts potential relationships to the problems of
-network structure metrology.\\
-First, what ``measurement'' means in this context, and specifically the
-ways we encode observations, operations, and uncertainties numerically.
-Second, what ``relation'' means, since network structure is intended to
-encode such relations as a mathematical object, despite common
-ambiguities and confusion around what practitioners intend on
-communicating through them.
+Next, building on a gap found in the first part, we present a novel
+method, \emph{Forest Pursuit}, to extract depencency networks when we
+know a \emph{spreading process} causes node activation (e.g.~paper
+co-authorship caused by collaboration requests). We create a new
+reference dataset to enable community benchmarking of network recovery
+techniques, and use it show greatly improved accuracy over many other
+widely-used methods. Forest Pursuit in its simplest form scales linearly
+with the size of active-node sets, being trivially parallelizeable and
+streamable over dataset size, and agnostic to network size overall. We
+then expand our analysis to re-imagine Forest Pursuit as a Bayesian
+probabilistic model, \emph{Latent Forest Allocation}, which has an
+easily-implemented Expectation Maximization scheme for posterior
+estimation. This significantly improves upon the accuracy results of
+Forest Pursuit, at the cost of some speed and scalability, giving
+analysts multiple options to adapt to their needs.
 
-{[}FUTURE SECTIONS?{]}
+Last, we apply Forest Pursuit to several qualitative case-studies,
+including a scientific collaboration network, and the verbal fluency
+``animals'' network recovery problem, which dramatically change
+interpretation under use of our method. We investigate its use as a
+low-cost preprocessor for other methods of network recovery,like GLASSO,
+improving their stability and interpretability. Finally we discuss the
+special case when node activations are reported as an ordered set, where
+accounting for cascade-like effects becomes crucial to balance false
+positive and false-negative edge prediction. Along with application of
+this idea to knowledge-graph creation from technical language in the
+form maintenance work-order data, we discuss more broadly the future
+needs of network recovery, specifically in the context of embeddings and
+gradient-based machine learning toolkits.
 
 \part{A Practitioner's Guide to Network Recovery}
 
@@ -673,22 +768,25 @@ broadly. More to come, but get the terminology down.
 
 \begin{figure}
 
-\centering{
+\begin{minipage}{0.50\linewidth}
 
 \centering{
 
-\[
-X(\{1,2,3\})=
-\begin{pmatrix}
-1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
-0&0&1&0&1&1&1&0&0&0 \\
-0&1&0&1&0&1&0&0&1&0 
+\[X(\{1,2,3,4\})=\begin{pmatrix}{}
+  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
+  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
+  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
 \end{pmatrix}
 \]
 
 }
 
 \subcaption{\label{fig-biadj-mat}}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
 
 \centering{
 
@@ -699,17 +797,7 @@ X(\{1,2,3\})=
 \subcaption{\label{fig-bipartite}Bipartite representation of node
 ``activation'' data}
 
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/1-01-matrix-meas_files/figure-latex/A-codefigs-fig-tikz-test-output-1.pdf}}
-
-}
-
-\subcaption{\label{fig-tikz-test}}
-
-}
-
-\caption{\label{fig-incidence-struct}}
+\end{minipage}%
 
 \end{figure}%
 

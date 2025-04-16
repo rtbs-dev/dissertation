@@ -81,11 +81,14 @@ When causal relations between nodes are being modeled as edges, we call such a g
 We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is _how do we recover dependency networks from node activations?_
 Additionally, what goes wrong when we use co-occurence/activation data to estimate the dependency network, especially when we wish to use it for metrics like centrality, shortest path distances, and community belonging?
 
-[Graphic, from messy to clean OR big bipartite projection hairball? ]
+
+{{< embed A-codefigs.qmd#fig-recover  >}}
+ 
 
 Even more practically, networks created directly from bipartite-style data are notorious for quickly becoming far too dense for useful analysis, earning them the (not-so-)loving moniker "hairballs".
-Network "backboning," as it has come to be called [CITE] tries to find 
-Meanwhile, underlying networks of dependencies that _cause_ node activation patterns are almost always more sparse than these hairballs.Accessing the dependency _backbone_ in a principled way is difficult, but doing so in a rapid, scalable manner is critical for practitioners to be able to make use of it to trim their hairballs.  
+Network "backboning," as it has come to be called [CITE] tries to find a subset of edges in this hairball that still captures it's core topology in a way that's easier to visualize. 
+Meanwhile, underlying networks of dependencies that _cause_ node activation patterns can provide this: they are almost always more sparse than their hairballs.
+Accessing the dependency _backbone_ in a principled way is difficult, but doing so in a rapid, scalable manner is critical for practitioners to be able to make use of it to trim their hairballs.  
 
 ## Scope of this work
 

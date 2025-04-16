@@ -93,21 +93,20 @@ Ultimately we are not great at specifying what "being related" actually means...
 foundational model of graph theory and incidence structures more broadly.
 More to come, but get the terminology down.
 
-::::{#fig-incidence-struct layout_ncol=2}
+::::{#fig-incidence-struct layout="[[1,1]]"}
 
 ::: {#fig-biadj-mat}
-$$
-X(\{1,2,3\})=
-\begin{pmatrix}
-1 & 0 & 1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
-0&0&1&0&1&1&1&0&0&0 \\
-0&1&0&1&0&1&0&0&1&0 
+$$X(\{1,2,3,4\})=\begin{pmatrix}{}
+  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
+  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
+  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 
 \end{pmatrix}
 $$
+
 :::
 
 {{< embed A-codefigs.qmd#fig-bipartite >}}
-{{< embed A-codefigs.qmd#fig-tikz-test >}}
 
 ::::
 
