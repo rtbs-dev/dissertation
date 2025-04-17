@@ -402,4 +402,3 @@ with open('stack-bow.tex') as f:
     ).run_latex(tex_program=tex)
 fig
 ```
-

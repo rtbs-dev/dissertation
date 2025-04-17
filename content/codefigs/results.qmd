@@ -328,19 +328,25 @@ pd.crosstab(df_improv['ID'], [df_improv['score-better'], df_improv['time-better'
 ```
 
 ```{python}
-sns.histplot(
+sns.displot(
     data=(tidy
      .pivot(index=['ID','metric'], columns='name', values='score')
-     .pipe(lambda df: df['EFM']/df['FP'] )
+     .pipe(lambda df: df['EFM']-df['FP'] )
      .rename('score')
      .reset_index()
      .assign(improved=lambda df: df['score']>=1)
     ),
     x='score',
-    hue='improved',
-    log_scale=True,
+    # hue='improved',
+    # log_scale=True,
+    # stat='density',
+    kind='ecdf',
+    aspect=2,
+    height=2,
     # y='metric'
 )
+plt.axvline(0, color='k')
+# plt.yscale('log')
 ```
 
 ```python
@@ -395,7 +401,9 @@ theme_config = {**sns.axes_style('ticks')}|{"axes.spines.top": False, "axes.spin
        ), 
      y='log',
      # marker=so.Nominal(["_", "."]),
-     color=so.Nominal('Set2',order=['FP', 'EFM', 'GL'])
+     # color=so.Nominal('Set2',order=['FP', 'EFM', 'GL'])
+     color=so.Nominal('Set2',order=['FP', 'GL'])
+
  )
  .theme(theme_config)
  .on(sf1)
@@ -411,7 +419,9 @@ p = (so.Plot(tidy, y='seconds',color='name',marker='failed', pointsize='failed')
  .scale(
      x='log', y='log',
      marker=so.Nominal([".", "x"]),
-     color=so.Nominal('Set2',order=['FP', 'EFM','GL']),
+     # color=so.Nominal('Set2',order=['FP', 'EFM','GL']),
+     color=so.Nominal('Set2',order=['FP','GL']),
+
      pointsize=so.Nominal([2.,5.],order=[False,True]),
  )
  .theme(theme_config)
@@ -425,7 +435,7 @@ f.legends.pop(0)
 p
 ```
 
-```{python}
+```python
 g = sns.PairGrid(
     tidy[tidy['name'].isin(['FP'])], #row="metric", col="name",
     x_vars=['med-actv-ct', 'edge-density'],
@@ -446,5 +456,192 @@ g.map(
     sns.scatterplot, marker='.'#, logx=True, truncate=True,
 )
 g.add_legend()
+```
+
+```python
+g = sns.relplot(
+    tidy,
+    # tidy.query("name in ['GL','TS']"),
+    x='med-actv-ct',
+    # x='med-node-ct',
+    # x='jump-density',
+    # y='seconds-log',
+    # y='sec-per-walk',
+    y = 'seconds',
+    col='name',
+    col_order=['FP','GL'], 
+    hue='n-nodes', style='n-nodes',
+    # markers=['+','.','x','s'],
+    palette='Set2',
+    # x_partial='n-nodes',
+    # logx=True,
+    # robust=True,
+)
+# ticks = 
+# ax.get_yaxis().set_major_formatter(formatter)
+# ax.get_yaxis().set_major_formatter(formatter)
+g.set(
+    xscale='log',
+    # yticks=ticks,
+    # xlabel='Activation Fraction',
+    # ylabel='seconds',
+    yscale='log',
+    clip_on=False,
+)
+```
+
+```{python}
+from scipy.linalg import lstsq
+
+f = m.figure.Figure(figsize=(8, 3))
+# feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
+feats = ['n-jumps', 'n-nodes','n-walks']
+# feats = ['n-walks', 'n-nodes']
+
+sbplts = f.subplots(1, len(feats), sharey=True)
+    # x=,
+
+x= tidy.query("name=='FP'")[feats].values 
+M = np.c_[np.ones(x.shape[0]),np.log10(x)]
+# M = np.c_[np.ones(x.shape[0]),x]
+y = tidy.query("name=='FP'")['seconds'].values
+p,res,rnk,s = lstsq(M,np.log10(y))
+# p,res,rnk,s = lstsq(M,y)
+print(p)
+# plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
+resid = np.log10(y) - M@p
+for i,feat in enumerate(feats):
+    x = M[:,i+1]
+    pred = x*p[i+1]
+    sbplts[i].scatter( np.power(10,x),np.power(10,resid+pred), color='dodgerblue',marker='.', alpha=0.1)
+    # sns.regplot(x=np.power(10,x), y=np.power(10,resid+pred), ax=sbplts[i], robust=True)
+    x = np.linspace(x.min(), x.max())
+    sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]), color='dodgerblue')
+    # sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]*np.log(x*p[i+1])), color='0.8')
+
+    sbplts[i].set_xscale('log')
+    sbplts[i].set_yscale('log')
+    sbplts[i].set_title(feat)
+    # sbplts[i].scatter( tidy.query("name=='FP'")['med-actv-ct'],y-M@p+M[d:,2]*p[2], color='dodgerblue',marker='+')
+# x = np.linspace(M[:,2].min(), M[:,2].max())
+
+x= tidy.query("name=='GL'")[feats].values 
+M = np.c_[np.ones(x.shape[0]),np.log10(x)]
+# M = np.c_[np.ones(x.shape[0]),x]
+y = tidy.query("name=='GL'")['seconds'].values
+p,res,rnk,s = lstsq(M,np.log10(y))
+# p,res,rnk,s = lstsq(M,y)
+print(p)
+# plt.scatter( tidy.query("name=='GL'")['med-node-ct'],np.power(10,y-M@p), marker='+')
+# plt.scatter( tidy.query("name=='GL'")['med-actv-ct'],y-M@p,color='xkcd:rust', marker='.')
+for i,feat in enumerate(feats):
+    x = M[:,i+1]
+    pred = x*p[i+1]
+    resid = np.log10(y) - M@p
+    sbplts[i].scatter( np.power(10,x),np.power(10,resid+pred),color='xkcd:rust',marker='.', alpha=0.1)
+    # print(M)
+    x = np.linspace(x.min(), x.max())
+    sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]), color='xkcd:rust')
+
+    sbplts[i].plot( np.power(10,x),np.power(10,x/2), color='k', alpha=0.1)
+    sbplts[i].plot( np.power(10,x),np.power(10,x), color='k', alpha=0.1)
+    sbplts[i].plot( np.power(10,x),np.power(10,2*x), color='k', alpha=0.1)
+    sbplts[i].plot( np.power(10,x),np.power(10,3*x), color='k', alpha=0.1)
+
+    sbplts[i].set(
+        xscale='log',
+        yscale='log',
+        xlabel=feat,
+        ylim=(0.1,2e4)
+    )
+sbplts[0].set(ylabel='seconds (residual)')
+
+f.legend([None,'FP',None, 'GL'],loc=(0.6,0.05), ncols=4)
+plt.tight_layout()
+f.subplots_adjust(bottom=0.3)
+# sbplts[1].plot(np.power(10,x),np.power(10,linearithmic([0.8,0.65,0.5], x, np.zeros_like(x))))
+# plt.scatter( tidy.query("name=='TS'")['med-node-ct'],np.power(10,y-M@p), marker='.')
+f
+```
+
+```{python}
+# https://doi.org/10.2307/2095384
+
+f = m.figure.Figure(figsize=(8, 3))
+feats = ['n-jumps', 'n-nodes','n-walks']
+ratio_feats=[i+'/n-walks' for i in ['1']+feats]
+sbplts = f.subplots(1, len(feats), sharey=True)
+    # x=,
+
+x= tidy.query("name=='FP'")[feats].values 
+M = np.divide(np.c_[np.ones(x.shape[0]),x].T,x[:,-1]).T
+logM=np.log10(M)
+logM[:,-1]=1
+# M = np.c_[np.ones(x.shape[0]),x]
+y = tidy.query("name=='FP'")['seconds'].values/x[:,-1]
+logy = np.log10(y)
+p,res,rnk,s = lstsq(logM,logy)
+# p,res,rnk,s = lstsq(M,y)
+print(p)
+# plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
+for i,feat in enumerate(ratio_feats[:-1]):
+    x = logM[:,i]
+    pred = x*p[i]
+    resid = logy - logM@p
+    # resid=y/(M@p)
+    sbplts[i].scatter( M[:,i],np.power(10,resid+pred), color='dodgerblue',marker='.', alpha=0.1)
+    x = np.linspace(x.min(), x.max())
+    sbplts[i].plot(np.power(10,x),np.power(10,x*p[i]), color='dodgerblue')
+
+    # sbplts[i].scatter( tidy.query("name=='FP'")['med-actv-ct'],y-M@p+M[:,2]*p[2], color='dodgerblue',marker='+')
+
+# plt.scatter( tidy.query("name=='TS'")['med-node-ct'],np.power(10,y-M@p), marker='.')
+
+
+x= tidy.query("name=='GL'")[feats].values 
+M = np.divide(np.c_[np.ones(x.shape[0]),x].T,x[:,-1]).T
+logM=np.log10(M)
+logM[:,-1]=1
+# M = np.c_[np.ones(x.shape[0]),x]
+y = tidy.query("name=='GL'")['seconds'].values/x[:,-1]
+logy = np.log10(y)
+p,res,rnk,s = lstsq(logM,logy)
+# p,res,rnk,s = lstsq(M,y)
+print(p)
+# plt.scatter( tidy.query("name=='GL'")['med-node-ct'],np.power(10,y-M@p), marker='+')
+# plt.scatter( tidy.query("name=='GL'")['med-actv-ct'],y-M@p,color='xkcd:rust', marker='.')
+for i,feat in enumerate(ratio_feats[:-1]):
+    x = logM[:,i]
+    pred = x*p[i]
+    resid = logy - logM@p
+    sbplts[i].scatter(M[:,i],np.power(10,resid+pred),color='xkcd:rust',marker='.', alpha=0.1)
+    
+    x = np.linspace(x.min(), x.max())    
+    sbplts[i].plot(np.power(10,x),np.power(10,x*p[i]), color='xkcd:rust')
+
+    # sbplts[i].plot( np.power(10,x),np.power(10,x/3), color='k', alpha=0.1)
+    # sbplts[i].plot( np.power(10,x),np.power(10,x/2), color='k', alpha=0.1)
+    # sbplts[i].plot( np.power(10,x),np.power(10,x), color='k', alpha=0.1)
+    # sbplts[i].plot( np.power(10,x),np.power(10,2*x), color='k', alpha=0.1)
+
+    sbplts[i].set(
+        xscale='log',
+        yscale='log',
+        xlabel=feat,
+        ylim=(0.01,2e3)
+    )
+
+sbplts[0].set(ylabel='seconds/walk (residual)')
+
+    # sbplts[i].set_ylim(-0.5,0.5)
+# print(res)
+f.legend([None,'FP',None, 'GL'],loc=(0.6,0.05), ncols=4)
+plt.tight_layout()
+f.subplots_adjust(bottom=0.3)
+f
+```
+
+```{python}
+M.shape
 ```
 
