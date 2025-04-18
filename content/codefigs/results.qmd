@@ -39,7 +39,12 @@ figsize = m.rcParams['figure.figsize']
 
 %config InlineBackend.figure_formats = ['svg']
 
-sns.set_theme(font='serif',palette='Set2', context='paper', style='ticks')
+sns.set_theme(
+    font='serif',
+    palette=sns.color_palette(['dodgerblue','xkcd:rust','#9d6784']), 
+    context='paper', 
+    style='ticks'
+)
 # list(Path('../results').glob('*.jsonl'))
 my_orange=(231., 195., 138.)  # "#e7c38a"
 my_green =(141., 203., 160.)  # "#8dcba0"
@@ -51,57 +56,71 @@ datapath = Path('../../data')
 ```
 
 ```{python}
-df = pd.concat([pd.read_json(p, lines=True) for p in datapath.glob('evaluations/*.jsonl')])
-df.head()
+df = pd.concat(
+    [pd.read_json(p, lines=True) for p in datapath.glob('evaluations/*.jsonl')]
+).replace(
+    {'kind':['TR','BL','SC']}, value={'kind':['Tree','Block','ScaleFree']}
+)#.assign()
+# {'TR':'Tree','BL':'Block', 'SC':'ScaleFree'}
+df
 ```
 
 ```{python}
-alg_order=['FP','GL','HSS','RP','eOT','CS','CoOc']
+# df.MCC.min()s
+```
+
+```{python}
+def tidy_up(df, algs, graphs, metrics): 
+    return (
+        df
+        # .drop(['thres-vals', 'F1','matthews_corrcoef', 'fowlkes_mallows'], axis=1)
+        .melt(
+            id_vars=['ID', 'kind','name','n-nodes','n-edges','n-walks','n-jumps',
+                     'med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct',
+                     'seconds'], 
+            value_vars=['F-M','MCC','F1', 'APS'],
+            value_name='score', var_name='metric'
+        )
+        .astype({
+            'kind':'category', 
+            'name':'category', 
+            'metric': 'category',
+            'ID':str,
+        })
+        .assign(**{
+            # 'kind': lambda df: df['kind'].cat.rename_categories({'TR':'Tree','BL':'Block', 'SC':'ScaleFree'}),
+            'seconds-log': lambda df: np.log10(df['seconds']),
+            # 'jump-density':lambda df: df['n-jumps']/df['n-nodes'],
+            'edge-density': lambda df: df['n-edges']/(df['n-nodes']*(df['n-nodes']-1)/2.),
+            'edge-sparsity': lambda df: 1-df['edge-density'],
+    
+            'actv-fraction': lambda df: df['med-actv-ct']/df['n-nodes'],
+            'node-baseprob': lambda df: df['med-node-ct']/df['n-walks'],
+            # 'walk-density': lambda df: df['n-walks']/df['n-nodes'],
+            # 'nodes-norm': lambda df: 1/df['walk-density'],
+            # https://www.researchgate.net/publication/271685622_User%27s_Guide_to_Ratio_Variables
+            'sec-per-walk': lambda df: df['seconds']/df['n-walks'],
+            'logsec-per-walk': lambda df: np.log(df['sec-per-walk']),
+            'node-exposure': lambda df: df['n-nodes']/df['n-walks'],
+            'inv-walks': lambda df: 1/df['n-walks'],
+            # 'jump-sparsity'
+            'tot-jumps': lambda df: df['n-jumps']*df['n-walks'],
+            'MIR': lambda df: 1/df[df.name.isin(algs)].groupby(['ID','metric'], observed=True)['score'].rank(ascending=False),
+            'failed': lambda df: df['score'].isna()
+        })
+        
+    )
+    
+```
+
+```{python}
+alg_order=['FP','GL','HSS','RP','eOT','CS']
 graph_order=['Tree', 'Block', 'ScaleFree']
 metric_order=['MCC','F-M','APS']
-```
 
-```{python}
-tidy = (
-    df
-    # .drop(['thres-vals', 'F1','matthews_corrcoef', 'fowlkes_mallows'], axis=1)
-    .melt(
-        id_vars=['ID', 'kind','name','n-nodes','n-edges','n-walks','n-jumps',
-                 'med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct',
-                 'seconds'], 
-        value_vars=['F-M','MCC','F1', 'APS'],
-        value_name='score', var_name='metric'
-    )
-    .astype({
-        'kind':'category', 
-        'name':'category', 
-        'metric': 'category',
-        'ID':str,
-    })
-    .assign(**{
-        'kind': lambda df: df['kind'].cat.rename_categories({'TR':'Tree','BL':'Block', 'SC':'ScaleFree'}),
-        'seconds-log': lambda df: np.log10(df['seconds']),
-        # 'jump-density':lambda df: df['n-jumps']/df['n-nodes'],
-        'edge-density': lambda df: df['n-edges']/(df['n-nodes']*(df['n-nodes']-1)/2.),
-        'edge-sparsity': lambda df: 1-df['edge-density'],
-
-        'actv-fraction': lambda df: df['med-actv-ct']/df['n-nodes'],
-        'node-baseprob': lambda df: df['med-node-ct']/df['n-walks'],
-        # 'walk-density': lambda df: df['n-walks']/df['n-nodes'],
-        # 'nodes-norm': lambda df: 1/df['walk-density'],
-        # https://www.researchgate.net/publication/271685622_User%27s_Guide_to_Ratio_Variables
-        'sec-per-walk': lambda df: df['seconds']/df['n-walks'],
-        'logsec-per-walk': lambda df: np.log(df['sec-per-walk']),
-        'node-exposure': lambda df: df['n-nodes']/df['n-walks'],
-        'inv-walks': lambda df: 1/df['n-walks'],
-        # 'jump-sparsity'
-        'tot-jumps': lambda df: df['n-jumps']*df['n-walks'],
-        'MIR': lambda df: 1/df.query('name in @alg_order').groupby(['ID','metric'], observed=True)['score'].rank(ascending=False),
-        'failed': lambda df: df['score'].isna()
-    })
-    
-)
+tidy = tidy_up(df, alg_order, graph_order, metric_order)
 tidy.dtypes#.kind
+# print(alg_order)
 ```
 
 ```{python}
@@ -114,51 +133,47 @@ avg_scores
 ```
 
 ```{python}
-# alg_order=['TS','TSi','GL','HSS','RP','CS','eOT',]
+def compare_algs(tidy,alg_order, graph_order,metric_order): 
+    g = sns.FacetGrid(
+        tidy, 
+        col="metric", row="kind",
+        margin_titles=True, aspect=1, height=2,
+        col_order=metric_order,
+        row_order=graph_order,
+    )
+    
+    g.set(
+        ylim=(-0.1,1.1), 
+        clip_on=False,
+    )
+    
+    g.map(
+        sns.pointplot, "score", "name", 
+        order=alg_order,
+        estimator='median',
+        errorbar=None,
+        linestyle='',
+        color='k',
+        marker='|',
+        markersize=15,
+    )
+    
+    g.map(
+        sns.stripplot, "score","name",
+        order=alg_order,
+        dodge=True, alpha=.2, marker='.',
+        color='grey',
+    
+    )
+    return g
+```
 
-# alg_order = avg_scores.index.tolist()
-# metric_order=['MCC', ']
-g = sns.FacetGrid(
-    tidy, 
-    col="metric", row="kind",
-    margin_titles=True, aspect=1, height=2,
-    col_order=metric_order,
-    row_order=graph_order,
-    # hue='name',
-    # hue_order=alg_order,
-    # hue = 'kind',
-    # hue_kws={
-    #     'marker':['1','2'], 
-    # }
-)
+```{python}
+#| label: fig-fp-compare
+#| fig-cap: Comparison of backboning/dependency recovery methods tested vs. Forest Pursuit
 
-g.set(
-    ylim=(-0.1,1.1), 
-    # xlim=(0.09,11), 
-    # xscale="log", 
-    clip_on=False,
 
-)
-
-g.map(
-    sns.pointplot, "score", "name", 
-    order=alg_order,
-    estimator='median', 
-    # errorbar='pi',
-    errorbar=None,
-    linestyle='',
-    color='k',
-    marker='|',
-    markersize=15,
-)
-
-g.map(
-    sns.stripplot, "score","name",
-    order=alg_order,
-    dodge=True, alpha=.2, marker='.',
-    color='grey',
-
-)
+compare_algs(tidy, alg_order, graph_order, metric_order)
 ```
 
 ```{python}
@@ -169,47 +184,31 @@ pd.concat([
 ```
 
 ```{python}
-sns.catplot(
-    tidy.query('metric=="MCC"'), 
-    y='name', 
-    # x='MIR',
-    x='score',
-    orient='h',
-    kind='bar', 
-    # hue='metric',
-    estimator='mean',
-    errorbar=('pi',50),
-    # col='kind', 
-    # row='n-nodes',
-    # col_order=['TR','BL'],
-    order=alg_order,
-    # hue_order=metric_order,
-    aspect=1.618, height=2,
-    
-    # margin_titles=True,
-)
+def compare_algs_single(tidy, alg_order,metric='MCC', **catplot_kws):
+    defaults = dict(
+        orient='h',
+        kind='bar', 
+        x='score',
+        estimator='median',
+        errorbar=('pi',50),
+        aspect=1.618, height=2,
+    )
+    kws=defaults | catplot_kws
+    return sns.catplot(
+        tidy.query('metric==@metric'), 
+        y='name', 
+        order=alg_order,
+        **kws
+    )
+```
+
+```{python}
+compare_algs_single(tidy, alg_order, estimator='mean')
 plt.xlabel('avg. E[MCC]');
 ```
 
 ```{python}
-sns.catplot(
-    tidy,#.query('metric=="MCC"'), 
-    y='name', 
-    x='MIR',
-    orient='h',
-    kind='bar', 
-    # hue='metric',
-    estimator='median',
-    errorbar=('pi',50),
-    # col='kind', 
-    # row='n-nodes',
-    # col_order=['TR','BL'],
-    order=alg_order,
-    # hue_order=metric_order,
-    aspect=1.618, height=2,
-    
-    # margin_titles=True,
-)
+compare_algs_single(tidy, alg_order, estimator='median', x='MIR')
 plt.xlabel('median MIR');
 ```
 
@@ -220,25 +219,19 @@ def plot_median(data, *args, **kwargs):
     plt.axhline(data.median(), **kwargs)
     # plt.axvline(mx**kwargs)
 
-def compare_scores_vs(xvar, alg_order=alg_order, metric='MCC'):
-    g = sns.FacetGrid(
+def compare_scores_vs(tidy, xvar, alg_order=alg_order, metric='MCC'):
+    return sns.FacetGrid(
         tidy.query(f'metric=="{metric}"'), 
         col="name",
-        col_wrap=4,
-        # margin_titles=True, 
+        col_wrap=3, 
         aspect=1, height=2,
         col_order=alg_order,
-    
-    )
-    g.set(
-        ylim=(-0.1,1.1), 
-        # xlim=(0.09,11), 
-        xscale="log", 
-        clip_on=False
-    )
-    
-    g.map(plot_median,'score', color='r', alpha=0.5, clip_on=False, label='median score')
-    g.map(
+    ).map(
+        plot_median,'score', 
+        color='r', alpha=0.5, 
+        clip_on=False, 
+        label='median score'
+    ).map(
         sns.regplot, xvar, "score", 
         color=".3", 
         logx=True, 
@@ -246,28 +239,34 @@ def compare_scores_vs(xvar, alg_order=alg_order, metric='MCC'):
         line_kws={'ls':'--','color':'k','label':'OLS trend line'},
         marker='.', label='experiment',
     
+    ).set(
+        ylim=(-0.1,1.1), 
+        # xlim=(0.09,11), 
+        ylabel=metric,
+        xscale="log", 
+        clip_on=False
+    ).add_legend(
+        loc=(0.35,0.), ncols=3
     )
-    g.add_legend(loc=(0.35,0.), ncols=3)
-    return g
 ```
 
 ```{python}
-compare_scores_vs('n-nodes', metric='MCC')
+compare_scores_vs(tidy,'n-nodes', metric='MCC')
 ```
 
 ```{python}
-compare_scores_vs('n-walks')
+compare_scores_vs(tidy,'n-walks')
 ```
 
 ```{python}
-compare_scores_vs('n-jumps')
+compare_scores_vs(tidy,'n-jumps')
 ```
 
 ```{python}
-compare_scores_vs('edge-density', metric='MCC')
+compare_scores_vs(tidy,'edge-density', metric='MCC')
 ```
 
-```{python}
+```python
 g = sns.FacetGrid(
     tidy, row="metric", col="name",
     margin_titles=True, aspect=1, height=2,
@@ -402,7 +401,7 @@ theme_config = {**sns.axes_style('ticks')}|{"axes.spines.top": False, "axes.spin
      y='log',
      # marker=so.Nominal(["_", "."]),
      # color=so.Nominal('Set2',order=['FP', 'EFM', 'GL'])
-     color=so.Nominal('Set2',order=['FP', 'GL'])
+     color=so.Nominal(None,order=['FP', 'GL'])
 
  )
  .theme(theme_config)
@@ -413,14 +412,14 @@ theme_config = {**sns.axes_style('ticks')}|{"axes.spines.top": False, "axes.spin
 
 
 p = (so.Plot(tidy, y='seconds',color='name',marker='failed', pointsize='failed')
- .pair(x=['edge-density','n-jumps'])
+ .pair(x=['n-walks','n-jumps'])
  # .facet(row='name', order=['TS', 'GL','HSS'])
  .add(so.Dots(), so.Jitter(0.3))
  .scale(
      x='log', y='log',
      marker=so.Nominal([".", "x"]),
      # color=so.Nominal('Set2',order=['FP', 'EFM','GL']),
-     color=so.Nominal('Set2',order=['FP','GL']),
+     color=so.Nominal(None,order=['FP','GL']),
 
      pointsize=so.Nominal([2.,5.],order=[False,True]),
  )
@@ -493,6 +492,119 @@ g.set(
 ```{python}
 from scipy.linalg import lstsq
 
+def semilog_partial_residuals(df, algs, target, feats):
+    f = m.figure.Figure(figsize=(8, 3))
+    # feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
+    # feats = ['n-jumps', 'n-nodes','n-walks']
+    # feats = ['n-walks', 'n-nodes']
+    
+    sbplts = f.subplots(1, len(feats), sharey=True)
+        # x=,
+    for alg in algs:
+
+        filt = df.query(f"name=='{alg}'")
+        notna=filt[target].notna()
+        y = filt[target].loc[notna].values
+        
+        x= filt[feats].loc[notna].values 
+        M = np.c_[np.ones(x.shape[0]),np.log10(x)]
+        # M = np.c_[np.ones(x.shape[0]),x]
+        p,res,rnk,s = lstsq(M,y)
+        # p,res,rnk,s = lstsq(M,y)
+        print(p)
+        # plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
+        resid = y - M@p
+        for i,feat in enumerate(feats):
+            x = M[:,i+1]
+            pred = x*p[i+1]
+            sbplts[i].scatter( np.power(10,x),resid+pred,marker='.', alpha=0.2)
+            # sns.regplot(x=np.power(10,x), y=np.power(10,resid+pred), ax=sbplts[i], robust=True)
+            x = np.linspace(x.min(), x.max())
+            sbplts[i].plot( np.power(10,x),x*p[i+1], label=alg)
+            # sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]*np.log(x*p[i+1])), color='0.8')
+            
+
+            sbplts[i].set(xlabel=feat,xscale='log')
+    sbplts[0].set(ylabel=f'{target} (residual)')
+    handles, labels = sbplts[0].get_legend_handles_labels()
+    f.legend(handles, labels, loc='lower center', ncols=len(algs))
+    # plt.tight_layout()
+    f.subplots_adjust(bottom=0.25)
+    return f
+    
+def log_partial_residuals(df, algs, target, feats):
+    f = m.figure.Figure(figsize=(8, 3))
+    # feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
+    # feats = ['n-jumps', 'n-nodes','n-walks']
+    # feats = ['n-walks', 'n-nodes']
+    
+    sbplts = f.subplots(1, len(feats), sharey=True)
+        # x=,
+    for alg in algs:
+
+        filt = df.query(f"name=='{alg}'")
+        notna=filt[target].notna()
+        y = filt[target].loc[notna].values
+        
+        x= filt[feats].loc[notna].values 
+        M = np.c_[np.ones(x.shape[0]),np.log10(x)]
+        # M = np.c_[np.ones(x.shape[0]),x]
+        p,res,rnk,s = lstsq(M,np.log10(y))
+        # p,res,rnk,s = lstsq(M,y)
+        print(p)
+        # plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
+        resid = np.log10(y) - M@p
+        for i,feat in enumerate(feats):
+            x = M[:,i+1]
+            pred = x*p[i+1]
+            sbplts[i].scatter( np.power(10,x),np.power(10,resid+pred),marker='.', alpha=0.2)
+            # sns.regplot(x=np.power(10,x), y=np.power(10,resid+pred), ax=sbplts[i], robust=True)
+            x = np.linspace(x.min(), x.max())
+            sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]), label=alg)
+            # sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]*np.log(x*p[i+1])), color='0.8')
+            
+
+            sbplts[i].set(xlabel=feat, yscale='log',xscale='log')
+    ys=sbplts[0].get_ylim()
+    print(ys)
+    for s in sbplts:
+        xmin,xmax=s.get_xlim()
+        # ymin,ymax=s.get_ylim()
+        print(xmin,xmax)
+        x = np.linspace(xmin, xmax)
+        
+        s.plot( x,np.sqrt(x), color='k', alpha=0.1)
+        s.plot( x,x, color='k', alpha=0.1)
+        s.plot( x,x**2, color='k', alpha=0.1)
+        s.plot( x,x**3, color='k', alpha=0.1)
+        s.set_ylim(ys)
+    sbplts[0].set(ylabel=f'{target} (residual)')
+    handles, labels = sbplts[0].get_legend_handles_labels()
+    f.legend(handles, labels, loc='lower center', ncols=len(algs))
+    # plt.tight_layout()
+    f.subplots_adjust(bottom=0.25)
+    # f.legend(loc=(0.6,0.05), ncols=4)
+    return f
+```
+
+```{python}
+log_partial_residuals(df, ['FP','GL'], 'seconds', ['n-jumps', 'n-nodes','n-walks'])
+```
+
+```{python}
+df.assign(MCC=lambda df: 100*(df.MCC+1)/2).isna().sum()
+```
+
+```{python}
+semilog_partial_residuals(
+    df,
+    ['FP','GL','CS'],
+    'MCC',
+    ['n-jumps', 'n-nodes','n-walks']
+)
+```
+
+```{python}
 f = m.figure.Figure(figsize=(8, 3))
 # feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
 feats = ['n-jumps', 'n-nodes','n-walks']
