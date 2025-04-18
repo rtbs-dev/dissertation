@@ -5,7 +5,7 @@
 
 ## Sparse Dictionary Learning
 
-### Problem Speification
+### Problem Specification
 
 ### Matching Pursuit
 
@@ -24,6 +24,12 @@ I.e. the PLOS paper (modified basis-pursuit via MSTs)
 
 ### Method
 
-### Results
+### Results - Scoring
+{{< embed ../codefigs/results.qmd#fig-fp-compare >}}
 
-### Discussion
+### Results - Performance
+
+
+## Discussion
+
+### Interaction Probability
