@@ -7,7 +7,7 @@ This immediately leads us to model our node activations as resulting from _sprea
 
 
 In this chapter we outline how the random-walks are is related to these diffusive  models of graph traversal, enabled by an investigation of the graph's "regularized laplacian" from @Semisupervisedlearning_Avrachenkov2017.
-Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Tree Theorem [@MatrixForestTheorem_Chebotarev2006,@Countingrootedforests_Knill2013] to more generally define our generative node activation model: namely, as samples from the space of rooted random spanning forests on the dependency graph.
+Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model: namely, as samples from the space of rooted random spanning forests on the dependency graph.
 
  
 
