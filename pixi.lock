@@ -108,7 +108,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xorg-libxrender-0.9.12-hb9d3cd8_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/xorg-libxtst-1.2.5-hb9d3cd8_3.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/zstd-1.5.7-hb8e6e7a_2.conda
-      - pypi: git+https://github.com/rtbs-dev/affinis.git#9ad728466945747cb9945ea30958197b3839dc21
+      - pypi: git+https://github.com/rtbs-dev/affinis#9ad728466945747cb9945ea30958197b3839dc21
       - pypi: https://files.pythonhosted.org/packages/95/67/026598918f92145156f2feb7957f57daefda20375cc2ac1a0692a9b8010b/aiobotocore-2.21.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0f/15/5bf3b99495fb160b63f95972b81750f18f7f4e02ad051373b669d17d44f2/aiohappyeyeballs-2.6.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/af/26/f9aa166e4f313c5a3d9fe06ded39f6b0c17711477637345f1c4ea52ddc42/aiohttp-3.11.17-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl
@@ -314,7 +314,7 @@ packages:
   purls: []
   size: 610380
   timestamp: 1741999835753
-- pypi: git+https://github.com/rtbs-dev/affinis.git#9ad728466945747cb9945ea30958197b3839dc21
+- pypi: git+https://github.com/rtbs-dev/affinis#9ad728466945747cb9945ea30958197b3839dc21
   name: affinis
   version: 0.6.4
   requires_dist:
@@ -477,8 +477,6 @@ packages:
   - dbus >=1.13.6,<2.0a0
   - libgcc-ng >=9.3.0
   - libglib >=2.68.1,<3.0a0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   license_family: LGPL
   purls: []
@@ -494,8 +492,6 @@ packages:
   - xorg-libx11
   - xorg-libxi
   - xorg-libxtst
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   license_family: LGPL
   purls: []
@@ -510,8 +506,6 @@ packages:
   - libstdcxx-ng >=12
   constrains:
   - atk-1.0 2.38.0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.0-or-later
   license_family: LGPL
   purls: []
@@ -935,8 +929,6 @@ packages:
   - expat >=2.4.2,<3.0a0
   - libgcc-ng >=9.4.0
   - libglib >=2.70.2,<3.0a0
-  arch: x86_64
-  platform: linux
   license: GPL-2.0-or-later
   license_family: GPL
   purls: []
@@ -1001,12 +993,13 @@ packages:
 - pypi: .
   name: dissertation
   version: 0.1.0
-  sha256: d0af48e15c0decd8ea5c31be1cdf1280e7e0fc17f575462bc247aa47b95ae065
+  sha256: c41486c59ba105ae44fdf89d9d8de959915ec4ff3135ae65751b7de7d768f5a4
   requires_dist:
   - jupyter-tikz>=0.5.6,<0.6
   - network2tikz>=0.1.8,<0.2
   - numpyarray-to-latex>=0.1.0,<0.2
   - mendr @ git+https://github.com/rtbs-dev/mendr.git
+  - affinis @ https://github.com/rtbs-dev/affinis.git
   requires_python: '>=3.11'
   editable: true
 - pypi: https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl
@@ -1293,8 +1286,6 @@ packages:
   md5: a089d06164afd2d511347d3f87214e0b
   depends:
   - libgcc-ng >=10.3.0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -1320,8 +1311,6 @@ packages:
   - __glibc >=2.17,<3.0.a0
   - libexpat 2.7.0 h5888daf_0
   - libgcc >=13
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -1486,8 +1475,6 @@ packages:
   md5: ac7bc6a654f8f41b352b38f4051135f8
   depends:
   - libgcc-ng >=7.5.0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1
   purls: []
   size: 114383
@@ -1617,8 +1604,6 @@ packages:
   - libjpeg-turbo >=3.0.0,<4.0a0
   - libpng >=1.6.43,<1.7.0a0
   - libtiff >=4.6.0,<4.8.0a0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   license_family: LGPL
   purls: []
@@ -1660,8 +1645,6 @@ packages:
   - __glibc >=2.17,<3.0.a0
   - libgcc >=13
   - libglib 2.84.1 h2ff4ddf_0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   purls: []
   size: 116281
@@ -1680,8 +1663,6 @@ packages:
   depends:
   - libgcc-ng >=12
   - libstdcxx-ng >=12
-  arch: x86_64
-  platform: linux
   license: LGPL-2.0-or-later
   license_family: LGPL
   purls: []
@@ -1707,8 +1688,6 @@ packages:
   - libwebp-base >=1.5.0,<2.0a0
   - libzlib >=1.3.1,<2.0a0
   - pango >=1.56.1,<2.0a0
-  arch: x86_64
-  platform: linux
   license: EPL-1.0
   license_family: Other
   purls: []
@@ -1750,8 +1729,6 @@ packages:
   - xorg-libxinerama >=1.1.5,<1.2.0a0
   - xorg-libxrandr >=1.5.4,<2.0a0
   - xorg-libxrender >=0.9.12,<0.10.0a0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.0-or-later
   license_family: LGPL
   purls: []
@@ -1795,8 +1772,6 @@ packages:
   - libgcc-ng >=12
   - libglib >=2.76.3,<3.0a0
   - libstdcxx-ng >=12
-  arch: x86_64
-  platform: linux
   license: LGPL-2.0-or-later
   license_family: LGPL
   purls: []
@@ -1816,8 +1791,6 @@ packages:
   - libglib >=2.84.1,<3.0a0
   - libstdcxx >=13
   - libzlib >=1.3.1,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -1826,8 +1799,6 @@ packages:
 - conda: https://conda.anaconda.org/conda-forge/linux-64/hicolor-icon-theme-0.17-ha770c72_2.tar.bz2
   sha256: 336f29ceea9594f15cc8ec4c45fdc29e10796573c697ee0d57ebb7edd7e92043
   md5: bbf6f174dcd3254e19a2f5d2295ce808
-  arch: x86_64
-  platform: linux
   license: GPL-2.0-or-later
   license_family: GPL
   purls: []
@@ -2206,8 +2177,6 @@ packages:
   - libgcc-ng >=12
   - libstdcxx-ng >=12
   - libzlib >=1.2.13,<2.0.0a0
-  arch: x86_64
-  platform: linux
   license: Apache-2.0
   license_family: Apache
   purls: []
@@ -2328,8 +2297,6 @@ packages:
   - libtiff >=4.7.0,<4.8.0a0
   - libwebp-base >=1.5.0,<2.0a0
   - libzlib >=1.3.1,<2.0a0
-  arch: x86_64
-  platform: linux
   license: GD
   license_family: BSD
   purls: []
@@ -2447,8 +2414,6 @@ packages:
   - pango >=1.56.3,<2.0a0
   constrains:
   - __glibc >=2.17
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   purls: []
   size: 6543651
@@ -2564,8 +2529,6 @@ packages:
   - libxml2 >=2.13.6,<2.14.0a0
   - xkeyboard-config
   - xorg-libxau >=1.0.12,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT/X11 Derivative
   license_family: MIT
   purls: []
@@ -2581,8 +2544,6 @@ packages:
   - libiconv >=1.18,<2.0a0
   - liblzma >=5.8.1,<6.0a0
   - libzlib >=1.3.1,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -2977,8 +2938,6 @@ packages:
   - libglib >=2.84.0,<3.0a0
   - libpng >=1.6.47,<1.7.0a0
   - libzlib >=1.3.1,<2.0a0
-  arch: x86_64
-  platform: linux
   license: LGPL-2.1-or-later
   purls: []
   size: 453100
@@ -3272,8 +3231,6 @@ packages:
   - libgcc >=13
   - python >=3.13.0rc2,<3.14.0a0
   - python_abi 3.13.* *_cp313
-  arch: x86_64
-  platform: linux
   license: BSD-3-Clause
   license_family: BSD
   purls:
@@ -3906,8 +3863,6 @@ packages:
   - libffi >=3.4,<4.0a0
   - libgcc-ng >=13
   - libstdcxx-ng >=13
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -3931,8 +3886,6 @@ packages:
   - __glibc >=2.17,<3.0.a0
   - libgcc >=13
   - xorg-libx11 >=1.8.10,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -3993,8 +3946,6 @@ packages:
   - libgcc >=13
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxfixes >=6.0.1,<7.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4009,8 +3960,6 @@ packages:
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxfixes >=6.0.1,<7.0a0
   - xorg-libxrender >=0.9.11,<0.10.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4025,8 +3974,6 @@ packages:
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxext >=1.3.6,<2.0a0
   - xorg-libxfixes >=6.0.1,<7.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4062,8 +4009,6 @@ packages:
   - __glibc >=2.17,<3.0.a0
   - libgcc >=13
   - xorg-libx11 >=1.8.10,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4078,8 +4023,6 @@ packages:
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxext >=1.3.6,<2.0a0
   - xorg-libxfixes >=6.0.1,<7.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4094,8 +4037,6 @@ packages:
   - libstdcxx >=13
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxext >=1.3.6,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4110,8 +4051,6 @@ packages:
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxext >=1.3.6,<2.0a0
   - xorg-libxrender >=0.9.11,<0.10.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []
@@ -4138,8 +4077,6 @@ packages:
   - xorg-libx11 >=1.8.10,<2.0a0
   - xorg-libxext >=1.3.6,<2.0a0
   - xorg-libxi >=1.7.10,<2.0a0
-  arch: x86_64
-  platform: linux
   license: MIT
   license_family: MIT
   purls: []

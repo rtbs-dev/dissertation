@@ -22,6 +22,8 @@ from pathlib import Path
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import affinis.associations as asc
+import numpy as np
 ```
 
 ```{python}
@@ -50,6 +52,9 @@ Xdf = (
     .set_index(['id','author'])
     ['coauth'].unstack().fillna(0)
 )
+
+Xdf = Xdf[Xdf.sum(axis=1)>1]
+Xdf = Xdf.loc[:,Xdf.sum()>0]
 ```
 
 ```{python}
@@ -62,6 +67,17 @@ plt.yscale('log')
 ```
 
 ```{python}
-sns.histplot(Xdf[Xdf.sum(axis=1)>1].sum(axis=1))
+sns.histplot(Xdf.sum(axis=1))
 ```
 
+```{python}
+sns.heatmap(Xdf.T@Xdf - np.diag(Xdf.sum())>0)
+```
+
+```{python}
+sns.heatmap(asc.ochiai(Xdf.values, pseudocts='min-connect')>0.5)
+```
+
+```{python}
+sns.heatmap(asc.forest_pursuit_edge(Xdf.values, pseudocts='min-connect')>0.1)
+```
