@@ -110,7 +110,6 @@ def tidy_up(df, algs, graphs, metrics):
         })
         
     )
-    
 ```
 
 ```{python}
@@ -588,7 +587,9 @@ def log_partial_residuals(df, algs, target, feats):
 ```
 
 ```{python}
-log_partial_residuals(df, ['FP','GL'], 'seconds', ['n-jumps', 'n-nodes','n-walks'])
+f=log_partial_residuals(df, ['FP','GL'], 'seconds', ['n-jumps', 'n-nodes','n-walks'])
+f.suptitle('Partial Residuals (regression on computation time)')
+f
 ```
 
 ```{python}
@@ -596,12 +597,15 @@ df.assign(MCC=lambda df: 100*(df.MCC+1)/2).isna().sum()
 ```
 
 ```{python}
-semilog_partial_residuals(
+f = semilog_partial_residuals(
     df,
     ['FP','GL','CS'],
     'MCC',
     ['n-jumps', 'n-nodes','n-walks']
 )
+f.suptitle('Partial Residuals (regression on E[MCC])')
+f
+# plt.gcf().suptitle('Partial Residuals, MCC')
 ```
 
 ```{python}
@@ -753,7 +757,49 @@ f.subplots_adjust(bottom=0.3)
 f
 ```
 
+## Interaction Probability for APS
+
 ```{python}
-M.shape
+# GT=ak.from_json(Path('../../data/GroundTruth.jsonl'), line_delimited=True)
 ```
 
+```{python}
+# si = ak.zip({
+#     'FPi':df.query('name=="FP"')['estimate'].ak.array*df.query('name=="CoOc"')['estimate'].ak.array,
+#     'EFMi':df.query('name=="EFM"')['estimate'].ak.array*df.query('name=="CoOc"')['estimate'].ak.array,
+#     'ground':GT,
+# }, depth_limit=1)
+```
+
+```{python}
+# from mendr.metrics import Contingent
+# from mendr.experiments import _metrics
+# a = si[0]['ground']
+
+pd.concat([
+    tidy.groupby(['metric','name'], observed=True)['score'].mean().unstack()[['FP','FPi','GL']],#.round(2)
+    # tidy.groupby('name', observed=True)['MIR'].mean().to_frame().T[['FP','FPi','GL']]
+]).round(2)
+```
+
+```{python}
+# for dat in si:
+#     M = Contingent.from_scalar(ak.to_numpy(dat['ground']), ak.to_numpy(dat['FPi']))
+#     print(_metrics['APS'](M))
+    # print(M.mcc)
+    # print(M.)
+```
+
+```{python}
+compare_algs(tidy, ['FP','FPi','GL'], graph_order, metric_order)
+```
+
+```{python}
+
+semilog_partial_residuals(
+    df,
+    ['FPi','GL','CS'],
+    'APS',
+    ['n-jumps', 'n-nodes','n-walks']
+)
+```
