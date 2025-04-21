@@ -1,0 +1,67 @@
+---
+title: Source for Case Studies
+execute:
+  cache: true
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.7
+  kernelspec:
+    display_name: Python (Pixi)
+    language: python
+    name: pixi-kernel-python3
+---
+
+```{python}
+import awkward as ak
+from ruamel.yaml import YAML
+from pathlib import Path 
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+```
+
+```{python}
+yaml = YAML(typ='safe')
+# data = yaml.load(path)
+datadir = Path('../../data/')
+
+# s = ak.from_iter(yaml.load(datadir/'complex-networks.yaml').items())
+# s = ak.Array(dict(zip(['id','meta'], ak.unzip(s))))
+# ak.from_json()
+df = pd.DataFrame.from_dict(yaml.load(datadir/'complex-networks.yaml'), orient='index').rename_axis('id')
+```
+
+```{python}
+# ak.to_dataframe(s)
+tidy=(df
+ .explode('author')
+ .reset_index()
+ .assign(coauth=1, author=lambda df: df.author.str.lower().astype('category'))
+ # .set_index(['id','author'])
+ # ['coauth'].unstack().fillna(0)
+)
+authortype=tidy['author'].dtype#.categories
+Xdf = (
+    tidy
+    .set_index(['id','author'])
+    ['coauth'].unstack().fillna(0)
+)
+```
+
+```{python}
+Xdf.sum()
+```
+
+```{python}
+sns.histplot(Xdf.sum())
+plt.yscale('log')
+```
+
+```{python}
+sns.histplot(Xdf[Xdf.sum(axis=1)>1].sum(axis=1))
+```
+
