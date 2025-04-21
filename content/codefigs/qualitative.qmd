@@ -23,7 +23,13 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import affinis.associations as asc
+from affinis.utils import _sq
+from affinis.filter import min_connected_filter
+from affinis.proximity import sinkhorn
+import scipy.sparse as sprs
+
 import numpy as np
+import networkx as nx
 ```
 
 ```{python}
@@ -42,7 +48,14 @@ df = pd.DataFrame.from_dict(yaml.load(datadir/'complex-networks.yaml'), orient='
 tidy=(df
  .explode('author')
  .reset_index()
- .assign(coauth=1, author=lambda df: df.author.str.lower().astype('category'))
+ .assign(
+     coauth=1,
+     author=lambda df: (
+         df.author
+         .str.lower()
+         .astype('category')
+     )
+ )
  # .set_index(['id','author'])
  # ['coauth'].unstack().fillna(0)
 )
@@ -53,12 +66,16 @@ Xdf = (
     ['coauth'].unstack().fillna(0)
 )
 
+# Xdf = Xdf.loc[:,Xdf.sum()>0]
 Xdf = Xdf[Xdf.sum(axis=1)>1]
-Xdf = Xdf.loc[:,Xdf.sum()>0]
+X = Xdf.values#.astype(bool)
+# list(Xdf.columns.values)
 ```
 
 ```{python}
-Xdf.sum()
+Xhyp = (Xdf.T/(Xdf.sum(axis=1)-1)).T
+
+Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp))#-np.diag(Xhyp.sum())
 ```
 
 ```{python}
@@ -75,9 +92,41 @@ sns.heatmap(Xdf.T@Xdf - np.diag(Xdf.sum())>0)
 ```
 
 ```{python}
-sns.heatmap(asc.ochiai(Xdf.values, pseudocts='min-connect')>0.5)
+plt.figure(figsize=(15,15))
+G = nx.from_pandas_adjacency((Xdf.T@Xdf - np.diag(Xdf.sum()))>0)
+pos_cos = nx.kamada_kawai_layout(G)
+subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
+# G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
+G = G.subgraph(subset)
+nx.draw_networkx(G, pos=pos_cos, node_color='w')
+# nx.connected.is_connected(G)
+print(len(subset))
 ```
 
 ```{python}
-sns.heatmap(asc.forest_pursuit_edge(Xdf.values, pseudocts='min-connect')>0.1)
+# sns.heatmap(asc.ochiai(Xdf.values, pseudocts='min-connect')>0.5)
+
+plt.figure(figsize=(15,15))
+G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns))
+G = G.subgraph(subset)
+
+pos_tree = nx.kamada_kawai_layout(G)
+nx.draw_networkx(G, pos=pos_tree, node_color='w')
 ```
+
+```{python}
+(X.sum(axis=1)==0).sum()
+```
+
+```{python}
+plt.figure(figsize=(15,15))
+evd_L_pursuit = _sq(asc.forest_pursuit_edge(sprs.csr_array(X), pseudocts=('zero-sum','min-connect')))
+
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.02), index=Xdf.columns, columns=Xdf.columns))
+
+G = G.subgraph(subset)
+pos = nx.kamada_kawai_layout(G)
+nx.draw_networkx(G, pos=pos_tree, node_color='w')
+nx.connected.is_connected(G)
+```
+
