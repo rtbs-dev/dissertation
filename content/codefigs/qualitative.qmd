@@ -78,13 +78,12 @@ tidy=(df
      author=lambda df: (
          df.author
          .str.lower()
-         .astype('category')
+         # .astype('category')
      )
  )
  # .set_index(['id','author'])
  # ['coauth'].unstack().fillna(0)
 )
-authortype=tidy['author'].dtype#.categories
 # tidy.iloc[tidy.set_index(['id','author']).index.duplicated()]
 # df.loc['WOS:000226704200004']
 ```
@@ -97,11 +96,13 @@ Xdf = (
 )
 
 Xdf = Xdf[Xdf.sum(axis=1)>1]
-Xdf = Xdf.loc[:,Xdf.sum()>0]
+Xdf = Xdf.loc[:,Xdf.sum()>1]
 Xdf = Xdf[Xdf.sum(axis=1)>1]
 
 X = Xdf.values#.astype(bool)
-Xdf.columns
+Xdf.columns = Xdf.columns.astype('category')
+authortype=Xdf.columns.dtype#.categories
+authortype.categories
 ```
 
 ```{python}
@@ -128,10 +129,10 @@ sns.histplot(Xdf.sum(axis=1))
 ```
 
 ```{python}
-
 G = nx.from_pandas_adjacency((Xdf.T@Xdf - np.diag(Xdf.sum()))>0)
 
 subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
+s_subs=pd.Series(list(subset), dtype=authortype)
 # G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
 # list(nx.neighbors(G, 'newman, m.'))
 for k,subs in enumerate(sorted(nx.connected_components(G), key=len, reverse=True)): 
@@ -144,15 +145,22 @@ for k,subs in enumerate(sorted(nx.connected_components(G), key=len, reverse=True
 
 ```{python}
 plt.figure(figsize=(25,25))
-G = G.subgraph(subset)
 pos_cos = nx.kamada_kawai_layout(G)
+G = G.subgraph(subset)
+
+commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
+pal = sns.color_palette(n_colors=len(commun))
+colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
+
 nx.draw_networkx(G, pos=pos_cos, node_color='w')
 # nx.connected.is_connected(G)
+nx.draw_networkx_labels(G, pos=pos_cos, font_color=colors);
 print(len(subset))
 ```
 
 ```{python}
 # subset
+asc.chow_liu(X, pseudocts=0.5)[s_subs.cat.codes].T[s_subs.cat.codes]
 ```
 
 ```{python}
@@ -160,27 +168,31 @@ print(len(subset))
 
 plt.figure(figsize=(25,25))
 G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns))
+pos_tree = nx.kamada_kawai_layout(G)
 G = G.subgraph(subset)
 
-pos_tree = nx.kamada_kawai_layout(G)
 nx.draw_networkx(G, pos=pos_tree, node_color='w')
+nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
 ```
 
 ```{python}
-(X.sum(axis=1)==0).sum()
+# sns.histplot(evd_L_pursuit[evd_L_pursuit>0.5])
 ```
 
 ```{python}
 plt.figure(figsize=(25,25))
-evd_L_pursuit = _sq(asc.forest_pursuit_edge(sprs.csr_array(X), pseudocts=('zero-sum','min-connect')))
+evd_L_pursuit = _sq(asc.expected_forest_maximization(X)[s_subs.cat.codes].T[s_subs.cat.codes])
+# ~min_connected_filter(evd_L_pursuit).mask
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.01), index=s_subs, columns=s_subs))
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
 
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.01), index=Xdf.columns, columns=Xdf.columns))
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=Xdf.columns, columns=Xdf.columns))
 
-G = G.subgraph(subset)
+# G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G)
 nx.draw_networkx(G, pos=pos, node_color='w')
-nx.connected.is_connected(G)
+# nx.connected.is_connected(G)
+nx.draw_networkx_labels(G, pos=pos, font_color=colors);
 ```
 
 ```{python}
@@ -188,7 +200,7 @@ nx.connected.is_connected(G)
 L = nx.laplacian_matrix(G, nodelist=list(subset))
 # sns.clustermap(pd.DataFrame(forest_correlation(L),  index=list(subset), columns=list(subset)))
 from sklearn.cluster import AgglomerativeClustering
-sns.histplot(_sq(adjusted_forest_dists(L, beta=1000)))
+sns.histplot(_sq(generalized_graph_dists(L)))
 ```
 
 ```{python}
@@ -196,7 +208,7 @@ from scipy.cluster.hierarchy import dendrogram
 
 clust=AgglomerativeClustering(
     metric='precomputed', linkage='complete',#, distance_threshold=0.2,
-    distance_threshold=4, n_clusters=None
+    distance_threshold=3, n_clusters=None
 ).fit(adjusted_forest_dists(L.todense(), beta=100))
 
 def plot_dendrogram(model, **kwargs):
@@ -230,13 +242,15 @@ clust.labels_
 ```
 
 ```{python}
-pal = sns.color_palette(n_colors=clust.labels_.max()+1)
-sns.clustermap(adjusted_forest_dists(L, beta=100), row_colors=np.array(pal)[clust.labels_])
+# commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
+
+# pal = sns.color_palette(n_colors=len(commun))
+# colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 ```
 
 ```{python}
-plt.figure(figsize=(25,25))
-nx.draw_networkx(G, pos=pos, node_color='w')
-nx.draw_networkx_labels(G, pos=pos, font_color=dict(zip(list(subset), np.array(pal)[clust.labels_])));
+# plt.figure(figsize=(25,25))
+# nx.draw_networkx(G, pos=pos, node_color='w')
+# nx.draw_networkx_labels(G, pos=pos, font_color=colors);
 ```
 
