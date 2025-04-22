@@ -22,6 +22,7 @@ from pathlib import Path
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib
 import affinis.associations as asc
 from affinis.utils import _sq
 from affinis.filter import min_connected_filter,edge_mask_to_laplacian
@@ -29,9 +30,38 @@ from affinis.proximity import sinkhorn, forest_correlation
 from affinis.distance import generalized_graph_dists, adjusted_forest_dists
 import scipy.sparse as sprs
 
+from adjustText import adjust_text
+
 import numpy as np
 import networkx as nx
 ```
+
+```{python}
+
+matplotlib.rcParams['font.family']=['serif']
+matplotlib.rcParams['font.serif']=['Bitstream Charter']
+sns.set_theme(font='serif',palette='Set2', context='paper', style='ticks')
+
+nxlabel_kws={
+    # "font_color": "white",
+    "font_color": "0.3",
+    "font_family":"Bitstream Charter",
+    "font_weight":'bold',
+    "font_size": 12,
+}
+
+nxdraw_kws = {
+    #"node_size": 500, 
+    # "node_color": "xkcd:slate",
+    "edgecolors": "grey",
+    "edge_color": "grey",
+    "linewidths": 1,
+    "width": 2,
+} | nxlabel_kws
+```
+
+
+## Network Scientist Network
 
 ```{python}
 yaml = YAML(typ='safe')
@@ -77,7 +107,7 @@ tidy=(df
      coauth=1,
      author=lambda df: (
          df.author
-         .str.lower()
+         # .str.lower()
          # .astype('category')
      )
  )
@@ -95,9 +125,9 @@ Xdf = (
     ['coauth'].unstack().fillna(0)
 )
 
-Xdf = Xdf[Xdf.sum(axis=1)>1]
 Xdf = Xdf.loc[:,Xdf.sum()>1]
 Xdf = Xdf[Xdf.sum(axis=1)>1]
+# Xdf = Xdf[Xdf.sum(axis=1)>1]
 
 X = Xdf.values#.astype(bool)
 Xdf.columns = Xdf.columns.astype('category')
@@ -129,6 +159,29 @@ sns.histplot(Xdf.sum(axis=1))
 ```
 
 ```{python}
+def draw_graph_communities(G, pos, colors, figsize=(25,25)):
+    f=plt.figure(figsize=figsize)
+    nx.draw_networkx(
+        G, pos=pos, 
+        with_labels=False, 
+        node_color=[colors[i] for i in G.nodes], 
+        **nxdraw_kws
+    )
+# nx.connected.is_connected(G)
+    labels=nx.draw_networkx_labels(
+        G, pos=pos,
+        bbox=dict(edgecolor='grey',boxstyle='round,pad=0.2', alpha=0.7), 
+        **nxlabel_kws
+    )
+    #iterate over the labels (key = label, value=matplotlib Text object)
+    labels=adjust_text(list(labels.values()))
+    for t in labels[0]:
+        #manipulate indiviual text objects
+        # print(t)
+        t.set_backgroundcolor(colors[t.get_text()])
+```
+
+```{python}
 G = nx.from_pandas_adjacency((Xdf.T@Xdf - np.diag(Xdf.sum()))>0)
 
 subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
@@ -141,10 +194,7 @@ for k,subs in enumerate(sorted(nx.connected_components(G), key=len, reverse=True
 # 'barabási, a.' in subset
     if 'sneppen, k.' in subs:
         print('sneppen',k)
-```
 
-```{python}
-plt.figure(figsize=(25,25))
 pos_cos = nx.kamada_kawai_layout(G)
 G = G.subgraph(subset)
 
@@ -152,27 +202,29 @@ commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 
-nx.draw_networkx(G, pos=pos_cos, node_color='w')
-# nx.connected.is_connected(G)
-nx.draw_networkx_labels(G, pos=pos_cos, font_color=colors);
+draw_graph_communities(G,pos_cos,colors)
+
+        
 print(len(subset))
 ```
 
 ```{python}
 # subset
-asc.chow_liu(X, pseudocts=0.5)[s_subs.cat.codes].T[s_subs.cat.codes]
+# asc.chow_liu(X, pseudocts=0.5)[s_subs.cat.codes].T[s_subs.cat.codes]
 ```
 
 ```{python}
 # sns.heatmap(asc.ochiai(Xdf.values, pseudocts='min-connect')>0.5)
 
-plt.figure(figsize=(25,25))
+# plt.figure(figsize=(25,25))
 G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns))
 pos_tree = nx.kamada_kawai_layout(G)
 G = G.subgraph(subset)
 
-nx.draw_networkx(G, pos=pos_tree, node_color='w')
-nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
+# nx.draw_networkx(G, pos=pos_tree, node_color='w')
+# nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
+draw_graph_communities(G, pos_tree, colors)
+nx.connected.is_connected(G)
 ```
 
 ```{python}
@@ -180,7 +232,7 @@ nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
 ```
 
 ```{python}
-plt.figure(figsize=(25,25))
+# plt.figure(figsize=(25,25))
 evd_L_pursuit = _sq(asc.expected_forest_maximization(X)[s_subs.cat.codes].T[s_subs.cat.codes])
 # ~min_connected_filter(evd_L_pursuit).mask
 G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.01), index=s_subs, columns=s_subs))
@@ -190,9 +242,10 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.01), index=s_subs,
 
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G)
-nx.draw_networkx(G, pos=pos, node_color='w')
+# nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.connected.is_connected(G)
-nx.draw_networkx_labels(G, pos=pos, font_color=colors);
+# nx.draw_networkx_labels(G, pos=pos, font_color=colors);
+draw_graph_communities(G,pos,colors)
 ```
 
 ```{python}
@@ -208,7 +261,7 @@ from scipy.cluster.hierarchy import dendrogram
 
 clust=AgglomerativeClustering(
     metric='precomputed', linkage='complete',#, distance_threshold=0.2,
-    distance_threshold=3, n_clusters=None
+    distance_threshold=4.5, n_clusters=None
 ).fit(adjusted_forest_dists(L.todense(), beta=100))
 
 def plot_dendrogram(model, **kwargs):
@@ -248,9 +301,107 @@ clust.labels_
 # colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 ```
 
+## Les Miserables Network
+
 ```{python}
 # plt.figure(figsize=(25,25))
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos, font_color=colors);
+# chars['name'].to_dict()
+(
+    pd.read_json(
+        datadir/'qual'/'jean-cooc.json', 
+        typ='series',
+        orient='index', 
+        # dtype=set, 
+        convert_axes=False
+    )
+    .rename_axis('chapter')
+    .rename('character')
+    .explode().reset_index().explode('character')
+    .rename_axis('scene')['character'].astype(chartype)
+    .cat.rename_categories(chars['name'].to_dict())
+    .dropna()
+)
 ```
+
+```{python}
+chars = pd.read_csv(datadir/'qual'/'jean-nodes.csv',dtype={'id':'category'}).set_index('id')
+chartype = chars.index.dtype
+JeanTidy = (
+    pd.read_json(
+        # datadir/'qual'/'jean-cooc.json', # orig
+        datadir/'qual'/'jean-cooc-condense.json', # condense
+
+        typ='series',
+        orient='index', 
+        # dtype=set, 
+        convert_axes=False
+    )
+    .rename_axis('chapter')
+    .rename('character')
+    .apply(set).apply(list)      # condensed
+    .explode().astype(chartype)  # condensed
+    # .explode().reset_index().explode('character')  # orig
+    # .rename_axis('scene')['character'].astype(chartype)  # orig
+    .cat.rename_categories(chars['name'].to_dict())
+    .dropna()
+)
+JeanDF=(
+    JeanTidy
+    .to_frame().reset_index()
+    .assign(cooc=1).set_index(['chapter','character'])['cooc']  # condense
+    # .assign(cooc=1).set_index(['scene','character'])['cooc']
+
+    .unstack().fillna(0)
+)
+
+JeanDF = JeanDF[JeanDF.sum(axis=1)>1]
+JeanDF = JeanDF.loc[:,JeanDF.sum()>1]
+```
+
+```{python}
+sns.histplot(evd_L_pursuit)
+```
+
+```{python}
+plt.figure(figsize=(20,20))
+
+G = nx.from_pandas_adjacency((JeanDF.T@JeanDF - np.diag(JeanDF.sum())))
+pos_cos = nx.spring_layout(G, weight='weight')
+
+commun = list(list(i) for i in nx.community.greedy_modularity_communities(G, weight='weight'))
+# import itertools
+# limited = itertools.takewhile(lambda c: len(c) <= 11, nx.community.girvan_newman(G))
+# commun = list(list(i) for i in list(limited)[-1])
+
+pal = sns.color_palette(n_colors=len(commun))
+colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
+
+draw_graph_communities(G,pos_cos,colors, figsize=(20,20))
+cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False).head(10)#.rank(ascending=False)
+plt.figure(figsize=(3,4))
+sns.barplot(cent, orient='h')
+```
+
+
+```{python}
+plt.figure(figsize=(25,25))
+evd_L_pursuit = _sq(asc.expected_forest_maximization(JeanDF.values))
+# ~min_connected_filter(evd_L_pursuit).mask
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.1), 
+                                          index=JeanDF.columns, columns=JeanDF.columns))
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
+
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=Xdf.columns, columns=Xdf.columns))
+
+# G = G.subgraph(subset)
+pos = nx.kamada_kawai_layout(G)
+draw_graph_communities(G, pos, colors,figsize=(20,20))
+cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False).head(10)
+plt.figure(figsize=(3,4))
+sns.barplot(cent, orient='h')
+```
+
+_TODO_: rank changes for different kinds of centrality? 
 
