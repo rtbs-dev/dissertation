@@ -85,7 +85,31 @@ In this, we more closely align with the deconvolution literature, such that we a
 
 Ultimately we are not great at specifying what "being related" actually means...
 
-## Incidence vs. Proximity
+## Proximity vs. Incidence
+
+
+### Kernels & distances 
+
+Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product.
+The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:
+
+$$G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} $$
+
+such that real-valued entries and a traditional "plus-times" inner product recovers the Gram matrix $G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}$, or simply $G=X^TX$.  
+
+How "close" or "far away" things are.... Avrachenkov et al. 
+
+
+Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for _inverse problems_, structure learning, etc., they are more often applied in terms of the features/operators.
+
+Example with doc-term matrices 
+
+
+The inner product between two papers will yield a "true" only if two papers share at least one author in common. 
+This is called a _bipartite projection_[CITE], specifically the "papers" projection. 
+
+Similarly, if our goal is to determine a network of "whether two authors ever coauthored", we could perform a bipartite projection using the boolean inner product in the observation space i.e. the "authors" projection.
+It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
 
 
 ### Incidence structures & dependency
@@ -121,38 +145,17 @@ $$
 
 
 
-Spring example, road example, etc.
-Discuss Complex Systems and their representation. 
+- Spring example, road example, etc.
+- partial correlations
 
-
-### Kernels & distances 
-
-Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product.
-The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:
-
-$$G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} $$
-
-such that real-valued entries and a traditional "plus-times" inner product recovers the Gram matrix $G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}$, or simply $G=X^TX$.  
-
-How "close" or "far away" things are.... Avrachenkov et al. 
-
-
-Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for _inverse problems_, structure learning, etc., they are more often applied in terms of the features/operators.
-
-Example with doc-term matrices 
-
-
-The inner product between two papers will yield a "true" only if two papers share at least one author in common. 
-This is called a _bipartite projection_[CITE], specifically the "papers" projection. 
-
-Similarly, if our goal is to determine a network of "whether two authors ever coauthored", we could perform a bipartite projection using the boolean inner product in the observation space i.e. the "authors" projection.
-It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
 
 
 ### Implications for networks
 Usually dependencies are taken as causing or enabling proximity.
 E.g. shortest paths, vs. edges.
 
+
+- Discuss Complex Systems and their representation. 
 
 The approach taken by researchers/investigators...do they assume a level of interchangeability between the two kinds of "relation"?
 Do they define

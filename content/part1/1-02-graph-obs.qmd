@@ -9,7 +9,7 @@ For each, describe the meaning of
 1. Inner product (linear kernel)
 1. Induced Norms
 
-## Graphs
+## Dependence as Graph
 
 Initial notation (set-based) and outline of section
 
@@ -41,7 +41,7 @@ Then each observation in this model is necessarily a set of activated edges.
 The non-zero (visited) nodes are found using the incidence matrix as an operator. 
 
 
-## Hypergraphs
+## Occurence as Hypergraph
 
 ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png)
 
@@ -52,3 +52,11 @@ Roundabout way of describing binary/occurrence data.
 Inner product is co-occurrences.
 
 Leads to correlation/covariance, etc. 
+
+
+## Combining Occurence & Dependence
+
+- soft cosine
+- kernels on graphs (incl. coscia euclidean)
+- Retrieving one from the other is hard. 
+
