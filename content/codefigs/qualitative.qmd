@@ -22,7 +22,7 @@ from pathlib import Path
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-import matplotlib
+import matplotlib as mpl
 import affinis.associations as asc
 from affinis.utils import _sq
 from affinis.filter import min_connected_filter,edge_mask_to_laplacian
@@ -38,8 +38,8 @@ import networkx as nx
 
 ```{python}
 
-matplotlib.rcParams['font.family']=['serif']
-matplotlib.rcParams['font.serif']=['Bitstream Charter']
+mpl.rcParams['font.family']=['serif']
+mpl.rcParams['font.serif']=['Bitstream Charter']
 sns.set_theme(font='serif',palette='Set2', context='paper', style='ticks')
 
 nxlabel_kws={
@@ -60,13 +60,12 @@ nxdraw_kws = {
 } | nxlabel_kws
 ```
 
-
 ## Network Scientist Network
 
 ```{python}
 yaml = YAML(typ='safe')
 # data = yaml.load(path)
-datadir = Path('../../data/')
+datadir = Path('../../data/qual')
 
 # s = ak.from_iter(yaml.load(datadir/'complex-networks.yaml').items())
 # s = ak.Array(dict(zip(['id','meta'], ak.unzip(s))))
@@ -75,7 +74,7 @@ datadir = Path('../../data/')
 df1 = (
     pd.DataFrame
     .from_dict(
-        yaml.load(datadir/'complex-networks.yaml'), 
+        yaml.load(datadir/'netsci'/'complex-networks.yaml'), 
         orient='index'
     )
     .rename_axis('id')
@@ -83,12 +82,20 @@ df1 = (
 df2 = (
     pd.DataFrame
     .from_dict(
-        yaml.load(datadir/'complex-networks-struc-dyn.yaml'), 
+        yaml.load(datadir/'netsci'/'complex-networks-struc-dyn.yaml'), 
         orient='index'
     )
     .rename_axis('id')
 )
-df = pd.concat([df1, df2])
+df3 = (
+    pd.DataFrame
+    .from_dict(
+        yaml.load(datadir/'netsci'/'large-systems.yaml'), 
+        orient='index'
+    )
+    .rename_axis('id')
+)
+df = pd.concat([df1, df2, df3])
 df = df[~df.index.duplicated(keep='last')]
 ```
 
@@ -107,7 +114,7 @@ tidy=(df
      coauth=1,
      author=lambda df: (
          df.author
-         # .str.lower()
+         .str.capitalize()
          # .astype('category')
      )
  )
@@ -125,8 +132,27 @@ Xdf = (
     ['coauth'].unstack().fillna(0)
 )
 
-Xdf = Xdf.loc[:,Xdf.sum()>1]
-Xdf = Xdf[Xdf.sum(axis=1)>1]
+def iter_filter(Xdf, rowmin=2, colmin=2,maxiter=50):
+    colsum = Xdf.sum(axis=0)
+    # colsum = Xdf.sum()
+    for it in range(maxiter):
+        Xdf = Xdf.loc[:,colsum>=colmin]
+        rowsum = Xdf.sum(axis=1)
+        if rowsum.min()>=rowmin: 
+            break
+        Xdf = Xdf.loc[rowsum>=rowmin]
+        colsum = Xdf.sum(axis=0) 
+        if  colsum.min()>=colmin:
+            break
+    return Xdf
+# Xdf = Xdf[Xdf.sum(axis=1)>1]
+# Xdf = Xdf.loc[:,Xdf.sum()>1]
+# Xdf = Xdf[Xdf.sum(axis=1)>1]
+# Xdf = Xdf.loc[:,Xdf.sum()>1]
+print('papers,authors')
+print('before filtering:',Xdf.shape)
+Xdf = iter_filter(Xdf, rowmin=2,colmin=2)
+print('after filtering:',Xdf.shape)
 # Xdf = Xdf[Xdf.sum(axis=1)>1]
 
 X = Xdf.values#.astype(bool)
@@ -136,22 +162,21 @@ authortype.categories
 ```
 
 ```{python}
-np.isin('barabási, a.', Xdf.columns)
+f = mpl.figure.Figure(figsize=(6,2))
+s1,s2 = f.subplots(1, 2, sharey=True)
+sns.histplot(Xdf.sum(), bins=Xdf.sum().max(), discrete=True, ax=s1)
+s1.set(yscale='log', xlabel='#papers/author')
+
+sns.histplot(Xdf.sum(axis=1), bins=Xdf.sum(axis=1).max(), discrete=True, ax=s2)
+s2.set(xlabel='#authors/paper')
+# s1.set_yscale('log')
+f
 ```
 
 ```{python}
-Xhyp = (Xdf.T/(Xdf.sum(axis=1)-1)).T
+# Xhyp = (Xdf.T/(Xdf.sum(axis=1)-1)).T
 
-Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp))#-np.diag(Xhyp.sum())
-```
-
-```{python}
-sns.histplot(Xdf.sum())
-plt.yscale('log')
-```
-
-```{python}
-sns.histplot(Xdf.sum(axis=1))
+# Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp))#-np.diag(Xhyp.sum())
 ```
 
 ```{python}
@@ -182,7 +207,8 @@ def draw_graph_communities(G, pos, colors, figsize=(25,25)):
 ```
 
 ```{python}
-G = nx.from_pandas_adjacency((Xdf.T@Xdf - np.diag(Xdf.sum()))>0)
+A_cooc = Xdf.T@Xdf - np.diag(Xdf.sum())
+G = nx.from_pandas_adjacency(A_cooc>0)
 
 subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
 s_subs=pd.Series(list(subset), dtype=authortype)
@@ -206,11 +232,14 @@ draw_graph_communities(G,pos_cos,colors)
 
         
 print(len(subset))
+nx.degree_assortativity_coefficient(G)
 ```
 
 ```{python}
 # subset
 # asc.chow_liu(X, pseudocts=0.5)[s_subs.cat.codes].T[s_subs.cat.codes]
+# deg_cts = nx.degree_histogram(G)
+# plt.bar(np.arange(0,len(deg_cts)),nx.degree_histogram(G))
 ```
 
 ```{python}
@@ -235,7 +264,8 @@ nx.connected.is_connected(G)
 # plt.figure(figsize=(25,25))
 evd_L_pursuit = _sq(asc.expected_forest_maximization(X)[s_subs.cat.codes].T[s_subs.cat.codes])
 # ~min_connected_filter(evd_L_pursuit).mask
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.01), index=s_subs, columns=s_subs))
+A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
+G = nx.from_pandas_adjacency(A_fp>0.01)
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
 
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=Xdf.columns, columns=Xdf.columns))
@@ -246,6 +276,31 @@ pos = nx.kamada_kawai_layout(G)
 # nx.connected.is_connected(G)
 # nx.draw_networkx_labels(G, pos=pos, font_color=colors);
 draw_graph_communities(G,pos,colors)
+```
+
+```{python}
+nx.degree_assortativity_coefficient(G)
+# deg_cts = nx.degree_histogram(G)
+# plt.bar(np.arange(0,len(deg_cts)),nx.degree_histogram(G))
+```
+
+```{python}
+degs = pd.DataFrame({
+    'Orig.':(A_cooc>0).loc[list(subset),list(subset)].sum(), 
+    'FP':(A_fp>0.01).sum()
+}).melt(var_name='graph', value_name="degree")
+# pd.DataFrame.melt()
+plt.figure(figsize=(3,2))
+sns.boxplot(degs, x='degree',y='graph',orient='h',
+        # estimator='median',
+        # errorbar=None,
+        # linestyle='',
+        color='grey',
+        gap=.5,
+        # marker='|',
+        # markersize=15,
+)
+degs.groupby('graph').mean()
 ```
 
 ```{python}
@@ -285,6 +340,7 @@ def plot_dendrogram(model, **kwargs):
 
     # Plot the corresponding dendrogram
     dendrogram(linkage_matrix, **kwargs)
+plt.figure(figsize=(12,5))
 plot_dendrogram(clust)
 ```
 
@@ -308,30 +364,30 @@ clust.labels_
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos, font_color=colors);
 # chars['name'].to_dict()
-(
-    pd.read_json(
-        datadir/'qual'/'jean-cooc.json', 
-        typ='series',
-        orient='index', 
-        # dtype=set, 
-        convert_axes=False
-    )
-    .rename_axis('chapter')
-    .rename('character')
-    .explode().reset_index().explode('character')
-    .rename_axis('scene')['character'].astype(chartype)
-    .cat.rename_categories(chars['name'].to_dict())
-    .dropna()
-)
+# (
+#     pd.read_json(
+#         datadir/'lesmis'/'jean-cooc.json', 
+#         typ='series',
+#         orient='index', 
+#         # dtype=set, 
+#         convert_axes=False
+#     )
+#     .rename_axis('chapter')
+#     .rename('character')
+#     .explode().reset_index().explode('character')
+#     .rename_axis('scene')['character'].astype(chartype)
+#     .cat.rename_categories(chars['name'].to_dict())
+#     .dropna()
+# )
 ```
 
 ```{python}
-chars = pd.read_csv(datadir/'qual'/'jean-nodes.csv',dtype={'id':'category'}).set_index('id')
+chars = pd.read_csv(datadir/'lesmis'/'jean-nodes.csv',dtype={'id':'category'}).set_index('id')
 chartype = chars.index.dtype
 JeanTidy = (
     pd.read_json(
         # datadir/'qual'/'jean-cooc.json', # orig
-        datadir/'qual'/'jean-cooc-condense.json', # condense
+        datadir/'lesmis'/'jean-cooc-condense.json', # condense
 
         typ='series',
         orient='index', 
@@ -356,12 +412,9 @@ JeanDF=(
     .unstack().fillna(0)
 )
 
-JeanDF = JeanDF[JeanDF.sum(axis=1)>1]
-JeanDF = JeanDF.loc[:,JeanDF.sum()>1]
-```
-
-```{python}
-sns.histplot(evd_L_pursuit)
+# JeanDF = JeanDF[JeanDF.sum(axis=1)>1]
+# JeanDF = JeanDF.loc[:,JeanDF.sum()>1]
+JeanDF = iter_filter(JeanDF, 2,2)
 ```
 
 ```{python}
@@ -379,11 +432,10 @@ pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 
 draw_graph_communities(G,pos_cos,colors, figsize=(20,20))
-cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False).head(10)#.rank(ascending=False)
-plt.figure(figsize=(3,4))
-sns.barplot(cent, orient='h')
+cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
+# plt.figure(figsize=(3,4))
+# sns.barplot(cent, orient='h')
 ```
-
 
 ```{python}
 plt.figure(figsize=(25,25))
@@ -398,10 +450,101 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.1),
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G)
 draw_graph_communities(G, pos, colors,figsize=(20,20))
-cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False).head(10)
-plt.figure(figsize=(3,4))
-sns.barplot(cent, orient='h')
+centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
+
 ```
 
 _TODO_: rank changes for different kinds of centrality? 
+
+```{python}
+plt.figure(figsize=(3,4))
+sns.barplot(centFP.head(10), orient='h')
+```
+
+```{python}
+from itertools import chain
+commun_map=dict(chain.from_iterable(d.items() for d in [{char:n for char in i} for n,i in enumerate(commun)]))
+cent_df = pd.concat([
+    cent.rename('centrality').to_frame().rename_axis('character').reset_index().assign(graph='Orig.'),
+    centFP.rename('centrality').to_frame().rename_axis('character').reset_index().assign(graph='FP')
+]).assign(
+    group=lambda df: df['character'].map(commun_map).astype('category'),
+    rank = lambda df: df.groupby('graph')['centrality'].rank(ascending=False).astype(int)
+)#.set_index(['character','graph'])['centrality'].unstack()
+cent_df = cent_df.loc[
+    cent_df.groupby('character')['rank'].transform('min')<=20
+].set_index(['character','graph'])['centrality'].unstack()
+
+#.reset_index()
+# pd.DataFrame(dict(zip(range(len(commun)),commun)))
+#.groups
+# df.rank(
+# cent_df.head()
+# colors
+cent_df
+```
+
+```{python}
+from collections import defaultdict
+from scipy import interpolate
+
+
+def bumpsplot(dataframe, color_dict=defaultdict(lambda: "k"), 
+                         linewidth_dict=defaultdict(lambda: 1),
+                         labels=[]):
+    """ adapted from 
+    https://www.kaggle.com/code/markalec/olympics-streams-and-bumps-charts-in-python
+    """
+    r = dataframe.rank(method="first")
+    r = (r - r.max() + r.max().max()).fillna(0) # Sets NAs to 0 in rank
+    def add_widths(x, y, width=0.1):
+        """ Adds flat parts to widths """
+        new_x = []
+        new_y = []
+        for i,j in zip(x,y):
+            new_x += [i-width, i, i+width]
+            new_y += [j, j, j]
+        return new_x, new_y
+    for i in r.index:
+        x = np.arange(r.shape[1])
+        y = r.loc[i].values
+        color = color_dict[i]
+        lw = linewidth_dict[i]
+        x, y = add_widths(x, y, width=0.1)
+        xs = np.linspace(0, x[-1], num=1024)
+        plt.plot(xs, interpolate.PchipInterpolator(x, y)(xs), color=color, linewidth=lw, alpha=0.5)
+        if i in labels:
+            plt.text(x[0] , y[0], s=i, 
+                     horizontalalignment="right", verticalalignment="center", 
+                     color=color,weight='bold')
+            plt.text(x[-1] + 0.1, y[-1], s=i, 
+                     horizontalalignment="left", verticalalignment="center", 
+                     color=color,weight='bold')
+    plt.xticks(np.arange(r.shape[1]), dataframe.columns)
+```
+
+```{python}
+plt.figure(figsize=(2,8))
+
+lw = defaultdict(lambda: 1)
+for c in [
+    'Eponine',
+    'Cosette',
+    'Fantine',
+    'Madamoiselle Gillenormand',
+    'Madame Th\'enardier',
+    'Marguerite',
+    'Anzelma',
+]:
+    lw[c] = 4
+bumpsplot(
+    cent_df[['Orig.','FP']],
+    color_dict=colors,
+    labels=cent_df.index,
+    linewidth_dict=lw,
+)#['rank'].unstack())
+sns.despine(left=True)
+plt.gca().get_yaxis().set_visible(False)
+```
+
 

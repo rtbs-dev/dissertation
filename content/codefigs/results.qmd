@@ -795,7 +795,6 @@ compare_algs(tidy, ['FP','FPi','GL'], graph_order, metric_order)
 ```
 
 ```{python}
-
 semilog_partial_residuals(
     df,
     ['FPi','GL','CS'],
