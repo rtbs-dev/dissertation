@@ -29,6 +29,7 @@ from affinis.filter import min_connected_filter,edge_mask_to_laplacian
 from affinis.proximity import sinkhorn, forest_correlation
 from affinis.distance import generalized_graph_dists, adjusted_forest_dists
 import scipy.sparse as sprs
+from scipy.stats import powerlaw
 
 from adjustText import adjust_text
 
@@ -37,21 +38,23 @@ import networkx as nx
 ```
 
 ```{python}
-
 mpl.rcParams['font.family']=['serif']
 mpl.rcParams['font.serif']=['Bitstream Charter']
 sns.set_theme(font='serif',palette='Set2', context='paper', style='ticks')
+figsize = mpl.rcParams['figure.figsize']
+
+%config InlineBackend.figure_formats = ['svg']
 
 nxlabel_kws={
     # "font_color": "white",
     "font_color": "0.3",
     "font_family":"Bitstream Charter",
     "font_weight":'bold',
-    "font_size": 12,
+    "font_size": 6,
 }
 
 nxdraw_kws = {
-    #"node_size": 500, 
+    "node_size": 50, 
     # "node_color": "xkcd:slate",
     "edgecolors": "grey",
     "edge_color": "grey",
@@ -184,7 +187,7 @@ f
 ```
 
 ```{python}
-def draw_graph_communities(G, pos, colors, figsize=(25,25)):
+def draw_graph_communities(G, pos, colors, figsize=(10,8)):
     f=plt.figure(figsize=figsize)
     nx.draw_networkx(
         G, pos=pos, 
@@ -204,6 +207,15 @@ def draw_graph_communities(G, pos, colors, figsize=(25,25)):
         #manipulate indiviual text objects
         # print(t)
         t.set_backgroundcolor(colors[t.get_text()])
+```
+
+```{python}
+# plt.plot(powerlaw(*powerlaw.fit()).pdf(np.linspace(1,10)))
+# plt.scatter(*np.unique([d for n,d in nx.degree(G)], return_counts=True))
+# plt.yscale('log')
+# plt.xscale('log')
+# degs = np.array([d for n,d in nx.degree(G)])
+# powerlaw(1+degs.shape[0]/np.sum(degs.min()/np.log(degs))).pdf(np.linspace(1,10))
 ```
 
 ```{python}
@@ -232,7 +244,12 @@ draw_graph_communities(G,pos_cos,colors)
 
         
 print(len(subset))
-nx.degree_assortativity_coefficient(G)
+# plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.15, 0.3), xycoords='axes fraction', size=12)
+plt.title(
+    'Network Scientist Co-Occurrence Graph '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
 ```
 
 ```{python}
@@ -254,28 +271,28 @@ G = G.subgraph(subset)
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
 draw_graph_communities(G, pos_tree, colors)
 nx.connected.is_connected(G)
+# plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
+plt.title(
+    'Network Scientist Collaborator Chow-Liu Tree '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
 ```
 
 ```{python}
-# sns.histplot(evd_L_pursuit[evd_L_pursuit>0.5])
-```
-
-```{python}
-# plt.figure(figsize=(25,25))
 evd_L_pursuit = _sq(asc.expected_forest_maximization(X)[s_subs.cat.codes].T[s_subs.cat.codes])
-# ~min_connected_filter(evd_L_pursuit).mask
 A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
 G = nx.from_pandas_adjacency(A_fp>0.01)
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
-
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=Xdf.columns, columns=Xdf.columns))
-
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G)
-# nx.draw_networkx(G, pos=pos, node_color='w')
-# nx.connected.is_connected(G)
-# nx.draw_networkx_labels(G, pos=pos, font_color=colors);
 draw_graph_communities(G,pos,colors)
+plt.title(
+    'Network Scientist Collaboration Network Estimate '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
 ```
 
 ```{python}
@@ -291,16 +308,17 @@ degs = pd.DataFrame({
 }).melt(var_name='graph', value_name="degree")
 # pd.DataFrame.melt()
 plt.figure(figsize=(3,2))
-sns.boxplot(degs, x='degree',y='graph',orient='h',
-        # estimator='median',
-        # errorbar=None,
-        # linestyle='',
-        color='grey',
-        gap=.5,
-        # marker='|',
-        # markersize=15,
+sns.boxplot(
+    degs, x='degree',y='graph',orient='h',
+    # estimator='median',
+    # errorbar=None,
+    # linestyle='',
+    color='grey',
+    gap=.5,
+    # marker='|',
+    # markersize=15,
 )
-degs.groupby('graph').mean()
+degs.groupby('graph').median()
 ```
 
 ```{python}
@@ -360,28 +378,6 @@ clust.labels_
 ## Les Miserables Network
 
 ```{python}
-# plt.figure(figsize=(25,25))
-# nx.draw_networkx(G, pos=pos, node_color='w')
-# nx.draw_networkx_labels(G, pos=pos, font_color=colors);
-# chars['name'].to_dict()
-# (
-#     pd.read_json(
-#         datadir/'lesmis'/'jean-cooc.json', 
-#         typ='series',
-#         orient='index', 
-#         # dtype=set, 
-#         convert_axes=False
-#     )
-#     .rename_axis('chapter')
-#     .rename('character')
-#     .explode().reset_index().explode('character')
-#     .rename_axis('scene')['character'].astype(chartype)
-#     .cat.rename_categories(chars['name'].to_dict())
-#     .dropna()
-# )
-```
-
-```{python}
 chars = pd.read_csv(datadir/'lesmis'/'jean-nodes.csv',dtype={'id':'category'}).set_index('id')
 chartype = chars.index.dtype
 JeanTidy = (
@@ -415,10 +411,11 @@ JeanDF=(
 # JeanDF = JeanDF[JeanDF.sum(axis=1)>1]
 # JeanDF = JeanDF.loc[:,JeanDF.sum()>1]
 JeanDF = iter_filter(JeanDF, 2,2)
+JeanTidy
 ```
 
 ```{python}
-plt.figure(figsize=(20,20))
+# plt.figure(figsize=(20,20))
 
 G = nx.from_pandas_adjacency((JeanDF.T@JeanDF - np.diag(JeanDF.sum())))
 pos_cos = nx.spring_layout(G, weight='weight')
@@ -431,14 +428,19 @@ commun = list(list(i) for i in nx.community.greedy_modularity_communities(G, wei
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 
-draw_graph_communities(G,pos_cos,colors, figsize=(20,20))
+draw_graph_communities(G,pos_cos,colors, figsize=(8,6))
 cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
 # plt.figure(figsize=(3,4))
 # sns.barplot(cent, orient='h')
 ```
 
 ```{python}
-plt.figure(figsize=(25,25))
+from scipy.stats import percentileofscore
+plt.plot(np.linspace(0,1),np.gradient(percentileofscore(evd_L_pursuit, np.linspace(0,1))))
+```
+
+```{python}
+# plt.figure(figsize=(25,25))
 evd_L_pursuit = _sq(asc.expected_forest_maximization(JeanDF.values))
 # ~min_connected_filter(evd_L_pursuit).mask
 G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.1), 
@@ -449,9 +451,8 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>0.1),
 
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G)
-draw_graph_communities(G, pos, colors,figsize=(20,20))
+draw_graph_communities(G, pos, colors,figsize=(8,6))
 centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
-
 ```
 
 _TODO_: rank changes for different kinds of centrality? 
@@ -491,11 +492,14 @@ from scipy import interpolate
 
 def bumpsplot(dataframe, color_dict=defaultdict(lambda: "k"), 
                          linewidth_dict=defaultdict(lambda: 1),
-                         labels=[]):
+                         labels=[], topn=15):
     """ adapted from 
     https://www.kaggle.com/code/markalec/olympics-streams-and-bumps-charts-in-python
     """
-    r = dataframe.rank(method="first")
+    og_ranks = dataframe.rank(method="first", ascending=False).astype(int)
+    is_topn = (og_ranks.min(axis=1)<=topn)
+    og_topn = og_ranks[og_ranks.min(axis=1)<=topn]
+    r = dataframe.loc[og_ranks.min(axis=1)<=topn].rank(method="first")
     r = (r - r.max() + r.max().max()).fillna(0) # Sets NAs to 0 in rank
     def add_widths(x, y, width=0.1):
         """ Adds flat parts to widths """
@@ -505,7 +509,7 @@ def bumpsplot(dataframe, color_dict=defaultdict(lambda: "k"),
             new_x += [i-width, i, i+width]
             new_y += [j, j, j]
         return new_x, new_y
-    for i in r.index:
+    for n,i in enumerate(r.index):
         x = np.arange(r.shape[1])
         y = r.loc[i].values
         color = color_dict[i]
@@ -514,17 +518,17 @@ def bumpsplot(dataframe, color_dict=defaultdict(lambda: "k"),
         xs = np.linspace(0, x[-1], num=1024)
         plt.plot(xs, interpolate.PchipInterpolator(x, y)(xs), color=color, linewidth=lw, alpha=0.5)
         if i in labels:
-            plt.text(x[0] , y[0], s=i, 
+            plt.text(x[0] , y[0], s=f'{i} ({og_topn.loc[i].iloc[0]})', 
                      horizontalalignment="right", verticalalignment="center", 
                      color=color,weight='bold')
-            plt.text(x[-1] + 0.1, y[-1], s=i, 
+            plt.text(x[-1] + 0.1, y[-1], s=f'({og_topn.loc[i].iloc[-1]}) {i}', 
                      horizontalalignment="left", verticalalignment="center", 
                      color=color,weight='bold')
     plt.xticks(np.arange(r.shape[1]), dataframe.columns)
 ```
 
 ```{python}
-plt.figure(figsize=(2,8))
+plt.figure(figsize=(2,6))
 
 lw = defaultdict(lambda: 1)
 for c in [
@@ -547,4 +551,209 @@ sns.despine(left=True)
 plt.gca().get_yaxis().set_visible(False)
 ```
 
+## Semantic Fluency (SNAFU)
+
+```{python}
+df = pd.read_csv(datadir/'snafu_sample.csv', dtype={'category':'category'})
+idlist=df.id.rename('idlist').str.cat(df.listnum.astype(str))
+df = df.assign(
+    item=df['item']
+     .str.replace('aligator', 'alligator')
+     .str.replace('^a+rdva+rk', 'aardvark')
+     .str.replace('baboob', 'baboon')
+     .str.replace('antaloupe', 'antelope'),
+    idlist=idlist
+)
+df=df.set_index([idlist, 'item'], drop=False)
+df
+```
+
+```{python}
+animals = (df
+
+ .query('category=="animals"')#[['idlist','item']]
+ .assign(animals=1.)['animals']
+ .pipe(lambda df: df[~df.index.duplicated(keep='first')])
+ .unstack().fillna(0.)#.drop_levels(0)
+ .pipe(lambda df: df.loc[:,df.sum()>50])
+)
+
+all_X = animals.values
+animals
+```
+
+```{python}
+from numpy.lib.stride_tricks import as_strided, sliding_window_view
+def arr_cooc(x, n=2):
+    return sliding_window_view(x,min(n, x.shape[0]))
+
+animal_occ = (df
+ .query('category=="animals"')
+ .item.astype('category')
+)
+dummies = np.eye(animal_occ.dtype.categories.shape[0])
+roll_X=np.vstack([
+    dummies[arr_cooc(g[1].values, n=10),:].max(axis=1) 
+    for g in animal_occ.cat.codes.groupby(level=0)
+])#[:,]
+roll_X = roll_X[
+    :,animal_occ[
+        animal_occ.isin(animals.columns.tolist())
+    ].cat.codes.unique()
+]
+# roll_X.shape
+# roll_df = iter_filter(roll_df, rowmin=5, colmin=50)
+# roll_X = roll_df.values
+roll_X = roll_X[roll_X.sum(axis=1)>0]
+roll_df = pd.DataFrame(data=roll_X, columns=animals.columns)
+
+
+roll_df.shape#, roll_X.shape
+# roll_df.sum()
+
+# X = all_X
+X = roll_df.values
+animals.columns.sort_values() == roll_df.columns.sort_values()
+```
+
+```{python}
+
+plt.figure(figsize=(figsize[0]/2, figsize[1]/2))
+sns.histplot(_sq(asc.ochiai(all_X, pseudocts=0.5)), stat='density', label='all co-occurrences', bins=20)
+sns.histplot(_sq(asc.ochiai(roll_X, pseudocts=0.5)), stat='density', label='10 in-memory', bins=20)
+plt.legend()
+plt.title('Item Similarities with/without Working Memory')
+plt.xlabel('Cosine Sim. (Ochiai Coeff.)')
+```
+
+```{python}
+# min_connect_filter(_sq(sinkhorn(asc.coocur_prob(X)))).sum(),np.ma.masked_less_equal(_sq(sinkhorn(asc.coocur_prob(X))), 0.02376).sum()
+_sq(~np.ma.masked_less_equal(_sq(sinkhorn(asc.coocur_prob(X))), 0.02376).mask)
+
+# A_cooc.sum()
+# X
+# A_cooc.sum()
+# min_connect_filter(_sq(sinkhorn(asc.coocur_prob(X)))).min()
+# np.unique(_sq(sinkhorn(asc.coocur_prob(X))))
+```
+
+```{python}
+# A_cooc = roll_df.T@roll_df - np.diag(roll_df.sum())
+# A_cooc = pd.DataFrame(_sq(~min_connected_filter(_sq(sinkhorn(asc.coocur_prob(X)))).mask), index=roll_df.columns, columns=roll_df.columns)
+A_cooc = pd.DataFrame(
+    _sq(~np.ma.masked_less_equal(_sq(sinkhorn(asc.coocur_prob(X))), 0.02376).mask), 
+    index=roll_df.columns, columns=roll_df.columns
+)
+
+G = nx.from_pandas_adjacency(A_cooc)
+
+# G = nx.from_pandas_adjacency(A_cooc>30)
+
+subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
+s_subs=pd.Series(list(subset), dtype=authortype)
+# G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
+# list(nx.neighbors(G, 'newman, m.'))
+print(len(subset))
+
+pos_cos = nx.kamada_kawai_layout(G)
+# pos_cos = nx.spring_layout(G)
+G = G.subgraph(subset)
+
+commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
+pal = sns.color_palette(n_colors=len(commun))
+colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
+
+draw_graph_communities(G,pos_cos,colors)
+
+        
+# plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.15, 0.3), xycoords='axes fraction', size=12)
+
+plt.title(
+    'Verbal Fluency Animals (filtered) Co-Occurrence Graph '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
+commun[0]
+```
+
+```{python}
+G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=roll_df.columns, columns=roll_df.columns))
+pos_tree = nx.kamada_kawai_layout(G)
+G = G.subgraph(subset)
+
+# nx.draw_networkx(G, pos=pos_tree, node_color='w')
+# nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
+draw_graph_communities(G, pos_tree, colors)
+nx.connected.is_connected(G)
+# plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
+plt.title(
+    'Verbal Fluency Animals Chow-Liu Tree '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
+```
+
+```{python}
+evd_L_pursuit = _sq(asc.forest_pursuit_edge(X))#[s_subs.cat.codes].T[s_subs.cat.codes])
+# A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
+# G = nx.from_pandas_adjacency(A_fp>0.01)
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=roll_df.columns, columns=roll_df.columns))
+G = nx.from_pandas_adjacency(pd.DataFrame(
+    _sq(~np.ma.masked_less_equal(evd_L_pursuit, 0.9869).mask),
+    # _sq(~np.ma.masked_less_equal(evd_L_pursuit, np.percentile(evd_L_pursuit, 96)).mask),
+
+    index=roll_df.columns, columns=roll_df.columns
+))
+
+# G = G.subgraph(subset)
+pos = nx.kamada_kawai_layout(G)
+# pos = nx.spring_layout(G)
+
+draw_graph_communities(G,pos,colors)
+plt.title(
+    'Verbal Fluency Animal Dependencies (minimal) Network Estimate '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
+```
+
+```{python}
+evd_L_pursuit = _sq(asc.forest_pursuit_edge(X))#[s_subs.cat.codes].T[s_subs.cat.codes])
+# A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
+# G = nx.from_pandas_adjacency(A_fp>0.01)
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
+# G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=roll_df.columns, columns=roll_df.columns))
+G = nx.from_pandas_adjacency(pd.DataFrame(
+    # _sq(~np.ma.masked_less_equal(evd_L_pursuit, 0.9869).mask),
+    _sq(~np.ma.masked_less_equal(evd_L_pursuit, np.percentile(evd_L_pursuit, 96)).mask),
+
+    index=roll_df.columns, columns=roll_df.columns
+))
+
+# G = G.subgraph(subset)
+pos = nx.kamada_kawai_layout(G)
+# pos = nx.spring_layout(G)
+
+draw_graph_communities(G,pos,colors)
+plt.title(
+    'Verbal Fluency Animal Dependencies (95%) Network Estimate '
+    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+)
+```
+
+TODO: edge type annotation? 
+- co-located
+- taxonomic
+- predator/prey
+- pop-culture
+- similar ecological niche/role
+- conservation/public awareness
+- further investigation required!
+
+```{python}
+plt.plot(np.linspace(0,1),np.gradient(percentileofscore(evd_L_pursuit, np.linspace(0,1))))
+np.percentile(evd_L_pursuit, 96)
+```
 
