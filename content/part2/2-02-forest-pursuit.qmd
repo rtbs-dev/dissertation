@@ -25,11 +25,21 @@ I.e. the PLOS paper (modified basis-pursuit via MSTs)
 ### Method
 
 ### Results - Scoring
+
+{{< embed ../codefigs/results.qmd#fig-fp-overall >}}
+
 {{< embed ../codefigs/results.qmd#fig-fp-compare >}}
+
+{{< embed ../codefigs/results.qmd#fig-partials-mcc >}}
 
 ### Results - Performance
 
+{{< embed ../codefigs/results.qmd#fig-runtime >}}
 
+{{< embed ../codefigs/results.qmd#fig-partials-runtime >}}
 ## Discussion
 
+
 ### Interaction Probability
+
+![](../images/PR.svg)

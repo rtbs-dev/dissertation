@@ -1,1 +1,38 @@
 # Qualitative Application of Relationship Recovery
+
+## Network Science Collaboration Network
+
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-cooc >}}
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-tree >}}
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-fp >}}
+
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-degree >}}
+
+## Les Miserables Character Network
+
+### Backboning
+
+{{< embed ../codefigs/qualitative.qmd#fig-lesmis-cooc >}}
+{{< embed ../codefigs/qualitative.qmd#fig-lesmis-fp >}}
+
+### Character Importance Estimation
+
+{{< embed ../codefigs/qualitative.qmd#fig-lesmis-centrality >}}
+
+## Verbal Fluency Animal Network
+
+### Edge Connective Effiency and Diversity
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-dsmin >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-tree >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-glassomin >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-fpmin >}}
+
+### Thresholded Structure Preservation 
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-preservation >}}
+
+<!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
+### Forest Pursuit as Preprocessing
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-preprocess >}}

@@ -727,7 +727,46 @@ error}\label{measurement-quantification-error}
 Ultimately we are not great at specifying what ``being related''
 actually means\ldots{}
 
-\section{Incidence vs.~Proximity}\label{incidence-vs.-proximity}
+\section{Proximity vs.~Incidence}\label{proximity-vs.-incidence}
+
+\subsection{Kernels \& distances}\label{kernels-distances}
+
+Importantly for the use of linear algebra, these values assigned for
+each feature are assumed to exist in a field (or, more generally, a
+semiring) \(R\), equipped with operators analogous to addition
+(\(\oplus\)) and multiplication (\(\otimes\)) that allow for values to
+be aggregated through an inner product. The matrix of all pairs of
+inner-products found by matrix multiplication (contracting over the
+feature space) is given by:
+
+\[G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} \]
+
+such that real-valued entries and a traditional ``plus-times'' inner
+product recovers the Gram matrix \(G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}\),
+or simply \(G=X^TX\).
+
+How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
+
+Important: these measurements often assume distance is defined in terms
+of the measurements/objects/data, but for \emph{inverse problems},
+structure learning, etc., they are more often applied in terms of the
+features/operators.
+
+Example with doc-term matrices
+
+The inner product between two papers will yield a ``true'' only if two
+papers share at least one author in common. This is called a
+\emph{bipartite projection}{[}CITE{]}, specifically the ``papers''
+projection.
+
+Similarly, if our goal is to determine a network of ``whether two
+authors ever coauthored'', we could perform a bipartite projection using
+the boolean inner product in the observation space i.e.~the ``authors''
+projection. It is this second projection, for determining a structure
+between features embedded into the ``observation'' space, that we are
+primarily concerned with in this work, since it is the view that most
+closely resembles the concept of covariance or correlation between
+independent variables (features) in statistics more generally.
 
 \subsection{Incidence structures \&
 dependency}\label{incidence-structures-dependency}
@@ -779,52 +818,24 @@ broadly. More to come, but get the terminology down.
 
 \end{figure}%
 
-Spring example, road example, etc. Discuss Complex Systems and their
-representation.
-
-\subsection{Kernels \& distances}\label{kernels-distances}
-
-Importantly for the use of linear algebra, these values assigned for
-each feature are assumed to exist in a field (or, more generally, a
-semiring) \(R\), equipped with operators analogous to addition
-(\(\oplus\)) and multiplication (\(\otimes\)) that allow for values to
-be aggregated through an inner product. The matrix of all pairs of
-inner-products found by matrix multiplication (contracting over the
-feature space) is given by:
-
-\[G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} \]
-
-such that real-valued entries and a traditional ``plus-times'' inner
-product recovers the Gram matrix \(G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}\),
-or simply \(G=X^TX\).
-
-How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
-
-Important: these measurements often assume distance is defined in terms
-of the measurements/objects/data, but for \emph{inverse problems},
-structure learning, etc., they are more often applied in terms of the
-features/operators.
-
-Example with doc-term matrices
-
-The inner product between two papers will yield a ``true'' only if two
-papers share at least one author in common. This is called a
-\emph{bipartite projection}{[}CITE{]}, specifically the ``papers''
-projection.
-
-Similarly, if our goal is to determine a network of ``whether two
-authors ever coauthored'', we could perform a bipartite projection using
-the boolean inner product in the observation space i.e.~the ``authors''
-projection. It is this second projection, for determining a structure
-between features embedded into the ``observation'' space, that we are
-primarily concerned with in this work, since it is the view that most
-closely resembles the concept of covariance or correlation between
-independent variables (features) in statistics more generally.
+\begin{itemize}
+\tightlist
+\item
+  Spring example, road example, etc.
+\item
+  partial correlations
+\end{itemize}
 
 \subsection{Implications for networks}\label{implications-for-networks}
 
 Usually dependencies are taken as causing or enabling proximity. E.g.
 shortest paths, vs.~edges.
+
+\begin{itemize}
+\tightlist
+\item
+  Discuss Complex Systems and their representation.
+\end{itemize}
 
 The approach taken by researchers/investigators\ldots do they assume a
 level of interchangeability between the two kinds of ``relation''? Do
@@ -850,7 +861,7 @@ For each, describe the meaning of
   Induced Norms
 \end{enumerate}
 
-\section{Graphs}\label{graphs}
+\section{Dependence as Graph}\label{dependence-as-graph}
 
 Initial notation (set-based) and outline of section
 
@@ -892,7 +903,7 @@ vectors on edges rather than nodes. Then each observation in this model
 is necessarily a set of activated edges. The non-zero (visited) nodes
 are found using the incidence matrix as an operator.
 
-\section{Hypergraphs}\label{hypergraphs}
+\section{Occurence as Hypergraph}\label{occurence-as-hypergraph}
 
 \begin{figure}[H]
 
@@ -914,6 +925,19 @@ Roundabout way of describing binary/occurrence data. Inner product is
 co-occurrences.
 
 Leads to correlation/covariance, etc.
+
+\section{Combining Occurence \&
+Dependence}\label{combining-occurence-dependence}
+
+\begin{itemize}
+\tightlist
+\item
+  soft cosine
+\item
+  kernels on graphs (incl.~coscia euclidean)
+\item
+  Retrieving one from the other is hard.
+\end{itemize}
 
 \chapter{Roads to Network Recovery}\label{roads-to-network-recovery}
 
@@ -1100,20 +1124,89 @@ Summary
 
 \centering{
 
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-overall-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fp-overall}Comparison of MENDR recovery scores:
+\textbf{FP}: Forest Pursuit \textbf{GL}: GLASSO \textbf{CS}: Cosine
+Similarity \textbf{HYP}: Hyperbolic Projection \textbf{eOT}: Entropic
+Optimal Transport (Doubly Stochastic) \textbf{HSS}: High-Salience
+Skeleton \textbf{RP}: Resource Projection}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
 \pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-compare-output-1.pdf}}
 
 }
 
-\caption{\label{fig-fp-compare}Comparison of backboning/dependency
-recovery methods tested vs.~Forest Pursuit}
+\caption{\label{fig-fp-compare}Comparison of MENDR Recovery Scores by
+Graph Type}
+
+\end{figure}%
+
+\begin{verbatim}
+[ 0.45696006 -0.01795387 -0.15330308  0.26751954]
+[ 0.32829989  0.06735144 -0.23378387  0.20365245]
+[ 0.57054303 -0.20723763 -0.00142814  0.07619596]
+\end{verbatim}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-2.pdf}}
+
+}
+
+\caption{\label{fig-partials-mcc}}
 
 \end{figure}%
 
 \subsection{Results - Performance}\label{results---performance}
 
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-runtime-output-1.png}}
+
+}
+
+\caption{\label{fig-runtime}}
+
+\end{figure}%
+
+\begin{verbatim}
+[-3.68491001  0.2276276  -0.0037425   0.94795704]
+[-2.84344998  0.0103985   1.6738662   0.16501076]
+(np.float64(0.0694651520667083), np.float64(1085594.3113734804))
+4.594236123462085 1632.4803075964253
+8.436143086693106 355.6127449677926
+8.374142176881948 3379.80886903671
+\end{verbatim}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-2.pdf}}
+
+}
+
+\caption{\label{fig-partials-runtime}}
+
+\end{figure}%
+
 \section{Discussion}\label{discussion}
 
 \subsection{Interaction Probability}\label{interaction-probability}
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/../images/PR.pdf}}
 
 \chapter{LFA: Latent Forest
 Allocation}\label{lfa-latent-forest-allocation}
@@ -1150,6 +1243,232 @@ Kind of unsure here.
 
 \chapter{Qualitative Application of Relationship
 Recovery}\label{qualitative-application-of-relationship-recovery}
+
+\section{Network Science Collaboration
+Network}\label{network-science-collaboration-network}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-cooc-output-1.pdf}}
+
+}
+
+\caption{\label{fig-netsci-cooc}134 Network scientists from
+{[}NEWMAN;BOCCALETTI;SNEPPEN{]}, connected by co-authorship}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-netsci-tree}Max. likelihood tree dependency
+structure to explain co-authorships}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-fp-output-1.pdf}}
+
+}
+
+\caption{\label{fig-netsci-fp}Forest Pursuit estimate of NetSci
+collaborator dependency relationships}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-degree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-netsci-degree}}
+
+\end{figure}%
+
+\section{Les Miserables Character
+Network}\label{les-miserables-character-network}
+
+\subsection{Backboning}\label{backboning}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-cooc-output-1.pdf}}
+
+}
+
+\caption{\label{fig-lesmis-cooc}}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-fp-output-1.pdf}}
+
+}
+
+\caption{\label{fig-lesmis-fp}}
+
+\end{figure}%
+
+\subsection{Character Importance
+Estimation}\label{character-importance-estimation}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-centrality-output-1.pdf}}
+
+}
+
+\caption{\label{fig-lesmis-centrality}}
+
+\end{figure}%
+
+\section{Verbal Fluency Animal
+Network}\label{verbal-fluency-animal-network}
+
+\subsection{Edge Connective Effiency and
+Diversity}\label{edge-connective-effiency-and-diversity}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fluency-dsmin}}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fluency-tree}}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fluency-glassomin}}
+
+\end{figure}%
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fluency-fpmin}Comparison of backboning/dependency
+recovery methods tested vs.~Forest Pursuit}
+
+\end{figure}%
+
+\subsection{Thresholded Structure
+Preservation}\label{thresholded-structure-preservation}
+
+Differences in structural preservation with increased thresholding.
+
+\begin{figure}
+
+\centering{
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-fluency-preservation-1}co-occurrence methods will
+retain local communities at the cost of global structure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
+
+}
+
+\subcaption{\label{fig-fluency-preservation-2}dependency network drops
+rarer nodes from the preserved central structure at higher uncetainty
+cutoffs}
+
+}
+
+\caption{\label{fig-fluency-preservation}When only retaining the top 2\%
+of edge strengths, blah}
+
+\end{figure}%
+
+\subsection{Forest Pursuit as
+Preprocessing}\label{forest-pursuit-as-preprocessing}
+
+Differences in structural preservation with increased thresholding.
+
+Retaining the top 2\% of edges, co-occurrence retains local communities
+
+at the cost of global structure.
+
+\begin{figure}
+
+\centering{
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-fluency-preprocess-1}Islands of local structure
+remain (doubly-stochastic)}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
+
+}
+
+\subcaption{\label{fig-fluency-preprocess-2}Intact global structure with
+isolates}
+
+}
+
+\caption{\label{fig-fluency-preprocess}We might prefer to drop
+low-certainty/rare nodes from a preserved central structure.}
+
+\end{figure}%
 
 \chapter{Recovery from Partial
 Orders}\label{recovery-from-partial-orders}

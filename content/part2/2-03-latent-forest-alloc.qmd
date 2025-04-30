@@ -15,4 +15,9 @@ I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 
 
 ## Simulation Study
 
-Kind of unsure here. 
+### Score Improvement
+{{< embed ../codefigs/results.qmd#fig-efm-mcc  >}}
+
+### Odds of Individual Edge Improvement 
+{{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
+
