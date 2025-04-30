@@ -10,8 +10,8 @@
     ]
   },
   {
-    "objectID": "0-intro.html",
-    "href": "0-intro.html",
+    "objectID": "content/0-intro.html",
+    "href": "content/0-intro.html",
     "title": "Introduction",
     "section": "",
     "text": "Ambiguous Metrology\nA wide variety of fields show consistent interest in inferring latent network structure from observed interactions, from human cognition and social infection networks, to marketing, traffic, finance, and many others. [1] However, an increasing number of authors are noting a lack of agreement in how to approach the metrology of this problem. This includes rampant disconnects between the theoretical and methodological network analysis sub-communities[2], treatment of error as purely aleatory, rather than epistemic [3], or simply ignoring measurement error in network reconstruction entirely[4].\nNetworks in the “wild” rarely exist of and by themsleves. Rather, they are a model of interaction or relation between things that were observed. One of the most beloved examples of a network, the famed Zachary’s Karate Club[5], is in fact reported as a list of pairwise interactions: every time a club member interacted with another (outside of the club), Zachary recorded it as two integers (the IDs of the members). The final list of pairs can be interpreted as an “edge list”, which can be modeled with a network: a simple graph. This was famously used to show natural community structure that nicely matches the group separation that eventually took place when the club split into two.[6]\nNote, however, that we could have just as easily taken note of the instigating student for each interaction (i.e. which student initiated conversation, or invited the other to socialize, etc.). If that relational asymmetry is available, our “edges” are now directed, and we might be able to ask questions about the rates that certain students are asked vs. do the asking, and what that implies about group cohesion. Additionally, the time span is assumed to be “for the duration of observation” (did the students ever interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split. This is now a “dynamic” graph; or, if we only measure relative to the time of separation, at the very least a “weighted” one.\nWe do not know if any of these are true. In fact, as illustrated in Figure 1.1, we do not know if the network being described from the original edge data even has 77 or 78 edges, due to ambiguous reporting in the original work. Lacking a precise definition of what the graph’s components (i.e. it’s edges) are, as measurable entities, means we cannot estimate the measurement error in the graph.",
@@ -20,8 +20,8 @@
     ]
   },
   {
-    "objectID": "0-intro.html#ambiguous-metrology",
-    "href": "0-intro.html#ambiguous-metrology",
+    "objectID": "content/0-intro.html#ambiguous-metrology",
+    "href": "content/0-intro.html#ambiguous-metrology",
     "title": "Introduction",
     "section": "",
     "text": "[5] W. W. Zachary, “An information flow model for conflict and fission in small groups,” Journal of Anthropological Research, vol. 33, no. 4, pp. 452–473, Dec. 1977, doi: 10.1086/jar.33.4.3629752.\n\n[6] M. Girvan and M. E. J. Newman, “Community structure in social and biological networks,” Proceedings of the National Academy of Sciences, vol. 99, no. 12, pp. 7821–7826, Jun. 2002, doi: 10.1073/pnas.122653799.\n\n\n\n\n\n\n\n\n\n\nFigure 1.1: Zachary’s Karate Club, with ambiguously extant edge 78 highlighted.",
@@ -30,28 +30,28 @@
     ]
   },
   {
-    "objectID": "0-intro.html#indirect-network-measurement",
-    "href": "0-intro.html#indirect-network-measurement",
+    "objectID": "content/0-intro.html#indirect-network-measurement",
+    "href": "content/0-intro.html#indirect-network-measurement",
     "title": "Introduction",
     "section": "Indirect Network Measurement",
-    "text": "Indirect Network Measurement\nWhile the karate club graph has unquantified edge uncertainty derived from ambiguous edge measurements, we are fortunate that we have edge measurements. Regardless of how the data was collected, it is de facto reported as a list of pairs. In many cases, we simply do not have such luxury. Instead, our edges are only measured indirectly, and instead we are left with lists of node co-ocurrences. Networks connecting movies as being “similar” might be derived from data that lists sets of movies watched by each user; networks of disease spread pathways might be implied from patient infection records; famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together.\nSuch networks are derived from what we will call node activation data, i.e., records of what entities happened “together”, whether contemporaneously, or in some other context or artifact.\n\n\n\n\n\n\n\n\n\nFigure 1.2\n\n\n\n\n\n\nThese are naturally represented as “bipartite” networks, having separate entites for, say, “papers” and “authors”, and connecting them with edges (paper 1 is “connected” to its authors E,H,C, etc.). But analysts are typically seeking the collaboration network connecting authors (or papers) themselves! Networks of relationships in this situation are not directly observed, but which if recovered could provide estimates for community structure, importances of individual authors (e.g. as controlling flow of information), and the “distances” that separate authors from each other, in their respective domains. [7] Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social “acquaintance”, where more papers shared means more “connected”.\n\n[7] M. E. J. Newman, “Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,” Physical Review E, vol. 64, no. 1, p. 016132, Jun. 2001, doi: 10.1103/physreve.64.016132.\n\n\n\n\n\n\n\n\n\n\n\n\n\n(a) Bipartite representation of node “activation” data\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b)\n\n\n\n\n\n\n\n\n\nFigure 1.3\n\n\n\nThus our social collaboration network is borne out of indirect measurements: author connection is implied through “occasions when co-authorship occurred”. However, authors of papers may recall times that others were added, not by their choice, but by someone else already involved. In fact, the final author list of most papers is reasonably a result of individuals choosing to invite others, not a unanimous, simultaneous decision by all members. Let’s imagine we wished to study the social network of collaboration more directly: if we had the luxury of being in situ as, say, a sociologist performing an academic ethnography, we might have been more strict with our definition of “connection”. If the goal is a meaningful social network reflecting the strength of interraction between colleages, perhaps the we prefer our edges represent “mutual willingness to collaborate”. Edge “measurement”, then, could involve records of events that show willingness to seek or participate in collaboration event, such as:\n\nauthor G asked E, H, and C to co-author a paper, all of whom agreed\nI asked F and J, but J wanted to add B’s expertise before writing one of the sections\n\nand so on. Each time two colleagues had an opportunity to work together and it was seized upon we might conclude that evidence of their relationship strengthed. With data like this, we could be more confident in claiming our collaboration network can serve as “ground truth,” as far as empirically confirmed collaborations go. However, even if the underlying “activations” are identical, our new, directly measured graph looks very different.\n\n\n\n\n\n\n\\(G\\rightarrow E,H,C\\)\n\\(E\\rightarrow A,F\\)\n\\(I \\rightarrow F,J\\quad J\\rightarrow B\\)\n\\(D \\rightarrow H\\quad H\\rightarrow E\\)\n\n\n\n\n\n\n\n\n\n\n\n(a) graph of mutual collaboration relationships i.e. the “ground truth” social network\n\n\n\n\n\n\n\n\n\nFigure 1.4\n\n\n\nFundamentally, the network in Figure 1.4 shows which relationships the authors depend on to accomplish their publishing activity. When causal relations between nodes are being modeled as edges, we call such a graph a dependency network. We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is how do we recover dependency networks from node activations? Additionally, what goes wrong when we use co-occurence/activation data to estimate the dependency network, especially when we wish to use it for metrics like centrality, shortest path distances, and community belonging?\n\n\n\n\n\n\n\n\n\nFigure 1.5: Recovering underlying dependency networks from node-cooccurrences.\n\n\n\n\n\n\nEven more practically, networks created directly from bipartite-style data are notorious for quickly becoming far too dense for useful analysis, earning them the (not-so-)loving moniker “hairballs”. Network “backboning,” as it has come to be called [CITE] tries to find a subset of edges in this hairball that still captures it’s core topology in a way that’s easier to visualize. Meanwhile, underlying networks of dependencies that cause node activation patterns can provide this: they are almost always more sparse than their hairballs. Accessing the dependency backbone in a principled way is difficult, but doing so in a rapid, scalable manner is critical for practitioners to be able to make use of it to trim their hairballs.",
+    "text": "Indirect Network Measurement\nWhile the karate club graph has unquantified edge uncertainty derived from ambiguous edge measurements, we are fortunate that we have edge measurements. Regardless of how the data was collected, it is de facto reported as a list of pairs. In many cases, we simply do not have such luxury. Instead, our edges are only measured indirectly, and instead we are left with lists of node co-ocurrences. Networks connecting movies as being “similar” might be derived from data that lists sets of movies watched by each user; networks of disease spread pathways might be implied from patient infection records; famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together.\nSuch networks are derived from what we will call node activation data, i.e., records of what entities happened “together”, whether contemporaneously, or in some other context or artifact.\n\n\n\n\n\n\n\n\n\nFigure 1.2\n\n\n\n\n\n\nThese are naturally represented as “bipartite” networks, having separate entites for, say, “papers” and “authors”, and connecting them with edges (paper 1 is “connected” to its authors E,H,C, etc.). But analysts are typically seeking the collaboration network connecting authors (or papers) themselves! Networks of relationships in this situation are not directly observed, but which if recovered could provide estimates for community structure, importances of individual authors (e.g. as controlling flow of information), and the “distances” that separate authors from each other, in their respective domains. [7] Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social “acquaintance”, where more papers shared means more “connected”.\n\n[7] M. E. J. Newman, “Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,” Physical Review E, vol. 64, no. 1, p. 016132, Jun. 2001, doi: 10.1103/physreve.64.016132.\n\n\n\n\n\n\n\n\n\nFigure 1.3\n\n\n\n\n\n\nThus our social collaboration network is borne out of indirect measurements: author connection is implied through “occasions when co-authorship occurred”. However, authors of papers may recall times that others were added, not by their choice, but by someone else already involved. In fact, the final author list of most papers is reasonably a result of individuals choosing to invite others, not a unanimous, simultaneous decision by all members. Let’s imagine we wished to study the social network of collaboration more directly: if we had the luxury of being in situ as, say, a sociologist performing an academic ethnography, we might have been more strict with our definition of “connection”. If the goal is a meaningful social network reflecting the strength of interraction between colleages, perhaps the we prefer our edges represent “mutual willingness to collaborate”. Edge “measurement”, then, could involve records of events that show willingness to seek or participate in collaboration event, such as:\n\nauthor (g) asked (e), (h), and (c) to co-author a paper, all of whom agreed\n(i) asked (f) and (j), but (j) wanted to add (b)’s expertise before writing one of the sections\n\nand so on. Each time two colleagues had an opportunity to work together and it was seized upon we might conclude that evidence of their relationship strengthed. With data like this, we could be more confident in claiming our collaboration network can serve as “ground truth,” as far as empirically confirmed collaborations go. However, even if the underlying “activations” are identical, our new, directly measured graph looks very different.\n\n\n\n\n\n\n\n\n\nFigure 1.4: graph of mutual collaboration relationships i.e. the “ground truth” social network\n\n\n\n\n\n\nFundamentally, the network in Figure 1.4 shows which relationships the authors depend on to accomplish their publishing activity. When causal relations between nodes are being modeled as edges, we call such a graph a dependency network. We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is how do we recover dependency networks from node activations? Additionally, what goes wrong when we use co-occurence/activation data to estimate the dependency network, especially when we wish to use it for metrics like centrality, shortest path distances, and community belonging?\n\n\n\n\n\n\n\n\n\nFigure 1.5: Recovering underlying dependency networks from node-cooccurrences.\n\n\n\n\n\n\nEven more practically, networks created directly from bipartite-style data are notorious for quickly becoming far too dense for useful analysis, earning them the (not-so-)loving moniker “hairballs”. Network “backboning,” as it has come to be called [CITE] tries to find a subset of edges in this hairball that still captures it’s core topology in a way that’s easier to visualize. Meanwhile, underlying networks of dependencies that cause node activation patterns can provide this: they are almost always more sparse than their hairballs. Accessing the dependency backbone in a principled way is difficult, but doing so in a rapid, scalable manner is critical for practitioners to be able to make use of it to trim their hairballs.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
   },
   {
-    "objectID": "0-intro.html#scope-of-this-work",
-    "href": "0-intro.html#scope-of-this-work",
+    "objectID": "content/0-intro.html#scope-of-this-work",
+    "href": "content/0-intro.html#scope-of-this-work",
     "title": "Introduction",
     "section": "Scope of this work",
-    "text": "Scope of this work\nThe purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations. To begin adressing these issues, we present a guide to current practices,pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner’s Guide to Network Recovery. We cover what “measurement” means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically Clarifying what different versions of what “relation” means (whether proximity or incidence), since network structure is intended to encode such relations as mathematical objects, despite common ambiguities and confusion around what practitioners intend on communicating through them. Then we use this structure to present a cohesive framework for selecting a useful network recovery technique, based on the available data and where in the data processing pipeline is acceptable to admit either extra modeling assumptions or information loss.\nNext, building on a gap found in the first part, we present a novel method, Forest Pursuit, to extract depencency networks when we know a spreading process causes node activation (e.g. paper co-authorship caused by collaboration requests). We create a new reference dataset to enable community benchmarking of network recovery techniques, and use it show greatly improved accuracy over many other widely-used methods. Forest Pursuit in its simplest form scales linearly with the size of active-node sets, being trivially parallelizeable and streamable over dataset size, and agnostic to network size overall. We then expand our analysis to re-imagine Forest Pursuit as a Bayesian probabilistic model, Latent Forest Allocation, which has an easily-implemented Expectation Maximization scheme for posterior estimation. This significantly improves upon the accuracy results of Forest Pursuit, at the cost of some speed and scalability, giving analysts multiple options to adapt to their needs.\nLast, we apply Forest Pursuit to several qualitative case-studies, including a scientific collaboration network, and the verbal fluency “animals” network recovery problem, which dramatically change interpretation under use of our method. We investigate its use as a low-cost preprocessor for other methods of network recovery,like GLASSO, improving their stability and interpretability. Finally we discuss the special case when node activations are reported as an ordered set, where accounting for cascade-like effects becomes crucial to balance false positive and false-negative edge prediction. Along with application of this idea to knowledge-graph creation from technical language in the form maintenance work-order data, we discuss more broadly the future needs of network recovery, specifically in the context of embeddings and gradient-based machine learning toolkits.",
+    "text": "Scope of this work\nThe purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations. We give special focus to binary activations that occur due to spreading processes, such as random walks or cascades on an underlying carrier graph. Recovering the carrier, or, “dependency” network from node activations is of great interest to the network backboning and causal modeling communities, but often involves wither unspoken sources of epistemic and alleatoric error, or high computation costs (or both). To begin adressing these issues, we present a guide to current practices,pitfalls, and how common statistical tools apply to the network recovery problem: a Practitioner’s Guide to Network Recovery. We cover what “measurement” means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically Clarifying what different versions of what “relation” means (whether proximity or incidence), since network structure is intended to encode such relations as mathematical objects, despite common ambiguities and confusion around what practitioners intend on communicating through them. Then we use this structure to present a cohesive framework for selecting a useful network recovery technique, based on the available data and where in the data processing pipeline is acceptable to admit either extra modeling assumptions or information loss.\nNext, building on a gap found in the first part, we present a novel method, Forest Pursuit, to extract depencency networks when we know a spreading process causes node activation (e.g. paper co-authorship caused by collaboration requests). We create a new reference dataset to enable community benchmarking of network recovery techniques, and use it show greatly improved accuracy over many other widely-used methods. Forest Pursuit in its simplest form scales linearly with the size of active-node sets, being trivially parallelizeable and streamable over dataset size, and agnostic to network size overall. We then expand our analysis to re-imagine Forest Pursuit as a Bayesian probabilistic model, Latent Forest Allocation, which has an easily-implemented Expectation Maximization scheme for posterior estimation. This significantly improves upon the accuracy results of Forest Pursuit, at the cost of some speed and scalability, giving analysts multiple options to adapt to their needs.\nLast, we apply Forest Pursuit to several qualitative case-studies, including a scientific collaboration network, and the verbal fluency “animals” network recovery problem, which dramatically change interpretation under use of our method. We investigate its use as a low-cost preprocessor for other methods of network recovery,like GLASSO, improving their stability and interpretability. Finally we discuss the special case when node activations are reported as an ordered set, where accounting for cascade-like effects becomes crucial to balance false positive and false-negative edge prediction. Along with application of this idea to knowledge-graph creation from technical language in the form maintenance work-order data, we discuss more broadly the future needs of network recovery, specifically in the context of embeddings and gradient-based machine learning toolkits.",
     "crumbs": [
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Introduction</span>"
     ]
   },
   {
-    "objectID": "1-01-matrix-meas.html",
-    "href": "1-01-matrix-meas.html",
+    "objectID": "content/part1/1-01-matrix-meas.html",
+    "href": "content/part1/1-01-matrix-meas.html",
     "title": "Metrology as matrices",
     "section": "",
     "text": "Observation and feature “spaces”\nWhere metrology is concerned, the actual unit of observation and how it is encoded for us is critical to how analysts may proceed with quantifying, modeling, and measuring uncertainty around observed phenomena. Experiment and observation tends to be organized as inputs and outputs, or, independent variables and dependent variables, specifically. Independent variables are observed, multiple times (“observations”), and changes in outcome for each can be compared to the varying values associated with the independent variable input (“features”). For generality, say a practitioner records their measurements as scalar values, i.e. \\(x\\in\\mathbb{S}\\in\\{\\mathbb{R,Z,N},\\cdots\\}\\). The structure most often used to record scalar values of \\(n\\) independent/input variable features over the course of \\(m\\) observations is called a design matrix \\(X:\\mathbb{S}^{m\\times n}\\).1\nIf we index a set of observations and features, respectively, as \\[ i\\in I=\\{1,\\cdots,m\\}, \\quad j\\in J=\\{1,\\cdots,n\\},\\qquad I,J:\\mathbb{N}\\] then the design matrix can map the index of an observation and a feature to the corresponding measurement. \\[x=X(i,j)\\qquad X : I\\times J \\rightarrow \\mathbb{S}\\] i.e. the measured value of the \\(j\\)th independent variable from the \\(i\\)th observation. In this scheme, an “observation” is a single row vector of features in \\(\\mathbb{S}^{n\\times 1}\\) (or simply \\(\\mathbb{S}^{n}\\)), such that each observation encodes a position in the space defined by the features, i.e. the feature space, and extracting a specific observation vector \\(i\\) from the entire matrix can be denoted as \\[\\mathbf{x}_i=X(i,\\cdot),\\quad \\mathbf{x}:J\\rightarrow\\mathbb{S}\\] Similarly, every “feature” is associated with a single column vector in \\(\\mathbb{S}^{1\\times m}\\), which can likewise be interpreted as a position in the space of observations (the data space): \\[\\mathbf{x}_j^*=X(\\cdot,j),\\quad \\mathbf{x}^*:I\\rightarrow\\mathbb{S}\\] Note that this definition could be swapped without loss of generality. In other words, \\(\\mathbf{x}\\) and \\(\\mathbf{x}^*\\) being in row and column spaces is somewhat arbitrary, having more to do with the logistics of experiment design and data collection. We could have measured our feature vectors one-at-a-time, measuring their values over an entire “population”, in effect treating that as the independent variable set.2\nTo illustrate this formalism in a relevant domain, let’s take another classic network example from academia: co-citation networks. [DRAW BIPARTITE] Lists of co-authors on publications is often reported as “network” data, and subjected to network analysis techniques. For \\(m\\) papers we might be aware of a total of \\(n\\) authors. For a given paper, we are able to see which authors are involved, and we say those authors “activated” for that paper. It makes sense that our observations are individual papers, while the features might be the set of possible authors. However, we are not given information about which author was invited by which other one, or when each author signed on. In other words, the measured values are strictly boolean, and we can structure our dataset as a design matrix \\(X:\\mathbb{B}^{m\\times n}\\). We can then think of the \\(i^{\\mathrm{th}}\\) paper as being represented by a vector \\(\\mathbf{x}_i:\\mathbb{B}^n\\), and proceed using it in our various statistical models. If we desired to analyze the set of authors, say, in order to determine their relative neighborhoods or latent author communities, we could equally use the feature vectors for each paper, this time represented in a vector \\(\\mathbf{x}^*_j:\\mathbb{B}^{1\\times m}\\).",
@@ -61,8 +61,8 @@
     ]
   },
   {
-    "objectID": "1-01-matrix-meas.html#observation-and-feature-spaces",
-    "href": "1-01-matrix-meas.html#observation-and-feature-spaces",
+    "objectID": "content/part1/1-01-matrix-meas.html#observation-and-feature-spaces",
+    "href": "content/part1/1-01-matrix-meas.html#observation-and-feature-spaces",
     "title": "Metrology as matrices",
     "section": "",
     "text": "2  In fact, vectors are often said to be in the column-space of a matrix, especially when using them as transformations in physics or deep learning layers. We generally follow a one-observation-per-row rule, unless otherwise stated.",
@@ -72,8 +72,8 @@
     ]
   },
   {
-    "objectID": "1-01-matrix-meas.html#models-linear-operators",
-    "href": "1-01-matrix-meas.html#models-linear-operators",
+    "objectID": "content/part1/1-01-matrix-meas.html#models-linear-operators",
+    "href": "content/part1/1-01-matrix-meas.html#models-linear-operators",
     "title": "Metrology as matrices",
     "section": "Models & linear operators",
     "text": "Models & linear operators\nAnother powerful tool an analyst has is modeling the observation process. This is relevant when the observed data is hypothesized to be generated by a process we can represent mathematically, but we do not know the parameter values to best represent the observations (or the observations are “noisy” and we want to find a “best” parameters that account for this noise). This is applicable to much of scientific inquiry, though one common use-case is the de-blurring of observed images (or de-noising of signals), since we might have a model for how blurring “operated” on the original image to give us the blurred one. We call this “blurring” a linear operator if it can be represented as a matrix3, and applying it to a model with \\(l\\) parameters is called the forward map: \\[\\mathbf{x} = F\\mathbf{p}\\qquad F:\\mathbb{R}^{l}\\rightarrow \\mathbb{R}^n\\] where \\(P\\) is the space of possible parameter vectors, i.e. the model space. The forward map takes a modeled vector and predicts a location in data space.\n3 in the finite-dimensional caseOf critical importance, then, is our ability to recover some model parameters from our observed data, e.g. if our images were blurred through convolution with a blurring kernel, then we are interested in deconvolution. If \\(F\\) is invertible, the most direct solution might be to apply the operator to the data, as the adjoint map: \\[ \\mathbf{p} = F^H\\mathbf{x}\\qquad F^H:\\mathbb{R}^{n}\\rightarrow \\mathbb{R}^l\\] which removes the effect of \\(F\\) from the data \\(\\mathbf{x}\\) to recover the desired model \\(\\mathbf{p}\\).\nTrivially we might have an orthogonal matrix \\(F\\), so \\(F^H=F^{-1}\\) is available directly. In practice, other approaches are used to minimize the residual: \\(\\hat{\\mathbf{p}}^=\\min_{\\mathbf{p}} F\\mathbf{p}-\\mathbf{x}\\). Setting the gradient to 0 yeilds the normal equation, such that \\[ \\hat{\\mathbf{p}}=(F^TF)^{-1}F^T\\mathbf{x}\\] This should be familiar to readers as equivalent to solving ordinary least-squares (OLS). However, in that case it is more often shown as having the design matrix \\(X\\) in place of the operator \\(F\\).\nThis is a critical distinction to make: OLS as a “supervised” learning method treats some of the observed data we represented as a design matrix previously as a target to be modeled, \\(y=X(\\cdot,j)\\), and the rest maps parameters into data space, \\(F=X(\\cdot,J/j)\\). With this paradigm, only the target is being “modeled” and the rest of the data is used to create the operator. In the citation network example, it would be equivalent to trying to predict one author’s participation in every paper, given every other author’s participation in them.\nFor simplicity, most work in the supervised setting treats the reduced data matrix as X, opting to treat \\(y\\) as a separate dependent variable. However, our setting will remain unsupervised, since no single target variable is of specific interest—all observations are “data”. In this, we more closely align with the deconvolution literature, such that we are seeking a model and an operation on it that will produce the observed behavior in an “optimal” way.",
@@ -83,8 +83,8 @@
     ]
   },
   {
-    "objectID": "1-01-matrix-meas.html#measurement-quantification-error",
-    "href": "1-01-matrix-meas.html#measurement-quantification-error",
+    "objectID": "content/part1/1-01-matrix-meas.html#measurement-quantification-error",
+    "href": "content/part1/1-01-matrix-meas.html#measurement-quantification-error",
     "title": "Metrology as matrices",
     "section": "Measurement quantification & error",
     "text": "Measurement quantification & error\n\nmarginal sums\nrule of succession\ntype I and II Error?\nEpistemic and Alleatoric Uncertainty?\n\nUltimately we are not great at specifying what “being related” actually means…",
@@ -94,30 +94,30 @@
     ]
   },
   {
-    "objectID": "1-01-matrix-meas.html#incidence-vs.-proximity",
-    "href": "1-01-matrix-meas.html#incidence-vs.-proximity",
+    "objectID": "content/part1/1-01-matrix-meas.html#proximity-vs.-incidence",
+    "href": "content/part1/1-01-matrix-meas.html#proximity-vs.-incidence",
     "title": "Metrology as matrices",
-    "section": "Incidence vs. Proximity",
-    "text": "Incidence vs. Proximity\n\nIncidence structures & dependency\nfoundational model of graph theory and incidence structures more broadly. More to come, but get the terminology down.\n\n\n\n\n\n\n\n\n\\[X(\\{1,2,3,4\\})=\\begin{pmatrix}{}\n  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\\\\n  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\\\\n  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\\\\n  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0\n\\end{pmatrix}\n\\]\n\n\n(a)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) Bipartite representation of node “activation” data\n\n\n\n\n\n\n\n\n\nFigure 2.1\n\n\n\nSpring example, road example, etc. Discuss Complex Systems and their representation.\n\n\nKernels & distances\nImportantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) \\(R\\), equipped with operators analogous to addition (\\(\\oplus\\)) and multiplication (\\(\\otimes\\)) that allow for values to be aggregated through an inner product. The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:\n\\[G(\\mathbf{x}_i, \\mathbf{x}_j,R) = G_{ij} = \\bigoplus_{k=1}^{n} x_{ik} \\otimes x_{kj} \\]\nsuch that real-valued entries and a traditional “plus-times” inner product recovers the Gram matrix \\(G_{ij}=\\sum_{k=1}^{n} x_{ik}x_{kj}\\), or simply \\(G=X^TX\\).\nHow “close” or “far away” things are…. Avrachenkov et al. \nImportant: these measurements often assume distance is defined in terms of the measurements/objects/data, but for inverse problems, structure learning, etc., they are more often applied in terms of the features/operators.\nExample with doc-term matrices\nThe inner product between two papers will yield a “true” only if two papers share at least one author in common. This is called a bipartite projection[CITE], specifically the “papers” projection.\nSimilarly, if our goal is to determine a network of “whether two authors ever coauthored”, we could perform a bipartite projection using the boolean inner product in the observation space i.e. the “authors” projection. It is this second projection, for determining a structure between features embedded into the “observation” space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally.\n\n\nImplications for networks\nUsually dependencies are taken as causing or enabling proximity. E.g. shortest paths, vs. edges.\nThe approach taken by researchers/investigators…do they assume a level of interchangeability between the two kinds of “relation”? Do they define Or do they",
+    "section": "Proximity vs. Incidence",
+    "text": "Proximity vs. Incidence\n\nKernels & distances\nImportantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) \\(R\\), equipped with operators analogous to addition (\\(\\oplus\\)) and multiplication (\\(\\otimes\\)) that allow for values to be aggregated through an inner product. The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:\n\\[G(\\mathbf{x}_i, \\mathbf{x}_j,R) = G_{ij} = \\bigoplus_{k=1}^{n} x_{ik} \\otimes x_{kj} \\]\nsuch that real-valued entries and a traditional “plus-times” inner product recovers the Gram matrix \\(G_{ij}=\\sum_{k=1}^{n} x_{ik}x_{kj}\\), or simply \\(G=X^TX\\).\nHow “close” or “far away” things are…. Avrachenkov et al. \nImportant: these measurements often assume distance is defined in terms of the measurements/objects/data, but for inverse problems, structure learning, etc., they are more often applied in terms of the features/operators.\nExample with doc-term matrices\nThe inner product between two papers will yield a “true” only if two papers share at least one author in common. This is called a bipartite projection[CITE], specifically the “papers” projection.\nSimilarly, if our goal is to determine a network of “whether two authors ever coauthored”, we could perform a bipartite projection using the boolean inner product in the observation space i.e. the “authors” projection. It is this second projection, for determining a structure between features embedded into the “observation” space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally.\n\n\nIncidence structures & dependency\nfoundational model of graph theory and incidence structures more broadly. More to come, but get the terminology down.\n\n\n\n\n\n\n\n\n\\[\n%X(\\{1,2,3,4,\\cdots\\})=\\\\\n\\begin{array}{c c}\n& \\begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\\\ \\end{array} \\\\\n\\begin{array}{c c } x_1\\\\x_2\\\\x_3\\\\x_4\\\\ \\vdots \\end{array} &\n\\left[\n\\begin{array}{c c c c c c c c c c}\n  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\\\\n  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\\\\n  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\\\\n  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\\\\n  &&&& \\vdots &&&&&\n\\end{array}\n\\right]\n\\end{array}\n\\]\n\n\n(a)\n\n\n\n\n\n\n\n\n\n\n\n\n\n(b) Bipartite representation of node “activation” data\n\n\n\n\n\n\n\n\n\nFigure 2.1\n\n\n\n\nSpring example, road example, etc.\npartial correlations\n\n\n\nImplications for networks\nUsually dependencies are taken as causing or enabling proximity. E.g. shortest paths, vs. edges.\n\nDiscuss Complex Systems and their representation.\n\nThe approach taken by researchers/investigators…do they assume a level of interchangeability between the two kinds of “relation”? Do they define Or do they",
     "crumbs": [
       "A Practitioner's Guide to Network Recovery",
       "<span class='chapter-number'>2</span>  <span class='chapter-title'>Metrology as matrices</span>"
     ]
   },
   {
-    "objectID": "1-02-graph-obs.html",
-    "href": "1-02-graph-obs.html",
+    "objectID": "content/part1/1-02-graph-obs.html",
+    "href": "content/part1/1-02-graph-obs.html",
     "title": "Incidence in Vector Space",
     "section": "",
-    "text": "Graphs\nFrom [1], and linalg book, and hypergraph incidence model\nFor each, describe the meaning of\nInitial notation (set-based) and outline of section",
+    "text": "Dependence as Graph\nFrom [1], and linalg book, and hypergraph incidence model\nFor each, describe the meaning of\nInitial notation (set-based) and outline of section",
     "crumbs": [
       "A Practitioner's Guide to Network Recovery",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Incidence in Vector Space</span>"
     ]
   },
   {
-    "objectID": "1-02-graph-obs.html#graphs",
-    "href": "1-02-graph-obs.html#graphs",
+    "objectID": "content/part1/1-02-graph-obs.html#dependence-as-graph",
+    "href": "content/part1/1-02-graph-obs.html#dependence-as-graph",
     "title": "Incidence in Vector Space",
     "section": "",
     "text": "Edge Relation Observational Model\n\n\n\nEdges as Vectors of Nodes\n\n\nInner Product on Edges\nLaplacian as inner product on incidence observations. Associated objects (degree vector, o)\nRescaling to achieve normaalization.\nUse to define kernels (and application e.g. soft-cosine measure)\n\n\nFrom Edge Observations to Node Activations\nStrictly speaking, we can’t say that nodes are directly observed in this space… edges are. Collections of nodes are measured two-at-a-time (one-per-edge being traversed).\nAnother way to approach is to view inner products as a sum of outer products. A each edge uniquely corresponds to 2 nodes (in a simple graph). Use triangle unfolding for closed form bijection.\nUnrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an edgelist, having binary activation vectors on edges rather than nodes. Then each observation in this model is necessarily a set of activated edges. The non-zero (visited) nodes are found using the incidence matrix as an operator.",
@@ -127,19 +127,30 @@
     ]
   },
   {
-    "objectID": "1-02-graph-obs.html#hypergraphs",
-    "href": "1-02-graph-obs.html#hypergraphs",
+    "objectID": "content/part1/1-02-graph-obs.html#occurence-as-hypergraph",
+    "href": "content/part1/1-02-graph-obs.html#occurence-as-hypergraph",
     "title": "Incidence in Vector Space",
-    "section": "Hypergraphs",
-    "text": "Hypergraphs\n\n\n\nHyperedge Relation Observational Model\n\n\n\nHyperedges as Vectors of Nodes\n\n\nInner product on Hyperedges\nRoundabout way of describing binary/occurrence data. Inner product is co-occurrences.\nLeads to correlation/covariance, etc.",
+    "section": "Occurence as Hypergraph",
+    "text": "Occurence as Hypergraph\n\n\n\nHyperedge Relation Observational Model\n\n\n\nHyperedges as Vectors of Nodes\n\n\nInner product on Hyperedges\nRoundabout way of describing binary/occurrence data. Inner product is co-occurrences.\nLeads to correlation/covariance, etc.",
     "crumbs": [
       "A Practitioner's Guide to Network Recovery",
       "<span class='chapter-number'>3</span>  <span class='chapter-title'>Incidence in Vector Space</span>"
     ]
   },
   {
-    "objectID": "1-03-recovery-road.html",
-    "href": "1-03-recovery-road.html",
+    "objectID": "content/part1/1-02-graph-obs.html#combining-occurence-dependence",
+    "href": "content/part1/1-02-graph-obs.html#combining-occurence-dependence",
+    "title": "Incidence in Vector Space",
+    "section": "Combining Occurence & Dependence",
+    "text": "Combining Occurence & Dependence\n\nsoft cosine\nkernels on graphs (incl. coscia euclidean)\nRetrieving one from the other is hard.",
+    "crumbs": [
+      "A Practitioner's Guide to Network Recovery",
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Incidence in Vector Space</span>"
+    ]
+  },
+  {
+    "objectID": "content/part1/1-03-recovery-road.html",
+    "href": "content/part1/1-03-recovery-road.html",
     "title": "Roads to Network Recovery",
     "section": "",
     "text": "Choosing a structure recovery method",
@@ -149,8 +160,8 @@
     ]
   },
   {
-    "objectID": "1-03-recovery-road.html#choosing-a-structure-recovery-method",
-    "href": "1-03-recovery-road.html#choosing-a-structure-recovery-method",
+    "objectID": "content/part1/1-03-recovery-road.html#choosing-a-structure-recovery-method",
+    "href": "content/part1/1-03-recovery-road.html#choosing-a-structure-recovery-method",
     "title": "Roads to Network Recovery",
     "section": "",
     "text": "Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve",
@@ -160,8 +171,8 @@
     ]
   },
   {
-    "objectID": "1-03-recovery-road.html#organizing-recovery-methods",
-    "href": "1-03-recovery-road.html#organizing-recovery-methods",
+    "objectID": "content/part1/1-03-recovery-road.html#organizing-recovery-methods",
+    "href": "content/part1/1-03-recovery-road.html#organizing-recovery-methods",
     "title": "Roads to Network Recovery",
     "section": "Organizing Recovery Methods",
     "text": "Organizing Recovery Methods\ni.e. Network Recovery as an Inverse Problem, and what information is had at each point.\n\n\n\nRelating Graphs and Hypergraph/bipartite structures as adjoint operators\n\n\n\nObserving Nodes vs Edges\n\n\nEmbeddings, Inner Products, & Preprocessing",
@@ -171,8 +182,8 @@
     ]
   },
   {
-    "objectID": "1-03-recovery-road.html#tracing-information-loss-paths",
-    "href": "1-03-recovery-road.html#tracing-information-loss-paths",
+    "objectID": "content/part1/1-03-recovery-road.html#tracing-information-loss-paths",
+    "href": "content/part1/1-03-recovery-road.html#tracing-information-loss-paths",
     "title": "Roads to Network Recovery",
     "section": "Tracing Information Loss Paths",
     "text": "Tracing Information Loss Paths\n\nTable of Existing Approaches\n\nObservation-level loss (starting with the inner product or kernel)\nNon-generative model loss (no projection of data into model space)\nno uncertainty quantification\n\n\n\nA Path Forward\nSorting algorithms… none address all three!\ni.e. MOTIVATES FOREST PURSUIT",
@@ -182,51 +193,41 @@
     ]
   },
   {
-    "objectID": "2-00-recovery.html",
-    "href": "2-00-recovery.html",
-    "title": "Nonparametric Network Recovery With Random Spanning Forests",
+    "objectID": "content/part2/2-01-rand-sf.html",
+    "href": "content/part2/2-01-rand-sf.html",
+    "title": "Generative Random Spanning Forests",
     "section": "",
-    "text": "# Recovery from Bipartite Occurrence Records\n\nA generative model for multi-output binary observations under diffusion\nEdge Recovery through Sparse Approximation by Empirical Bayes\nGibbs Sampling a hierarchical bayesian model",
-    "crumbs": [
-      "Nonparametric Network Recovery With Random Spanning Forests"
-    ]
-  },
-  {
-    "objectID": "2-01-rand-sf.html",
-    "href": "2-01-rand-sf.html",
-    "title": "Random Spanning Forests",
-    "section": "",
-    "text": "Node Activation by Diffusive Processes\nRandom walks are regularly employed to model spreading and diffusive processes on networks. If a network consists of locations, states, agents, etc. as “nodes”, and relationships between nodes as “edges”, then random walks consist of a stochastic process that “visits” nodes by randomly “walking” between them along connecting edges. Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. If a network structure is known ahead of time, the dynamics of random-walks might be used to capture the network structure via sampling, estimate node importance’s, or predict phase-changes in node states (e.g. infected vs. uninfected)\nIn many cases, however, the existence of relationships is not known already, and analysts might assume their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.",
+    "text": "Node Activation by Diffusive Processes\nAddressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations. While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that causes activation patterns will give us useful ways to narrow down the generative specification. The dependency graph gives us all of the ways that nodes’ state can affect the state of others, i.e. the neighbor set of each node. This immediately leads us to model our node activations as resulting from spreading, or, diffusive processes.\nIn this chapter we outline how the random-walks are is related to these diffusive models of graph traversal, enabled by an investigation of the graph’s “regularized laplacian” from [1]. Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [2], [3] to more generally define our generative node activation model: namely, as samples from the space of rooted random spanning forests on the dependency graph.\nThe class of diffusive processes we focus on “spread” from one node to another. If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes “depend” on others to be activated. In this case, a node activates when another node it depends on spreads their state to it. These single-cause activations are equivalent to imagining a random-walk on the dependency graph, where visiting a node activates it.",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Random Spanning Forests</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generative Random Spanning Forests</span>"
     ]
   },
   {
-    "objectID": "2-01-rand-sf.html#node-activation-by-diffusive-processes",
-    "href": "2-01-rand-sf.html#node-activation-by-diffusive-processes",
-    "title": "Random Spanning Forests",
+    "objectID": "content/part2/2-01-rand-sf.html#node-activation-by-diffusive-processes",
+    "href": "content/part2/2-01-rand-sf.html#node-activation-by-diffusive-processes",
+    "title": "Generative Random Spanning Forests",
     "section": "",
-    "text": "Dependencies as Trees\n\n\nMatrix-Forest Theorem",
+    "text": "Random Walk Activations\nRandom walks are regularly employed to model spreading and diffusive processes on networks. If a network consists of locations, states, agents, etc. as “nodes”, and relationships between nodes as “edges”, then random walks consist of a stochastic process that “visits” nodes by randomly “walking” between them along connecting edges. Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [CITE…lots?]\nWhen network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance’s[PAGERANK], or predict phase-changes in node states (e.g. infected vs. uninfected)[SIR I think] In our case, Since we have been encoding the activations as binary activation vectors, the “jump” information is lost—activations are “emitted” for observation only upon the random walker’s initial visit. [CITE INVITE] In many cases, however, the existence of relationships is not known already, and analysts might assume their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.\n\nuseful tool for analysis of our data: reg laplacian\ninterpretations\n\n\n\nDependencies as Trees\nThe whole graph isn’t a tree….Every data point is.\n[GRAPHIC 1 - my data]\n[GRAPHIC 2 - infection vector from meta node]\n\n\nMatrix Tree and Forest Theorems\n\none from kirchoff\none from Chebotarv",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Random Spanning Forests</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generative Random Spanning Forests</span>"
     ]
   },
   {
-    "objectID": "2-01-rand-sf.html#generative-model-specification",
-    "href": "2-01-rand-sf.html#generative-model-specification",
-    "title": "Random Spanning Forests",
+    "objectID": "content/part2/2-01-rand-sf.html#generative-model-specification",
+    "href": "content/part2/2-01-rand-sf.html#generative-model-specification",
+    "title": "Generative Random Spanning Forests",
     "section": "Generative Model Specification",
     "text": "Generative Model Specification\n - hierarchical model - marginalize over the root node.",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
-      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Random Spanning Forests</span>"
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Generative Random Spanning Forests</span>"
     ]
   },
   {
-    "objectID": "2-02-forest-pursuit.html",
-    "href": "2-02-forest-pursuit.html",
+    "objectID": "content/part2/2-02-forest-pursuit.html",
+    "href": "content/part2/2-02-forest-pursuit.html",
     "title": "Forest Pursuit: Approximate Recovery in Near-linear Time",
     "section": "",
     "text": "Sparse Dictionary Learning",
@@ -236,19 +237,19 @@
     ]
   },
   {
-    "objectID": "2-02-forest-pursuit.html#sparse-dictionary-learning",
-    "href": "2-02-forest-pursuit.html#sparse-dictionary-learning",
+    "objectID": "content/part2/2-02-forest-pursuit.html#sparse-dictionary-learning",
+    "href": "content/part2/2-02-forest-pursuit.html#sparse-dictionary-learning",
     "title": "Forest Pursuit: Approximate Recovery in Near-linear Time",
     "section": "",
-    "text": "Problem Speification\n\n\nMatching Pursuit\n\n\nSpace of Spanning Forests",
+    "text": "Problem Specification\n\n\nMatching Pursuit\n\n\nSpace of Spanning Forests",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Forest Pursuit: Approximate Recovery in Near-linear Time</span>"
     ]
   },
   {
-    "objectID": "2-02-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
-    "href": "2-02-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
+    "objectID": "content/part2/2-02-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
+    "href": "content/part2/2-02-forest-pursuit.html#forest-pursuit-approximate-recovery-in-near-linear-time",
     "title": "Forest Pursuit: Approximate Recovery in Near-linear Time",
     "section": "Forest Pursuit: Approximate Recovery in Near-linear Time",
     "text": "Forest Pursuit: Approximate Recovery in Near-linear Time\nI.e. the PLOS paper (modified basis-pursuit via MSTs) ### Algorithm Summary\n\nUncertainty Estimation\n\n\nApproximate Complexity",
@@ -258,19 +259,30 @@
     ]
   },
   {
-    "objectID": "2-02-forest-pursuit.html#simulation-study",
-    "href": "2-02-forest-pursuit.html#simulation-study",
+    "objectID": "content/part2/2-02-forest-pursuit.html#simulation-study",
+    "href": "content/part2/2-02-forest-pursuit.html#simulation-study",
     "title": "Forest Pursuit: Approximate Recovery in Near-linear Time",
     "section": "Simulation Study",
-    "text": "Simulation Study\n\nMethod\n\n\nResults\n\n\nDiscussion",
+    "text": "Simulation Study\n\nMethod\n\n\nResults - Scoring\n\n\n\n\n\n\n\n\n\nFigure 6.1: Comparison of MENDR recovery scores: FP: Forest Pursuit GL: GLASSO CS: Cosine Similarity HYP: Hyperbolic Projection eOT: Entropic Optimal Transport (Doubly Stochastic) HSS: High-Salience Skeleton RP: Resource Projection\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 6.2: Comparison of MENDR Recovery Scores by Graph Type\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 6.3\n\n\n\n\n\n\n\n\nResults - Performance\n\n\n\n\n\n\n\n\n\nFigure 6.4\n\n\n\n\n\n\n\n\n\n(np.float64(0.0694651520667083), np.float64(1085594.3113734804))\n4.594236123462085 1632.4803075964253\n8.436143086693106 355.6127449677926\n8.374142176881948 3379.80886903671\n\n\n\n\n\n\n\n\nFigure 6.5",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
       "<span class='chapter-number'>6</span>  <span class='chapter-title'>Forest Pursuit: Approximate Recovery in Near-linear Time</span>"
     ]
   },
   {
-    "objectID": "2-03-latent-forest-alloc.html",
-    "href": "2-03-latent-forest-alloc.html",
+    "objectID": "content/part2/2-02-forest-pursuit.html#discussion",
+    "href": "content/part2/2-02-forest-pursuit.html#discussion",
+    "title": "Forest Pursuit: Approximate Recovery in Near-linear Time",
+    "section": "Discussion",
+    "text": "Discussion\n\nInteraction Probability",
+    "crumbs": [
+      "Nonparametric Network Recovery With Random Spanning Forests",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>Forest Pursuit: Approximate Recovery in Near-linear Time</span>"
+    ]
+  },
+  {
+    "objectID": "content/part2/2-03-latent-forest-alloc.html",
+    "href": "content/part2/2-03-latent-forest-alloc.html",
     "title": "LFA: Latent Forest Allocation",
     "section": "",
     "text": "Radom Spanning Trees",
@@ -280,8 +292,8 @@
     ]
   },
   {
-    "objectID": "2-03-latent-forest-alloc.html#radom-spanning-trees",
-    "href": "2-03-latent-forest-alloc.html#radom-spanning-trees",
+    "objectID": "content/part2/2-03-latent-forest-alloc.html#radom-spanning-trees",
+    "href": "content/part2/2-03-latent-forest-alloc.html#radom-spanning-trees",
     "title": "LFA: Latent Forest Allocation",
     "section": "",
     "text": "Methods for sampling i.e. wilson’s and Duan’s (other? Energy paper?)\nTree Likelihoods, other facts",
@@ -291,8 +303,8 @@
     ]
   },
   {
-    "objectID": "2-03-latent-forest-alloc.html#bayesian-estimation-by-gibbs-sampling",
-    "href": "2-03-latent-forest-alloc.html#bayesian-estimation-by-gibbs-sampling",
+    "objectID": "content/part2/2-03-latent-forest-alloc.html#bayesian-estimation-by-gibbs-sampling",
+    "href": "content/part2/2-03-latent-forest-alloc.html#bayesian-estimation-by-gibbs-sampling",
     "title": "LFA: Latent Forest Allocation",
     "section": "Bayesian Estimation by Gibbs Sampling",
     "text": "Bayesian Estimation by Gibbs Sampling\n\ncomparison with LDA\nSimplifying Assumptions (conditional prob IS prob for this)\n\nI.e. the unwritten paper, modifying technique by [1] for RSF instead of RSTs\n\n[1] L. L. Duan and D. B. Dunson, “Bayesian spanning tree: Estimating the backbone of the dependence graph,” arXiv, arXiv:2106.16120, Jun. 2021. doi: 10.48550/arXiv.2106.16120.",
@@ -302,25 +314,69 @@
     ]
   },
   {
-    "objectID": "2-03-latent-forest-alloc.html#simulation-study",
-    "href": "2-03-latent-forest-alloc.html#simulation-study",
+    "objectID": "content/part2/2-03-latent-forest-alloc.html#simulation-study",
+    "href": "content/part2/2-03-latent-forest-alloc.html#simulation-study",
     "title": "LFA: Latent Forest Allocation",
     "section": "Simulation Study",
-    "text": "Simulation Study\nKind of unsure here.",
+    "text": "Simulation Study\n\nScore Improvement\n\n\n\n\n\n\n\n\n\nFigure 7.1\n\n\n\n\n\n\n\n\nOdds of Individual Edge Improvement\n\n\n\n\n\n\n\n\n\nFigure 7.2: logistic regression coefficients for true edges via difference in EFM and FP scores. L2-regularization for overfit prevention was chosen with 5-fold cross validation, each time.",
     "crumbs": [
       "Nonparametric Network Recovery With Random Spanning Forests",
       "<span class='chapter-number'>7</span>  <span class='chapter-title'>LFA: Latent Forest Allocation</span>"
     ]
   },
   {
-    "objectID": "3-07-ordered.html",
-    "href": "3-07-ordered.html",
-    "title": "Recovery from Ordered Random-Walk Observation Sets",
+    "objectID": "content/part3/3-06-qualitative.html",
+    "href": "content/part3/3-06-qualitative.html",
+    "title": "Qualitative Application of Relationship Recovery",
+    "section": "",
+    "text": "Network Science Collaboration Network",
+    "crumbs": [
+      "Applications & Extentions",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Qualitative Application of Relationship Recovery</span>"
+    ]
+  },
+  {
+    "objectID": "content/part3/3-06-qualitative.html#network-science-collaboration-network",
+    "href": "content/part3/3-06-qualitative.html#network-science-collaboration-network",
+    "title": "Qualitative Application of Relationship Recovery",
+    "section": "",
+    "text": "Figure 8.1: 134 Network scientists from [NEWMAN;BOCCALETTI;SNEPPEN], connected by co-authorship\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.2: Max. likelihood tree dependency structure to explain co-authorships\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.3: Forest Pursuit estimate of NetSci collaborator dependency relationships\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.4",
+    "crumbs": [
+      "Applications & Extentions",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Qualitative Application of Relationship Recovery</span>"
+    ]
+  },
+  {
+    "objectID": "content/part3/3-06-qualitative.html#les-miserables-character-network",
+    "href": "content/part3/3-06-qualitative.html#les-miserables-character-network",
+    "title": "Qualitative Application of Relationship Recovery",
+    "section": "Les Miserables Character Network",
+    "text": "Les Miserables Character Network\n\nBackboning\n\n\n\n\n\n\n\n\n\nFigure 8.5\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.6\n\n\n\n\n\n\n\n\nCharacter Importance Estimation\n\n\n\n\n\n\n\n\n\nFigure 8.7",
+    "crumbs": [
+      "Applications & Extentions",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Qualitative Application of Relationship Recovery</span>"
+    ]
+  },
+  {
+    "objectID": "content/part3/3-06-qualitative.html#verbal-fluency-animal-network",
+    "href": "content/part3/3-06-qualitative.html#verbal-fluency-animal-network",
+    "title": "Qualitative Application of Relationship Recovery",
+    "section": "Verbal Fluency Animal Network",
+    "text": "Verbal Fluency Animal Network\n\nEdge Connective Effiency and Diversity\n\n\n\n\n\n\n\n\n\nFigure 8.8\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.9\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.10\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFigure 8.11: Comparison of backboning/dependency recovery methods tested vs. Forest Pursuit\n\n\n\n\n\n\n\n\nThresholded Structure Preservation\n\n\nDifferences in structural preservation with increased thresholding.\n\n\n\n\n\n\n\n\n\n\n(a) co-occurrence methods will retain local communities at the cost of global structure\n\n\n\n\n\n\n\n\n\n\n\n(b) dependency network drops rarer nodes from the preserved central structure at higher uncetainty cutoffs\n\n\n\n\n\n\nFigure 8.12: When only retaining the top 2% of edge strengths, blah\n\n\n\n\n\n\n\n\nForest Pursuit as Preprocessing\n\n\nDifferences in structural preservation with increased thresholding.\nRetaining the top 2% of edges, co-occurrence retains local communities\nat the cost of global structure.\n\n\n\n\n\n\n\n\n\n\n(a) Islands of local structure remain (doubly-stochastic)\n\n\n\n\n\n\n\n\n\n\n\n(b) Intact global structure with isolates\n\n\n\n\n\n\nFigure 8.13: We might prefer to drop low-certainty/rare nodes from a preserved central structure.",
+    "crumbs": [
+      "Applications & Extentions",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Qualitative Application of Relationship Recovery</span>"
+    ]
+  },
+  {
+    "objectID": "content/part3/3-07-ordered.html",
+    "href": "content/part3/3-07-ordered.html",
+    "title": "Recovery from Partial Orders",
     "section": "",
     "text": "Like before, but with the added twist of knowing our nodes were activated with a particular partial order.\ninsert from [1], [2]\n[1] R. Sexton and M. Fuge, “Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,” Journal of Mechanical Design, vol. 142, no. 3, Jan. 2020, doi: 10.1115/1.4045686.\n\n[2] R. Sexton and M. Fuge, “Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,” in Volume 2A: 45th design automation conference, American Society of Mechanical Engineers, Aug. 2019. doi: 10.1115/detc2019-98429.",
     "crumbs": [
-      "Application and Future Development",
-      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Recovery from Ordered Random-Walk Observation Sets</span>"
+      "Applications & Extentions",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Recovery from Partial Orders</span>"
     ]
   }
 ]
