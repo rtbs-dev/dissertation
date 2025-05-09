@@ -118,6 +118,10 @@ This could be called an "edge-centric" view of simple graphs, since the nodes in
 
 ### Inner products on $B$
 
+TODO
+
+@eq-sq-distance
+
 Laplacian as inner product on incidence observations.
 Associated objects (degree vector, o)
 
@@ -128,6 +132,8 @@ Use to define kernels (and application e.g. soft-cosine measure)
 ...
 
 ### Metrological Considerations: Interaction Vectors 
+
+TODO
 
 Strictly speaking, we can't say that nodes are directly observed in this space... edges are.
 Collections of nodes are measured two-at-a-time (one-per-edge being traversed).
@@ -141,11 +147,41 @@ Then each observation in this model is necessarily a set of activated edges.
 The non-zero (visited) nodes are found using the incidence matrix as an operator. 
 
 
-## Graphs and Node Occurences 
+## Graphs and node occurrences 
+
+TODO
 
 ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png)
 
-### Hyperedges as Vectors of Nodes
+### Hyperedges as vectors of node occurrence
+
+
+::::{#fig-incidence-struct layout="[[1,1]]"}
+
+::: {#fig-biadj-mat}
+$$
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
+  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
+  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
+  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+$$
+
+:::
+
+{{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
+
+::::
+
 
 ### Inner product on Hyperedges
 Roundabout way of describing binary/occurrence data.
@@ -154,7 +190,7 @@ Inner product is co-occurrences.
 Leads to correlation/covariance, etc. 
 
 
-### Combining Occurence & Dependence
+### Combining Occurrence & Dependence
 
 - soft cosine
 - kernels on graphs (incl. coscia euclidean)

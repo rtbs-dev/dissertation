@@ -27,9 +27,9 @@ i.e. the measured value of the $j$th independent variable from the $i$th observa
 In this scheme, an "observation" is a single row vector of features in $\mathbb{S}^{n\times 1}$ (or simply $\mathbb{S}^{n}$), such that each observation encodes a position in the space defined by the features, i.e. the _feature space_, and extracting a specific observation vector $i$ from the entire matrix can be denoted as
 $$\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}$$
 Similarly, every "feature" is associated with a single column vector in $\mathbb{S}^{1\times m}$, which can likewise be interpreted as a position in the space of observations (the _data space_):
-$$\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}$$
+$$\mathbf{x}_j'=X(\cdot,j),\quad \mathbf{x}':I\rightarrow\mathbb{S}$$
 Note that this definition could be swapped without loss of generality.
-In other words, $\mathbf{x}$ and $\mathbf{x}^*$ being in row and column spaces is somewhat arbitrary, having more to do with the logistics of experiment design and data collection.
+In other words, $\mathbf{x}$ and $\mathbf{x}'$ being in row and column spaces is somewhat arbitrary, having more to do with the logistics of experiment design and data collection.
 We could have measured our feature vectors one-at-a-time, measuring their values over an entire "population", in effect treating that as the independent variable set.^[
   In fact, vectors are often said to be in the column-space of a matrix, especially when using them as transformations in physics or deep learning layers.
   We generally follow a one-observation-per-row rule, unless otherwise stated.
@@ -42,7 +42,7 @@ It makes sense that our observations are individual papers, while the features m
 However, we are not given information about which author was invited by which other one, or when each author signed on.
 In other words, the measured values are strictly boolean, and we can structure our dataset as a design matrix $X:\mathbb{B}^{m\times n}$.
 We can then think of the $i^{\mathrm{th}}$ paper as being represented by a vector $\mathbf{x}_i:\mathbb{B}^n$, and proceed using it in our various statistical models.
-If we desired to analyze the set of authors, say, in order to determine their relative neighborhoods or latent author communities, we could equally use the feature vectors for each paper, this time represented in a vector $\mathbf{x}^*_j:\mathbb{B}^{1\times m}$.
+If we desired to analyze the set of authors, say, in order to determine their relative neighborhoods or latent author communities, we could equally use the feature vectors for each paper, this time represented in a vector $\mathbf{x}'_j:\mathbb{B}^{1\times m}$.
 
 
 ## Models & linear operators {#sec-lin-ops}
@@ -96,11 +96,15 @@ For instance, an event might be quite rare, but if in our specific sample we _ne
 
 One approach to dealing with this involves adding _pseudocounts_ that smooth out our estimates for count/exposure, from which we get the name "additive smoothing".[CITE?]
 $$\hat{p} = \frac{s+\alpha}{k+2\alpha} $$
-Adding 1 success and 1 failure ($\alpha=1$) as pseudocounts to our observations is called _Laplace's Rule of Succession_, or simply "Laplace smoothing,"^[derived when Laplace desired estimates of probability for unobserved phenomena, such as the sun (not) rising tomorrow.] while adding $\alpha=0.5$ successes and failures is called using _Jeffrey's Prior_.
-It's so-called because this pseudocount turns out to be a special case of selecting a Bayesian prior on the binomial probability (a.k.a. a _Beta-Binomial_ distribution) $p\sim \textrm{Beta}(\alpha, \beta)$, such that the posterior distribution after our success/failure counts is $\textrm{Beta}(s+\alpha, k-s+\beta)$, which has the mean
+Adding 1 success and 1 failure ($\alpha=1$) as pseudocounts to our observations is called _Laplace's Rule of Succession_, or simply "Laplace smoothing,"^[
+  derived when Laplace desired estimates of probability for unobserved phenomena, such as the sun (not) rising tomorrow.
+] while adding $\alpha=0.5$ successes and failures is called using _Jeffrey's Prior_.
+It's so-called because this pseudocount turns out to be a special case of selecting a Bayesian prior on the binomial probability (a.k.a. a _Beta-Binomial_ distribution) $p\sim \textrm{Beta}(\alpha, \beta)$, such that the posterior distribution after our success/failure counts is $\textrm{Beta}(s+\alpha, k-s+\beta)$, which has the mean:
 $$E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}$$
-which exactly recovers additive smoothing with a Jeffrey's prior for $\alpha=\beta=0.5$^[
-  A useful comparison of the two priors (1, 0.5) is to ask, given all of the trials we have seen so far, whether we believe we are near the "end" of an average run of trials ($\alpha=1$, nearly all evidence has been collected), or about halfway through an average-length run ($\alpha=0.5$, only half of expected evidence has been observed).  
+
+This exactly recovers additive smoothing with a Jeffrey's prior for $\alpha=\beta=0.5$.^[
+  A useful comparison of the two priors (1, 0.5) is to ask, given all of the trials we have seen so far, whether we believe we are near the "end" or "middle" of an average run of trials.
+  For $\alpha=1$, we believe nearly all evidence has been collected, but for $\alpha=0.5$, only half of expected evidence has been observed.  
 ]
 This generalization allows us to be more flexible, and specify our prior expectations on counts or exposure with more precision.
 Such models provide both an estimate of the aleatory uncertainty (via the posterior distribution), and a form of "shrinkage" that prevents sampling noise from unduly affecting parameter estimates (via the prior distribution). 
@@ -113,7 +117,7 @@ Despite being a simple foundation, this treatment of "counts" and "exposure" can
 
 However, it's natural to make use of joint ($P(A\cup B)$, how often does A happen with B, out of all data?) and conditional ($P(A|B)$ how often A given B; or $P(B|A)$, how often B given A) probabilities between nodes, while trying to estimate dependencies.
 Once again, we can estimate the base probabilities for each node from marginal sums, but the joint and conditional probabilities can instead be estimated using matrix multiplication using the Gram matrix, discussed below.
-It encodes pair-wise co-occurrence counts, such that $G(i,j):\mathbb{Z}^{n\times n}$ has the co-occurrence count for node "i" with "j".
+It encodes pair-wise co-occurrence counts, such that $G(i,i'):\mathbb{Z}^{n\times n}$ has the co-occurrence count for node $i$ with $i'$.
 
 The co-occurrence probability for each pair can be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes.
 First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability).
@@ -132,68 +136,58 @@ We can do this at _every probability/weight threshold value_, as well, and we wi
 
 ## Proximity vs. Incidence {#sec-products}
 
-As alluded to in the previous section, co-occurrence seems to have a deep connection to a Gram matrix, which is a 
+As we have already seen, operations from linear algebra make many counting and combinatoric tasks easier, while unifying disparate concepts to a common set of mechanics.
+In addition to having a map from integer indices to sets of interest, these design matrices/vectors are implicitly assumed to have entries that exist in a field $F=(\mathbb{S},\oplus,\otimes)$.
+equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$).^[
+  Or, more generally, a semiring if inverse operations for $\oplus,\otimes$ don't exist.
+]
+With this, we are able to define generalized inner products that take pairs vectors in a vector space $\mathbf{x}\in V$, such that  $\langle\cdot,\cdot\rangle_F:\mathbb{S}^n\times \mathbb{S}^n\rightarrow \mathbb{S}$.
+$$
+\langle\mathbf{x}_a,\mathbf{x}_b\rangle_{F} = \bigoplus_{j=1}^n \mathbf{x}_a(j)\otimes\mathbf{x}_b(j)
+$$
+
+We can use this to perform "contractions" along any matching dimensions of matrices as well, since the sum index is well-defined.
+$$
+\begin{aligned}
+X\in\mathbb{S}^{m\times n}\quad Y\in\mathbb{S}^{n\times m} \\
+Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
+\end{aligned}
+$$
+For ease-of-use, we will assume the standard field for any given set $(\mathbb{S},+,\times)$ if not specified otherwise, which recovers standard inner products $\langle\cdot,\cdot\rangle$.
+However, @MathematicalfoundationsGraphBLAS_Kepner2016 illustrates the usefulness of various fields (or semirings).
+They allow linear-algebraic representation of many graph operations, such as shortest paths through inner products over $(\mathbb{R}\cup -\inf,\textrm{min}, +)$.
+This works because discrete/boolean edge weights will not accumulate extra strength beyond 1 under contraction over observations.
+
 
 ### Kernels & distances 
 
-Importantly for the use of linear algebra, these values assigned for each feature are assumed to exist in a field (or, more generally, a semiring) $R$, equipped with operators analogous to addition ($\oplus$) and multiplication ($\otimes$) that allow for values to be aggregated through an inner product.
-The matrix of all pairs of inner-products found by matrix multiplication (contracting over the feature space) is given by:
+As alluded to in the previous section, co-occurrence have a deep connection to a Gram matrix, which is a matrix of all pairwise inner products over a set of vectors. 
 
 $$
-G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj}
-$$ {#eq-gen-matmul}
+X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j)X(i,j')
+$$ {#eq-gram-mat}
 
-such that real-valued entries and a traditional "plus-times" inner product recovers the Gram matrix
-
+Matrices that can be decomposed into another matrix and its transpose are symmetric, and positive semidefinite, making every gram matrix positive semidefinite.
+They are directly related to (squared) euclidean distances through the polarization identity[CITE?]:[^important]
 $$
-G_{ij}= X^TX\sum_{k=1}^{n} x_{ik}x_{kj}
-$$
+d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j') 
+$$ {#eq-sq-distance}
 
-How "close" or "far away" things are.... Avrachenkov et al. 
+[^important]: **Important**: these definitions are all using the $\mathbf{x}'$ notation to indicate that these measurements are almost exclusively being done in the _data space_, i.e. on column vectors.
+  While most definitions work on distances in terms of the measurements/objects/data, for _inverse problems_ (like network recovery, structure learning, etc.) they are more often applied in terms of the features (here, the nodes.
+  This can be seen in statistics as well, where covariance and correlation matrices (which are related to the gram and distance matrix definitions above), are defined as relationships between features/dimensions, not individual samples.
 
-
-Important: these measurements often assume distance is defined in terms of the measurements/objects/data, but for _inverse problems_, structure learning, etc., they are more often applied in terms of the features/operators.
-
-Example with doc-term matrices 
-
-
-The inner product between two papers will yield a "true" only if two papers share at least one author in common. 
-This is called a _bipartite projection_[CITE], specifically the "papers" projection. 
-
-Similarly, if our goal is to determine a network of "whether two authors ever coauthored", we could perform a bipartite projection using the boolean inner product in the observation space i.e. the "authors" projection.
-It is this second projection, for determining a structure between features embedded into the  "observation" space, that we are primarily concerned with in this work, since it is the view that most closely resembles the concept of covariance or correlation between independent variables (features) in statistics more generally. 
+In our example from before, the gram matrix will have entries showing the number of papers shared by two authors (or total papers by each, on the diagonal).
+This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. 
+This is called a _bipartite projection_[CITE] into the authors "mode", and is illustrated visually in @fig-collab. 
 
 
 ### Incidence structures & dependency
 
+TODO
+
 foundational model of graph theory and incidence structures more broadly.
 More to come, but get the terminology down.
-
-::::{#fig-incidence-struct layout="[[1,1]]"}
-
-::: {#fig-biadj-mat}
-$$
-%X(\{1,2,3,4,\cdots\})=\\
-\begin{array}{c c}
-& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
-\left[
-\begin{array}{c c c c c c c c c c}
-  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
-  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
-  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
-  &&&& \vdots &&&&&
-\end{array}
-\right]
-\end{array}
-$$
-
-:::
-
-{{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
-
-::::
 
 
 
@@ -203,6 +197,10 @@ $$
 
 
 ### Implications for networks
+
+TODO
+
+How "close" or "far away" things are.... [@SimilaritiesgraphsKernels_Avrachenkov2019] et al. 
 Usually dependencies are taken as causing or enabling proximity.
 E.g. shortest paths, vs. edges.
 

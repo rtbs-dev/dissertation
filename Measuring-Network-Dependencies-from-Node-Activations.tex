@@ -628,9 +628,9 @@ observation vector \(i\) from the entire matrix can be denoted as
 Similarly, every ``feature'' is associated with a single column vector
 in \(\mathbb{S}^{1\times m}\), which can likewise be interpreted as a
 position in the space of observations (the \emph{data space}):
-\[\mathbf{x}_j^*=X(\cdot,j),\quad \mathbf{x}^*:I\rightarrow\mathbb{S}\]
+\[\mathbf{x}_j'=X(\cdot,j),\quad \mathbf{x}':I\rightarrow\mathbb{S}\]
 Note that this definition could be swapped without loss of generality.
-In other words, \(\mathbf{x}\) and \(\mathbf{x}^*\) being in row and
+In other words, \(\mathbf{x}\) and \(\mathbf{x}'\) being in row and
 column spaces is somewhat arbitrary, having more to do with the
 logistics of experiment design and data collection. We could have
 measured our feature vectors one-at-a-time, measuring their values over
@@ -656,7 +656,7 @@ statistical models. If we desired to analyze the set of authors, say, in
 order to determine their relative neighborhoods or latent author
 communities, we could equally use the feature vectors for each paper,
 this time represented in a vector
-\(\mathbf{x}^*_j:\mathbb{B}^{1\times m}\).
+\(\mathbf{x}'_j:\mathbb{B}^{1\times m}\).
 
 \section{Models \& linear operators}\label{sec-lin-ops}
 
@@ -749,7 +749,7 @@ name ``additive smoothing''.{[}CITE?{]}
 \[\hat{p} = \frac{s+\alpha}{k+2\alpha} \] Adding 1 success and 1 failure
 (\(\alpha=1\)) as pseudocounts to our observations is called
 \emph{Laplace's Rule of Succession}, or simply ``Laplace
-smoothing,''\footnote{derived when Laplace desired estimates of
+smoothing,''\footnote{ derived when Laplace desired estimates of
   probability for unobserved phenomena, such as the sun (not) rising
   tomorrow.} while adding \(\alpha=0.5\) successes and failures is
 called using \emph{Jeffrey's Prior}. It's so-called because this
@@ -757,15 +757,16 @@ pseudocount turns out to be a special case of selecting a Bayesian prior
 on the binomial probability (a.k.a. a \emph{Beta-Binomial} distribution)
 \(p\sim \textrm{Beta}(\alpha, \beta)\), such that the posterior
 distribution after our success/failure counts is
-\(\textrm{Beta}(s+\alpha, k-s+\beta)\), which has the mean
-\[E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}\] which exactly recovers
-additive smoothing with a Jeffrey's prior for
-\(\alpha=\beta=0.5\)\footnote{ A useful comparison of the two priors (1,
-  0.5) is to ask, given all of the trials we have seen so far, whether
-  we believe we are near the ``end'' of an average run of trials
-  (\(\alpha=1\), nearly all evidence has been collected), or about
-  halfway through an average-length run (\(\alpha=0.5\), only half of
-  expected evidence has been observed).\\
+\(\textrm{Beta}(s+\alpha, k-s+\beta)\), which has the mean:
+\[E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}\]
+
+This exactly recovers additive smoothing with a Jeffrey's prior for
+\(\alpha=\beta=0.5\).\footnote{ A useful comparison of the two priors
+  (1, 0.5) is to ask, given all of the trials we have seen so far,
+  whether we believe we are near the ``end'' or ``middle'' of an average
+  run of trials. For \(\alpha=1\), we believe nearly all evidence has
+  been collected, but for \(\alpha=0.5\), only half of expected evidence
+  has been observed.\\
 } This generalization allows us to be more flexible, and specify our
 prior expectations on counts or exposure with more precision. Such
 models provide both an estimate of the aleatory uncertainty (via the
@@ -796,8 +797,8 @@ estimate the base probabilities for each node from marginal sums, but
 the joint and conditional probabilities can instead be estimated using
 matrix multiplication using the Gram matrix, discussed below. It encodes
 pair-wise co-occurrence counts, such that
-\(G(i,j):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
-``i'' with ``j''.
+\(G(i,i'):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
+\(i\) with \(i'\).
 
 The co-occurrence probability for each pair can be approximated with the
 beta-binomial scheme mentioned above, but care must be taken not to
@@ -832,102 +833,81 @@ metrics in Section~\ref{sec-FP-experiments}.
 
 \section{Proximity vs.~Incidence}\label{sec-products}
 
-As alluded to in the previous section, co-occurrence seems to have a
-deep connection to a Gram matrix, which is a
+As we have already seen, operations from linear algebra make many
+counting and combinatoric tasks easier, while unifying disparate
+concepts to a common set of mechanics. In addition to having a map from
+integer indices to sets of interest, these design matrices/vectors are
+implicitly assumed to have entries that exist in a field
+\(F=(\mathbb{S},\oplus,\otimes)\). equipped with operators analogous to
+addition (\(\oplus\)) and multiplication (\(\otimes\)).\footnote{ Or,
+  more generally, a semiring if inverse operations for
+  \(\oplus,\otimes\) don't exist.} With this, we are able to define
+generalized inner products that take pairs vectors in a vector space
+\(\mathbf{x}\in V\), such that
+\(\langle\cdot,\cdot\rangle_F:\mathbb{S}^n\times \mathbb{S}^n\rightarrow \mathbb{S}\).
+\[
+\langle\mathbf{x}_a,\mathbf{x}_b\rangle_{F} = \bigoplus_{j=1}^n \mathbf{x}_a(j)\otimes\mathbf{x}_b(j)
+\]
+
+We can use this to perform ``contractions'' along any matching
+dimensions of matrices as well, since the sum index is well-defined. \[
+\begin{aligned}
+X\in\mathbb{S}^{m\times n}\quad Y\in\mathbb{S}^{n\times m} \\
+Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
+\end{aligned}
+\] For ease-of-use, we will assume the standard field for any given set
+\((\mathbb{S},+,\times)\) if not specified otherwise, which recovers
+standard inner products \(\langle\cdot,\cdot\rangle\). However,
+\textcite{MathematicalfoundationsGraphBLAS_Kepner2016} illustrates the
+usefulness of various fields (or semirings). They allow linear-algebraic
+representation of many graph operations, such as shortest paths through
+inner products over \((\mathbb{R}\cup -\inf,\textrm{min}, +)\). This
+works because discrete/boolean edge weights will not accumulate extra
+strength beyond 1 under contraction over observations.
 
 \subsection{Kernels \& distances}\label{kernels-distances}
 
-Importantly for the use of linear algebra, these values assigned for
-each feature are assumed to exist in a field (or, more generally, a
-semiring) \(R\), equipped with operators analogous to addition
-(\(\oplus\)) and multiplication (\(\otimes\)) that allow for values to
-be aggregated through an inner product. The matrix of all pairs of
-inner-products found by matrix multiplication (contracting over the
-feature space) is given by:
+As alluded to in the previous section, co-occurrence have a deep
+connection to a Gram matrix, which is a matrix of all pairwise inner
+products over a set of vectors.
 
-\begin{equation}\phantomsection\label{eq-gen-matmul}{
-G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj}
+\begin{equation}\phantomsection\label{eq-gram-mat}{
+X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j)X(i,j')
 }\end{equation}
 
-such that real-valued entries and a traditional ``plus-times'' inner
-product recovers the Gram matrix
+Matrices that can be decomposed into another matrix and its transpose
+are symmetric, and positive semidefinite, making every gram matrix
+positive semidefinite. They are directly related to (squared) euclidean
+distances through the polarization identity{[}CITE?{]}:\footnote{\textbf{Important}:
+  these definitions are all using the \(\mathbf{x}'\) notation to
+  indicate that these measurements are almost exclusively being done in
+  the \emph{data space}, i.e.~on column vectors. While most definitions
+  work on distances in terms of the measurements/objects/data, for
+  \emph{inverse problems} (like network recovery, structure learning,
+  etc.) they are more often applied in terms of the features (here, the
+  nodes. This can be seen in statistics as well, where covariance and
+  correlation matrices (which are related to the gram and distance
+  matrix definitions above), are defined as relationships between
+  features/dimensions, not individual samples.}
+\begin{equation}\phantomsection\label{eq-sq-distance}{
+d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j') 
+}\end{equation}
 
-\[
-G_{ij}= X^TX\sum_{k=1}^{n} x_{ik}x_{kj}
-\]
-
-How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
-
-Important: these measurements often assume distance is defined in terms
-of the measurements/objects/data, but for \emph{inverse problems},
-structure learning, etc., they are more often applied in terms of the
-features/operators.
-
-Example with doc-term matrices
-
-The inner product between two papers will yield a ``true'' only if two
-papers share at least one author in common. This is called a
-\emph{bipartite projection}{[}CITE{]}, specifically the ``papers''
-projection.
-
-Similarly, if our goal is to determine a network of ``whether two
-authors ever coauthored'', we could perform a bipartite projection using
-the boolean inner product in the observation space i.e.~the ``authors''
-projection. It is this second projection, for determining a structure
-between features embedded into the ``observation'' space, that we are
-primarily concerned with in this work, since it is the view that most
-closely resembles the concept of covariance or correlation between
-independent variables (features) in statistics more generally.
+In our example from before, the gram matrix will have entries showing
+the number of papers shared by two authors (or total papers by each, on
+the diagonal). This is because an inner product between two author
+(column) vectors will add 1 for each paper in the sum only if it has
+both authors in common. This is called a \emph{bipartite
+projection}{[}CITE{]} into the authors ``mode'', and is illustrated
+visually in Figure~\ref{fig-collab}.
 
 \subsection{Incidence structures \&
 dependency}\label{incidence-structures-dependency}
 
+TODO
+
 foundational model of graph theory and incidence structures more
 broadly. More to come, but get the terminology down.
-
-\begin{figure}
-
-\begin{minipage}{0.50\linewidth}
-
-\centering{
-
-\[
-%X(\{1,2,3,4,\cdots\})=\\
-\begin{array}{c c}
-& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
-\left[
-\begin{array}{c c c c c c c c c c}
-  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
-  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
-  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
-  &&&& \vdots &&&&&
-\end{array}
-\right]
-\end{array}
-\]
-
-}
-
-\subcaption{\label{fig-biadj-mat}}
-
-\end{minipage}%
-%
-\begin{minipage}{0.50\linewidth}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-01-matrix-meas_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
-
-}
-
-\subcaption{\label{fig-bipartite}Bipartite representation of node
-``activation'' data}
-
-\end{minipage}%
-
-\end{figure}%
 
 \begin{itemize}
 \tightlist
@@ -939,8 +919,12 @@ broadly. More to come, but get the terminology down.
 
 \subsection{Implications for networks}\label{implications-for-networks}
 
-Usually dependencies are taken as causing or enabling proximity. E.g.
-shortest paths, vs.~edges.
+TODO
+
+How ``close'' or ``far away'' things are\ldots.
+\autocite{SimilaritiesgraphsKernels_Avrachenkov2019} et al.~ Usually
+dependencies are taken as causing or enabling proximity. E.g. shortest
+paths, vs.~edges.
 
 \begin{itemize}
 \tightlist
@@ -1139,6 +1123,10 @@ and our mapping \(B\), uniquely.
 \subsection{\texorpdfstring{Inner products on
 \(B\)}{Inner products on B}}\label{inner-products-on-b}
 
+TODO
+
+Equation~\ref{eq-sq-distance}
+
 Laplacian as inner product on incidence observations. Associated objects
 (degree vector, o)
 
@@ -1150,6 +1138,8 @@ Use to define kernels (and application e.g.~soft-cosine measure)
 
 \subsection{Metrological Considerations: Interaction
 Vectors}\label{metrological-considerations-interaction-vectors}
+
+TODO
 
 Strictly speaking, we can't say that nodes are directly observed in this
 space\ldots{} edges are. Collections of nodes are measured two-at-a-time
@@ -1165,7 +1155,9 @@ vectors on edges rather than nodes. Then each observation in this model
 is necessarily a set of activated edges. The non-zero (visited) nodes
 are found using the incidence matrix as an operator.
 
-\section{Graphs and Node Occurences}\label{graphs-and-node-occurences}
+\section{Graphs and node occurrences}\label{graphs-and-node-occurrences}
+
+TODO
 
 \begin{figure}[H]
 
@@ -1177,8 +1169,52 @@ are found using the incidence matrix as an operator.
 
 \end{figure}%
 
-\subsection{Hyperedges as Vectors of
-Nodes}\label{hyperedges-as-vectors-of-nodes}
+\subsection{Hyperedges as vectors of node
+occurrence}\label{hyperedges-as-vectors-of-node-occurrence}
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\[
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
+  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
+  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
+  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
+  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+\]
+
+}
+
+\subcaption{\label{fig-biadj-mat}}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-02-graph-obs_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-bipartite}Bipartite representation of node
+``activation'' data}
+
+\end{minipage}%
+
+\end{figure}%
 
 \subsection{Inner product on
 Hyperedges}\label{inner-product-on-hyperedges}
@@ -1188,8 +1224,8 @@ co-occurrences.
 
 Leads to correlation/covariance, etc.
 
-\subsection{Combining Occurence \&
-Dependence}\label{combining-occurence-dependence}
+\subsection{Combining Occurrence \&
+Dependence}\label{combining-occurrence-dependence}
 
 \begin{itemize}
 \tightlist
