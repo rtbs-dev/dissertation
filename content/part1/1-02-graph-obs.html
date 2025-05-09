@@ -263,11 +263,11 @@ window.Quarto = {
   <li><a href="#inner-products-on-b" id="toc-inner-products-on-b" class="nav-link" data-scroll-target="#inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></a></li>
   <li><a href="#metrological-considerations-interaction-vectors" id="toc-metrological-considerations-interaction-vectors" class="nav-link" data-scroll-target="#metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</a></li>
   </ul></li>
-  <li><a href="#graphs-and-node-occurences" id="toc-graphs-and-node-occurences" class="nav-link" data-scroll-target="#graphs-and-node-occurences">Graphs and Node Occurences</a>
+  <li><a href="#graphs-and-node-occurrences" id="toc-graphs-and-node-occurrences" class="nav-link" data-scroll-target="#graphs-and-node-occurrences">Graphs and node occurrences</a>
   <ul class="collapse">
-  <li><a href="#hyperedges-as-vectors-of-nodes" id="toc-hyperedges-as-vectors-of-nodes" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-nodes">Hyperedges as Vectors of Nodes</a></li>
+  <li><a href="#hyperedges-as-vectors-of-node-occurrence" id="toc-hyperedges-as-vectors-of-node-occurrence" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-node-occurrence">Hyperedges as vectors of node occurrence</a></li>
   <li><a href="#inner-product-on-hyperedges" id="toc-inner-product-on-hyperedges" class="nav-link" data-scroll-target="#inner-product-on-hyperedges">Inner product on Hyperedges</a></li>
-  <li><a href="#combining-occurence-dependence" id="toc-combining-occurence-dependence" class="nav-link" data-scroll-target="#combining-occurence-dependence">Combining Occurence &amp; Dependence</a></li>
+  <li><a href="#combining-occurrence-dependence" id="toc-combining-occurrence-dependence" class="nav-link" data-scroll-target="#combining-occurrence-dependence">Combining Occurrence &amp; Dependence</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -361,6 +361,8 @@ Because of our unique identification of edges up to the combinatoric limit, we c
 </section>
 <section id="inner-products-on-b" class="level3">
 <h3 class="anchored" data-anchor-id="inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></h3>
+<p>TODO</p>
+<p><a href="1-01-matrix-meas.html#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.3</span></a></p>
 <p>Laplacian as inner product on incidence observations. Associated objects (degree vector, o)</p>
 <p>Rescaling to achieve normaalization.</p>
 <p>Use to define kernels (and application e.g.&nbsp;soft-cosine measure)</p>
@@ -368,29 +370,85 @@ Because of our unique identification of edges up to the combinatoric limit, we c
 </section>
 <section id="metrological-considerations-interaction-vectors" class="level3">
 <h3 class="anchored" data-anchor-id="metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</h3>
+<p>TODO</p>
 <p>Strictly speaking, we can’t say that nodes are directly observed in this space… edges are. Collections of nodes are measured two-at-a-time (one-per-edge being traversed).</p>
 <p>Another way to approach is to view inner products as a sum of outer products. A each edge uniquely corresponds to 2 nodes (in a simple graph). Use triangle unfolding for closed form bijection.</p>
 <p>Unrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an <em>edgelist</em>, having binary activation vectors on edges rather than nodes. Then each observation in this model is necessarily a set of activated edges. The non-zero (visited) nodes are found using the incidence matrix as an operator.</p>
 </section>
 </section>
-<section id="graphs-and-node-occurences" class="level2">
-<h2 class="anchored" data-anchor-id="graphs-and-node-occurences">Graphs and Node Occurences</h2>
+<section id="graphs-and-node-occurrences" class="level2">
+<h2 class="anchored" data-anchor-id="graphs-and-node-occurrences">Graphs and node occurrences</h2>
+<p>TODO</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/hypergraph-observations.png" class="img-fluid figure-img"></p>
 <figcaption>Hyperedge Relation Observational Model</figcaption>
 </figure>
 </div>
-<section id="hyperedges-as-vectors-of-nodes" class="level3">
-<h3 class="anchored" data-anchor-id="hyperedges-as-vectors-of-nodes">Hyperedges as Vectors of Nodes</h3>
+<section id="hyperedges-as-vectors-of-node-occurrence" class="level3">
+<h3 class="anchored" data-anchor-id="hyperedges-as-vectors-of-node-occurrence">Hyperedges as vectors of node occurrence</h3>
+<div id="fig-incidence-struct" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-incidence-struct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-incidence-struct" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-biadj-mat" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-biadj-mat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<p><span class="math display">\[
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+&amp; \begin{array}{cccccccccc} a &amp; b &amp; c &amp; d &amp; e &amp; f &amp; g &amp; h &amp; i &amp; j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &amp;
+\left[
+\begin{array}{c c c c c c c c c c}
+  0  &amp;  0  &amp;  1  &amp;  0  &amp;  1  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0 \\
+  1  &amp;  0  &amp;  0  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0  &amp;  0  &amp;  0 \\
+  0  &amp;  1  &amp;  0  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0  &amp;  1  &amp;  1 \\
+  0  &amp;  0  &amp;  0  &amp;  1  &amp;  1  &amp;  0  &amp;  0  &amp;  1  &amp;  0  &amp;  0 \\
+  &amp;&amp;&amp;&amp; \vdots &amp;&amp;&amp;&amp;&amp;
+\end{array}
+\right]
+\end{array}
+\]</span></p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-biadj-mat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-bipartite" data-ref-parent="fig-incidence-struct" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="cell-fig-bipartite" class="cell quarto-layout-cell-subref" data-execution_count="13" data-ref-parent="fig-incidence-struct">
+<div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-incidence-struct">
+<div id="fig-bipartite" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-bipartite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="1-02-graph-obs_files/figure-html/..-codefigs-graphs-fig-bipartite-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-incidence-struct">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-bipartite-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Bipartite representation of node “activation” data
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-incidence-struct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1
+</figcaption>
+</figure>
+</div>
 </section>
 <section id="inner-product-on-hyperedges" class="level3">
 <h3 class="anchored" data-anchor-id="inner-product-on-hyperedges">Inner product on Hyperedges</h3>
 <p>Roundabout way of describing binary/occurrence data. Inner product is co-occurrences.</p>
 <p>Leads to correlation/covariance, etc.</p>
 </section>
-<section id="combining-occurence-dependence" class="level3">
-<h3 class="anchored" data-anchor-id="combining-occurence-dependence">Combining Occurence &amp; Dependence</h3>
+<section id="combining-occurrence-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="combining-occurrence-dependence">Combining Occurrence &amp; Dependence</h3>
 <ul>
 <li>soft cosine</li>
 <li>kernels on graphs (incl.&nbsp;coscia euclidean)</li>
