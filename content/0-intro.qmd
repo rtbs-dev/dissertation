@@ -72,23 +72,23 @@ Additionally, what goes wrong when we use co-occurence/activation data to estima
  
 
 Even more practically, networks created directly from bipartite-style data are notorious for quickly becoming far too dense for useful analysis, earning them the (not-so-)loving moniker "hairballs".
-Network "backboning," as it has come to be called [CITE] tries to find a subset of edges in this hairball that still captures it's core topology in a way that's easier to visualize. 
+Network "backboning," as it has come to be called tries to find a subset of edges in this hairball that still captures it's core topology in a way that's easier to visualize.[@twostagealgorithm_Slater2009;@backbonebipartiteprojections_Neal2014]
 Meanwhile, underlying networks of dependencies that _cause_ node activation patterns can provide this: they are almost always more sparse than their hairballs.
 Accessing the dependency _backbone_ in a principled way is difficult, but doing so in a rapid, scalable manner is critical for practitioners to be able to make use of it to trim their hairballs.  
 
 ## Scope of this work
 
-The purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations.
+The purpose of this thesis is to provide a solid foundation for basic edge metrology when our data consists of binary node activations, by framing network analysis as a problem of _inference_, as suggested by @Statisticalinferencelinks_Peel2022.
 We give special focus to binary activations that occur due to spreading processes, such as random walks or cascades on an underlying carrier graph.
-Recovering the carrier, or, "dependency" network from node activations is of great interest to the network backboning and causal modeling communities, but often involves wither unspoken sources of epistemic and alleatoric error, or  high computation costs (or both). 
-To begin adressing these issues, we present a guide to current practices,pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner's Guide to Network Recovery_.
-We cover what "measurement" means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically
-Clarifying what different versions of what "relation" means (whether proximity or incidence), since network structure is intended to encode such relations as mathematical objects, despite common ambiguities and confusion around what practitioners intend on communicating through them.
+Recovering the carrier, or, "dependency" network from node activations is of great interest to the network backboning and causal modeling communities, but often involves either unspoken sources of epistemic and aleatory error, or  high computation costs (or both). 
+To begin addressing these issues, we present a guide to current practices, pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner's Guide to Network Recovery_.
+We cover what "measurement" means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically.
+Clarifying what different versions of what "relation" means (whether proximity or incidence) is critical, since network structure is intended to encode such relations as mathematical objects, despite common ambiguities and confusion around what practitioners intend on communicating through them.
 Then we use this structure to present a cohesive framework for selecting a useful network recovery technique, based on the available data and where in the data processing pipeline is acceptable to admit either extra modeling assumptions or information loss.
 
-Next, building on a gap found in the first part, we present a novel method, _Forest Pursuit_, to extract depencency networks when we know a _spreading process_ causes node activation (e.g. paper co-authorship caused by collaboration requests).
+Next, building on a gap found in the first part, we present a novel method, _Forest Pursuit_, to extract dependency networks when we know a _spreading process_ causes node activation (e.g. paper co-authorship caused by collaboration requests).
 We create a new reference dataset to enable community benchmarking of network recovery techniques, and use it show greatly improved accuracy over many other widely-used methods.
-Forest Pursuit in its simplest form scales linearly with the size of active-node sets, being trivially parallelizeable and streamable over dataset size, and agnostic to network size overall.
+Forest Pursuit in its simplest form scales linearly with the size of active-node sets, being trivially parallelizable and streamable over dataset size, and agnostic to network size overall.
 We then expand our analysis to re-imagine Forest Pursuit as a Bayesian probabilistic model, _Latent Forest Allocation_, which has an easily-implemented Expectation Maximization scheme for posterior estimation.
 This significantly improves upon the accuracy results of Forest Pursuit, at the cost of some speed and scalability, giving analysts multiple options to adapt to their needs.
 

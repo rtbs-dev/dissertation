@@ -2,4 +2,24 @@
 
 Like before, but with the added twist of _knowing_ our nodes were activated with a particular partial order. 
 
+## Technical Language Processing
 _insert from [@OrganizingTaggedKnowledge_Sexton2020;@UsingSemanticFluency_Sexton2019]_
+
+
+## Verbal Fluency Animal Network
+
+### Edge Connective Effiency and Diversity
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-dsmin >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-tree >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-glassomin >}}
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-fpmin >}}
+
+### Thresholded Structure Preservation 
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-preservation >}}
+
+<!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
+### Forest Pursuit as Preprocessing
+
+{{< embed ../codefigs/qualitative.qmd#fig-fluency-preprocess >}}

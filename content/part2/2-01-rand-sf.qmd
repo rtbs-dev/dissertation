@@ -1,22 +1,90 @@
-# Generative Random Spanning Forests
+# Desire Paths and Spanning Forests
 
-Addressing gaps discussed in the previous section to reach a generative  model for network recovery requires careful attention to the generation mechanism for node activations.
+Addressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations.
 While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that _causes_ activation patterns will give us useful ways to narrow down the generative specification.
-The dependency graph gives us all of the ways that nodes' state can affect the state of others, i.e. the neighbor set of each node.
-This immediately leads us to model our node activations as resulting from _spreading_, or, _diffusive processes_.
 
+First, we will investigate the common assumption that pairwise co-occurrences can serve as proxies for measuring relatedness, and how this "gambit of the group" is, in fact, a strong bias toward dense, clique-filled recovered networks.
+Because we wish to model our node activations as being _caused_ by other nodes (that they depend on), we draw a connection to a class of models for _spreading_, or, _diffusive processes_.
+We outline how random-walks are related to these diffusive  models of graph traversal, enabled by an investigation of the graph's "regularized laplacian" from @Semisupervisedlearning_Avrachenkov2017.
+Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model.
+This leads to a generative model for binary activation data as rooted random spanning forests on the underlying dependency graph.
 
-In this chapter we outline how the random-walks are is related to these diffusive  models of graph traversal, enabled by an investigation of the graph's "regularized laplacian" from @Semisupervisedlearning_Avrachenkov2017.
-Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model: namely, as samples from the space of rooted random spanning forests on the dependency graph.
+## The Gambit of the Inner Product 
 
+As we saw repeatedly in @sec-lit-review, networks are regularly assumed to arise from co-occurrences, whether directly as counts or weighted in some way.
+This assumption can be a significant a source of bias in the measurement of edges.
+_Why_ a flat count of co-occurrence leads to "hairballs" and bias for dense clusters can be related to the use of inner products on node activation vectors. 
+
+### Gambit of the Group
+
+It seems reasonable, when interactions are unobserved, to assume some evidence for all possible interactions is implied by co-occurrence.
+However, similar to the use of uniform priors in other types of inference, if we don't have a good reason to employ a fully-connected co-occurrence prior on interaction dependencies, we are adding systematic bias to our inference.
+Whether co-occurrence observations can be used to infer interaction networks directly was discussed at length in @Techniquesanalyzingvertebrate_Whitehead1999, where Whitehead and Dufault call this the _gambit of the group_.
+
+> So, consiously or unconsciously, many ethnologists studying social organization makr what might be called the "gambit of the group": the assume that animals which are clustered [...] are interacting with one another and then use membership of the same cluster [...] to define association.
+
+This work was rediscovered in the context of measuring assortativity for social networks,^[Assortativity is, roughly, the correlation between node degree and the degrees of its neighbors.] where the author of @PerceivedAssortativitySocial_Fisher2017 advises that "group-based methods" can introduce sampling bias to the calculation of assortativity, namely, systematic overestimation when the sample count is low. 
  
+The general problems with failing to specify a model of what "edges" actually _are_ get analyzed in more depth in @Statisticalinferencelinks_Peel2022.
+They include a warning not to naively use correlational measures with a threshold, since even simple 3-node systems will easily yield false positives edges.
+Still, it would be helpful for practitioners to have a more explicit mental model of _why_ co-occurence-based models yield systematic bias,  
 
-## Node Activation by Diffusive Processes 
+### Inner Products as Sums of Cliques
+
+Underlying correlation and co-occurrence models for edge strength is a reliance on inner products between  node occurrence vectors.
+They all use gram matrices (or centered/scaled versions of them), which were brought up in @sec-products.
+The matrix multiplication performed represents inner products between all pairs of feature vectors.
+For $X(i,j)\in\mathbb{B}$, these inner products sum together the times in each observation that two nodes were activated together.
+
+However, another (equivalent) way to view matrix multiplication is as a sum of outer products
+$$ G(i,j) = X^T X = \sum_{i=1}^k X(i,k)X(j,k)= \sum_{i=1}^k \mathbf{x}_k\mathbf{x}_k^T $$
+Those outer products of binary vectors create $m\times m$ matrices that have a 1 in every $i,j$ entry where nodes $i,j$ both occurred---i.e., they can be seen as adjacency matrices of the clique on nodes activated in the $k$th observation
+In this sense, any method that involves transforming or re-weighting a gram matrix, is implicitly believing that the $k$th observation was a _complete graph_.
+This is illustrated in @fig-stacked-graphs. 
+
+:::{#fig-stacked-graphs layout="[[2,1]]"  layout-valign="bottom"}
+
+{{< embed ../codefigs/graphs.qmd#fig-stack-bow >}}
+{{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
+
+Inner-product projections imply observations of complete graphs, summed. 
+:::
+
+For many modeling scenarios, this paradigm allows practitioners to make a more straight-forward intuition-check: do clique observations _make sense_ here?
+When a list of authors for a paper is finished, does that imply that all authors mutually interacted with all others directly to equally arrive at the decision to publish?
+This would be similar to assuming the authors might simultaneously enter a room, look at a number of others (who all look exclusively at each other, as well), and at once decide to publish together.
+In our introduction, we described a more likely scenario we could expect from an observer on the ground: a researcher asks a colleague or two to collaborate, who might know a couple more with relevant expertise, and so on. 
+
+
+## Networks as Desire Path Density Estimates
+
+Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how _easy_ it is to create them from occurrence data.
+What we need is a way to retain the ease of use of inner-product network creation, with a more domain-appropriate graph at the observation level. 
+Of course there are many classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
+ Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]^[
+  e.g. for dependencies based on perception, such as human decision making tendencies, or causes based on color names.
+], or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]^[
+  e.g. when interactions are limited to planar dependencies, like inferring ancient geographic borders.
+].
+Alternatively, the interactions might be scale free, small-world, or samples from stochastic block models.[CITE] 
+
+In any case, these assumptions provide an explicit way to describe the set of _possible_ interaction graphs we believe our individual observations are sampled from.
+In other words, we limit our possible interaction graph to a set of all possible graphs in our class $\mathcal{C}$, and model the interactions allowed to be inferred from the activated nodes as $c\in\mathcal{C}$.
+With an associated probability measure $\mu_{\mathcal{C}}(c)$ defined on subgraphs of the complete graph on our node set V^[Assuming we can even find one, something we must return to shortly], we are able to say our interactions are sampled from a distribution over graphs in the class.
+
+For simplicity, since unreported/hidden-but-activated nodes is outide the scope of our work, we narrow the distribution to be only on the induced subgraph $C(S_k) \in G[S_k])$, where $S_k$ is the set of activated nodes in $\mathbf{x}_k$.
+More specifically, we say that an observation of $S\subset V=\{s_1,\cdots, s_t\},\quad t=|S|$ activated nodes implies a distribution over edge vectors we could hav observed, determined by the chosen class,
+
+$$\mathbf{x}^E_k \in $$ 
+
+Once an analyst has provided epistemic justification for a _class of graphs_ to model 
+We propose that the computationally-efficient inner-product networks can still be used, but could be made far more effective by counting edge observation counts with something more appropriate than cliques. 
 
 The class of diffusive processes we focus on "spread" from one node to another.
 If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes "depend" on others to be activated.
 In this case, a node activates when another node it depends on spreads their state to it.
 These single-cause activations are equivalent to imagining a random-walk on the dependency graph, where visiting a node activates it.
+
 
 
 ### Random Walk Activations 
@@ -32,13 +100,18 @@ In many cases, however, the existence of relationships is not known already, and
 - useful tool for analysis of our data: reg laplacian
 - interpretations 
 
-
 ### Dependencies as Trees
 The whole graph isn't a tree....Every data point is.
+
+
+{{< embed ../codefigs/graphs.qmd#fig-stack-tree >}}
+
 
 [GRAPHIC 1 - my data]
 
 [GRAPHIC 2 - infection vector from meta node]
+
+
 
 
 ### Matrix Tree and Forest Theorems 

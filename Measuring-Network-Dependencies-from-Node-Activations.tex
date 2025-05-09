@@ -512,48 +512,52 @@ from node-cooccurrences.}
 Even more practically, networks created directly from bipartite-style
 data are notorious for quickly becoming far too dense for useful
 analysis, earning them the (not-so-)loving moniker ``hairballs''.
-Network ``backboning,'' as it has come to be called {[}CITE{]} tries to
-find a subset of edges in this hairball that still captures it's core
-topology in a way that's easier to visualize. Meanwhile, underlying
-networks of dependencies that \emph{cause} node activation patterns can
-provide this: they are almost always more sparse than their hairballs.
-Accessing the dependency \emph{backbone} in a principled way is
-difficult, but doing so in a rapid, scalable manner is critical for
-practitioners to be able to make use of it to trim their hairballs.
+Network ``backboning,'' as it has come to be called tries to find a
+subset of edges in this hairball that still captures it's core topology
+in a way that's easier to
+visualize.\autocite{twostagealgorithm_Slater2009,backbonebipartiteprojections_Neal2014}
+Meanwhile, underlying networks of dependencies that \emph{cause} node
+activation patterns can provide this: they are almost always more sparse
+than their hairballs. Accessing the dependency \emph{backbone} in a
+principled way is difficult, but doing so in a rapid, scalable manner is
+critical for practitioners to be able to make use of it to trim their
+hairballs.
 
 \section{Scope of this work}\label{scope-of-this-work}
 
 The purpose of this thesis is to provide a solid foundation for basic
-edge metrology when our data consists of binary node activations. We
-give special focus to binary activations that occur due to spreading
-processes, such as random walks or cascades on an underlying carrier
-graph. Recovering the carrier, or, ``dependency'' network from node
-activations is of great interest to the network backboning and causal
-modeling communities, but often involves wither unspoken sources of
-epistemic and alleatoric error, or high computation costs (or both). To
-begin adressing these issues, we present a guide to current
-practices,pitfalls, and how common statistical tools apply to the
-network recovery problem: a \emph{Practitioner's Guide to Network
-Recovery}. We cover what ``measurement'' means in our context, and
-specifically the ways we encode observations, operations, and
-uncertainties numerically Clarifying what different versions of what
-``relation'' means (whether proximity or incidence), since network
-structure is intended to encode such relations as mathematical objects,
-despite common ambiguities and confusion around what practitioners
-intend on communicating through them. Then we use this structure to
-present a cohesive framework for selecting a useful network recovery
-technique, based on the available data and where in the data processing
-pipeline is acceptable to admit either extra modeling assumptions or
-information loss.
+edge metrology when our data consists of binary node activations, by
+framing network analysis as a problem of \emph{inference}, as suggested
+by \textcite{Statisticalinferencelinks_Peel2022}. We give special focus
+to binary activations that occur due to spreading processes, such as
+random walks or cascades on an underlying carrier graph. Recovering the
+carrier, or, ``dependency'' network from node activations is of great
+interest to the network backboning and causal modeling communities, but
+often involves either unspoken sources of epistemic and aleatory error,
+or high computation costs (or both). To begin addressing these issues,
+we present a guide to current practices, pitfalls, and how common
+statistical tools apply to the network recovery problem: a
+\emph{Practitioner's Guide to Network Recovery}. We cover what
+``measurement'' means in our context, and specifically the ways we
+encode observations, operations, and uncertainties numerically.
+Clarifying what different versions of what ``relation'' means (whether
+proximity or incidence) is critical, since network structure is intended
+to encode such relations as mathematical objects, despite common
+ambiguities and confusion around what practitioners intend on
+communicating through them. Then we use this structure to present a
+cohesive framework for selecting a useful network recovery technique,
+based on the available data and where in the data processing pipeline is
+acceptable to admit either extra modeling assumptions or information
+loss.
 
 Next, building on a gap found in the first part, we present a novel
-method, \emph{Forest Pursuit}, to extract depencency networks when we
+method, \emph{Forest Pursuit}, to extract dependency networks when we
 know a \emph{spreading process} causes node activation (e.g.~paper
 co-authorship caused by collaboration requests). We create a new
 reference dataset to enable community benchmarking of network recovery
 techniques, and use it show greatly improved accuracy over many other
 widely-used methods. Forest Pursuit in its simplest form scales linearly
-with the size of active-node sets, being trivially parallelizeable and
+with the size of active-node sets, being trivially parallelizable and
 streamable over dataset size, and agnostic to network size overall. We
 then expand our analysis to re-imagine Forest Pursuit as a Bayesian
 probabilistic model, \emph{Latent Forest Allocation}, which has an
@@ -594,7 +598,7 @@ i.e.~\(x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}\). The structure most
 often used to record scalar values of \(n\) independent/input variable
 features over the course of \(m\) observations is called a design matrix
 \(X:\mathbb{S}^{m\times n}\).\footnote{ Not all observations are scalar,
-  but they can become so. If individual measurments are
+  but they can become so. If individual measurements are
   higher-dimensional (e.g.~images are 2D), X is a tensor, which can be
   transformed through unrolling or embedding into a lower dimensional
   representation before proceeding. There are other techniques for
@@ -602,21 +606,24 @@ features over the course of \(m\) observations is called a design matrix
   the features are binary for each possible category, with boolean
   entries for each observation).}
 
-\section{Observation and feature
-``spaces''}\label{observation-and-feature-spaces}
+\section{Observation and feature ``spaces''}\label{sec-matrix-notation}
 
 If we index a set of observations and features, respectively, as
 \[ i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}\]
 then the design matrix can map the index of an observation and a feature
 to the corresponding measurement.
-\[x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}\] i.e.~the
-measured value of the \(j\)th independent variable from the \(i\)th
-observation. In this scheme, an ``observation'' is a single row vector
-of features in \(\mathbb{S}^{n\times 1}\) (or simply
-\(\mathbb{S}^{n}\)), such that each observation encodes a position in
-the space defined by the features, i.e.~the \emph{feature space}, and
-extracting a specific observation vector \(i\) from the entire matrix
-can be denoted as
+\begin{equation}\phantomsection\label{eq-design-mat}{
+x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}
+}\end{equation} i.e.~the measured value of the \(j\)th independent
+variable from the \(i\)th observation.\footnote{ This notation is
+  adapted from the sparse linear algebraic treatment of graphs in
+  \textcite{GraphAlgorithmsLanguage_Kepner2011} and
+  \textcite{MathematicalfoundationsGraphBLAS_Kepner2016}.} In this
+scheme, an ``observation'' is a single row vector of features in
+\(\mathbb{S}^{n\times 1}\) (or simply \(\mathbb{S}^{n}\)), such that
+each observation encodes a position in the space defined by the
+features, i.e.~the \emph{feature space}, and extracting a specific
+observation vector \(i\) from the entire matrix can be denoted as
 \[\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}\]
 Similarly, every ``feature'' is associated with a single column vector
 in \(\mathbb{S}^{1\times m}\), which can likewise be interpreted as a
@@ -634,26 +641,24 @@ variable set.\footnote{ In fact, vectors are often said to be in the
   follow a one-observation-per-row rule, unless otherwise stated.}
 
 To illustrate this formalism in a relevant domain, let's take another
-classic network example from academia: co-citation networks. {[}DRAW
-BIPARTITE{]} Lists of co-authors on publications is often reported as
-``network'' data, and subjected to network analysis techniques. For
-\(m\) papers we might be aware of a total of \(n\) authors. For a given
-paper, we are able to see which authors are involved, and we say those
-authors ``activated'' for that paper. It makes sense that our
-observations are individual papers, while the features might be the set
-of possible authors. However, we are not given information about which
-author was invited by which other one, or when each author signed on. In
-other words, the measured values are strictly boolean, and we can
-structure our dataset as a design matrix \(X:\mathbb{B}^{m\times n}\).
-We can then think of the \(i^{\mathrm{th}}\) paper as being represented
-by a vector \(\mathbf{x}_i:\mathbb{B}^n\), and proceed using it in our
-various statistical models. If we desired to analyze the set of authors,
-say, in order to determine their relative neighborhoods or latent author
+look at co-citation networks. For \(m\) papers we might be aware of
+\(n\) total authors. For a given paper, we are able to see which authors
+are involved, and we say those authors ``activated'' for that paper. It
+makes sense that our observations are individual papers, while the
+features might be the set of possible authors. However, we are not given
+information about which author was invited by which other one, or when
+each author signed on. In other words, the measured values are strictly
+boolean, and we can structure our dataset as a design matrix
+\(X:\mathbb{B}^{m\times n}\). We can then think of the
+\(i^{\mathrm{th}}\) paper as being represented by a vector
+\(\mathbf{x}_i:\mathbb{B}^n\), and proceed using it in our various
+statistical models. If we desired to analyze the set of authors, say, in
+order to determine their relative neighborhoods or latent author
 communities, we could equally use the feature vectors for each paper,
 this time represented in a vector
 \(\mathbf{x}^*_j:\mathbb{B}^{1\times m}\).
 
-\section{Models \& linear operators}\label{models-linear-operators}
+\section{Models \& linear operators}\label{sec-lin-ops}
 
 Another powerful tool an analyst has is \emph{modeling} the observation
 process. This is relevant when the observed data is hypothesized to be
@@ -686,7 +691,7 @@ Trivially we might have an orthogonal matrix \(F\), so \(F^H=F^{-1}\) is
 available directly. In practice, other approaches are used to minimize
 the \emph{residual}:
 \(\hat{\mathbf{p}}^=\min_{\mathbf{p}} F\mathbf{p}-\mathbf{x}\). Setting
-the gradient to 0 yeilds the normal equation, such that
+the gradient to 0 yields the normal equation, such that
 \[ \hat{\mathbf{p}}=(F^TF)^{-1}F^T\mathbf{x}\] This should be familiar
 to readers as equivalent to solving ordinary least-squares (OLS).
 However, in that case it is more often shown as having the \emph{design
@@ -698,8 +703,9 @@ design matrix previously as a target to be modeled, \(y=X(\cdot,j)\),
 and the rest maps parameters into data space, \(F=X(\cdot,J/j)\). With
 this paradigm, only the target is being ``modeled'' and the rest of the
 data is used to create the operator. In the citation network example, it
-would be equivalent to trying to predict one author's participation in
-every paper, \emph{given} every other author's participation in them.
+would be equivalent to trying to predict one variable, like citation
+count or a specific author's participation in every paper, \emph{given}
+every other author's participation in them.
 
 For simplicity, most work in the supervised setting treats the reduced
 data matrix as X, opting to treat \(y\) as a separate \emph{dependent
@@ -709,25 +715,125 @@ no single target variable is of specific interest---all observations are
 literature, such that we are seeking a model and an operation on it that
 will produce the observed behavior in an ``optimal'' way.
 
-\section{Measurement quantification \&
-error}\label{measurement-quantification-error}
+\section{Measurement quantification \& error}\label{sec-smooth-err}
 
-\begin{itemize}
-\tightlist
-\item
-  marginal sums
-\item
-  rule of succession
-\item
-  type I and II Error?
-\item
-  Epistemic and Alleatoric Uncertainty?
-\end{itemize}
+In binary data, such as what we have been considering, it is common to
+model observables as so-called ``Bernoulli trials'': events with two
+possible outcomes (on, off; yes, no; true, false), and one outcome has
+probability \(p\). These can be thought of as weighted coin-flips:
+``heads'' with probability \(p\), and ``tails'' \(1-p\). If \(k\) trials
+are performed (the ``exposure''), we say the number of successes \(s\)
+(the ``count'') is distributed as a binomial distribution
+\(s\sim Bin(p,k)\). The empirical estimate for the success probability
+is \(\hat{p}=\tfrac{s}{k}\).
 
-Ultimately we are not great at specifying what ``being related''
-actually means\ldots{}
+Note that this naturally resembles marginal sums on our design matrix
+\(X\), if we treat columns (or rows!) as an array of samples from
+independent Bernoulli trials:
+\(\hat{p}_j = \frac{\sum_{i\in I} X(i,j)}{m}\). Many probability
+estimates involving repeated measurements of binary variables (not
+simply the row/column variables) have this sort of
+\(\frac{\textrm{count}}{\textrm{exposure}}\) structure, as will become
+useful in later sections.
 
-\section{Proximity vs.~Incidence}\label{proximity-vs.-incidence}
+However, if we are ``measuring'' a probability, we run into issues when
+we need to quantify our uncertainty about it. For instance, an event
+might be quite rare, but if in our specific sample we \emph{never} see
+it, we still do not generally accept a probability of zero.
+
+\subsection{Additive Smoothing}\label{additive-smoothing}
+
+One approach to dealing with this involves adding \emph{pseudocounts}
+that smooth out our estimates for count/exposure, from which we get the
+name ``additive smoothing''.{[}CITE?{]}
+\[\hat{p} = \frac{s+\alpha}{k+2\alpha} \] Adding 1 success and 1 failure
+(\(\alpha=1\)) as pseudocounts to our observations is called
+\emph{Laplace's Rule of Succession}, or simply ``Laplace
+smoothing,''\footnote{derived when Laplace desired estimates of
+  probability for unobserved phenomena, such as the sun (not) rising
+  tomorrow.} while adding \(\alpha=0.5\) successes and failures is
+called using \emph{Jeffrey's Prior}. It's so-called because this
+pseudocount turns out to be a special case of selecting a Bayesian prior
+on the binomial probability (a.k.a. a \emph{Beta-Binomial} distribution)
+\(p\sim \textrm{Beta}(\alpha, \beta)\), such that the posterior
+distribution after our success/failure counts is
+\(\textrm{Beta}(s+\alpha, k-s+\beta)\), which has the mean
+\[E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}\] which exactly recovers
+additive smoothing with a Jeffrey's prior for
+\(\alpha=\beta=0.5\)\footnote{ A useful comparison of the two priors (1,
+  0.5) is to ask, given all of the trials we have seen so far, whether
+  we believe we are near the ``end'' of an average run of trials
+  (\(\alpha=1\), nearly all evidence has been collected), or about
+  halfway through an average-length run (\(\alpha=0.5\), only half of
+  expected evidence has been observed).\\
+} This generalization allows us to be more flexible, and specify our
+prior expectations on counts or exposure with more precision. Such
+models provide both an estimate of the aleatory uncertainty (via the
+posterior distribution), and a form of ``shrinkage'' that prevents
+sampling noise from unduly affecting parameter estimates (via the prior
+distribution). Despite being a simple foundation, this treatment of
+``counts'' and ``exposure'' can be built upon in many ways.
+
+\subsection{Conditional Probabilities \&
+Contingencies}\label{conditional-probabilities-contingencies}
+
+In dependency/structure recovery, since our goal involves estimating (at
+least) pairwise relationships, the independence assumption required to
+estimate node occurrences as Beta-Binomial is clearly
+violated\footnote{ In fact, a recent method from
+  \autocite{MultivariateBernoullidistribution_Dai2013} models
+  probabilistic binary observations, \emph{with dependencies}, by
+  generalizing the mechanics overviewed here to a fully multivariate
+  Bernoulli distribution, capable of including 3rd- and higher-order
+  interractions, not just pairwise.\\
+}.
+
+However, it's natural to make use of joint (\(P(A\cup B)\), how often
+does A happen with B, out of all data?) and conditional (\(P(A|B)\) how
+often A given B; or \(P(B|A)\), how often B given A) probabilities
+between nodes, while trying to estimate dependencies. Once again, we can
+estimate the base probabilities for each node from marginal sums, but
+the joint and conditional probabilities can instead be estimated using
+matrix multiplication using the Gram matrix, discussed below. It encodes
+pair-wise co-occurrence counts, such that
+\(G(i,j):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
+``i'' with ``j''.
+
+The co-occurrence probability for each pair can be approximated with the
+beta-binomial scheme mentioned above, but care must be taken not to
+confuse this with the edge strength connecting two nodes. First, nodes
+that rarely activate (low node probability) may nonetheless reliably
+connect to others when they do occur (high edge probability). In fact,
+without direct observation of edges, we are not able to estimate their
+count, \emph{or} their exposure, which can be a source of systemic error
+from \emph{epistemic uncertainty}. We don't know when edges are used,
+directly, and we also don't have a reliable way to estimate the
+opportunities each edge had to activate (their exposure), either. This
+is especially true when we wish to know whether an edge even \emph{can}
+be traversed, i.e.~the edge \emph{support}. Support, as used in this
+sense, is the set of inputs for which we expect a non-zero output.
+Intuitively, this idea captures the sense that we might care more about
+\emph{whether} an edge/dependency exists, not \emph{how important} it
+is. For that, we have to re-assess our simple model: even if we could
+count the number of times an edge might have been traversed, how do we
+estimate the opportunities it had to be available for traversal (it's
+``exposure'')?
+
+Assuming this kind of epistemic uncertainty can be adequately addressed
+through modeling---attempts at which will be discussed in more detail in
+Chapter~\ref{sec-lit-review}---conditional probability/contingency
+tables will again be useful for validation. When comparing estimated
+edge probability to some known ``true'' edge existence (if we have
+that), we can count the number of correct predictions, as well as type I
+(false positive) and type II (false negative) errors. We can do this at
+\emph{every probability/weight threshold value}, as well, and we will
+return to ways to aggregate all of these values into useful scoring
+metrics in Section~\ref{sec-FP-experiments}.
+
+\section{Proximity vs.~Incidence}\label{sec-products}
+
+As alluded to in the previous section, co-occurrence seems to have a
+deep connection to a Gram matrix, which is a
 
 \subsection{Kernels \& distances}\label{kernels-distances}
 
@@ -739,11 +845,16 @@ be aggregated through an inner product. The matrix of all pairs of
 inner-products found by matrix multiplication (contracting over the
 feature space) is given by:
 
-\[G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj} \]
+\begin{equation}\phantomsection\label{eq-gen-matmul}{
+G(\mathbf{x}_i, \mathbf{x}_j,R) = G_{ij} = \bigoplus_{k=1}^{n} x_{ik} \otimes x_{kj}
+}\end{equation}
 
 such that real-valued entries and a traditional ``plus-times'' inner
-product recovers the Gram matrix \(G_{ij}=\sum_{k=1}^{n} x_{ik}x_{kj}\),
-or simply \(G=X^TX\).
+product recovers the Gram matrix
+
+\[
+G_{ij}= X^TX\sum_{k=1}^{n} x_{ik}x_{kj}
+\]
 
 How ``close'' or ``far away'' things are\ldots. Avrachenkov et al.~
 
@@ -841,43 +952,192 @@ The approach taken by researchers/investigators\ldots do they assume a
 level of interchangeability between the two kinds of ``relation''? Do
 they define Or do they
 
-\chapter{Incidence in Vector Space}\label{incidence-in-vector-space}
+\chapter{Incidence through vector
+representation}\label{incidence-through-vector-representation}
 
-From \autocite{WhyHowWhen_Torres2021}, and linalg book, and hypergraph
-incidence model
+To provide a sufficiently rigorous foundation for network recovery from
+binary occurrence, we will need a rigorous way to represent networks and
+occurrences that lends itself to building structured ways both connect
+to each other. We build on the incidence structure and matrix product
+formalism from the previous chapter, introducing various ways to build
+graphs as incidence structures that have direct representations as
+matrices. This can be extended to representing occurrences as matrices
+of \emph{hyperedge vectors}. This view allows us to interpret different
+representations of graphs (or hypergraphs) as connected by simple matrix
+operations.
 
-For each, describe the meaning of
+Traditionally\autocite{MathematicalfoundationsGraphBLAS_Kepner2016,WhyHowWhen_Torres2021},
+we might say a graph on nodes (or, ``vertices'')
+\(v\in V=\{1,\cdots,n\}\) and ``edges'' \(E\) is a tuple: \[
+G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
+\]
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
+The \emph{adjacency matrix} \(A\) of \(G\), degree matrix \(D\), and
+graph/discrete Laplacian \(L\) are then defined as:\footnote{ The
+  \emph{indicator function} \(\mathbf{1}_A(x)\) is 1 for values of \(x\)
+  in the set \(A\), and 0 otherwise.} \[
+\begin{aligned}
+A(u,v) & =\mathbf{1}_E((u,v)) \quad &A : V\times V\rightarrow \mathbb{B} \\
+D(u,v) & =\mathrm{diag}({\textstyle\sum}_V A(u,v))\quad &D : V\times V\rightarrow \mathbb{N} \\
+L(u,v) & = D(u,v) - A(u,v) \quad &L : V\times V\rightarrow \mathbb{Z} 
+\end{aligned}
+\]
+
+However, if edges and their recovery is so important to us, defining
+them explicitly as pairs of nodes can be problematic when we wish to
+estimate their existence (or not) when pairs of nodes co-occur.
+Additionally, we have to be very careful to distinguish whether our
+graph is \emph{(un)directed}, \emph{weighted}, \emph{simple}, etc., and
+hope that the edge set has been filtered to a subset of \(N\times N\)
+for each case. Instead, we propose a less ambiguous framework for
+vectorizing graphs, based on their underlying incidence structure.
+
+\section{Graphs as incidence
+structures}\label{graphs-as-incidence-structures}
+
+Instead, we give edges their own set of identifiers,
+\(e\in E=\{1,\cdots \omega\}\). Now, define graphs as incidence
+structures between nodes and edges such that every edge is incident to
+either two nodes, or none:
+
+\begin{equation}\phantomsection\label{eq-simple-incidence}{
+G = (V,E,\mathcal{I}) \quad s.t. \quad \mathcal{I} \subseteq E\times V
+}\end{equation}
+
+Variations on graphs can often be conveniently defined as constraints on
+\(\mathcal{I}\):
+
+\begin{itemize}
 \tightlist
 \item
-  Observation model (and connection to node activation data)
+  Self loops can be prohibited by only allowing unique flags for a given
+  relation\footnote{ never two flags with the same pair,
+    i.e.~\(\mathcal{I}\) is a set, not a multiset.}
 \item
-  Vector space representation
+  Multigraphs are similarly described by whether we allow pairs of
+  vertices to appear with more than one edge\footnote{ in the set of
+    flags containing nodes \(u\) or \(v\), only one \(e\) may be
+    incident to both of them.}
+\end{itemize}
+
+Together, these constraints define ``simple'' graphs. Similarly, we can
+equip Equation~\ref{eq-simple-incidence} with a function \(B\) that
+allows \(\mathcal{I}\) to encode information about the specific kinds of
+incidence relations under discussion. We give \(B\) a range of possible
+flag values \(S\):
+
+\begin{equation}\phantomsection\label{eq-map-incidence}{
+G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:\mathcal{I}\rightarrow S
+}\end{equation}
+
+\begin{itemize}
+\tightlist
 \item
-  Inner product (linear kernel)
+  Undirected, unweighted graphs only need single elements: ``incidence
+  exists'' i.e.\(S=\{1\}\)
 \item
-  Induced Norms
-\end{enumerate}
+  Directed graphs can use two elements e.g.~a ``spin'' for
+  \(S=\{-1,1\}\)
+\item
+  Weighted, undirected graphs are supported on positive scalars
+  e.g.~\(S=\mathbb{R}^+\)
+\item
+  Weighted, directed graphs are supported on any scalar
+  e.g.~\(S=\mathbb{R}_{\neq0}\)
+\end{itemize}
 
-\section{Dependence as Graph}\label{dependence-as-graph}
+If the ``absence'' of incidence needs to be modeled explicitly, a
+``null'' stand-in (0,False) can be added to each \(S\), which is useful
+for representing each structure as arrays for use with linear algebra
+(i.e.~\(\{0,1\}\),\(\{-1,0,-1\}\),\(\mathbb{R}^+_0\), and
+\(\mathbb{R}\), respectively). By doing so, we can also place an exact
+limit on the maximum possible size of \(\omega=\|E\|\) in the simple
+graph case, and indicate edges by their unique ID, such that
+\(\mathcal{I}= E\times V\) is no longer a subset relation for
+\(E=\{1,\cdots,{n\choose2} \}\). Instead of existence in
+\(\mathcal{I}\), we explicitly use incidence relation \(S\) to tell us
+whether each possible edge ``exists'' or not, simplifying our graph
+definition further\footnote{ if we allow multi-edges, then}:
 
-Initial notation (set-based) and outline of section
+\begin{equation}\phantomsection\label{eq-incidence-graph}{
+\begin{aligned}
+G  = (V,E,B) \quad s.t. \quad & B : E\times V \rightarrow S\\
+& v \in V = \{1,\cdots, n\}\quad \\
+& e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{aligned}
+}\end{equation}
 
-\begin{figure}[H]
+\subsection{Embedding in vector space}\label{embedding-in-vector-space}
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{content/part1/../images/relation-observations.png}}
+The representation of \(B\) in Equation~\ref{eq-incidence-graph} bears a
+remarkable similarity to our original description of design matrices in
+Equation~\ref{eq-design-mat}. In fact, as a matrix, \(B(e,v)\) is called
+the \emph{incidence} matrix: every row has two non-zero entries, with
+every column containing a number of non-zero entries equal to that
+corresponding node's degree in \(G\). Traditionally, we use an
+\emph{oriented} incidence matrix, such that each row has exactly one
+positive (non-zero) value, and one negative (non-zero) value.\footnote{
+  In fact, this would make B\^{}*(v,e) equivalent to a \emph{graphical
+  matroid}, another common formalism that generalizes graph-like
+  structures to vector space representations.} Even for undirected
+graphs, the selection of \emph{which entry} is positive or negative is
+left to be ambiguous, since much of the math used later is symmetric
+w.r.t. direction\footnote{though not always!}.
 
-}
+However, we can be more precise by selecting each row(edge) vector, and
+partitioning it into two: one for each non-zero column (node) that edge
+is incident to. This makes every incidence be embedded as standard basis
+vector \(\mathbf{e}\) in the feature space of \(B\), scaled by the
+corresponding value of \(S\). Let \(V_e\) be the set of nodes with
+(non-zero) incidence to edge \(e\). Then the incidence vectors are:\\
+\[\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e\] The
+unoriented incidence matrix is easily defined as having rows that are
+sums over the incidence vectors for each edge:
+\(\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)\)
 
-\caption{Edge Relation Observational Model}
+To build the oriented incidence matrix, one could define undirected
+graphs as equivalent to multidigraphs, where each edge is really two
+directed edges, in opposing directions. This does allow the matrix \(B\)
+to have the correct range for its entries in this formalism (the
+directed graph range, \(S=\{-1,0,1\}\)), and the edge definition based
+on sums would hold. The resulting set of incidences would have twice the
+number of edges than our combinatoric limit for simple graphs, however.
+Plus, it would necessitate averaging of weights over different edge ID's
+to be prior to use of inner products, and many other implementation
+difficulties.
 
-\end{figure}%
+Instead we would like to allow for systematic differences between the
+incidence vectors, without ambiguity. But, now that we have removed the
+information on ``which nodes an edge connects'' from our definition
+(since every edge is a scalar ID), how do we construct \(V_e\) without a
+costly search over all incidences?\\
+Because of our unique identification of edges up to the combinatoric
+limit, we can still actually provide a unique ordering of the nodes it
+each edge connects. Using an identity from
+\textcite{ParallelEuclideandistance_Angeletti2019}, we have a
+closed-form equation both to retrieve the IDs of nodes \(u,v\) (given an
+edge \(e\)), and an edge \(e\) (given two nodes \(u,v\)), for any simple
+graph with \(n\) vertices:
+\begin{equation}\phantomsection\label{eq-sq-id}{
+\begin{aligned}
+    u_n(e) & = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) & = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) & = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{aligned}
+}\end{equation}
 
-\subsection{Edges as Vectors of Nodes}\label{edges-as-vectors-of-nodes}
+Using this, we can unambiguously define a \emph{partition} between
+incidences on \(e\), without needing other metadata or flags to
+distinguish \(u\) from \(v\), since those are defined through
+Equation~\ref{eq-sq-id} unambiguously w.r.t. \(e\).
+\[\mathbf{b}_e = \delta_e(u)-\delta_e(v)\]
 
-\subsection{Inner Product on Edges}\label{inner-product-on-edges}
+This could be called an ``edge-centric'' view of simple graphs, since
+the nodes involved in a graph are now actually derived w.r.t. the edges
+and our mapping \(B\), uniquely.
+
+\subsection{\texorpdfstring{Inner products on
+\(B\)}{Inner products on B}}\label{inner-products-on-b}
 
 Laplacian as inner product on incidence observations. Associated objects
 (degree vector, o)
@@ -886,8 +1146,10 @@ Rescaling to achieve normaalization.
 
 Use to define kernels (and application e.g.~soft-cosine measure)
 
-\subsection{From Edge Observations to Node
-Activations}\label{from-edge-observations-to-node-activations}
+\ldots{}
+
+\subsection{Metrological Considerations: Interaction
+Vectors}\label{metrological-considerations-interaction-vectors}
 
 Strictly speaking, we can't say that nodes are directly observed in this
 space\ldots{} edges are. Collections of nodes are measured two-at-a-time
@@ -903,7 +1165,7 @@ vectors on edges rather than nodes. Then each observation in this model
 is necessarily a set of activated edges. The non-zero (visited) nodes
 are found using the incidence matrix as an operator.
 
-\section{Occurence as Hypergraph}\label{occurence-as-hypergraph}
+\section{Graphs and Node Occurences}\label{graphs-and-node-occurences}
 
 \begin{figure}[H]
 
@@ -926,7 +1188,7 @@ co-occurrences.
 
 Leads to correlation/covariance, etc.
 
-\section{Combining Occurence \&
+\subsection{Combining Occurence \&
 Dependence}\label{combining-occurence-dependence}
 
 \begin{itemize}
@@ -939,7 +1201,7 @@ Dependence}\label{combining-occurence-dependence}
   Retrieving one from the other is hard.
 \end{itemize}
 
-\chapter{Roads to Network Recovery}\label{roads-to-network-recovery}
+\chapter{Roads to Network Recovery}\label{sec-lit-review}
 
 \section{Choosing a structure recovery
 method}\label{choosing-a-structure-recovery-method}
@@ -994,33 +1256,193 @@ i.e.~MOTIVATES FOREST PURSUIT
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
-\chapter{Generative Random Spanning
-Forests}\label{generative-random-spanning-forests}
+\chapter{Desire Paths and Spanning
+Forests}\label{desire-paths-and-spanning-forests}
 
 Addressing gaps discussed in the previous section to reach a generative
 model for network recovery requires careful attention to the generation
 mechanism for node activations. While there are many ways we might
 imagine bipartite data to be be generated, presuming the existence of a
 dependency graph that \emph{causes} activation patterns will give us
-useful ways to narrow down the generative specification. The dependency
-graph gives us all of the ways that nodes' state can affect the state of
-others, i.e.~the neighbor set of each node. This immediately leads us to
-model our node activations as resulting from \emph{spreading}, or,
-\emph{diffusive processes}.
+useful ways to narrow down the generative specification.
 
-In this chapter we outline how the random-walks are is related to these
-diffusive models of graph traversal, enabled by an investigation of the
-graph's ``regularized laplacian'' from
+First, we will investigate the common assumption that pairwise
+co-occurrences can serve as proxies for measuring relatedness, and how
+this ``gambit of the group'' is, in fact, a strong bias toward dense,
+clique-filled recovered networks. Because we wish to model our node
+activations as being \emph{caused} by other nodes (that they depend on),
+we draw a connection to a class of models for \emph{spreading}, or,
+\emph{diffusive processes}. We outline how random-walks are related to
+these diffusive models of graph traversal, enabled by an investigation
+of the graph's ``regularized laplacian'' from
 \textcite{Semisupervisedlearning_Avrachenkov2017}. Then we use the
 implicit causal dependency tree structure of each observation, together
 with the Matrix Forest Theorem
 \autocite{MatrixForestTheorem_Chebotarev2006,Countingrootedforests_Knill2013}
-to more generally define our generative node activation model: namely,
-as samples from the space of rooted random spanning forests on the
-dependency graph.
+to more generally define our generative node activation model. This
+leads to a generative model for binary activation data as rooted random
+spanning forests on the underlying dependency graph.
 
-\section{Node Activation by Diffusive
-Processes}\label{node-activation-by-diffusive-processes}
+\section{The Gambit of the Inner
+Product}\label{the-gambit-of-the-inner-product}
+
+As we saw repeatedly in Chapter~\ref{sec-lit-review}, networks are
+regularly assumed to arise from co-occurrences, whether directly as
+counts or weighted in some way. This assumption can be a significant a
+source of bias in the measurement of edges. \emph{Why} a flat count of
+co-occurrence leads to ``hairballs'' and bias for dense clusters can be
+related to the use of inner products on node activation vectors.
+
+\subsection{Gambit of the Group}\label{gambit-of-the-group}
+
+It seems reasonable, when interactions are unobserved, to assume some
+evidence for all possible interactions is implied by co-occurrence.
+However, similar to the use of uniform priors in other types of
+inference, if we don't have a good reason to employ a fully-connected
+co-occurrence prior on interaction dependencies, we are adding
+systematic bias to our inference. Whether co-occurrence observations can
+be used to infer interaction networks directly was discussed at length
+in \textcite{Techniquesanalyzingvertebrate_Whitehead1999}, where
+Whitehead and Dufault call this the \emph{gambit of the group}.
+
+\begin{quote}
+So, consiously or unconsciously, many ethnologists studying social
+organization makr what might be called the ``gambit of the group'': the
+assume that animals which are clustered {[}\ldots{]} are interacting
+with one another and then use membership of the same cluster
+{[}\ldots{]} to define association.
+\end{quote}
+
+This work was rediscovered in the context of measuring assortativity for
+social networks,\footnote{Assortativity is, roughly, the correlation
+  between node degree and the degrees of its neighbors.} where the
+author of \textcite{PerceivedAssortativitySocial_Fisher2017} advises
+that ``group-based methods'' can introduce sampling bias to the
+calculation of assortativity, namely, systematic overestimation when the
+sample count is low.
+
+The general problems with failing to specify a model of what ``edges''
+actually \emph{are} get analyzed in more depth in
+\textcite{Statisticalinferencelinks_Peel2022}. They include a warning
+not to naively use correlational measures with a threshold, since even
+simple 3-node systems will easily yield false positives edges. Still, it
+would be helpful for practitioners to have a more explicit mental model
+of \emph{why} co-occurence-based models yield systematic bias,
+
+\subsection{Inner Products as Sums of
+Cliques}\label{inner-products-as-sums-of-cliques}
+
+Underlying correlation and co-occurrence models for edge strength is a
+reliance on inner products between node occurrence vectors. They all use
+gram matrices (or centered/scaled versions of them), which were brought
+up in Section~\ref{sec-products}. The matrix multiplication performed
+represents inner products between all pairs of feature vectors. For
+\(X(i,j)\in\mathbb{B}\), these inner products sum together the times in
+each observation that two nodes were activated together.
+
+However, another (equivalent) way to view matrix multiplication is as a
+sum of outer products
+\[ G(i,j) = X^T X = \sum_{i=1}^k X(i,k)X(j,k)= \sum_{i=1}^k \mathbf{x}_k\mathbf{x}_k^T \]
+Those outer products of binary vectors create \(m\times m\) matrices
+that have a 1 in every \(i,j\) entry where nodes \(i,j\) both
+occurred---i.e., they can be seen as adjacency matrices of the clique on
+nodes activated in the \(k\)th observation In this sense, any method
+that involves transforming or re-weighting a gram matrix, is implicitly
+believing that the \(k\)th observation was a \emph{complete graph}. This
+is illustrated in Figure~\ref{fig-stacked-graphs}.
+
+\begin{figure}
+
+\begin{minipage}{0.67\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-bow-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-stack-bow}Edge Measurements with Group Gambit
+(BoW) assumption}
+
+\end{minipage}%
+%
+\begin{minipage}{0.33\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-bipartite}Bipartite representation of node
+``activation'' data}
+
+\end{minipage}%
+
+\caption{\label{fig-stacked-graphs}Inner-product projections imply
+observations of complete graphs, summed.}
+
+\end{figure}%
+
+For many modeling scenarios, this paradigm allows practitioners to make
+a more straight-forward intuition-check: do clique observations
+\emph{make sense} here? When a list of authors for a paper is finished,
+does that imply that all authors mutually interacted with all others
+directly to equally arrive at the decision to publish? This would be
+similar to assuming the authors might simultaneously enter a room, look
+at a number of others (who all look exclusively at each other, as well),
+and at once decide to publish together. In our introduction, we
+described a more likely scenario we could expect from an observer on the
+ground: a researcher asks a colleague or two to collaborate, who might
+know a couple more with relevant expertise, and so on.
+
+\section{Networks as Desire Path Density
+Estimates}\label{networks-as-desire-path-density-estimates}
+
+Unfortunately, methods based on inner-product thresholding are still
+incredibly common, in no small part due to how \emph{easy} it is to
+create them from occurrence data. What we need is a way to retain the
+ease of use of inner-product network creation, with a more
+domain-appropriate graph at the observation level. Of course there are
+many classes of graphs we might believe local interactions occur on:
+path-graphs, trees, or any number of graphs that reflect the topolgy or
+mechanism of local interactions in our domain of interest. Authors have
+proposed classes of graphs that mirror human perception of set shapes
+{[}RELATIVE NEIGHBORHOOD{]}\footnote{ e.g.~for dependencies based on
+  perception, such as human decision making tendencies, or causes based
+  on color names.}, or graphs whose modeled dependencies are strictly
+planar {[}planar maximally filtered graps{]}\footnote{ e.g.~when
+  interactions are limited to planar dependencies, like inferring
+  ancient geographic borders.}. Alternatively, the interactions might be
+scale free, small-world, or samples from stochastic block
+models.{[}CITE{]}
+
+In any case, these assumptions provide an explicit way to describe the
+set of \emph{possible} interaction graphs we believe our individual
+observations are sampled from. In other words, we limit our possible
+interaction graph to a set of all possible graphs in our class
+\(\mathcal{C}\), and model the interactions allowed to be inferred from
+the activated nodes as \(c\in\mathcal{C}\). With an associated
+probability measure \(\mu_{\mathcal{C}}(c)\) defined on subgraphs of the
+complete graph on our node set V\footnote{Assuming we can even find one,
+  something we must return to shortly}, we are able to say our
+interactions are sampled from a distribution over graphs in the class.
+
+For simplicity, since unreported/hidden-but-activated nodes is outide
+the scope of our work, we narrow the distribution to be only on the
+induced subgraph \(C(S_k) \in G[S_k])\), where \(S_k\) is the set of
+activated nodes in \(\mathbf{x}_k\). More specifically, we say that an
+observation of \(S\subset V=\{s_1,\cdots, s_t\},\quad t=|S|\) activated
+nodes implies a distribution over edge vectors we could hav observed,
+determined by the chosen class,
+
+\[\mathbf{x}^E_k \in \]
+
+Once an analyst has provided epistemic justification for a \emph{class
+of graphs} to model We propose that the computationally-efficient
+inner-product networks can still be used, but could be made far more
+effective by counting edge observation counts with something more
+appropriate than cliques.
 
 The class of diffusive processes we focus on ``spread'' from one node to
 another. If a node is activated, it is able to activate other nodes it
@@ -1068,6 +1490,19 @@ the relationships between nodes.
 
 The whole graph isn't a tree\ldots.Every data point is.
 
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-stack-tree}Edge Measurements with true (tree)
+dependencies known}
+
+\end{figure}%
+
 {[}GRAPHIC 1 - my data{]}
 
 {[}GRAPHIC 2 - infection vector from meta node{]}
@@ -1114,7 +1549,7 @@ Summary
 
 \subsection{Approximate Complexity}\label{approximate-complexity}
 
-\section{Simulation Study}\label{simulation-study}
+\section{Simulation Study}\label{sec-FP-experiments}
 
 \subsection{Method}\label{method}
 
@@ -1128,11 +1563,7 @@ Summary
 
 }
 
-\caption{\label{fig-fp-overall}Comparison of MENDR recovery scores:
-\textbf{FP}: Forest Pursuit \textbf{GL}: GLASSO \textbf{CS}: Cosine
-Similarity \textbf{HYP}: Hyperbolic Projection \textbf{eOT}: Entropic
-Optimal Transport (Doubly Stochastic) \textbf{HSS}: High-Salience
-Skeleton \textbf{RP}: Resource Projection}
+\caption{\label{fig-fp-overall}Comparison of MENDR recovery scores}
 
 \end{figure}%
 
@@ -1149,21 +1580,16 @@ Graph Type}
 
 \end{figure}%
 
-\begin{verbatim}
-[ 0.45696006 -0.01795387 -0.15330308  0.26751954]
-[ 0.32829989  0.06735144 -0.23378387  0.20365245]
-[ 0.57054303 -0.20723763 -0.00142814  0.07619596]
-\end{verbatim}
-
 \begin{figure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-1.pdf}}
 
 }
 
-\caption{\label{fig-partials-mcc}}
+\caption{\label{fig-partials-mcc}Partial Residuals (regression on
+E{[}MCC{]})}
 
 \end{figure}%
 
@@ -1177,28 +1603,20 @@ Graph Type}
 
 }
 
-\caption{\label{fig-runtime}}
+\caption{\label{fig-runtime}Runtime Scaling (Forest-Pursuit vs GLASSO)}
 
 \end{figure}%
-
-\begin{verbatim}
-[-3.68491001  0.2276276  -0.0037425   0.94795704]
-[-2.84344998  0.0103985   1.6738662   0.16501076]
-(np.float64(0.0694651520667083), np.float64(1085594.3113734804))
-4.594236123462085 1632.4803075964253
-8.436143086693106 355.6127449677926
-8.374142176881948 3379.80886903671
-\end{verbatim}
 
 \begin{figure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-1.pdf}}
 
 }
 
-\caption{\label{fig-partials-runtime}}
+\caption{\label{fig-partials-runtime}Partial Residuals (regression on
+computation time)}
 
 \end{figure}%
 
@@ -1235,9 +1653,37 @@ Sampling}\label{bayesian-estimation-by-gibbs-sampling}
 I.e. the unwritten paper, modifying technique by
 \textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
 
-\section{Simulation Study}\label{simulation-study-1}
+\section{Simulation Study}\label{simulation-study}
 
-Kind of unsure here.
+\subsection{Score Improvement}\label{score-improvement}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-mcc-output-1.pdf}}
+
+}
+
+\caption{\label{fig-efm-mcc}Change in Expected MCC (EFM vs FP)}
+
+\end{figure}%
+
+\subsection{Odds of Individual Edge
+Improvement}\label{odds-of-individual-edge-improvement}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-logits-output-1.pdf}}
+
+}
+
+\caption{\label{fig-efm-logits}Logistic Regression Coef. (EFM - FP)
+vs.~(Ground Truth)}
+
+\end{figure}%
 
 \part{Applications \& Extentions}
 
@@ -1342,6 +1788,18 @@ Estimation}\label{character-importance-estimation}
 
 \end{figure}%
 
+\chapter{Recovery from Partial
+Orders}\label{recovery-from-partial-orders}
+
+Like before, but with the added twist of \emph{knowing} our nodes were
+activated with a particular partial order.
+
+\section{Technical Language
+Processing}\label{technical-language-processing}
+
+\emph{insert from
+\autocite{OrganizingTaggedKnowledge_Sexton2020,UsingSemanticFluency_Sexton2019}}
+
 \section{Verbal Fluency Animal
 Network}\label{verbal-fluency-animal-network}
 
@@ -1352,7 +1810,7 @@ Diversity}\label{edge-connective-effiency-and-diversity}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
 
 }
 
@@ -1364,7 +1822,7 @@ Diversity}\label{edge-connective-effiency-and-diversity}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
 
 }
 
@@ -1376,7 +1834,7 @@ Diversity}\label{edge-connective-effiency-and-diversity}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
 
 }
 
@@ -1388,7 +1846,7 @@ Diversity}\label{edge-connective-effiency-and-diversity}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
 
 }
 
@@ -1408,7 +1866,7 @@ Differences in structural preservation with increased thresholding.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
 
 }
 
@@ -1417,7 +1875,7 @@ retain local communities at the cost of global structure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
 
 }
 
@@ -1447,7 +1905,7 @@ at the cost of global structure.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
 
 }
 
@@ -1456,7 +1914,7 @@ remain (doubly-stochastic)}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
 
 }
 
@@ -1469,15 +1927,6 @@ isolates}
 low-certainty/rare nodes from a preserved central structure.}
 
 \end{figure}%
-
-\chapter{Recovery from Partial
-Orders}\label{recovery-from-partial-orders}
-
-Like before, but with the added twist of \emph{knowing} our nodes were
-activated with a particular partial order.
-
-\emph{insert from
-\autocite{OrganizingTaggedKnowledge_Sexton2020,UsingSemanticFluency_Sexton2019}}
 
 
 \printbibliography

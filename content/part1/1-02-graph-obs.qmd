@@ -1,23 +1,122 @@
-# Incidence in Vector Space
+# Incidence through vector representation
 
-From [@WhyHowWhen_Torres2021], and linalg book, and hypergraph incidence model
+To provide a sufficiently rigorous foundation for network recovery from binary occurrence, we will need a rigorous way to represent networks and occurrences that lends itself to building structured ways both connect to each other.
+We build on the incidence structure and matrix product formalism from the previous chapter, introducing various ways to build graphs as incidence structures that have direct representations as matrices.
+This can be extended to representing occurrences as matrices of _hyperedge vectors_.
+This view allows us to interpret different representations of graphs (or hypergraphs) as connected by simple matrix operations.
 
-For each, describe the meaning of
+ 
+Traditionally[@MathematicalfoundationsGraphBLAS_Kepner2016;@WhyHowWhen_Torres2021], we might say a graph on nodes (or, "vertices") $v\in V=\{1,\cdots,n\}$ and "edges" $E$ is a tuple:
+$$
+G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
+$$
 
-1. Observation model (and connection to node activation data)
-1. Vector space representation
-1. Inner product (linear kernel)
-1. Induced Norms
+The _adjacency matrix_ $A$ of $G$, degree matrix $D$, and graph/discrete Laplacian $L$ are then defined as:^[
+ The _indicator function_ $\mathbf{1}_A(x)$ is 1 for values of $x$ in the set $A$, and 0 otherwise.
+] 
+$$
+\begin{aligned}
+A(u,v) & =\mathbf{1}_E((u,v)) \quad &A : V\times V\rightarrow \mathbb{B} \\
+D(u,v) & =\mathrm{diag}({\textstyle\sum}_V A(u,v))\quad &D : V\times V\rightarrow \mathbb{N} \\
+L(u,v) & = D(u,v) - A(u,v) \quad &L : V\times V\rightarrow \mathbb{Z} 
+\end{aligned}
+$$
 
-## Dependence as Graph
+However, if edges and their recovery is so important to us, defining them explicitly as pairs of nodes can be problematic when we wish to estimate their existence (or not) when pairs of nodes co-occur.
+Additionally, we have to be very careful to distinguish whether our graph is _(un)directed_, _weighted_, _simple_, etc., and hope that the edge set has been filtered to a subset of $N\times N$ for each case.
+Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.
 
-Initial notation (set-based) and outline of section
 
-![Edge Relation Observational Model](../images/relation-observations.png)
+## Graphs as incidence structures
 
-### Edges as Vectors of Nodes 
+ Instead, we give edges their own set of identifiers, $e\in E=\{1,\cdots \omega\}$.
+ Now, define graphs as incidence structures between nodes and edges such that every edge is incident to either two nodes, or none:
 
-### Inner Product on Edges
+$$
+G = (V,E,\mathcal{I}) \quad s.t. \quad \mathcal{I} \subseteq E\times V
+$$ {#eq-simple-incidence}
+
+Variations on graphs can often be conveniently defined as constraints on $\mathcal{I}$:
+
+- Self loops can be prohibited by only allowing unique flags for a given relation^[
+ never two flags with the same pair, i.e. $\mathcal{I}$ is a set, not a multiset.
+]
+- Multigraphs are similarly described by whether we allow pairs of vertices to appear with more than one edge^[
+ in the set of flags containing nodes $u$ or $v$, only one $e$ may be incident to both of them.
+]
+
+Together, these constraints define "simple" graphs. 
+Similarly, we can equip @eq-simple-incidence with a function $B$ that allows $\mathcal{I}$ to encode information about the specific kinds of incidence relations under discussion.
+We give $B$ a range of possible flag values $S$:
+
+
+$$
+G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:\mathcal{I}\rightarrow S
+$$ {#eq-map-incidence}
+
+- Undirected, unweighted graphs only need single elements: "incidence exists" i.e.$S=\{1\}$
+- Directed graphs can use two elements e.g. a "spin" for $S=\{-1,1\}$
+- Weighted, undirected graphs are supported on positive scalars e.g. $S=\mathbb{R}^+$
+- Weighted, directed graphs are supported on any scalar e.g. $S=\mathbb{R}_{\neq0}$
+
+If the "absence" of incidence needs to be modeled explicitly, a "null" stand-in (0,False) can be added to each $S$, which is useful for representing each structure as arrays for use with linear algebra (i.e. $\{0,1\}$,$\{-1,0,-1\}$,$\mathbb{R}^+_0$, and $\mathbb{R}$, respectively).
+By doing so, we can also place an exact limit on the maximum possible size of $\omega=\|E\|$ in the simple graph case, and indicate edges by their unique ID, such that $\mathcal{I}= E\times V$ is no longer a subset relation for $E=\{1,\cdots,{n\choose2} \}$.
+Instead of existence in $\mathcal{I}$, we explicitly use incidence relation $S$ to tell us whether each possible edge "exists" or not, simplifying our graph definition further^[
+ if we allow multi-edges, then 
+]:
+
+  
+$$
+\begin{aligned}
+G  = (V,E,B) \quad s.t. \quad & B : E\times V \rightarrow S\\
+& v \in V = \{1,\cdots, n\}\quad \\
+& e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{aligned}
+$$ {#eq-incidence-graph}
+
+
+
+### Embedding in vector space
+
+The representation of $B$ in @eq-incidence-graph bears a remarkable similarity to our original description of design matrices in @eq-design-mat. 
+In fact, as a matrix, $B(e,v)$ is called the _incidence_ matrix: every row has two non-zero entries, with every column containing a number of non-zero entries equal to that corresponding node's degree in $G$.
+Traditionally, we use an _oriented_ incidence matrix, such that each row has exactly one positive (non-zero) value, and one negative (non-zero) value.^[
+  In fact, this would make B^*(v,e) equivalent to a _graphical matroid_, another common formalism that generalizes graph-like structures to vector space representations.
+]
+Even for undirected graphs, the selection of _which entry_ is positive or negative is left to be ambiguous, since much of the math used later is symmetric w.r.t. direction^[though not always!]. 
+
+However, we can be more precise by selecting each row(edge) vector, and partitioning it into two: one for each non-zero column (node) that edge is incident to.
+This makes every incidence be embedded as standard basis vector $\mathbf{e}$ in the feature space of $B$, scaled by the corresponding value of $S$.
+Let $V_e$ be the set of nodes with (non-zero) incidence to edge $e$.
+Then the incidence vectors are:  
+$$\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e$$
+The unoriented incidence matrix is easily defined as having rows that are sums over the incidence vectors for each edge: $\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)$
+
+To build the oriented incidence matrix, one could define undirected graphs as equivalent to multidigraphs, where each edge is really two directed edges, in opposing directions.
+This does allow the matrix $B$ to have the correct range for its entries in this formalism (the directed graph range, $S=\{-1,0,1\}$), and the edge definition based on sums would hold. 
+The resulting set of incidences would have twice the number of edges than our combinatoric limit for simple graphs, however.
+Plus, it would necessitate averaging of weights over different edge ID's to be prior to use of inner products, and many other implementation difficulties.
+
+Instead we would like to allow for systematic differences between the incidence vectors, without ambiguity.
+But, now that we have removed the information on "which nodes an edge connects" from our definition (since every edge is a scalar ID),  how do we construct $V_e$ without a costly search over all incidences?   
+Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes it each edge connects.
+Using an identity from @ParallelEuclideandistance_Angeletti2019, we have a closed-form equation both to retrieve the IDs of nodes $u,v$ (given an edge $e$), and an edge $e$ (given two nodes $u,v$), for any simple graph with $n$ vertices:
+$$
+\begin{aligned}
+    u_n(e) & = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) & = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) & = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{aligned}
+$$ {#eq-sq-id}
+
+Using this, we can unambiguously define a _partition_ between incidences on $e$, without needing other metadata or flags to distinguish $u$ from $v$, since those are defined through @eq-sq-id unambiguously w.r.t. $e$.
+$$\mathbf{b}_e = \delta_e(u)-\delta_e(v)$$
+
+This could be called an "edge-centric" view of simple graphs, since the nodes involved in a graph are now actually derived w.r.t. the edges and our mapping $B$, uniquely. 
+
+<!-- ![Edge Relation Observational Model](../images/relation-observations.png) -->
+
+### Inner products on $B$
 
 Laplacian as inner product on incidence observations.
 Associated objects (degree vector, o)
@@ -26,8 +125,9 @@ Rescaling to achieve normaalization.
 
 Use to define kernels (and application e.g. soft-cosine measure)
 
+...
 
-### From Edge Observations to Node Activations 
+### Metrological Considerations: Interaction Vectors 
 
 Strictly speaking, we can't say that nodes are directly observed in this space... edges are.
 Collections of nodes are measured two-at-a-time (one-per-edge being traversed).
@@ -41,7 +141,7 @@ Then each observation in this model is necessarily a set of activated edges.
 The non-zero (visited) nodes are found using the incidence matrix as an operator. 
 
 
-## Occurence as Hypergraph
+## Graphs and Node Occurences 
 
 ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png)
 
@@ -54,7 +154,7 @@ Inner product is co-occurrences.
 Leads to correlation/covariance, etc. 
 
 
-## Combining Occurence & Dependence
+### Combining Occurence & Dependence
 
 - soft cosine
 - kernels on graphs (incl. coscia euclidean)

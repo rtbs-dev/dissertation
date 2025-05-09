@@ -1,16 +1,17 @@
-\SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
 \begin{tikzpicture}[scale=1.3,multilayer=3d]
  \input{stack-net.tex}
 
- \Edge[lw=1](c08)(c07)
- \Edge[lw=1](c05)(c07)
- \Edge[lw=1](c03)(c07)  
+ \Edge[lw=1](ch)(cg)
+ \Edge[lw=1](ce)(cg)
+ \Edge[lw=1](cc)(cg)  
  
- \Edge[lw=1](b05)(b01)
- \Edge[lw=1](b08)(b05)
- \Edge[lw=1](b05)(b06)
+ \Edge[lw=1](be)(ba)
+ \Edge[lw=1](bh)(be)
+ \Edge[lw=1](be)(bf)
    
- \Edge[lw=1,path={a06,a09,a10,a02}](a06)(a02)
+ \Edge[lw=1,path={af,ai,aj,ab}](af)(ab)
+
+ \Edge[lw=1,path={dd,dh,de}](dd)(de)
   
- \Edge[lw=1,color=red](06)(01)
+ % \Edge[lw=1,color=red](f)(a)
 \end{tikzpicture}

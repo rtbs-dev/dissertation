@@ -57,7 +57,6 @@ datapath = Path('../../data')
 ```
 
 ```{python}
-#| jupyter: {source_hidden: true}
 from scipy.linalg import lstsq
 
 def semilog_partial_residuals(df, algs, target, feats, fig=None):
@@ -65,12 +64,8 @@ def semilog_partial_residuals(df, algs, target, feats, fig=None):
         f = m.figure.Figure()
     else: 
         f = fig
-    # feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
-    # feats = ['n-jumps', 'n-nodes','n-walks']
-    # feats = ['n-walks', 'n-nodes']
     
     sbplts = f.subplots(1, len(feats), sharey=True)
-        # x=,
     for alg in algs:
 
         filt = df.query(f"name=='{alg}'")
@@ -79,27 +74,20 @@ def semilog_partial_residuals(df, algs, target, feats, fig=None):
         
         x= filt[feats].loc[notna].values 
         M = np.c_[np.ones(x.shape[0]),np.log10(x)]
-        # M = np.c_[np.ones(x.shape[0]),x]
         p,res,rnk,s = lstsq(M,y)
-        # p,res,rnk,s = lstsq(M,y)
-        # print(p)
-        # plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
         resid = y - M@p
         for i,feat in enumerate(feats):
             x = M[:,i+1]
             pred = x*p[i+1]
             sbplts[i].scatter( np.power(10,x),resid+pred,marker='.', alpha=0.2)
-            # sns.regplot(x=np.power(10,x), y=np.power(10,resid+pred), ax=sbplts[i], robust=True)
             x = np.linspace(x.min(), x.max())
             sbplts[i].plot( np.power(10,x),x*p[i+1], label=alg)
-            # sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]*np.log(x*p[i+1])), color='0.8')
             
 
             sbplts[i].set(xlabel=feat,xscale='log')
     sbplts[0].set(ylabel=f'{target} (residual)')
     handles, labels = sbplts[0].get_legend_handles_labels()
     f.legend(handles, labels, loc='lower center', ncols=len(algs))
-    # plt.tight_layout()
     f.subplots_adjust(bottom=0.25)
     return f
     
@@ -108,12 +96,8 @@ def log_partial_residuals(df, algs, target, feats, fig=None):
         f = m.figure.Figure()
     else: 
         f = fig
-    # feats = ['n-walks','med-actv-ct', 'med-node-ct', 'n-nodes']
-    # feats = ['n-jumps', 'n-nodes','n-walks']
-    # feats = ['n-walks', 'n-nodes']
     
     sbplts = f.subplots(1, len(feats), sharey=True)
-        # x=,
     for alg in algs:
 
         filt = df.query(f"name=='{alg}'")
@@ -122,29 +106,23 @@ def log_partial_residuals(df, algs, target, feats, fig=None):
         
         x= filt[feats].loc[notna].values 
         M = np.c_[np.ones(x.shape[0]),np.log10(x)]
-        # M = np.c_[np.ones(x.shape[0]),x]
         p,res,rnk,s = lstsq(M,np.log10(y))
-        # p,res,rnk,s = lstsq(M,y)
-        # print(p)
-        # plt.scatter( tidy.query("name=='TS'")['med-actv-ct'],y-M@p, color='dodgerblue', marker='.')
         resid = np.log10(y) - M@p
         for i,feat in enumerate(feats):
             x = M[:,i+1]
             pred = x*p[i+1]
             sbplts[i].scatter( np.power(10,x),np.power(10,resid+pred),marker='.', alpha=0.2)
-            # sns.regplot(x=np.power(10,x), y=np.power(10,resid+pred), ax=sbplts[i], robust=True)
             x = np.linspace(x.min(), x.max())
-            sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]), label=alg)
-            # sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]*np.log(x*p[i+1])), color='0.8')
+            sbplts[i].plot( np.power(10,x),np.power(10,x*p[i+1]), label=fr'{alg} ($\alpha={p[i+1]:.2f}$)')
             
 
             sbplts[i].set(xlabel=feat, yscale='log',xscale='log')
+            
     ys=sbplts[0].get_ylim()
-    print(ys)
     for s in sbplts:
+        s.legend(loc='upper center')
         xmin,xmax=s.get_xlim()
-        # ymin,ymax=s.get_ylim()
-        print(xmin,xmax)
+
         x = np.linspace(xmin, xmax)
 
         t = np.linspace(xmin, x[np.sqrt(x)<ys[1]][-1])
@@ -169,11 +147,8 @@ def log_partial_residuals(df, algs, target, feats, fig=None):
                     bbox=dict(facecolor='white', linewidth=0, alpha=0.5))
         s.set_ylim(ys)
     sbplts[0].set(ylabel=f'{target} (residual)')
-    handles, labels = sbplts[0].get_legend_handles_labels()
-    f.legend(handles, labels, loc='lower center', ncols=len(algs))
-    # plt.tight_layout()
+
     f.subplots_adjust(bottom=0.25)
-    # f.legend(loc=(0.6,0.05), ncols=4)
     return f
 ```
 
@@ -278,17 +253,17 @@ def compare_algs_single(tidy, alg_order,metric='MCC', **catplot_kws):
 
 ```{python}
 #| label: fig-fp-overall
-#| fig-cap: |
-#| 
-#|   Comparison of MENDR recovery scores: 
-#|   **FP**: Forest Pursuit 
-#|   **GL**: GLASSO
-#|   **CS**: Cosine Similarity 
-#|   **HYP**: Hyperbolic Projection
-#|   **eOT**: Entropic Optimal Transport (Doubly Stochastic)
-#|   **HSS**: High-Salience Skeleton
-#|   **RP**: Resource Projection
+#| fig-cap: Comparison of MENDR recovery scores
 
+"""
+**FP**: Forest Pursuit 
+**GL**: GLASSO
+**CS**: Cosine Similarity 
+**HYP**: Hyperbolic Projection
+**eOT**: Entropic Optimal Transport (Doubly Stochastic)
+**HSS**: High-Salience Skeleton
+**RP**: Resource Projection
+"""
 
 
 f,ax = plt.subplots(ncols=3, figsize=((6,2.5)), sharey=True)
@@ -305,8 +280,6 @@ ax[2].set_xlabel('APS');
 
 plt.tight_layout()
 sns.despine()
-# compare_algs_single(tidy, alg_order, estimator='median', x='MIR')
-# plt.xlabel('med. MIR');
 ```
 
 ```{python}
@@ -355,8 +328,6 @@ def compare_algs(tidy,alg_order, graph_order,metric_order, **facet_kws):
 
 
 g = compare_algs(tidy, alg_order, graph_order, metric_order,aspect=.8)
-# g.title('MENDR Recovery Scores by Graph Type')
-# g.fig.suptitle('MENDR Recovery Scores by Graph Type')
 ```
 
 ```{python}
@@ -413,6 +384,7 @@ compare_scores_vs(tidy,'n-jumps', metric='MCC', alg_order=['FP','GL','CS','HYP']
 
 ```{python}
 #| label: fig-partials-mcc
+#| fig-cap: Partial Residuals (regression on E[MCC])
 
 f = plt.figure(figsize=(figsize[0], figsize[1]/1.8))
 semilog_partial_residuals(
@@ -421,8 +393,7 @@ semilog_partial_residuals(
     'MCC',
     ['n-jumps', 'n-nodes','n-walks'],
     fig=f
-)
-f.suptitle('Partial Residuals (regression on E[MCC])')
+);
 
 # plt.gcf().suptitle('Partial Residuals, MCC')
 ```
@@ -479,7 +450,7 @@ sns.boxplot(
     ),
     x='score',
     y='metric'
-)
+);
 ```
 
 ```python
@@ -516,6 +487,7 @@ sns.displot(np.array(betas))
 
 ```{python}
 #| label: fig-runtime
+#| fig-cap: Runtime Scaling (Forest-Pursuit vs GLASSO)
 
 f = m.figure.Figure(figsize=(5,5))
 sf1, sf2 = f.subfigures(2, 1, height_ratios=(1,1))
@@ -532,9 +504,9 @@ theme_config = {**sns.axes_style('ticks')}|{
 
 (so.Plot(tidy, x='n-nodes',y='seconds',color='name')
  # .add(so.Dots(marker='.'), so.Dodge(), so.Jitter(.3))
- .add(so.Dots(alpha=0.1, pointsize=2), so.Dodge(gap=-1.5), so.Jitter(0.3) )
- .add(so.Range(color='k'),so.Est(errorbar=("pi",75)), so.Dodge())
- .add(so.Dot(marker='o', pointsize=5, color='k'), so.Agg('median'), so.Dodge())
+ # .add(so.Dots(alpha=0.1, pointsize=2), so.Dodge(gap=-.7), so.Jitter(0.1) )
+ .add(so.Range(),so.Est(errorbar=("pi",95)), so.Dodge(gap=-1.7))
+ .add(so.Dot(marker='o', pointsize=5), so.Agg('median'), so.Dodge())
  .scale(
      x=(so.Nominal()
         # .tick(at=[10,30,100,300])
@@ -633,14 +605,11 @@ g.set(
 
 ```{python}
 #| label: fig-partials-runtime
+#| fig-cap: Partial Residuals (regression on computation time)
 f = plt.figure(figsize=(figsize[0], figsize[1]/1.8))
 
 f=log_partial_residuals(df, ['FP','GL'], 'seconds', ['n-jumps', 'n-nodes','n-walks'], fig=f)
-f.suptitle('Partial Residuals (regression on computation time)');
-```
-
-```{python}
-df.assign(MCC=lambda df: 100*(df.MCC+1)/2).isna().sum()
+# f.suptitle();
 ```
 
 ```{python}
@@ -806,7 +775,6 @@ f
 # }, depth_limit=1)
 ```
 
-
 ```{python}
 # from mendr.metrics import Contingent
 # from mendr.experiments import _metrics
@@ -867,6 +835,7 @@ df_improv
 
 ```{python}
 #| label: fig-efm-mcc
+#| fig-cap: Change in Expected MCC (EFM vs FP)
 sns.displot(
     data=(tidy.query('metric=="MCC"')
      .pivot(index=['ID','metric'], columns='name', values='score')
@@ -881,22 +850,24 @@ sns.displot(
     # log_scale=True,
     # stat='density',
     kind='hist',
-    aspect=2,
+    aspect=1.618,
     height=2,
     # y='metric'
 )
 plt.axvline(0, color='k')
-plt.xlabel('change in score (E[MCC])');
+plt.xlabel('E[MCC|EFM]-E[MCC|FP]');
 # tidy.query('metric=="MCC"')
 # plt.yscale('log')
 ```
 
 ```{python}
 #| label: fig-efm-logits
-#| fig-cap: |
-#| 
-#|   logistic regression coefficients for true edges via difference in EFM and FP scores. 
-#|   L2-regularization for overfit prevention was chosen with 5-fold cross validation, each time. 
+#| fig-cap: Logistic Regression Coef. (EFM - FP) vs. (Ground Truth)
+
+"""
+Logistic regression coefficients for true edges via difference in EFM and FP scores. 
+L2-regularization for overfit prevention was chosen with 5-fold cross validation, each time. 
+"""
 logits = (
 pd.read_csv(datapath/'efm-fp-logodds.csv')
  .assign(kind=lambda df: df['dataset'].str[:2])
@@ -911,8 +882,7 @@ sns.swarmplot(data=logits, y='kind', x='log-odds', orient='h', hue='kind', log_s
 # datapath
 sns.histplot(logits['log-odds'], log_scale=True, color='0.7')
 sns.despine()
-ax[1].set_xlabel('Log-Odds-Ratio')
-f.suptitle('Logistic Regression Coef. (EFM - FP vs. Ground Truth)');
+ax[1].set_xlabel('Log-Odds-Ratio');
+# f.suptitle('');
 # logits.columns#['log-odds']
 ```
-

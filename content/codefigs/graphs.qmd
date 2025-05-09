@@ -394,7 +394,33 @@ fig
 ```
 
 ```{python}
+#| label: fig-stack-bow
+#| fig-cap: Edge Measurements with Group Gambit (BoW) assumption
+
 with open('stack-bow.tex') as f: 
+    fig = TexFragment(
+        f.read(),
+        # implicit_tikzpicture=True,
+        **tex_kws,
+    ).run_latex(tex_program=tex)
+fig
+```
+
+```{python}
+#| label: fig-stack-tree
+#| fig-cap: Edge Measurements with true (tree) dependencies known
+
+with open('stack-tree.tex') as f: 
+    fig = TexFragment(
+        f.read(),
+        # implicit_tikzpicture=True,
+        **tex_kws,
+    ).run_latex(tex_program=tex)
+fig
+```
+
+```{python}
+with open('inject-plan.tex') as f: 
     fig = TexFragment(
         f.read(),
         # implicit_tikzpicture=True,

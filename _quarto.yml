@@ -75,6 +75,7 @@ format:
     reference-location: margin
     # fig-cap-location: margin
     citation-location: margin
+    notebook-links: inline
     grid:
       sidebar-width: 300px
       body-width: 800px
