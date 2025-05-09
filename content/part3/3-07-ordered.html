@@ -43,7 +43,7 @@ div.csl-indent {
 }</style>
 
 
-<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
 <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
@@ -88,6 +88,9 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
 
 </head>
@@ -156,7 +159,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Incidence in Vector Space</span></a>
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Incidence through vector representation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -177,7 +180,7 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Generative Random Spanning Forests</span></a>
+  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Desire Paths and Spanning Forests</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -223,8 +226,20 @@ div.csl-indent {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#technical-language-processing" id="toc-technical-language-processing" class="nav-link active" data-scroll-target="#technical-language-processing">Technical Language Processing</a></li>
+  <li><a href="#verbal-fluency-animal-network" id="toc-verbal-fluency-animal-network" class="nav-link" data-scroll-target="#verbal-fluency-animal-network">Verbal Fluency Animal Network</a>
+  <ul class="collapse">
+  <li><a href="#edge-connective-effiency-and-diversity" id="toc-edge-connective-effiency-and-diversity" class="nav-link" data-scroll-target="#edge-connective-effiency-and-diversity">Edge Connective Effiency and Diversity</a></li>
+  <li><a href="#thresholded-structure-preservation" id="toc-thresholded-structure-preservation" class="nav-link" data-scroll-target="#thresholded-structure-preservation">Thresholded Structure Preservation</a></li>
+  <li><a href="#forest-pursuit-as-preprocessing" id="toc-forest-pursuit-as-preprocessing" class="nav-link" data-scroll-target="#forest-pursuit-as-preprocessing">Forest Pursuit as Preprocessing</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
@@ -249,14 +264,172 @@ div.csl-indent {
 
 
 <p>Like before, but with the added twist of <em>knowing</em> our nodes were activated with a particular partial order.</p>
+<section id="technical-language-processing" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="technical-language-processing">Technical Language Processing</h2>
 <div class="page-columns page-full"><p><em>insert from <span class="citation" data-cites="OrganizingTaggedKnowledge_Sexton2020 UsingSemanticFluency_Sexton2019"><a href="#ref-OrganizingTaggedKnowledge_Sexton2020" role="doc-biblioref">[1]</a>, <a href="#ref-UsingSemanticFluency_Sexton2019" role="doc-biblioref">[2]</a></span></em></p><div class="no-row-height column-margin column-container"><div id="ref-OrganizingTaggedKnowledge_Sexton2020" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,”</span> <em>Journal of Mechanical Design</em>, vol. 142, no. 3, Jan. 2020, doi: <a href="https://doi.org/10.1115/1.4045686">10.1115/1.4045686</a>.</div>
 </div><div id="ref-UsingSemanticFluency_Sexton2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,”</span> in <em>Volume 2A: 45th design automation conference</em>, American Society of Mechanical Engineers, Aug. 2019. doi: <a href="https://doi.org/10.1115/detc2019-98429">10.1115/detc2019-98429</a>.</div>
 </div></div></div>
+</section>
+<section id="verbal-fluency-animal-network" class="level2">
+<h2 class="anchored" data-anchor-id="verbal-fluency-animal-network">Verbal Fluency Animal Network</h2>
+<section id="edge-connective-effiency-and-diversity" class="level3">
+<h3 class="anchored" data-anchor-id="edge-connective-effiency-and-diversity">Edge Connective Effiency and Diversity</h3>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-dsmin">
+<div id="cell-fig-fluency-dsmin" class="cell" data-execution_count="35">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-dsmin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" id="fig-fluency-dsmin" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-tree">
+<div id="cell-fig-fluency-tree" class="cell" data-execution_count="36">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" id="fig-fluency-tree" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-glassomin">
+<div id="cell-fig-fluency-glassomin" class="cell" data-execution_count="37">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-glassomin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" id="fig-fluency-glassomin" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-fpmin">
+<div id="cell-fig-fluency-fpmin" class="cell" data-execution_count="38">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-fpmin" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: Comparison of backboning/dependency recovery methods tested vs.&nbsp;Forest Pursuit
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="thresholded-structure-preservation" class="level3">
+<h3 class="anchored" data-anchor-id="thresholded-structure-preservation">Thresholded Structure Preservation</h3>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preservation">
+<div class="cell" data-execution_count="39">
+<p>Differences in structural preservation with increased thresholding.</p>
+<div id="fig-fluency-preservation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="39">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-preservation-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-fluency-preservation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preservation-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preservation">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preservation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) co-occurrence methods will retain local communities at the cost of global structure
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-preservation-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-fluency-preservation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preservation-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preservation">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preservation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) dependency network drops rarer nodes from the preserved central structure at higher uncetainty cutoffs
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.5: When only retaining the top 2% of edge strengths, blah
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
+</section>
+<section id="forest-pursuit-as-preprocessing" class="level3">
+<h3 class="anchored" data-anchor-id="forest-pursuit-as-preprocessing">Forest Pursuit as Preprocessing</h3>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preprocess">
+<div class="cell" data-execution_count="41">
+<p>Differences in structural preservation with increased thresholding.</p>
+<p>Retaining the top 2% of edges, co-occurrence retains local communities</p>
+<p>at the cost of global structure.</p>
+<div id="fig-fluency-preprocess" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="41">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-preprocess-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-fluency-preprocess-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preprocess-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preprocess">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preprocess-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Islands of local structure remain (doubly-stochastic)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-fluency-preprocess-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-fluency-preprocess-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preprocess-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preprocess">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preprocess-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Intact global structure with isolates
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.6: We might prefer to drop low-certainty/rare nodes from a preserved central structure.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 
 
 
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

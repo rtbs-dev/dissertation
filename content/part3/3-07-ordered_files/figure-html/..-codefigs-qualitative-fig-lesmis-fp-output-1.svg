@@ -1,0 +1,3960 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+  "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="572.4pt" height="347.04pt" viewBox="0 0 572.4 347.04" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:date>2025-04-29T15:04:57.141698</dc:date>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Matplotlib v3.10.1, https://matplotlib.org/</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 347.04 
+L 572.4 347.04 
+L 572.4 -0 
+L 0 -0 
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 7.2 339.84 
+L 565.2 339.84 
+L 565.2 7.2 
+L 7.2 7.2 
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1"/>
+    <g id="xtick_2"/>
+    <g id="xtick_3"/>
+    <g id="xtick_4"/>
+    <g id="xtick_5"/>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1"/>
+    <g id="ytick_2"/>
+    <g id="ytick_3"/>
+    <g id="ytick_4"/>
+    <g id="ytick_5"/>
+    <g id="ytick_6"/>
+    <g id="ytick_7"/>
+    <g id="ytick_8"/>
+   </g>
+   <g id="LineCollection_1">
+    <path d="M 333.535956 154.760153 
+L 347.650331 176.549577 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 333.535956 154.760153 
+L 303.974044 132.406021 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 333.535956 154.760153 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 431.876025 182.80207 
+L 372.870651 170.732539 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 431.876025 182.80207 
+L 461.61436 203.79351 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 431.876025 182.80207 
+L 460.72964 168.058367 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 431.876025 182.80207 
+L 438.551173 223.929398 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 431.876025 182.80207 
+L 399.779106 160.512763 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 342.968599 228.970939 
+L 356.199832 214.196667 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 342.968599 228.970939 
+L 377.06981 269.040354 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 342.968599 228.970939 
+L 296.122464 225.463639 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 342.968599 228.970939 
+L 412.459354 246.650758 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 342.968599 228.970939 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 356.199832 214.196667 
+L 347.650331 176.549577 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 356.199832 214.196667 
+L 299.038785 213.075459 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 128.164304 72.023197 
+L 113.061464 110.519455 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 128.164304 72.023197 
+L 189.762368 74.044913 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 164.27772 206.334613 
+L 219.329987 230.10539 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 164.27772 206.334613 
+L 204.608976 171.626732 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 427.476421 141.674552 
+L 372.870651 170.732539 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 427.476421 141.674552 
+L 460.72964 168.058367 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 179.141722 267.7063 
+L 133.552883 292.505488 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 179.141722 267.7063 
+L 219.329987 230.10539 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 179.141722 267.7063 
+L 182.873193 310.974545 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 322.084398 138.67779 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 322.084398 138.67779 
+L 353.295251 137.998534 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 326.307306 253.559892 
+L 299.038785 213.075459 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 219.329987 230.10539 
+L 208.162401 265.216237 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 219.329987 230.10539 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 375.800783 231.997976 
+L 324.165464 199.08684 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 375.800783 231.997976 
+L 438.551173 223.929398 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 223.236438 108.105788 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 256.139855 132.495932 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 299.360065 112.924325 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 239.977181 145.933113 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 256.958909 154.40831 
+L 205.281339 128.709336 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 372.870651 170.732539 
+L 324.165464 199.08684 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 372.870651 170.732539 
+L 347.650331 176.549577 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 372.870651 170.732539 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 113.061464 110.519455 
+L 55.621488 102.592602 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 113.061464 110.519455 
+L 155.455203 139.859395 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 324.165464 199.08684 
+L 299.038785 213.075459 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 324.165464 199.08684 
+L 401.28253 197.210047 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 324.165464 199.08684 
+L 264.100596 178.684591 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 324.165464 199.08684 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 347.650331 176.549577 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 347.650331 176.549577 
+L 399.779106 160.512763 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 347.650331 176.549577 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 189.762368 74.044913 
+L 223.236438 108.105788 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 189.762368 74.044913 
+L 193.996027 36.065455 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 516.778512 161.336311 
+L 460.72964 168.058367 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 252.7243 236.063295 
+L 233.656982 276.271022 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 252.7243 236.063295 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 252.7243 236.063295 
+L 266.203358 280.264931 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 264.100596 178.684591 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 215.979266 185.526887 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 141.649707 173.818628 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 239.977181 145.933113 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 160.899887 163.008144 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 204.608976 171.626732 
+L 155.455203 139.859395 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 299.038785 213.075459 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 299.038785 213.075459 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 299.038785 213.075459 
+L 307.534205 258.079166 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.974044 132.406021 
+L 336.241385 129.526931 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.974044 132.406021 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.974044 132.406021 
+L 353.295251 137.998534 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.974044 132.406021 
+L 271.652485 103.582416 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 336.241385 129.526931 
+L 376.811557 105.130891 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 336.241385 129.526931 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 401.28253 197.210047 
+L 461.61436 203.79351 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 401.28253 197.210047 
+L 460.72964 168.058367 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 264.100596 178.684591 
+L 258.663399 197.668612 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 264.100596 178.684591 
+L 256.139855 132.495932 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 264.100596 178.684591 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 438.551173 223.929398 
+L 412.459354 246.650758 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 303.042663 169.759974 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 206.005635 216.190013 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 296.122464 225.463639 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 215.979266 185.526887 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 211.166074 201.513246 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 258.663399 197.668612 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.042663 169.759974 
+L 353.295251 137.998534 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 303.042663 169.759974 
+L 299.092634 181.924904 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 72.010911 228.357653 
+L 136.965932 233.195749 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 206.005635 216.190013 
+L 136.965932 233.195749 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 353.295251 137.998534 
+L 399.779106 160.512763 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 353.295251 137.998534 
+L 376.811557 105.130891 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 353.295251 137.998534 
+L 299.360065 112.924325 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 399.779106 160.512763 
+L 371.679401 205.265173 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 271.652485 103.582416 
+L 239.977181 145.933113 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 296.122464 225.463639 
+L 371.679401 205.265173 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 296.122464 225.463639 
+L 307.534205 258.079166 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 215.979266 185.526887 
+L 160.899887 163.008144 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 136.965932 233.195749 
+L 94.128383 261.920397 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 211.166074 201.513246 
+L 137.105227 200.228888 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 137.105227 200.228888 
+L 141.649707 173.818628 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 299.092634 181.924904 
+L 239.977181 145.933113 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+    <path d="M 307.534205 258.079166 
+L 335.196054 298.590163 
+" clip-path="url(#p9c7cdd5972)" style="fill: none; stroke: #808080; stroke-width: 2"/>
+   </g>
+   <g id="PathCollection_1">
+    <defs>
+     <path id="C0_0_672694b574" d="M 0 3.535534 
+C 0.937635 3.535534 1.836992 3.163008 2.5 2.5 
+C 3.163008 1.836992 3.535534 0.937635 3.535534 -0 
+C 3.535534 -0.937635 3.163008 -1.836992 2.5 -2.5 
+C 1.836992 -3.163008 0.937635 -3.535534 0 -3.535534 
+C -0.937635 -3.535534 -1.836992 -3.163008 -2.5 -2.5 
+C -3.163008 -1.836992 -3.535534 -0.937635 -3.535534 0 
+C -3.535534 0.937635 -3.163008 1.836992 -2.5 2.5 
+C -1.836992 3.163008 -0.937635 3.535534 0 3.535534 
+z
+"/>
+    </defs>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="333.535956" y="154.760153" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="431.876025" y="182.80207" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="342.968599" y="228.970939" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="356.199832" y="214.196667" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="128.164304" y="72.023197" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="164.27772" y="206.334613" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="427.476421" y="141.674552" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="179.141722" y="267.7063" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="322.084398" y="138.67779" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="326.307306" y="253.559892" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="133.552883" y="292.505488" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="219.329987" y="230.10539" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="375.800783" y="231.997976" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="182.873193" y="310.974545" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="256.958909" y="154.40831" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="372.870651" y="170.732539" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="113.061464" y="110.519455" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="324.165464" y="199.08684" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="347.650331" y="176.549577" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="189.762368" y="74.044913" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="516.778512" y="161.336311" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="252.7243" y="236.063295" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="204.608976" y="171.626732" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="223.236438" y="108.105788" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="55.621488" y="102.592602" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="299.038785" y="213.075459" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="303.974044" y="132.406021" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="336.241385" y="129.526931" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="233.656982" y="276.271022" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="401.28253" y="197.210047" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="377.06981" y="269.040354" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="461.61436" y="203.79351" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="264.100596" y="178.684591" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="460.72964" y="168.058367" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="438.551173" y="223.929398" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="208.162401" y="265.216237" style="fill: #e78ac3; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="258.663399" y="197.668612" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="193.996027" y="36.065455" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="256.139855" y="132.495932" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="303.042663" y="169.759974" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="72.010911" y="228.357653" style="fill: #a6d854; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="206.005635" y="216.190013" style="fill: #a6d854; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="353.295251" y="137.998534" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="266.203358" y="280.264931" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="399.779106" y="160.512763" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="271.652485" y="103.582416" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="296.122464" y="225.463639" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="376.811557" y="105.130891" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="215.979266" y="185.526887" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="136.965932" y="233.195749" style="fill: #a6d854; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="371.679401" y="205.265173" style="fill: #fc8d62; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="211.166074" y="201.513246" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="412.459354" y="246.650758" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="94.128383" y="261.920397" style="fill: #a6d854; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="137.105227" y="200.228888" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="141.649707" y="173.818628" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="299.360065" y="112.924325" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="299.092634" y="181.924904" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="239.977181" y="145.933113" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="205.281339" y="128.709336" style="fill: #66c2a5; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="160.899887" y="163.008144" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="307.534205" y="258.079166" style="fill: #ffd92f; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="335.196054" y="298.590163" style="fill: #ffd92f; stroke: #808080"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <use xlink:href="#C0_0_672694b574" x="155.455203" y="139.859395" style="fill: #8da0cb; stroke: #808080"/>
+    </g>
+   </g>
+   <g id="text_1">
+    <g id="patch_3">
+     <path d="M 326.740488 162.584528 
+L 350.831425 162.584528 
+Q 352.031425 162.584528 352.031425 161.384528 
+L 352.031425 155.635778 
+Q 352.031425 154.435778 350.831425 154.435778 
+L 326.740488 154.435778 
+Q 325.540488 154.435778 325.540488 155.635778 
+L 325.540488 161.384528 
+Q 325.540488 162.584528 326.740488 162.584528 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Anzelma -->
+     <g style="fill: #4c4c4c" transform="translate(326.740488 160.070153) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-41" d="M 1760 4339 
+L 314 371 
+L -70 314 
+L -70 0 
+L 1306 0 
+L 1306 314 
+L 902 358 
+L 838 442 
+L 1222 1523 
+L 2618 1523 
+L 3002 435 
+L 2957 352 
+L 2554 314 
+L 2554 0 
+L 4282 0 
+L 4282 314 
+L 3904 378 
+L 2432 4339 
+L 1760 4339 
+z
+M 1901 3462 
+L 2470 1882 
+L 1344 1882 
+L 1901 3462 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-6e" d="M 198 0 
+L 1779 0 
+L 1779 288 
+L 1498 314 
+L 1408 410 
+L 1408 2522 
+C 1651 2592 1856 2630 2016 2630 
+C 2419 2630 2592 2413 2592 1939 
+L 2592 410 
+L 2502 314 
+L 2227 288 
+L 2227 0 
+L 3795 0 
+L 3795 288 
+L 3456 314 
+L 3373 410 
+L 3373 2125 
+C 3373 2835 3091 3187 2502 3187 
+C 2221 3187 1862 3046 1408 2797 
+L 1408 3174 
+L 1101 3174 
+L 179 2874 
+L 179 2618 
+L 614 2618 
+L 614 410 
+L 525 314 
+L 198 288 
+L 198 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-7a" d="M 294 0 
+L 2976 0 
+L 2976 1050 
+L 2541 1050 
+L 2464 461 
+L 2368 358 
+L 1184 358 
+L 2880 2778 
+L 2880 3110 
+L 346 3110 
+L 346 2144 
+L 762 2144 
+L 826 2675 
+L 909 2765 
+L 1946 2765 
+L 294 397 
+L 294 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-65" d="M 3142 794 
+C 2771 557 2426 442 2086 442 
+C 1453 442 1056 877 1056 1613 
+L 1056 1632 
+L 3149 1632 
+L 3149 1754 
+C 3149 2675 2656 3200 1818 3200 
+C 896 3200 237 2528 237 1549 
+C 237 582 864 -58 1818 -58 
+C 2266 -58 2714 70 3142 320 
+L 3142 794 
+z
+M 2310 1971 
+L 1088 1971 
+C 1107 2528 1370 2848 1754 2848 
+C 2106 2848 2310 2573 2310 2042 
+L 2310 1971 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-6c" d="M 147 0 
+L 1862 0 
+L 1862 282 
+L 1491 320 
+L 1395 422 
+L 1395 4730 
+L 1114 4730 
+L 147 4422 
+L 147 4173 
+L 608 4173 
+L 608 410 
+L 518 320 
+L 147 282 
+L 147 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-6d" d="M 3206 2752 
+C 3034 3046 2778 3200 2458 3200 
+C 2176 3200 1843 3053 1408 2797 
+L 1408 3174 
+L 1101 3174 
+L 198 2874 
+L 198 2618 
+L 614 2618 
+L 614 410 
+L 525 314 
+L 198 288 
+L 198 0 
+L 1766 0 
+L 1766 288 
+L 1498 314 
+L 1408 410 
+L 1408 2522 
+C 1613 2598 1792 2637 1946 2637 
+C 2355 2637 2522 2426 2522 1978 
+L 2522 422 
+L 2432 314 
+L 2170 288 
+L 2170 0 
+L 3680 0 
+L 3680 282 
+L 3392 314 
+L 3302 410 
+L 3302 2509 
+C 3514 2586 3693 2630 3853 2630 
+C 4275 2630 4442 2419 4442 1939 
+L 4442 410 
+L 4352 314 
+L 4077 288 
+L 4077 0 
+L 5651 0 
+L 5651 288 
+L 5312 314 
+L 5229 410 
+L 5229 2125 
+C 5229 2835 4934 3187 4339 3187 
+C 4102 3187 3718 3046 3206 2752 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-61" d="M 2195 365 
+L 2278 0 
+L 3418 0 
+L 3418 282 
+L 3078 314 
+L 2995 403 
+L 2995 2061 
+C 2995 2880 2694 3194 1798 3194 
+C 954 3194 403 2816 403 2451 
+C 403 2278 506 2214 698 2214 
+L 1286 2214 
+L 1286 2816 
+C 1402 2842 1498 2854 1594 2854 
+C 2016 2854 2202 2650 2202 2189 
+L 2202 1997 
+C 864 1696 256 1510 256 774 
+C 256 288 602 -58 1094 -58 
+C 1440 -58 1786 90 2195 365 
+z
+M 2195 627 
+C 1946 499 1741 435 1574 435 
+C 1280 435 1101 621 1101 915 
+C 1101 1338 1440 1504 2195 1670 
+L 2195 627 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-41"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(65.099991 0)"/>
+      <use xlink:href="#CharterBT-Bold-7a" transform="translate(125.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(175.09996 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(227.499954 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(257.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(347.09993 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_2">
+    <g id="patch_4">
+     <path d="M 424.840556 183.126445 
+L 446.411494 183.126445 
+Q 447.611494 183.126445 447.611494 181.926445 
+L 447.611494 176.177695 
+Q 447.611494 174.977695 446.411494 174.977695 
+L 424.840556 174.977695 
+Q 423.640556 174.977695 423.640556 176.177695 
+L 423.640556 181.926445 
+Q 423.640556 183.126445 424.840556 183.126445 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Bahorel -->
+     <g style="fill: #4c4c4c" transform="translate(424.840556 180.61207) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-42" d="M 186 4294 
+L 186 3981 
+L 563 3949 
+L 666 3859 
+L 666 448 
+L 563 346 
+L 186 314 
+L 186 0 
+L 2163 0 
+C 3213 0 3776 448 3776 1254 
+C 3776 1882 3360 2272 2611 2285 
+C 3219 2445 3526 2790 3526 3290 
+C 3526 3955 3053 4294 2106 4294 
+L 186 4294 
+z
+M 1498 2387 
+L 1498 3936 
+C 1587 3942 1670 3949 1754 3949 
+C 2355 3949 2643 3712 2643 3213 
+C 2643 2637 2336 2381 1670 2381 
+C 1613 2381 1555 2381 1498 2387 
+z
+M 1498 365 
+L 1498 2016 
+C 1677 2029 1818 2029 1920 2029 
+C 2560 2029 2880 1760 2880 1216 
+C 2880 602 2547 352 1805 352 
+C 1709 352 1606 358 1498 365 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-68" d="M 1050 4730 
+L 102 4429 
+L 102 4179 
+L 570 4179 
+L 570 410 
+L 480 314 
+L 154 288 
+L 154 0 
+L 1734 0 
+L 1734 288 
+L 1453 314 
+L 1357 410 
+L 1357 2522 
+C 1600 2592 1805 2630 1971 2630 
+C 2368 2630 2547 2413 2547 1939 
+L 2547 410 
+L 2458 314 
+L 2182 288 
+L 2182 0 
+L 3750 0 
+L 3750 288 
+L 3411 314 
+L 3328 410 
+L 3328 2125 
+C 3328 2835 3040 3187 2451 3187 
+C 2163 3187 1818 3046 1357 2797 
+L 1357 4730 
+L 1050 4730 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-6f" d="M 1894 3194 
+C 890 3194 237 2541 237 1555 
+C 237 589 883 -51 1843 -51 
+C 2854 -51 3501 595 3501 1542 
+C 3501 2560 2874 3194 1894 3194 
+z
+M 1869 2854 
+C 2323 2854 2618 2400 2618 1562 
+C 2618 730 2336 288 1862 288 
+C 1414 288 1126 742 1126 1581 
+C 1126 2406 1414 2854 1869 2854 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-72" d="M 186 0 
+L 1952 0 
+L 1952 288 
+L 1498 314 
+L 1402 410 
+L 1402 2246 
+C 1600 2368 1754 2426 1856 2426 
+C 2042 2426 2176 2355 2272 2195 
+L 2605 2195 
+L 2688 3078 
+C 2547 3149 2406 3187 2266 3187 
+C 2221 3187 2170 3181 2125 3174 
+C 1862 2989 1606 2771 1376 2522 
+L 1402 3174 
+L 1094 3174 
+L 154 2874 
+L 154 2618 
+L 614 2618 
+L 614 410 
+L 525 314 
+L 186 288 
+L 186 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(117.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(176.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(234.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(276.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(329.09996 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_3">
+    <g id="patch_5">
+     <path d="M 335.825318 236.795314 
+L 351.61188 236.795314 
+Q 352.81188 236.795314 352.81188 235.595314 
+L 352.81188 229.846564 
+Q 352.81188 228.646564 351.61188 228.646564 
+L 335.825318 228.646564 
+Q 334.625318 228.646564 334.625318 229.846564 
+L 334.625318 235.595314 
+Q 334.625318 236.795314 335.825318 236.795314 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Babet -->
+     <g style="fill: #4c4c4c" transform="translate(335.825318 234.280939) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-62" d="M 1005 4730 
+L 58 4429 
+L 58 4179 
+L 518 4179 
+L 518 6 
+L 1229 -6 
+L 1402 -6 
+C 1894 -6 2253 45 2490 147 
+C 3149 442 3501 992 3501 1734 
+C 3501 2598 2970 3187 2240 3187 
+C 1958 3187 1658 3091 1312 2899 
+L 1312 4730 
+L 1005 4730 
+z
+M 1312 346 
+L 1312 2637 
+C 1466 2669 1600 2688 1715 2688 
+C 2304 2688 2643 2298 2643 1568 
+C 2643 730 2291 339 1517 339 
+C 1453 339 1382 339 1312 346 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-74" d="M 538 2650 
+L 538 787 
+C 538 461 544 256 768 109 
+C 915 6 1088 -32 1299 -32 
+C 1562 -32 1894 32 2278 173 
+L 2278 480 
+C 2150 448 2016 435 1862 435 
+C 1440 435 1331 602 1331 1056 
+L 1331 2650 
+L 2278 2650 
+L 2278 3034 
+L 1331 3034 
+L 1331 3827 
+L 928 3827 
+L 595 3162 
+L 122 2893 
+L 122 2650 
+L 538 2650 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-62" transform="translate(117.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(174.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(227.299973 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_4">
+    <g id="patch_6">
+     <path d="M 352.029819 222.37392 
+L 370.797631 222.37392 
+Q 371.997631 222.37392 371.997631 221.17392 
+L 371.997631 215.42517 
+Q 371.997631 214.22517 370.797631 214.22517 
+L 352.029819 214.22517 
+Q 350.829819 214.22517 350.829819 215.42517 
+L 350.829819 221.17392 
+Q 350.829819 222.37392 352.029819 222.37392 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Brujon -->
+     <g style="fill: #4c4c4c" transform="translate(352.029819 219.859545) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-75" d="M 1050 3194 
+L 147 2886 
+L 147 2637 
+L 563 2637 
+L 563 1037 
+C 563 301 845 -58 1440 -58 
+C 1779 -58 2112 90 2515 352 
+L 2515 0 
+L 3725 0 
+L 3725 288 
+L 3392 314 
+L 3302 410 
+L 3302 3194 
+L 3008 3194 
+L 2099 2886 
+L 2099 2637 
+L 2515 2637 
+L 2515 595 
+C 2304 531 2125 493 1965 493 
+C 1523 493 1357 710 1357 1210 
+L 1357 3194 
+L 1050 3194 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-6a" d="M 698 2618 
+L 698 186 
+C 698 -442 646 -864 486 -1082 
+L -141 -499 
+C -371 -544 -512 -717 -512 -922 
+C -512 -1178 -288 -1370 70 -1370 
+C 480 -1370 883 -1178 1133 -858 
+C 1421 -486 1478 -13 1478 627 
+L 1478 3174 
+L 1210 3174 
+L 243 2867 
+L 243 2618 
+L 698 2618 
+z
+M 602 4154 
+C 602 3872 813 3680 1069 3680 
+C 1331 3680 1549 3885 1549 4147 
+C 1549 4429 1344 4634 1082 4634 
+C 794 4634 602 4435 602 4154 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(104.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-6a" transform="translate(164.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(194.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(252.299957 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_5">
+    <g id="patch_7">
+     <path d="M 121.34446 79.847572 
+L 151.484147 79.847572 
+Q 152.684147 79.847572 152.684147 78.647572 
+L 152.684147 72.898822 
+Q 152.684147 71.698822 151.484147 71.698822 
+L 121.34446 71.698822 
+Q 120.14446 71.698822 120.14446 72.898822 
+L 120.14446 78.647572 
+Q 120.14446 79.847572 121.34446 79.847572 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Blacheville -->
+     <g style="fill: #4c4c4c" transform="translate(121.34446 77.333197) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-63" d="M 2970 288 
+L 2970 742 
+C 2656 550 2355 454 2080 454 
+C 1485 454 1094 909 1094 1677 
+C 1094 2406 1485 2867 1933 2867 
+C 1978 2867 2029 2861 2093 2848 
+L 2093 2170 
+C 2208 2086 2330 2048 2470 2048 
+C 2746 2048 2931 2234 2931 2483 
+C 2931 2874 2534 3181 1875 3181 
+C 915 3181 224 2496 224 1523 
+C 224 595 832 -51 1760 -51 
+C 2170 -51 2560 64 2970 288 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-76" d="M -38 3117 
+L -38 2822 
+L 346 2784 
+L 1370 0 
+L 1946 0 
+L 3046 2778 
+L 3418 2822 
+L 3418 3117 
+L 2202 3117 
+L 2202 2822 
+L 2528 2790 
+L 2579 2701 
+L 1850 838 
+L 1184 2707 
+L 1254 2790 
+L 1587 2822 
+L 1587 3117 
+L -38 3117 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-69" d="M 1037 4634 
+C 774 4634 576 4429 576 4154 
+C 576 3872 787 3680 1043 3680 
+C 1312 3680 1517 3878 1517 4166 
+C 1517 4429 1325 4634 1037 4634 
+z
+M 1107 3174 
+L 205 2874 
+L 205 2618 
+L 627 2618 
+L 627 410 
+L 538 314 
+L 192 288 
+L 192 0 
+L 1869 0 
+L 1869 288 
+L 1510 314 
+L 1414 410 
+L 1414 3174 
+L 1107 3174 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(93.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(147.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(195.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(254.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(307.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(358.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(389.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(419.499924 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(449.899918 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_6">
+    <g id="patch_8">
+     <path d="M 119.070064 215.658988 
+L 179.485376 215.658988 
+Q 180.685376 215.658988 180.685376 214.458988 
+L 180.685376 208.710238 
+Q 180.685376 207.510238 179.485376 207.510238 
+L 119.070064 207.510238 
+Q 117.870064 207.510238 117.870064 208.710238 
+L 117.870064 214.458988 
+Q 117.870064 215.658988 119.070064 215.658988 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Monsieur Bamatabois -->
+     <g style="fill: #4c4c4c" transform="translate(119.070064 213.144613) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-4d" d="M 160 0 
+L 1613 0 
+L 1613 314 
+L 1216 358 
+L 1120 474 
+L 1120 3853 
+L 2419 0 
+L 2880 0 
+L 4211 3885 
+L 4211 448 
+L 4147 346 
+L 3750 314 
+L 3750 0 
+L 5523 0 
+L 5523 314 
+L 5088 346 
+L 5018 448 
+L 5018 3859 
+L 5088 3949 
+L 5523 3987 
+L 5523 4294 
+L 3827 4294 
+L 3827 4109 
+L 2835 1178 
+L 1837 4115 
+L 1837 4294 
+L 160 4294 
+L 160 3987 
+L 582 3949 
+L 659 3866 
+L 659 474 
+L 570 358 
+L 160 314 
+L 160 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-73" d="M 2528 3040 
+C 2202 3149 1882 3200 1562 3200 
+C 774 3200 307 2797 307 2246 
+C 307 1862 550 1638 1024 1402 
+C 1523 1152 1869 1088 1869 742 
+C 1869 461 1670 282 1325 282 
+C 1133 282 954 326 787 416 
+L 723 486 
+L 653 1037 
+L 262 1037 
+L 262 90 
+C 659 -19 1011 -70 1318 -70 
+C 2144 -70 2624 339 2624 986 
+C 2624 1446 2259 1619 1690 1894 
+C 1312 2080 1094 2189 1094 2458 
+C 1094 2694 1267 2842 1581 2842 
+C 1728 2842 1869 2803 2003 2739 
+L 2080 2669 
+L 2144 2189 
+L 2528 2189 
+L 2528 3040 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-20" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(206.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(251.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(281.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(334.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(394.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(436.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-42" transform="translate(465.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(528.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(582.499893 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(671.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(726.099869 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(761.899857 0)"/>
+      <use xlink:href="#CharterBT-Bold-62" transform="translate(816.29985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(873.999847 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(931.699844 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(962.199829 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_7">
+    <g id="patch_9">
+     <path d="M 428.61314 142.748927 
+L 474.339702 142.748927 
+Q 475.539702 142.748927 475.539702 141.548927 
+L 475.539702 135.800177 
+Q 475.539702 134.600177 474.339702 134.600177 
+L 428.61314 134.600177 
+Q 427.41314 134.600177 427.41314 135.800177 
+L 427.41314 141.548927 
+Q 427.41314 142.748927 428.61314 142.748927 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Bossuet (Lesgle) -->
+     <g style="fill: #4c4c4c" transform="translate(428.61314 140.234552) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-28" d="M 2470 4595 
+C 1280 4544 582 3571 582 1824 
+C 582 109 1299 -864 2470 -909 
+L 2470 -582 
+C 1696 -493 1338 301 1338 1818 
+C 1338 3360 1670 4160 2470 4269 
+L 2470 4595 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-4c" d="M 173 0 
+L 3405 0 
+L 3405 1254 
+L 2931 1254 
+L 2835 474 
+L 2752 371 
+L 1523 371 
+L 1523 3859 
+L 1626 3949 
+L 2016 3981 
+L 2016 4294 
+L 173 4294 
+L 173 3981 
+L 582 3949 
+L 672 3859 
+L 672 448 
+L 563 346 
+L 173 314 
+L 173 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-67" d="M 2605 2995 
+C 2291 3123 1997 3181 1722 3181 
+C 870 3181 352 2733 352 2080 
+C 352 1619 627 1267 1146 1120 
+C 909 909 794 723 794 512 
+C 794 422 819 314 877 192 
+C 467 154 218 -115 218 -512 
+C 218 -1037 698 -1389 1542 -1389 
+C 2573 -1389 3264 -858 3264 -256 
+C 3264 288 2790 480 1862 614 
+L 1427 672 
+C 1414 736 1408 794 1408 845 
+C 1408 922 1427 998 1459 1082 
+C 1523 1075 1587 1075 1645 1075 
+C 2490 1075 3002 1523 3002 2138 
+C 3002 2304 2957 2464 2861 2630 
+L 3552 2630 
+L 3552 2995 
+L 2605 2995 
+z
+M 1709 2880 
+C 1990 2880 2214 2605 2214 2144 
+C 2214 1658 1997 1363 1696 1363 
+C 1389 1363 1171 1651 1171 2138 
+C 1171 2605 1389 2880 1709 2880 
+z
+M 1267 122 
+L 1811 32 
+C 2266 -45 2502 -134 2502 -448 
+C 2502 -774 2202 -1050 1741 -1050 
+C 1312 -1050 998 -755 998 -410 
+C 998 -205 1088 -26 1267 122 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-29" d="M 237 4595 
+L 237 4269 
+C 1024 4179 1370 3379 1370 1850 
+C 1370 314 1030 -480 237 -582 
+L 237 -909 
+C 1395 -858 2106 115 2106 1843 
+C 2106 3565 1402 4538 237 4595 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(120.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(165.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(209.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(269.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(322.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(358.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-28" transform="translate(387.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-4c" transform="translate(429.999924 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(484.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(536.699905 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(581.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(636.499893 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(666.899887 0)"/>
+      <use xlink:href="#CharterBT-Bold-29" transform="translate(719.299881 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_8">
+    <g id="patch_10">
+     <path d="M 171.737816 275.770738 
+L 189.545628 275.770738 
+Q 190.745628 275.770738 190.745628 274.570738 
+L 190.745628 268.821988 
+Q 190.745628 267.621988 189.545628 267.621988 
+L 171.737816 267.621988 
+Q 170.537816 267.621988 170.537816 268.821988 
+L 170.537816 274.570738 
+Q 170.537816 275.770738 171.737816 275.770738 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Brevet -->
+     <g style="fill: #4c4c4c" transform="translate(171.737816 273.256363) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(104.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(157.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(208.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(260.999954 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_9">
+    <g id="patch_11">
+     <path d="M 314.740961 146.984146 
+L 356.427836 146.984146 
+Q 357.627836 146.984146 357.627836 145.784146 
+L 357.627836 140.035396 
+Q 357.627836 138.835396 356.427836 138.835396 
+L 314.740961 138.835396 
+Q 313.540961 138.835396 313.540961 140.035396 
+L 313.540961 145.784146 
+Q 313.540961 146.984146 314.740961 146.984146 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Baroness of T- - -->
+     <g style="fill: #4c4c4c" transform="translate(314.740961 144.469771) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-66" d="M 198 0 
+L 1926 0 
+L 1926 294 
+L 1498 326 
+L 1395 422 
+L 1395 2650 
+L 2253 2650 
+L 2253 3034 
+L 1395 3034 
+L 1395 3418 
+L 1395 3469 
+C 1395 3942 1478 4269 1645 4442 
+L 2266 3891 
+C 2509 3974 2637 4115 2637 4288 
+C 2637 4563 2406 4755 2035 4755 
+C 1773 4755 1498 4666 1261 4486 
+C 819 4160 608 3699 608 3085 
+L 192 2893 
+L 192 2650 
+L 608 2650 
+L 608 429 
+L 518 326 
+L 198 294 
+L 198 0 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-54" d="M 102 4294 
+L 102 3162 
+L 544 3162 
+L 646 3846 
+L 749 3930 
+L 1517 3930 
+L 1517 448 
+L 1408 346 
+L 992 314 
+L 992 0 
+L 2906 0 
+L 2906 314 
+L 2490 346 
+L 2381 448 
+L 2381 3930 
+L 3149 3930 
+L 3245 3846 
+L 3354 3162 
+L 3795 3162 
+L 3795 4294 
+L 102 4294 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-2d" d="M 230 1856 
+L 230 1229 
+L 1856 1229 
+L 1856 1856 
+L 230 1856 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-42"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(62.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(117.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(159.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(216.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(277.499954 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(329.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(374.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(419.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(448.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-66" transform="translate(506.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(540.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-54" transform="translate(569.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-2d" transform="translate(629.599899 0)"/>
+      <use xlink:href="#CharterBT-Bold-2d" transform="translate(662.19989 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_10">
+    <g id="patch_12">
+     <path d="M 325.839494 261.384267 
+L 371.775119 261.384267 
+Q 372.975119 261.384267 372.975119 260.184267 
+L 372.975119 254.435517 
+Q 372.975119 253.235517 371.775119 253.235517 
+L 325.839494 253.235517 
+Q 324.639494 253.235517 324.639494 254.435517 
+L 324.639494 260.184267 
+Q 324.639494 261.384267 325.839494 261.384267 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Burgon -->
+     <g style="fill: #4c4c4c" transform="translate(325.839494 258.869892) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-64" d="M 2490 4173 
+L 2490 3136 
+C 2259 3181 2061 3200 1888 3200 
+C 915 3200 237 2515 237 1485 
+C 237 563 762 -58 1478 -58 
+C 1805 -58 2125 90 2490 358 
+L 2490 0 
+L 3686 0 
+L 3686 282 
+L 3360 307 
+L 3270 410 
+L 3270 4730 
+L 2976 4730 
+L 2022 4429 
+L 2022 4173 
+L 2490 4173 
+z
+M 2490 608 
+C 2285 531 2106 486 1952 486 
+C 1421 486 1094 902 1094 1619 
+C 1094 2381 1472 2842 2016 2842 
+C 2150 2842 2304 2810 2490 2746 
+L 2490 608 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-42" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(490.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(550.199905 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(592.299896 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(647.399887 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(705.099884 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_11">
+    <g id="patch_13">
+     <path d="M 126.400227 292.829863 
+L 158.705539 292.829863 
+Q 159.905539 292.829863 159.905539 291.629863 
+L 159.905539 285.881113 
+Q 159.905539 284.681113 158.705539 284.681113 
+L 126.400227 284.681113 
+Q 125.200227 284.681113 125.200227 285.881113 
+L 125.200227 291.629863 
+Q 125.200227 292.829863 126.400227 292.829863 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Cochepaille -->
+     <g style="fill: #4c4c4c" transform="translate(126.400227 290.315488) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-43" d="M 3846 154 
+L 3846 1254 
+L 3386 1254 
+L 3226 480 
+L 3130 384 
+C 2976 346 2848 326 2739 326 
+C 1786 326 1203 1005 1203 2150 
+C 1203 3283 1779 3955 2656 3955 
+C 2822 3955 2989 3923 3162 3859 
+L 3251 3750 
+L 3373 3066 
+L 3846 3066 
+L 3846 4134 
+C 3418 4288 2982 4371 2541 4371 
+C 1875 4371 1331 4173 928 3782 
+C 493 3366 262 2797 262 2144 
+C 262 1325 659 608 1325 211 
+C 1638 26 2042 -77 2502 -77 
+C 2970 -77 3418 0 3846 154 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-70" d="M 147 -1402 
+L 1856 -1402 
+L 1862 -1107 
+L 1459 -1082 
+L 1363 -992 
+L 1363 32 
+C 1574 6 1747 -6 1888 -6 
+C 2925 -6 3584 659 3584 1683 
+C 3584 2579 3053 3194 2374 3194 
+C 2061 3194 1741 3053 1363 2790 
+L 1363 3174 
+L 1075 3174 
+L 141 2874 
+L 141 2618 
+L 582 2618 
+L 582 -979 
+L 493 -1075 
+L 147 -1107 
+L 147 -1402 
+z
+M 1363 384 
+L 1363 2522 
+C 1555 2598 1722 2643 1869 2643 
+C 2387 2643 2714 2259 2714 1574 
+C 2714 806 2336 339 1773 339 
+C 1645 339 1510 352 1363 384 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(121.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(169.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(228.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(281.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(340.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(394.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(425.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(455.59993 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(485.999924 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_12">
+    <g id="patch_14">
+     <path d="M 221.185732 232.618534 
+L 263.678857 232.618534 
+Q 264.878857 232.618534 264.878857 231.418534 
+L 264.878857 225.669784 
+Q 264.878857 224.469784 263.678857 224.469784 
+L 221.185732 224.469784 
+Q 219.985732 224.469784 219.985732 225.669784 
+L 219.985732 231.418534 
+Q 219.985732 232.618534 221.185732 232.618534 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Champmathieu -->
+     <g style="fill: #4c4c4c" transform="translate(221.185732 230.104159) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(123.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(177.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(267.09996 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(326.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(415.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(469.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(505.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(565.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(595.799896 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(648.19989 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_13">
+    <g id="patch_15">
+     <path d="M 368.483596 239.926949 
+L 401.117971 239.926949 
+Q 402.317971 239.926949 402.317971 238.726949 
+L 402.317971 232.978199 
+Q 402.317971 231.778199 401.117971 231.778199 
+L 368.483596 231.778199 
+Q 367.283596 231.778199 367.283596 232.978199 
+L 367.283596 238.726949 
+Q 367.283596 239.926949 368.483596 239.926949 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Combeferre -->
+     <g style="fill: #4c4c4c" transform="translate(368.483596 237.412574) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(121.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-62" transform="translate(210.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(268.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-66" transform="translate(320.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(354.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(407.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(449.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(491.499924 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_14">
+    <g id="patch_16">
+     <path d="M 175.378818 318.79892 
+L 205.367568 318.79892 
+Q 206.567568 318.79892 206.567568 317.59892 
+L 206.567568 311.85017 
+Q 206.567568 310.65017 205.367568 310.65017 
+L 175.378818 310.65017 
+Q 174.178818 310.65017 174.178818 311.85017 
+L 174.178818 317.59892 
+Q 174.178818 318.79892 175.378818 318.79892 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Chenildieu -->
+     <g style="fill: #4c4c4c" transform="translate(175.378818 316.284545) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(123.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(175.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(236.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(266.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(297.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(356.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(387.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(439.799911 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_15">
+    <g id="patch_17">
+     <path d="M 249.680628 162.232685 
+L 270.23719 162.232685 
+Q 271.43719 162.232685 271.43719 161.032685 
+L 271.43719 155.283935 
+Q 271.43719 154.083935 270.23719 154.083935 
+L 249.680628 154.083935 
+Q 248.480628 154.083935 248.480628 155.283935 
+L 248.480628 161.032685 
+Q 248.480628 162.232685 249.680628 162.232685 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Cosette -->
+     <g style="fill: #4c4c4c" transform="translate(249.680628 159.71831) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(121.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(166.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(218.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(254.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(290.199951 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_16">
+    <g id="patch_18">
+     <path d="M 365.850649 169.568633 
+L 396.191899 169.568633 
+Q 397.391899 169.568633 397.391899 168.368633 
+L 397.391899 162.596445 
+Q 397.391899 161.396445 396.191899 161.396445 
+L 365.850649 161.396445 
+Q 364.650649 161.396445 364.650649 162.596445 
+L 364.650649 168.368633 
+Q 364.650649 169.568633 365.850649 169.568633 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Courfeyrac -->
+     <g style="fill: #4c4c4c" transform="translate(365.850649 167.054258) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-79" d="M -26 3110 
+L -26 2835 
+L 358 2778 
+L 1498 -77 
+C 1338 -461 1165 -723 998 -858 
+L 442 -474 
+C 230 -582 109 -742 109 -928 
+C 109 -1171 346 -1402 659 -1402 
+C 1082 -1402 1536 -979 1850 -224 
+L 3085 2778 
+L 3430 2835 
+L 3430 3110 
+L 2202 3110 
+L 2202 2835 
+L 2541 2797 
+L 2598 2701 
+L 1901 896 
+L 1210 2707 
+L 1274 2797 
+L 1600 2835 
+L 1600 3110 
+L -26 3110 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(121.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(181.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-66" transform="translate(223.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(257.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(310.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(361.59993 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(403.699921 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(458.099915 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_17">
+    <g id="patch_19">
+     <path d="M 106.280995 118.34383 
+L 124.341933 118.34383 
+Q 125.541933 118.34383 125.541933 117.14383 
+L 125.541933 111.39508 
+Q 125.541933 110.19508 124.341933 110.19508 
+L 106.280995 110.19508 
+Q 105.080995 110.19508 105.080995 111.39508 
+L 105.080995 117.14383 
+Q 105.080995 118.34383 106.280995 118.34383 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Dahlia -->
+     <g style="fill: #4c4c4c" transform="translate(106.280995 115.829455) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-44" d="M 2054 4294 
+L 186 4294 
+L 186 3981 
+L 576 3949 
+L 678 3846 
+L 678 448 
+L 576 346 
+L 186 314 
+L 186 0 
+L 2054 0 
+C 2694 0 3174 96 3571 403 
+C 4090 800 4358 1389 4358 2144 
+C 4358 3488 3539 4294 2054 4294 
+z
+M 1523 3936 
+L 1894 3936 
+C 2912 3936 3405 3354 3405 2150 
+C 3405 947 2912 358 1894 358 
+L 1523 358 
+L 1523 3936 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-44"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(71.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(125.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(185.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(216.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(246.59996 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_18">
+    <g id="patch_20">
+     <path d="M 317.292182 206.911215 
+L 340.038745 206.911215 
+Q 341.238745 206.911215 341.238745 205.711215 
+L 341.238745 199.962465 
+Q 341.238745 198.762465 340.038745 198.762465 
+L 317.292182 198.762465 
+Q 316.092182 198.762465 316.092182 199.962465 
+L 316.092182 205.711215 
+Q 316.092182 206.911215 317.292182 206.911215 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Enjolras -->
+     <g style="fill: #4c4c4c" transform="translate(317.292182 204.39684) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-45" d="M 186 0 
+L 3622 0 
+L 3622 1146 
+L 3187 1146 
+L 3078 467 
+L 2995 365 
+L 1510 365 
+L 1510 2029 
+L 2342 2029 
+L 2432 1939 
+L 2496 1478 
+L 2874 1478 
+L 2874 2963 
+L 2496 2963 
+L 2432 2502 
+L 2342 2413 
+L 1510 2413 
+L 1510 3936 
+L 2784 3936 
+L 2867 3853 
+L 2963 3290 
+L 3411 3290 
+L 3411 4294 
+L 186 4294 
+L 186 3981 
+L 576 3949 
+L 678 3859 
+L 678 448 
+L 576 346 
+L 186 314 
+L 186 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-45"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(59.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-6a" transform="translate(120.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(149.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(207.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(237.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(279.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(334.399948 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_19">
+    <g id="patch_21">
+     <path d="M 340.741425 176.873952 
+L 363.559237 176.873952 
+Q 364.759237 176.873952 364.759237 175.673952 
+L 364.759237 169.925202 
+Q 364.759237 168.725202 363.559237 168.725202 
+L 340.741425 168.725202 
+Q 339.541425 168.725202 339.541425 169.925202 
+L 339.541425 175.673952 
+Q 339.541425 176.873952 340.741425 176.873952 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Eponine -->
+     <g style="fill: #4c4c4c" transform="translate(340.741425 174.359577) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-45"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(59.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(118.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(176.399979 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(236.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(267.399948 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(327.899933 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_20">
+    <g id="patch_22">
+     <path d="M 182.348618 81.869288 
+L 204.676118 81.869288 
+Q 205.876118 81.869288 205.876118 80.669288 
+L 205.876118 74.920538 
+Q 205.876118 73.720538 204.676118 73.720538 
+L 182.348618 73.720538 
+Q 181.148618 73.720538 181.148618 74.920538 
+L 181.148618 80.669288 
+Q 181.148618 81.869288 182.348618 81.869288 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Fameuil -->
+     <g style="fill: #4c4c4c" transform="translate(182.348618 79.354913) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-46" d="M 192 0 
+L 2080 0 
+L 2080 314 
+L 1632 346 
+L 1523 448 
+L 1523 1939 
+L 2381 1939 
+L 2470 1856 
+L 2534 1389 
+L 2912 1389 
+L 2912 2880 
+L 2534 2880 
+L 2470 2413 
+L 2381 2330 
+L 1523 2330 
+L 1523 3923 
+L 2758 3923 
+L 2842 3840 
+L 2938 3219 
+L 3379 3219 
+L 3379 4294 
+L 166 4294 
+L 166 3981 
+L 576 3949 
+L 678 3859 
+L 678 448 
+L 576 346 
+L 192 314 
+L 192 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(109.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(198.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(251.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(311.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(341.699936 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_21">
+    <g id="patch_23">
+     <path d="M 509.715856 169.160686 
+L 528.341169 169.160686 
+Q 529.541169 169.160686 529.541169 167.960686 
+L 529.541169 162.211936 
+Q 529.541169 161.011936 528.341169 161.011936 
+L 509.715856 161.011936 
+Q 508.515856 161.011936 508.515856 162.211936 
+L 508.515856 167.960686 
+Q 508.515856 169.160686 509.715856 169.160686 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Feuilly -->
+     <g style="fill: #4c4c4c" transform="translate(509.715856 166.646311) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(107.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(167.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(198.09996 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(228.499954 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(258.899948 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_22">
+    <g id="patch_24">
+     <path d="M 245.61055 243.866623 
+L 282.33805 243.866623 
+Q 283.53805 243.866623 283.53805 242.666623 
+L 283.53805 236.917873 
+Q 283.53805 235.717873 282.33805 235.717873 
+L 245.61055 235.717873 
+Q 244.41055 235.717873 244.41055 236.917873 
+L 244.41055 242.666623 
+Q 244.41055 243.866623 245.61055 243.866623 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Fauchelevent -->
+     <g style="fill: #4c4c4c" transform="translate(245.61055 241.352248) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(109.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(169.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(217.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(276.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(329.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(359.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(412.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(463.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(515.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(576.299911 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_23">
+    <g id="patch_25">
+     <path d="M 210.629601 174.201107 
+L 231.588351 174.201107 
+Q 232.788351 174.201107 232.788351 173.001107 
+L 232.788351 167.252357 
+Q 232.788351 166.052357 231.588351 166.052357 
+L 210.629601 166.052357 
+Q 209.429601 166.052357 209.429601 167.252357 
+L 209.429601 173.001107 
+Q 209.429601 174.201107 210.629601 174.201107 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Fantine -->
+     <g style="fill: #4c4c4c" transform="translate(210.629601 171.686732) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(109.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(170.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(205.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(236.399948 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(296.899933 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_24">
+    <g id="patch_26">
+     <path d="M 202.385969 104.689069 
+L 257.586907 104.689069 
+Q 258.786907 104.689069 258.786907 103.489069 
+L 258.786907 97.722507 
+Q 258.786907 96.522507 257.586907 96.522507 
+L 202.385969 96.522507 
+Q 201.185969 96.522507 201.185969 97.722507 
+L 201.185969 103.489069 
+Q 201.185969 104.689069 202.385969 104.689069 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- F\'elix Tholomy\`es -->
+     <g style="fill: #4c4c4c" transform="translate(202.385969 102.174694) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-5c" d="M -45 4294 
+L 2630 -595 
+L 3110 -595 
+L 435 4294 
+L -45 4294 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-27" d="M 499 2675 
+L 621 2675 
+L 851 4109 
+C 858 4147 858 4192 858 4230 
+C 858 4454 749 4570 557 4570 
+C 371 4570 262 4448 262 4230 
+C 262 4192 262 4154 269 4109 
+L 499 2675 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-78" d="M 90 3117 
+L 90 2822 
+L 454 2771 
+L 1344 1498 
+L 448 352 
+L 70 282 
+L 70 0 
+L 1312 0 
+L 1312 282 
+L 986 346 
+L 1587 1229 
+L 2150 371 
+L 2125 307 
+L 1901 250 
+L 1901 0 
+L 3398 0 
+L 3398 282 
+L 3059 339 
+L 2106 1715 
+L 2925 2778 
+L 3277 2822 
+L 3277 3117 
+L 2099 3117 
+L 2099 2835 
+L 2426 2778 
+L 1869 1978 
+L 1357 2739 
+L 1389 2810 
+L 1632 2848 
+L 1632 3117 
+L 90 3117 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-60" d="M 550 4749 
+L 1530 3533 
+L 1965 3533 
+L 1344 4749 
+L 550 4749 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-27" transform="translate(104.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(121.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(174.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(204.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-78" transform="translate(235.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(288.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-54" transform="translate(317.299927 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(377.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(437.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(494.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(525.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(583.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(672.299881 0)"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(723.799866 0)"/>
+      <use xlink:href="#CharterBT-Bold-60" transform="translate(772.899857 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(822.899841 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(875.299835 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_25">
+    <g id="patch_27">
+     <path d="M 48.4393 110.416977 
+L 74.803675 110.416977 
+Q 76.003675 110.416977 76.003675 109.216977 
+L 76.003675 103.468227 
+Q 76.003675 102.268227 74.803675 102.268227 
+L 48.4393 102.268227 
+Q 47.2393 102.268227 47.2393 103.468227 
+L 47.2393 109.216977 
+Q 47.2393 110.416977 48.4393 110.416977 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Favourite -->
+     <g style="fill: #4c4c4c" transform="translate(48.4393 107.902602) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-46"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(55.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(109.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(160.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(218.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(278.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(320.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(351.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(386.999924 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_26">
+    <g id="patch_28">
+     <path d="M 272.452691 220.149834 
+L 298.624879 220.149834 
+Q 299.824879 220.149834 299.824879 218.949834 
+L 299.824879 213.201084 
+Q 299.824879 212.001084 298.624879 212.001084 
+L 272.452691 212.001084 
+Q 271.252691 212.001084 271.252691 213.201084 
+L 271.252691 218.949834 
+Q 271.252691 220.149834 272.452691 220.149834 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Gavroche -->
+     <g style="fill: #4c4c4c" transform="translate(272.452691 217.635459) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-47" d="M 2547 2112 
+L 2547 1798 
+L 3021 1766 
+L 3123 1677 
+L 3123 371 
+C 2957 358 2835 352 2771 352 
+C 1786 352 1184 1024 1184 2176 
+C 1184 3296 1773 3962 2726 3962 
+C 2912 3962 3085 3930 3258 3859 
+L 3354 3744 
+L 3475 3066 
+L 3942 3066 
+L 3942 4154 
+C 3469 4294 3014 4365 2592 4365 
+C 1171 4365 256 3488 256 2176 
+C 256 845 1165 -77 2509 -77 
+C 2976 -77 3450 13 3942 186 
+L 3942 1677 
+L 4045 1766 
+L 4416 1798 
+L 4416 2112 
+L 2547 2112 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-47"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(70.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(125.399979 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(176.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(218.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(276.499954 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(324.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(383.799942 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_27">
+    <g id="patch_29">
+     <path d="M 233.294513 129.730396 
+L 332.653575 129.730396 
+Q 333.853575 129.730396 333.853575 128.530396 
+L 333.853575 122.781646 
+Q 333.853575 121.581646 332.653575 121.581646 
+L 233.294513 121.581646 
+Q 232.094513 121.581646 232.094513 122.781646 
+L 232.094513 128.530396 
+Q 232.094513 129.730396 233.294513 129.730396 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Monsieur Luke Esprit Gillenormand -->
+     <g style="fill: #4c4c4c" transform="translate(233.294513 127.216021) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-6b" d="M 160 0 
+L 1773 0 
+L 1773 282 
+L 1453 307 
+L 1370 397 
+L 1370 1446 
+L 1683 1446 
+L 2426 250 
+L 2426 0 
+L 3654 0 
+L 3654 282 
+L 3277 314 
+L 2259 1965 
+L 2989 2778 
+L 3405 2829 
+L 3405 3110 
+L 2099 3110 
+L 2099 2829 
+L 2381 2797 
+L 2426 2726 
+L 1510 1658 
+L 1370 1658 
+L 1370 4730 
+L 1101 4730 
+L 115 4429 
+L 115 4179 
+L 582 4179 
+L 582 410 
+L 493 314 
+L 160 282 
+L 160 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(206.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(251.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(281.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(334.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(394.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(436.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-4c" transform="translate(465.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(519.599899 0)"/>
+      <use xlink:href="#CharterBT-Bold-6b" transform="translate(579.599884 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(634.899872 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(687.299866 0)"/>
+      <use xlink:href="#CharterBT-Bold-45" transform="translate(716.399857 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(775.999847 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(820.699844 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(879.799835 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(921.899826 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(952.399811 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(988.199799 0)"/>
+      <use xlink:href="#CharterBT-Bold-47" transform="translate(1017.299789 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(1088.299774 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(1118.799759 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(1149.199753 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(1179.599747 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1231.999741 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(1292.499725 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(1350.199722 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(1392.299713 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(1481.499695 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1535.899689 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(1596.399673 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_28">
+    <g id="patch_30">
+     <path d="M 343.582479 123.851306 
+L 394.900291 123.851306 
+Q 396.100291 123.851306 396.100291 122.651306 
+L 396.100291 116.902556 
+Q 396.100291 115.702556 394.900291 115.702556 
+L 343.582479 115.702556 
+Q 342.382479 115.702556 342.382479 116.902556 
+L 342.382479 122.651306 
+Q 342.382479 123.851306 343.582479 123.851306 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- George Pontmercy -->
+     <g style="fill: #4c4c4c" transform="translate(343.582479 121.336931) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-50" d="M 186 0 
+L 2074 0 
+L 2074 314 
+L 1619 346 
+L 1523 448 
+L 1523 1600 
+C 1715 1587 1862 1581 1958 1581 
+C 3034 1581 3635 2118 3635 3002 
+C 3635 3923 3072 4294 1888 4294 
+L 160 4294 
+L 160 3981 
+L 582 3949 
+L 678 3859 
+L 678 448 
+L 563 346 
+L 186 314 
+L 186 0 
+z
+M 1523 1965 
+L 1523 3923 
+L 1856 3923 
+C 2438 3923 2752 3584 2752 2976 
+C 2752 2298 2419 1952 1754 1952 
+C 1683 1952 1606 1958 1523 1965 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-47"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(70.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(123.399979 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(181.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(223.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(278.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(330.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-50" transform="translate(359.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(418.499939 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(476.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(536.699921 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(572.499908 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(661.69989 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(714.099884 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(756.199875 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(803.799866 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_29">
+    <g id="patch_31">
+     <path d="M 226.868075 284.095397 
+L 246.445888 284.095397 
+Q 247.645888 284.095397 247.645888 282.895397 
+L 247.645888 277.146647 
+Q 247.645888 275.946647 246.445888 275.946647 
+L 226.868075 275.946647 
+Q 225.668075 275.946647 225.668075 277.146647 
+L 225.668075 282.895397 
+Q 225.668075 284.095397 226.868075 284.095397 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Gribier -->
+     <g style="fill: #4c4c4c" transform="translate(226.868075 281.581022) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-47"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(70.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(113.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-62" transform="translate(143.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(201.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(231.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(284.199936 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_30">
+    <g id="patch_32">
+     <path d="M 398.486436 205.034422 
+L 425.078624 205.034422 
+Q 426.278624 205.034422 426.278624 203.834422 
+L 426.278624 198.085672 
+Q 426.278624 196.885672 425.078624 196.885672 
+L 398.486436 196.885672 
+Q 397.286436 196.885672 397.286436 198.085672 
+L 397.286436 203.834422 
+Q 397.286436 205.034422 398.486436 205.034422 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Grantaire -->
+     <g style="fill: #4c4c4c" transform="translate(398.486436 202.520047) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-47"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(70.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(113.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(167.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(227.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(263.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(318.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(348.699921 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(390.799911 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_31">
+    <g id="patch_33">
+     <path d="M 370.149056 276.864729 
+L 400.744369 276.864729 
+Q 401.944369 276.864729 401.944369 275.664729 
+L 401.944369 269.915979 
+Q 401.944369 268.715979 400.744369 268.715979 
+L 370.149056 268.715979 
+Q 368.949056 268.715979 368.949056 269.915979 
+L 368.949056 275.664729 
+Q 368.949056 276.864729 370.149056 276.864729 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Gueulemer -->
+     <g style="fill: #4c4c4c" transform="translate(370.149056 274.350354) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-47"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(70.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(130.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(183.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(243.399948 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(273.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(326.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(415.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(467.799911 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_32">
+    <g id="patch_34">
+     <path d="M 454.704985 211.617885 
+L 510.523735 211.617885 
+Q 511.723735 211.617885 511.723735 210.417885 
+L 511.723735 204.669135 
+Q 511.723735 203.469135 510.523735 203.469135 
+L 454.704985 203.469135 
+Q 453.504985 203.469135 453.504985 204.669135 
+L 453.504985 210.417885 
+Q 453.504985 211.617885 454.704985 211.617885 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Hucheloup -->
+     <g style="fill: #4c4c4c" transform="translate(454.704985 209.10351) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-48" d="M 192 4294 
+L 192 3981 
+L 563 3949 
+L 666 3846 
+L 666 448 
+L 563 346 
+L 192 314 
+L 192 0 
+L 2003 0 
+L 2003 314 
+L 1619 346 
+L 1517 448 
+L 1517 2061 
+L 3366 2061 
+L 3366 448 
+L 3270 346 
+L 2886 314 
+L 2886 0 
+L 4691 0 
+L 4691 314 
+L 4320 346 
+L 4218 448 
+L 4218 3846 
+L 4320 3949 
+L 4691 3981 
+L 4691 4294 
+L 2886 4294 
+L 2886 3981 
+L 3270 3949 
+L 3366 3846 
+L 3366 2445 
+L 1517 2445 
+L 1517 3846 
+L 1619 3949 
+L 2003 3981 
+L 2003 4294 
+L 192 4294 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-48" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(503.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(563.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(610.999893 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(670.69989 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(723.099884 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(753.499878 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(811.199875 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(871.19986 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_33">
+    <g id="patch_35">
+     <path d="M 257.125596 179.008966 
+L 274.075596 179.008966 
+Q 275.275596 179.008966 275.275596 177.808966 
+L 275.275596 172.060216 
+Q 275.275596 170.860216 274.075596 170.860216 
+L 257.125596 170.860216 
+Q 255.925596 170.860216 255.925596 172.060216 
+L 255.925596 177.808966 
+Q 255.925596 179.008966 257.125596 179.008966 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Javert -->
+     <g style="fill: #4c4c4c" transform="translate(257.125596 176.494591) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-4a" d="M 1638 3859 
+L 1638 1670 
+C 1638 736 1466 294 883 294 
+C 851 294 813 301 781 301 
+L 691 384 
+L 544 1229 
+L 77 1229 
+L 77 77 
+C 390 -26 691 -77 992 -77 
+C 2035 -77 2477 480 2477 1677 
+L 2477 3859 
+L 2579 3949 
+L 2970 3981 
+L 2970 4294 
+L 1088 4294 
+L 1088 3981 
+L 1536 3949 
+L 1638 3859 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4a"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(46.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(100.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(152.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(204.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(246.699951 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_34">
+    <g id="patch_36">
+     <path d="M 455.896359 168.382742 
+L 467.062922 168.382742 
+Q 468.262922 168.382742 468.262922 167.182742 
+L 468.262922 161.433992 
+Q 468.262922 160.233992 467.062922 160.233992 
+L 455.896359 160.233992 
+Q 454.696359 160.233992 454.696359 161.433992 
+L 454.696359 167.182742 
+Q 454.696359 168.382742 455.896359 168.382742 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Joly -->
+     <g style="fill: #4c4c4c" transform="translate(455.896359 165.868367) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4a"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(46.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(104.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(134.599976 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_35">
+    <g id="patch_37">
+     <path d="M 431.287891 224.253773 
+L 472.814454 224.253773 
+Q 474.014454 224.253773 474.014454 223.053773 
+L 474.014454 217.305023 
+Q 474.014454 216.105023 472.814454 216.105023 
+L 431.287891 216.105023 
+Q 430.087891 216.105023 430.087891 217.305023 
+L 430.087891 223.053773 
+Q 430.087891 224.253773 431.287891 224.253773 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Jean Prouvaire -->
+     <g style="fill: #4c4c4c" transform="translate(431.287891 221.739398) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4a"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(46.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(98.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(153.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(213.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-50" transform="translate(242.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(301.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(343.699936 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(401.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(461.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(512.699905 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(567.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(597.599884 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(639.699875 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_36">
+    <g id="patch_38">
+     <path d="M 200.728964 273.046237 
+L 242.595839 273.046237 
+Q 243.795839 273.046237 243.795839 271.846237 
+L 243.795839 266.086237 
+Q 243.795839 264.886237 242.595839 264.886237 
+L 200.728964 264.886237 
+Q 199.528964 264.886237 199.528964 266.086237 
+L 199.528964 271.846237 
+Q 199.528964 273.046237 200.728964 273.046237 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #e78ac3; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Judge of Douai -->
+     <g style="fill: #4c4c4c" transform="translate(200.728964 270.531862) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4a"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(46.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(106.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(166.09996 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(221.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(273.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(302.699936 0)"/>
+      <use xlink:href="#CharterBT-Bold-66" transform="translate(360.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(394.499924 0)"/>
+      <use xlink:href="#CharterBT-Bold-44" transform="translate(423.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(495.199905 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(552.899902 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(612.899887 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(667.299881 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_37">
+    <g id="patch_39">
+     <path d="M 251.722648 205.492987 
+L 287.016711 205.492987 
+Q 288.216711 205.492987 288.216711 204.292987 
+L 288.216711 198.544237 
+Q 288.216711 197.344237 287.016711 197.344237 
+L 251.722648 197.344237 
+Q 250.522648 197.344237 250.522648 198.544237 
+L 250.522648 204.292987 
+Q 250.522648 205.492987 251.722648 205.492987 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Jean Valjean -->
+     <g style="fill: #4c4c4c" transform="translate(251.722648 202.978612) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-56" d="M -134 4294 
+L -134 3981 
+L 288 3904 
+L 1741 -13 
+L 2387 -13 
+L 3808 3898 
+L 4224 3981 
+L 4224 4294 
+L 2822 4294 
+L 2822 3981 
+L 3206 3949 
+L 3277 3853 
+L 2246 934 
+L 1184 3853 
+L 1254 3949 
+L 1626 3981 
+L 1626 4294 
+L -134 4294 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4a"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(46.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(98.899979 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(153.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(213.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-56" transform="translate(242.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(306.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(360.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-6a" transform="translate(391.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(420.899918 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(473.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(527.699905 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_38">
+    <g id="patch_40">
+     <path d="M 187.14384 43.88983 
+L 209.848215 43.88983 
+Q 211.048215 43.88983 211.048215 42.68983 
+L 211.048215 36.94108 
+Q 211.048215 35.74108 209.848215 35.74108 
+L 187.14384 35.74108 
+Q 185.94384 35.74108 185.94384 36.94108 
+L 185.94384 42.68983 
+Q 185.94384 43.88983 187.14384 43.88983 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Listolier -->
+     <g style="fill: #4c4c4c" transform="translate(187.14384 41.375455) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4c"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(54.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(84.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(129.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(165.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(222.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(253.399948 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(283.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(336.299927 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_39">
+    <g id="patch_41">
+     <path d="M 248.741865 140.320307 
+L 286.134052 140.320307 
+Q 287.334052 140.320307 287.334052 139.120307 
+L 287.334052 133.371557 
+Q 287.334052 132.171557 286.134052 132.171557 
+L 248.741865 132.171557 
+Q 247.541865 132.171557 247.541865 133.371557 
+L 247.541865 139.120307 
+Q 247.541865 140.320307 248.741865 140.320307 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Old woman 2 -->
+     <g style="fill: #4c4c4c" transform="translate(248.741865 137.805932) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-4f" d="M 262 2170 
+C 262 806 1139 -102 2464 -102 
+C 3002 -102 3514 96 3904 461 
+C 4352 877 4589 1453 4589 2131 
+C 4589 2854 4320 3469 3827 3891 
+C 3437 4224 2970 4390 2419 4390 
+C 1824 4390 1325 4205 922 3834 
+C 486 3430 262 2867 262 2170 
+z
+M 2432 3981 
+C 3130 3981 3629 3296 3629 2112 
+C 3629 979 3123 288 2419 288 
+C 1734 288 1216 979 1216 2157 
+C 1216 3302 1722 3981 2432 3981 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-77" d="M -6 3117 
+L -6 2822 
+L 378 2784 
+L 1203 0 
+L 1843 0 
+L 2605 2298 
+L 3315 0 
+L 3962 0 
+L 4832 2778 
+L 5190 2822 
+L 5190 3117 
+L 3981 3117 
+L 3981 2822 
+L 4320 2784 
+L 4365 2694 
+L 3802 845 
+L 3104 3117 
+L 2464 3117 
+L 1715 845 
+L 1197 2688 
+L 1267 2778 
+L 1581 2822 
+L 1581 3117 
+L -6 3117 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-32" d="M 1107 653 
+C 2528 1619 3270 2304 3270 3123 
+C 3270 3866 2726 4371 1869 4371 
+C 947 4371 365 3923 365 3392 
+C 365 3123 544 2944 826 2944 
+C 954 2944 1088 2982 1229 3059 
+L 1229 3885 
+C 1357 3936 1485 3962 1600 3962 
+C 2086 3962 2387 3635 2387 3066 
+C 2387 2266 1658 1555 307 506 
+L 307 0 
+L 3405 0 
+L 3405 1216 
+L 3014 1216 
+L 2899 653 
+L 1107 653 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4f"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(75.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(105.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(165.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-77" transform="translate(194.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(274.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(331.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(421.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(475.499924 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(535.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-32" transform="translate(565.099899 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_40">
+    <g id="patch_42">
+     <path d="M 283.692663 177.584349 
+L 302.892663 177.584349 
+Q 304.092663 177.584349 304.092663 176.384349 
+L 304.092663 170.635599 
+Q 304.092663 169.435599 302.892663 169.435599 
+L 283.692663 169.435599 
+Q 282.492663 169.435599 282.492663 170.635599 
+L 282.492663 176.384349 
+Q 282.492663 177.584349 283.692663 177.584349 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Marius -->
+     <g style="fill: #4c4c4c" transform="translate(283.692663 175.069974) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(184.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(215.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(275.299942 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_41">
+    <g id="patch_43">
+     <path d="M 24.293437 236.182028 
+L 92.575312 236.182028 
+Q 93.775312 236.182028 93.775312 234.982028 
+L 93.775312 229.233278 
+Q 93.775312 228.033278 92.575312 228.033278 
+L 24.293437 228.033278 
+Q 23.093437 228.033278 23.093437 229.233278 
+L 23.093437 234.982028 
+Q 23.093437 236.182028 24.293437 236.182028 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #a6d854; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Mademoiselle Baptistine -->
+     <g style="fill: #4c4c4c" transform="translate(24.293437 233.667653) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(254.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(343.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(401.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(432.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(476.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(529.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(559.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(589.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(642.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-42" transform="translate(671.499893 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(734.299881 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(788.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(847.799866 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(883.599854 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(914.099838 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(958.799835 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(994.599823 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1025.099808 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(1085.599792 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_42">
+    <g id="patch_44">
+     <path d="M 198.85626 224.014388 
+L 249.15501 224.014388 
+Q 250.35501 224.014388 250.35501 222.814388 
+L 250.35501 217.065638 
+Q 250.35501 215.865638 249.15501 215.865638 
+L 198.85626 215.865638 
+Q 197.65626 215.865638 197.65626 217.065638 
+L 197.65626 222.814388 
+Q 197.65626 224.014388 198.85626 224.014388 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #a6d854; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Magloire -->
+     <g style="fill: #4c4c4c" transform="translate(198.85626 221.500013) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-4d" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(515.699921 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(570.099915 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(625.199905 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(655.599899 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(713.299896 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(743.799881 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(785.899872 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_43">
+    <g id="patch_45">
+     <path d="M 346.177751 137.572909 
+L 424.912751 137.572909 
+Q 426.112751 137.572909 426.112751 136.372909 
+L 426.112751 130.624159 
+Q 426.112751 129.424159 424.912751 129.424159 
+L 346.177751 129.424159 
+Q 344.977751 129.424159 344.977751 130.624159 
+L 344.977751 136.372909 
+Q 344.977751 137.572909 346.177751 137.572909 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madamoiselle Gillenormand -->
+     <g style="fill: #4c4c4c" transform="translate(346.177751 135.058534) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(403.599945 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(434.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(478.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(531.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(561.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(591.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(644.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-47" transform="translate(673.499893 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(744.499878 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(774.999863 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(805.399857 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(835.79985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(888.199844 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(948.699829 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(1006.399826 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(1048.499817 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(1137.699799 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1192.099792 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(1252.599777 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_44">
+    <g id="patch_46">
+     <path d="M 259.438358 288.586261 
+L 305.968358 288.586261 
+Q 307.168358 288.586261 307.168358 287.386261 
+L 307.168358 281.637511 
+Q 307.168358 280.437511 305.968358 280.437511 
+L 259.438358 280.437511 
+Q 258.238358 280.437511 258.238358 281.637511 
+L 258.238358 287.386261 
+Q 258.238358 288.586261 259.438358 288.586261 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Mother Innocent -->
+     <g style="fill: #4c4c4c" transform="translate(259.438358 286.071886) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-49" d="M 192 0 
+L 2106 0 
+L 2106 314 
+L 1677 346 
+L 1574 448 
+L 1574 3859 
+L 1677 3949 
+L 2106 3981 
+L 2106 4294 
+L 192 4294 
+L 192 3981 
+L 614 3949 
+L 717 3859 
+L 717 448 
+L 614 346 
+L 192 314 
+L 192 0 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(181.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(241.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(293.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(335.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-49" transform="translate(365.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(400.499939 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(460.999924 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(521.499908 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(579.199905 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(626.799896 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(679.19989 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(739.699875 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_45">
+    <g id="patch_47">
+     <path d="M 392.433784 160.837138 
+L 441.165971 160.837138 
+Q 442.365971 160.837138 442.365971 159.637138 
+L 442.365971 153.888388 
+Q 442.365971 152.688388 441.165971 152.688388 
+L 392.433784 152.688388 
+Q 391.233784 152.688388 391.233784 153.888388 
+L 391.233784 159.637138 
+Q 391.233784 160.837138 392.433784 160.837138 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Monsieur Mabeuf -->
+     <g style="fill: #4c4c4c" transform="translate(392.433784 158.322763) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(206.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(251.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(281.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(334.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(394.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(436.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-4d" transform="translate(465.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(553.599899 0)"/>
+      <use xlink:href="#CharterBT-Bold-62" transform="translate(607.999893 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(665.69989 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(718.099884 0)"/>
+      <use xlink:href="#CharterBT-Bold-66" transform="translate(778.099869 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_46">
+    <g id="patch_48">
+     <path d="M 267.857485 103.156791 
+L 290.447485 103.156791 
+Q 291.647485 103.156791 291.647485 101.956791 
+L 291.647485 96.208041 
+Q 291.647485 95.008041 290.447485 95.008041 
+L 267.857485 95.008041 
+Q 266.657485 95.008041 266.657485 96.208041 
+L 266.657485 101.956791 
+Q 266.657485 103.156791 267.857485 103.156791 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Magnon -->
+     <g style="fill: #4c4c4c" transform="translate(267.857485 100.642416) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(197.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(258.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(315.999954 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_47">
+    <g id="patch_49">
+     <path d="M 302.734183 228.788014 
+L 342.010746 228.788014 
+Q 343.210746 228.788014 343.210746 227.588014 
+L 343.210746 221.839264 
+Q 343.210746 220.639264 342.010746 220.639264 
+L 302.734183 220.639264 
+Q 301.534183 220.639264 301.534183 221.839264 
+L 301.534183 227.588014 
+Q 301.534183 228.788014 302.734183 228.788014 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Montparnasse -->
+     <g style="fill: #4c4c4c" transform="translate(302.734183 226.273639) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(206.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(242.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(301.399948 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(355.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(397.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(458.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(512.799911 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(557.499908 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(602.199905 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_48">
+    <g id="patch_50">
+     <path d="M 369.374369 105.455266 
+L 424.748744 105.455266 
+Q 425.948744 105.455266 425.948744 104.255266 
+L 425.948744 98.506516 
+Q 425.948744 97.306516 424.748744 97.306516 
+L 369.374369 97.306516 
+Q 368.174369 97.306516 368.174369 98.506516 
+L 368.174369 104.255266 
+Q 368.174369 105.455266 369.374369 105.455266 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Pontmercy -->
+     <g style="fill: #4c4c4c" transform="translate(369.374369 102.940891) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-50" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(486.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(543.799927 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(604.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(640.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(729.299881 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(781.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(823.799866 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(871.399857 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_49">
+    <g id="patch_51">
+     <path d="M 208.836454 185.851262 
+L 239.622079 185.851262 
+Q 240.822079 185.851262 240.822079 184.651262 
+L 240.822079 178.902512 
+Q 240.822079 177.702512 239.622079 177.702512 
+L 208.836454 177.702512 
+Q 207.636454 177.702512 207.636454 178.902512 
+L 207.636454 184.651262 
+Q 207.636454 185.851262 208.836454 185.851262 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Marguerite -->
+     <g style="fill: #4c4c4c" transform="translate(208.836454 183.336887) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-67" transform="translate(184.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(239.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(299.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(352.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(394.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(424.899918 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(460.699905 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_50">
+    <g id="patch_52">
+     <path d="M 104.277449 241.020124 
+L 237.098699 241.020124 
+Q 238.298699 241.020124 238.298699 239.820124 
+L 238.298699 234.071374 
+Q 238.298699 232.871374 237.098699 232.871374 
+L 104.277449 232.871374 
+Q 103.077449 232.871374 103.077449 234.071374 
+L 103.077449 239.820124 
+Q 103.077449 241.020124 104.277449 241.020124 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #a6d854; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Monsieur Charles Fran\c{c}ois Bienvenu Myriel -->
+     <g style="fill: #4c4c4c" transform="translate(104.277449 238.505749) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-7b" d="M 2694 4512 
+L 2560 4512 
+C 1568 4512 1171 4224 1171 3405 
+L 1171 2867 
+C 1171 2266 998 2048 422 2048 
+L 294 2048 
+L 294 1683 
+L 422 1683 
+C 986 1683 1171 1466 1171 845 
+L 1171 326 
+C 1171 -563 1523 -864 2502 -864 
+C 2566 -864 2630 -858 2694 -858 
+L 2694 -518 
+C 2048 -512 1914 -314 1914 294 
+L 1914 762 
+C 1914 1414 1619 1760 979 1862 
+C 1632 1971 1907 2310 1907 2982 
+L 1907 3386 
+C 1907 3962 2061 4166 2694 4186 
+L 2694 4512 
+z
+" transform="scale(0.015625)"/>
+       <path id="CharterBT-Bold-7d" d="M 397 4512 
+L 397 4186 
+C 1024 4166 1190 3968 1190 3386 
+L 1190 2982 
+C 1190 2310 1453 1978 2112 1862 
+C 1472 1760 1184 1414 1184 762 
+L 1184 294 
+C 1184 -307 1050 -512 397 -518 
+L 397 -858 
+C 461 -858 525 -864 589 -864 
+C 1568 -864 1920 -563 1920 326 
+L 1920 845 
+C 1920 1466 2106 1683 2669 1683 
+L 2797 1683 
+L 2797 2048 
+C 2746 2048 2701 2042 2656 2042 
+C 2099 2042 1926 2272 1926 2867 
+L 1926 3405 
+C 1926 4230 1536 4512 531 4512 
+L 397 4512 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(206.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(251.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(281.699951 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(334.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(394.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(436.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-43" transform="translate(465.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(529.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(588.799896 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(643.19989 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(685.299881 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(715.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(768.099869 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(812.799866 0)"/>
+      <use xlink:href="#CharterBT-Bold-46" transform="translate(841.899857 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(897.099854 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(939.199844 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(993.599838 0)"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(1054.099823 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(1103.199814 0)"/>
+      <use xlink:href="#CharterBT-Bold-7b" transform="translate(1150.799805 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(1200.099792 0)"/>
+      <use xlink:href="#CharterBT-Bold-7d" transform="translate(1247.699783 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(1296.999771 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(1354.699768 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(1385.199753 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(1429.89975 0)"/>
+      <use xlink:href="#CharterBT-Bold-42" transform="translate(1458.999741 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(1521.799728 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(1552.299713 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1604.699707 0)"/>
+      <use xlink:href="#CharterBT-Bold-76" transform="translate(1665.199692 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(1716.49968 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1768.899673 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(1829.399658 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(1889.399643 0)"/>
+      <use xlink:href="#CharterBT-Bold-4d" transform="translate(1918.499634 0)"/>
+      <use xlink:href="#CharterBT-Bold-79" transform="translate(2006.799622 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(2058.299606 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(2100.399597 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(2130.899582 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(2183.299576 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_51">
+    <g id="patch_53">
+     <path d="M 364.815494 213.089548 
+L 410.043307 213.089548 
+Q 411.243307 213.089548 411.243307 211.889548 
+L 411.243307 206.140798 
+Q 411.243307 204.940798 410.043307 204.940798 
+L 364.815494 204.940798 
+Q 363.615494 204.940798 363.615494 206.140798 
+L 363.615494 211.889548 
+Q 363.615494 213.089548 364.815494 213.089548 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #fc8d62; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Mother Plutarch -->
+     <g style="fill: #4c4c4c" transform="translate(364.815494 210.575173) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(145.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(181.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(241.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(293.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(335.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-50" transform="translate(365.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(423.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(454.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(514.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(549.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(604.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(646.499893 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(694.099884 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_52">
+    <g id="patch_54">
+     <path d="M 184.844023 209.889601 
+L 222.236211 209.889601 
+Q 223.436211 209.889601 223.436211 208.689601 
+L 223.436211 202.940851 
+Q 223.436211 201.740851 222.236211 201.740851 
+L 184.844023 201.740851 
+Q 183.644023 201.740851 183.644023 202.940851 
+L 183.644023 208.689601 
+Q 183.644023 209.889601 184.844023 209.889601 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Old woman 1 -->
+     <g style="fill: #4c4c4c" transform="translate(184.844023 207.375226) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-31" d="M 2080 4358 
+L 698 3891 
+L 698 3565 
+L 1606 3699 
+L 1664 3622 
+L 1664 474 
+L 1587 358 
+L 947 320 
+L 947 0 
+L 3168 0 
+L 3168 320 
+L 2566 346 
+L 2496 448 
+L 2496 4358 
+L 2080 4358 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-4f"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(75.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(105.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(165.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-77" transform="translate(194.299957 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(274.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(331.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(421.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(475.499924 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(535.999908 0)"/>
+      <use xlink:href="#CharterBT-Bold-31" transform="translate(565.099899 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_53">
+    <g id="patch_55">
+     <path d="M 404.940604 254.475133 
+L 436.478104 254.475133 
+Q 437.678104 254.475133 437.678104 253.275133 
+L 437.678104 247.526383 
+Q 437.678104 246.326383 436.478104 246.326383 
+L 404.940604 246.326383 
+Q 403.740604 246.326383 403.740604 247.526383 
+L 403.740604 253.275133 
+Q 403.740604 254.475133 404.940604 254.475133 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Claquesous -->
+     <g style="fill: #4c4c4c" transform="translate(404.940604 251.960758) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-71" d="M 3258 3110 
+C 2874 3162 2547 3194 2259 3194 
+C 960 3194 237 2547 237 1466 
+C 237 576 774 -26 1498 -26 
+C 1779 -26 2093 77 2451 275 
+L 2451 -986 
+L 2355 -1075 
+L 1946 -1101 
+L 1946 -1395 
+L 3654 -1395 
+L 3654 -1107 
+L 3334 -1082 
+L 3238 -992 
+L 3238 2739 
+C 3238 2771 3245 2893 3258 3110 
+z
+M 2451 2810 
+L 2451 525 
+C 2278 493 2125 480 2003 480 
+C 1446 480 1101 877 1101 1600 
+C 1101 2400 1466 2842 2131 2842 
+C 2234 2842 2336 2829 2451 2810 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(94.199982 0)"/>
+      <use xlink:href="#CharterBT-Bold-71" transform="translate(148.599976 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(206.09996 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(266.099945 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(318.499939 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(363.199936 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(420.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(480.899918 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_54">
+    <g id="patch_56">
+     <path d="M 87.171665 269.744772 
+L 114.585102 269.744772 
+Q 115.785102 269.744772 115.785102 268.544772 
+L 115.785102 262.796022 
+Q 115.785102 261.596022 114.585102 261.596022 
+L 87.171665 261.596022 
+Q 85.971665 261.596022 85.971665 262.796022 
+L 85.971665 268.544772 
+Q 85.971665 269.744772 87.171665 269.744772 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #a6d854; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Count *** -->
+     <g style="fill: #4c4c4c" transform="translate(87.171665 267.230397) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-2a" d="M 1600 4595 
+L 1293 4205 
+L 1542 3405 
+L 1651 3405 
+L 1901 4205 
+L 1600 4595 
+z
+M 2394 3827 
+L 1715 3341 
+L 1747 3238 
+L 2579 3245 
+L 2854 3654 
+L 2394 3827 
+z
+M 1702 3149 
+L 1619 3098 
+L 1882 2298 
+L 2355 2163 
+L 2374 2656 
+L 1702 3149 
+z
+M 1491 3155 
+L 819 2656 
+L 832 2163 
+L 1306 2298 
+L 1568 3091 
+L 1491 3155 
+z
+M 800 3821 
+L 339 3654 
+L 614 3251 
+L 1453 3245 
+L 1485 3334 
+L 800 3821 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(121.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(181.499969 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(241.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(277.799942 0)"/>
+      <use xlink:href="#CharterBT-Bold-2a" transform="translate(306.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-2a" transform="translate(356.899918 0)"/>
+      <use xlink:href="#CharterBT-Bold-2a" transform="translate(406.899902 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_55">
+    <g id="patch_57">
+     <path d="M 99.728508 208.053263 
+L 145.981946 208.053263 
+Q 147.181946 208.053263 147.181946 206.853263 
+L 147.181946 201.104513 
+Q 147.181946 199.904513 145.981946 199.904513 
+L 99.728508 199.904513 
+Q 98.528508 199.904513 98.528508 201.104513 
+L 98.528508 206.853263 
+Q 98.528508 208.053263 99.728508 208.053263 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Sister Perp\'etue -->
+     <g style="fill: #4c4c4c" transform="translate(99.728508 205.538888) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-53" d="M 378 141 
+C 774 0 1203 -70 1613 -70 
+C 2662 -70 3309 480 3309 1242 
+C 3309 1619 3104 1965 2733 2202 
+C 2355 2445 2016 2541 1818 2662 
+C 1478 2867 1299 3059 1299 3354 
+C 1299 3706 1587 3962 2054 3962 
+C 2259 3962 2406 3930 2522 3872 
+L 2611 3782 
+L 2720 3117 
+L 3181 3117 
+L 3181 4154 
+C 2778 4294 2374 4371 1978 4371 
+C 1062 4371 467 3821 467 3110 
+C 467 2797 621 2483 915 2234 
+C 1197 1997 1498 1888 1754 1760 
+C 2208 1530 2438 1299 2438 954 
+C 2438 602 2131 346 1613 346 
+C 1414 346 1229 378 1050 435 
+L 966 531 
+L 864 1299 
+L 378 1299 
+L 378 141 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-53"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(56.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(87.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(131.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(167.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(220.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(262.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-50" transform="translate(291.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(350.09993 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(402.499924 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(444.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(503.699905 0)"/>
+      <use xlink:href="#CharterBT-Bold-27" transform="translate(552.799896 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(570.299881 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(622.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(658.499863 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(718.499847 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_56">
+    <g id="patch_58">
+     <path d="M 134.512988 181.643003 
+L 175.786425 181.643003 
+Q 176.986425 181.643003 176.986425 180.443003 
+L 176.986425 174.694253 
+Q 176.986425 173.494253 175.786425 173.494253 
+L 134.512988 173.494253 
+Q 133.312988 173.494253 133.312988 174.694253 
+L 133.312988 180.443003 
+Q 133.312988 181.643003 134.512988 181.643003 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Sister Simplice -->
+     <g style="fill: #4c4c4c" transform="translate(134.512988 179.128628) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-53"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(56.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(87.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(131.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(167.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(220.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(262.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-53" transform="translate(291.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(348.199921 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(378.699905 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(467.899887 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(526.999878 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(557.399872 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(587.899857 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(635.499847 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_57">
+    <g id="patch_59">
+     <path d="M 262.616054 113.2487 
+L 360.177929 113.2487 
+Q 361.377929 113.2487 361.377929 112.0487 
+L 361.377929 106.29995 
+Q 361.377929 105.09995 360.177929 105.09995 
+L 262.616054 105.09995 
+Q 261.416054 105.09995 261.416054 106.29995 
+L 261.416054 112.0487 
+Q 261.416054 113.2487 262.616054 113.2487 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Lieutenant Theodule Gillenormand -->
+     <g style="fill: #4c4c4c" transform="translate(262.616054 110.734325) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4c"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(54.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(84.799973 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(137.199966 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(197.199951 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(232.999939 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(285.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(345.899918 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(400.299911 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(460.799896 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(496.599884 0)"/>
+      <use xlink:href="#CharterBT-Bold-54" transform="translate(525.699875 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(585.999863 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(645.69986 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(698.099854 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(755.79985 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(815.399841 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(875.399826 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(905.79982 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(958.199814 0)"/>
+      <use xlink:href="#CharterBT-Bold-47" transform="translate(987.299805 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(1058.299789 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(1088.799774 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(1119.199768 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(1149.599762 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1201.999756 0)"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(1262.499741 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(1320.199738 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(1362.299728 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(1451.49971 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(1505.899704 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(1566.399689 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_58">
+    <g id="patch_60">
+     <path d="M 304.777124 185.999279 
+L 339.612749 185.999279 
+Q 340.812749 185.999279 340.812749 184.799279 
+L 340.812749 179.050529 
+Q 340.812749 177.850529 339.612749 177.850529 
+L 304.777124 177.850529 
+Q 303.577124 177.850529 303.577124 179.050529 
+L 303.577124 184.799279 
+Q 303.577124 185.999279 304.777124 185.999279 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Th\'enardier -->
+     <g style="fill: #4c4c4c" transform="translate(304.777124 183.484904) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-54"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(60.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(119.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-27" transform="translate(169.099976 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(186.59996 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(238.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(299.499939 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(353.899933 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(395.999924 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(455.599915 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(486.099899 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(538.499893 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_59">
+    <g id="patch_61">
+     <path d="M 228.487181 153.98848 
+L 288.967181 153.98848 
+Q 290.167181 153.98848 290.167181 152.78848 
+L 290.167181 147.03973 
+Q 290.167181 145.83973 288.967181 145.83973 
+L 228.487181 145.83973 
+Q 227.287181 145.83973 227.287181 147.03973 
+L 227.287181 152.78848 
+Q 227.287181 153.98848 228.487181 153.98848 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Th\'enardier -->
+     <g style="fill: #4c4c4c" transform="translate(228.487181 151.474105) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-54" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(487.699921 0)"/>
+      <use xlink:href="#CharterBT-Bold-5c" transform="translate(547.399918 0)"/>
+      <use xlink:href="#CharterBT-Bold-27" transform="translate(596.499908 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(613.999893 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(666.399887 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(726.899872 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(781.299866 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(823.399857 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(882.999847 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(913.499832 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(965.899826 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_60">
+    <g id="patch_62">
+     <path d="M 197.823058 136.533711 
+L 224.739621 136.533711 
+Q 225.939621 136.533711 225.939621 135.333711 
+L 225.939621 129.584961 
+Q 225.939621 128.384961 224.739621 128.384961 
+L 197.823058 128.384961 
+Q 196.623058 128.384961 196.623058 129.584961 
+L 196.623058 135.333711 
+Q 196.623058 136.533711 197.823058 136.533711 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #66c2a5; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Toussaint -->
+     <g style="fill: #4c4c4c" transform="translate(197.823058 134.019336) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-54"/>
+      <use xlink:href="#CharterBT-Bold-6f" transform="translate(60.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(117.999985 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(177.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-73" transform="translate(222.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(267.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(321.799957 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(352.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(412.799927 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_61">
+    <g id="patch_63">
+     <path d="M 153.825981 170.832519 
+L 208.473793 170.832519 
+Q 209.673793 170.832519 209.673793 169.632519 
+L 209.673793 163.883769 
+Q 209.673793 162.683769 208.473793 162.683769 
+L 153.825981 162.683769 
+Q 152.625981 162.683769 152.625981 163.883769 
+L 152.625981 169.632519 
+Q 152.625981 170.832519 153.825981 170.832519 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Madame Victurnien -->
+     <g style="fill: #4c4c4c" transform="translate(153.825981 168.318144) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-4d"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(88.299988 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(142.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-61" transform="translate(202.299973 0)"/>
+      <use xlink:href="#CharterBT-Bold-6d" transform="translate(256.699966 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(345.899948 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
+      <use xlink:href="#CharterBT-Bold-56" transform="translate(427.399933 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(490.899918 0)"/>
+      <use xlink:href="#CharterBT-Bold-63" transform="translate(521.399902 0)"/>
+      <use xlink:href="#CharterBT-Bold-74" transform="translate(568.999893 0)"/>
+      <use xlink:href="#CharterBT-Bold-75" transform="translate(604.799881 0)"/>
+      <use xlink:href="#CharterBT-Bold-72" transform="translate(664.799866 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(706.899857 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(767.399841 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(797.899826 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(850.29982 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_62">
+    <g id="patch_64">
+     <path d="M 300.612444 265.903541 
+L 320.483694 265.903541 
+Q 321.683694 265.903541 321.683694 264.703541 
+L 321.683694 258.954791 
+Q 321.683694 257.754791 320.483694 257.754791 
+L 300.612444 257.754791 
+Q 299.412444 257.754791 299.412444 258.954791 
+L 299.412444 264.703541 
+Q 299.412444 265.903541 300.612444 265.903541 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #ffd92f; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Child 1 -->
+     <g style="fill: #4c4c4c" transform="translate(300.612444 263.389166) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(123.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(153.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(184.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(243.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-31" transform="translate(273.099945 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_63">
+    <g id="patch_65">
+     <path d="M 328.260429 306.414538 
+L 348.131679 306.414538 
+Q 349.331679 306.414538 349.331679 305.214538 
+L 349.331679 299.465788 
+Q 349.331679 298.265788 348.131679 298.265788 
+L 328.260429 298.265788 
+Q 327.060429 298.265788 327.060429 299.465788 
+L 327.060429 305.214538 
+Q 327.060429 306.414538 328.260429 306.414538 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #ffd92f; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Child 2 -->
+     <g style="fill: #4c4c4c" transform="translate(328.260429 303.900163) scale(0.06 -0.06)">
+      <use xlink:href="#CharterBT-Bold-43"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(63.799988 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(123.499985 0)"/>
+      <use xlink:href="#CharterBT-Bold-6c" transform="translate(153.999969 0)"/>
+      <use xlink:href="#CharterBT-Bold-64" transform="translate(184.399963 0)"/>
+      <use xlink:href="#CharterBT-Bold-20" transform="translate(243.999954 0)"/>
+      <use xlink:href="#CharterBT-Bold-32" transform="translate(273.099945 0)"/>
+     </g>
+    </g>
+   </g>
+   <g id="text_64">
+    <g id="patch_66">
+     <path d="M 147.990828 140.18377 
+L 170.419578 140.18377 
+Q 171.619578 140.18377 171.619578 138.98377 
+L 171.619578 133.23502 
+Q 171.619578 132.03502 170.419578 132.03502 
+L 147.990828 132.03502 
+Q 146.790828 132.03502 146.790828 133.23502 
+L 146.790828 138.98377 
+Q 146.790828 140.18377 147.990828 140.18377 
+z
+" clip-path="url(#p9c7cdd5972)" style="fill: #8da0cb; opacity: 0.7; stroke: #808080; stroke-width: 0.8; stroke-linejoin: miter"/>
+    </g>
+    <g clip-path="url(#p9c7cdd5972)">
+     <!-- Zephine -->
+     <g style="fill: #4c4c4c" transform="translate(147.990828 137.669395) scale(0.06 -0.06)">
+      <defs>
+       <path id="CharterBT-Bold-5a" d="M 397 4294 
+L 397 3162 
+L 851 3162 
+L 954 3846 
+L 1075 3923 
+L 2522 3923 
+L 282 352 
+L 282 0 
+L 3520 0 
+L 3520 1242 
+L 3059 1242 
+L 2944 467 
+L 2880 378 
+L 1242 378 
+L 3482 3942 
+L 3482 4294 
+L 397 4294 
+z
+" transform="scale(0.015625)"/>
+      </defs>
+      <use xlink:href="#CharterBT-Bold-5a"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(59.199997 0)"/>
+      <use xlink:href="#CharterBT-Bold-70" transform="translate(111.599991 0)"/>
+      <use xlink:href="#CharterBT-Bold-68" transform="translate(170.699982 0)"/>
+      <use xlink:href="#CharterBT-Bold-69" transform="translate(230.399979 0)"/>
+      <use xlink:href="#CharterBT-Bold-6e" transform="translate(260.899963 0)"/>
+      <use xlink:href="#CharterBT-Bold-65" transform="translate(321.399948 0)"/>
+     </g>
+    </g>
+   </g>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p9c7cdd5972">
+   <rect x="7.2" y="7.2" width="558" height="332.64"/>
+  </clipPath>
+ </defs>
+</svg>

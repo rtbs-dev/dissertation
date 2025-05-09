@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Incidence in Vector Space – Measuring Network Dependencies from Node Activations</title>
+<title>Incidence through vector representation – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,6 +89,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -101,7 +130,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence in Vector Space</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence through vector representation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -156,7 +185,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Incidence in Vector Space</span></a>
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Incidence through vector representation</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -177,7 +206,7 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Generative Random Spanning Forests</span></a>
+  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Desire Paths and Spanning Forests</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -228,27 +257,27 @@ div.csl-indent {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#dependence-as-graph" id="toc-dependence-as-graph" class="nav-link active" data-scroll-target="#dependence-as-graph">Dependence as Graph</a>
+  <li><a href="#graphs-as-incidence-structures" id="toc-graphs-as-incidence-structures" class="nav-link active" data-scroll-target="#graphs-as-incidence-structures">Graphs as incidence structures</a>
   <ul class="collapse">
-  <li><a href="#edges-as-vectors-of-nodes" id="toc-edges-as-vectors-of-nodes" class="nav-link" data-scroll-target="#edges-as-vectors-of-nodes">Edges as Vectors of Nodes</a></li>
-  <li><a href="#inner-product-on-edges" id="toc-inner-product-on-edges" class="nav-link" data-scroll-target="#inner-product-on-edges">Inner Product on Edges</a></li>
-  <li><a href="#from-edge-observations-to-node-activations" id="toc-from-edge-observations-to-node-activations" class="nav-link" data-scroll-target="#from-edge-observations-to-node-activations">From Edge Observations to Node Activations</a></li>
+  <li><a href="#embedding-in-vector-space" id="toc-embedding-in-vector-space" class="nav-link" data-scroll-target="#embedding-in-vector-space">Embedding in vector space</a></li>
+  <li><a href="#inner-products-on-b" id="toc-inner-products-on-b" class="nav-link" data-scroll-target="#inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></a></li>
+  <li><a href="#metrological-considerations-interaction-vectors" id="toc-metrological-considerations-interaction-vectors" class="nav-link" data-scroll-target="#metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</a></li>
   </ul></li>
-  <li><a href="#occurence-as-hypergraph" id="toc-occurence-as-hypergraph" class="nav-link" data-scroll-target="#occurence-as-hypergraph">Occurence as Hypergraph</a>
+  <li><a href="#graphs-and-node-occurences" id="toc-graphs-and-node-occurences" class="nav-link" data-scroll-target="#graphs-and-node-occurences">Graphs and Node Occurences</a>
   <ul class="collapse">
   <li><a href="#hyperedges-as-vectors-of-nodes" id="toc-hyperedges-as-vectors-of-nodes" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-nodes">Hyperedges as Vectors of Nodes</a></li>
   <li><a href="#inner-product-on-hyperedges" id="toc-inner-product-on-hyperedges" class="nav-link" data-scroll-target="#inner-product-on-hyperedges">Inner product on Hyperedges</a></li>
-  </ul></li>
   <li><a href="#combining-occurence-dependence" id="toc-combining-occurence-dependence" class="nav-link" data-scroll-target="#combining-occurence-dependence">Combining Occurence &amp; Dependence</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence in Vector Space</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence through vector representation</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Incidence in Vector Space</span></h1>
+<h1 class="title"><span class="chapter-title">Incidence through vector representation</span></h1>
 </div>
 
 
@@ -265,43 +294,87 @@ div.csl-indent {
 </header>
 
 
-<p>From <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[1]</a></span>, and linalg book, and hypergraph incidence model</p>
-<div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
-</div></div><p>For each, describe the meaning of</p>
-<ol type="1">
-<li>Observation model (and connection to node activation data)</li>
-<li>Vector space representation</li>
-<li>Inner product (linear kernel)</li>
-<li>Induced Norms</li>
-</ol>
-<section id="dependence-as-graph" class="level2">
-<h2 class="anchored" data-anchor-id="dependence-as-graph">Dependence as Graph</h2>
-<p>Initial notation (set-based) and outline of section</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/relation-observations.png" class="img-fluid figure-img"></p>
-<figcaption>Edge Relation Observational Model</figcaption>
-</figure>
-</div>
-<section id="edges-as-vectors-of-nodes" class="level3">
-<h3 class="anchored" data-anchor-id="edges-as-vectors-of-nodes">Edges as Vectors of Nodes</h3>
+<p>To provide a sufficiently rigorous foundation for network recovery from binary occurrence, we will need a rigorous way to represent networks and occurrences that lends itself to building structured ways both connect to each other. We build on the incidence structure and matrix product formalism from the previous chapter, introducing various ways to build graphs as incidence structures that have direct representations as matrices. This can be extended to representing occurrences as matrices of <em>hyperedge vectors</em>. This view allows us to interpret different representations of graphs (or hypergraphs) as connected by simple matrix operations.</p>
+<p>Traditionally<span class="citation" data-cites="MathematicalfoundationsGraphBLAS_Kepner2016 WhyHowWhen_Torres2021"><a href="#ref-MathematicalfoundationsGraphBLAS_Kepner2016" role="doc-biblioref">[1]</a>, <a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[2]</a></span>, we might say a graph on nodes (or, “vertices”) <span class="math inline">\(v\in V=\{1,\cdots,n\}\)</span> and “edges” <span class="math inline">\(E\)</span> is a tuple: <span class="math display">\[
+G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
+\]</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-MathematicalfoundationsGraphBLAS_Kepner2016" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. Kepner <em>et al.</em>, <span>“Mathematical foundations of the <span>GraphBLAS</span>,”</span> in <em>2016 <span>IEEE</span> high performance extreme computing conference (<span> HPEC</span>)</em>, Sep. 2016, pp. 1–9. doi: <a href="https://doi.org/10.1109/HPEC.2016.7761646">10.1109/HPEC.2016.7761646</a>.</div>
+</div><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div><div id="fn1"><p><sup>1</sup>&nbsp; The <em>indicator function</em> <span class="math inline">\(\mathbf{1}_A(x)\)</span> is 1 for values of <span class="math inline">\(x\)</span> in the set <span class="math inline">\(A\)</span>, and 0 otherwise.</p></div></div><p>The <em>adjacency matrix</em> <span class="math inline">\(A\)</span> of <span class="math inline">\(G\)</span>, degree matrix <span class="math inline">\(D\)</span>, and graph/discrete Laplacian <span class="math inline">\(L\)</span> are then defined as:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+\begin{aligned}
+A(u,v) &amp; =\mathbf{1}_E((u,v)) \quad &amp;A : V\times V\rightarrow \mathbb{B} \\
+D(u,v) &amp; =\mathrm{diag}({\textstyle\sum}_V A(u,v))\quad &amp;D : V\times V\rightarrow \mathbb{N} \\
+L(u,v) &amp; = D(u,v) - A(u,v) \quad &amp;L : V\times V\rightarrow \mathbb{Z}
+\end{aligned}
+\]</span></p>
+<p>However, if edges and their recovery is so important to us, defining them explicitly as pairs of nodes can be problematic when we wish to estimate their existence (or not) when pairs of nodes co-occur. Additionally, we have to be very careful to distinguish whether our graph is <em>(un)directed</em>, <em>weighted</em>, <em>simple</em>, etc., and hope that the edge set has been filtered to a subset of <span class="math inline">\(N\times N\)</span> for each case. Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.</p>
+<section id="graphs-as-incidence-structures" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="graphs-as-incidence-structures">Graphs as incidence structures</h2>
+<p>Instead, we give edges their own set of identifiers, <span class="math inline">\(e\in E=\{1,\cdots \omega\}\)</span>. Now, define graphs as incidence structures between nodes and edges such that every edge is incident to either two nodes, or none:</p>
+<p><span id="eq-simple-incidence"><span class="math display">\[
+G = (V,E,\mathcal{I}) \quad s.t. \quad \mathcal{I} \subseteq E\times V
+\tag{3.1}\]</span></span></p>
+<p>Variations on graphs can often be conveniently defined as constraints on <span class="math inline">\(\mathcal{I}\)</span>:</p>
+<ul>
+<li>Self loops can be prohibited by only allowing unique flags for a given relation<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+<li>Multigraphs are similarly described by whether we allow pairs of vertices to appear with more than one edge<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></li>
+</ul>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; never two flags with the same pair, i.e.&nbsp;<span class="math inline">\(\mathcal{I}\)</span> is a set, not a multiset.</p></div><div id="fn3"><p><sup>3</sup>&nbsp; in the set of flags containing nodes <span class="math inline">\(u\)</span> or <span class="math inline">\(v\)</span>, only one <span class="math inline">\(e\)</span> may be incident to both of them.</p></div></div><p>Together, these constraints define “simple” graphs. Similarly, we can equip <a href="#eq-simple-incidence" class="quarto-xref">Equation&nbsp;<span>3.1</span></a> with a function <span class="math inline">\(B\)</span> that allows <span class="math inline">\(\mathcal{I}\)</span> to encode information about the specific kinds of incidence relations under discussion. We give <span class="math inline">\(B\)</span> a range of possible flag values <span class="math inline">\(S\)</span>:</p>
+<p><span id="eq-map-incidence"><span class="math display">\[
+G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:\mathcal{I}\rightarrow S
+\tag{3.2}\]</span></span></p>
+<ul>
+<li>Undirected, unweighted graphs only need single elements: “incidence exists” i.e.<span class="math inline">\(S=\{1\}\)</span></li>
+<li>Directed graphs can use two elements e.g.&nbsp;a “spin” for <span class="math inline">\(S=\{-1,1\}\)</span></li>
+<li>Weighted, undirected graphs are supported on positive scalars e.g.&nbsp;<span class="math inline">\(S=\mathbb{R}^+\)</span></li>
+<li>Weighted, directed graphs are supported on any scalar e.g.&nbsp;<span class="math inline">\(S=\mathbb{R}_{\neq0}\)</span></li>
+</ul>
+<p>If the “absence” of incidence needs to be modeled explicitly, a “null” stand-in (0,False) can be added to each <span class="math inline">\(S\)</span>, which is useful for representing each structure as arrays for use with linear algebra (i.e.&nbsp;<span class="math inline">\(\{0,1\}\)</span>,<span class="math inline">\(\{-1,0,-1\}\)</span>,<span class="math inline">\(\mathbb{R}^+_0\)</span>, and <span class="math inline">\(\mathbb{R}\)</span>, respectively). By doing so, we can also place an exact limit on the maximum possible size of <span class="math inline">\(\omega=\|E\|\)</span> in the simple graph case, and indicate edges by their unique ID, such that <span class="math inline">\(\mathcal{I}= E\times V\)</span> is no longer a subset relation for <span class="math inline">\(E=\{1,\cdots,{n\choose2} \}\)</span>. Instead of existence in <span class="math inline">\(\mathcal{I}\)</span>, we explicitly use incidence relation <span class="math inline">\(S\)</span> to tell us whether each possible edge “exists” or not, simplifying our graph definition further<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp; if we allow multi-edges, then </p></div></div><p><span id="eq-incidence-graph"><span class="math display">\[
+\begin{aligned}
+G  = (V,E,B) \quad s.t. \quad &amp; B : E\times V \rightarrow S\\
+&amp; v \in V = \{1,\cdots, n\}\quad \\
+&amp; e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{aligned}
+\tag{3.3}\]</span></span></p>
+<section id="embedding-in-vector-space" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="embedding-in-vector-space">Embedding in vector space</h3>
+<p>The representation of <span class="math inline">\(B\)</span> in <a href="#eq-incidence-graph" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> bears a remarkable similarity to our original description of design matrices in <a href="1-01-matrix-meas.html#eq-design-mat" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>. In fact, as a matrix, <span class="math inline">\(B(e,v)\)</span> is called the <em>incidence</em> matrix: every row has two non-zero entries, with every column containing a number of non-zero entries equal to that corresponding node’s degree in <span class="math inline">\(G\)</span>. Traditionally, we use an <em>oriented</em> incidence matrix, such that each row has exactly one positive (non-zero) value, and one negative (non-zero) value.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Even for undirected graphs, the selection of <em>which entry</em> is positive or negative is left to be ambiguous, since much of the math used later is symmetric w.r.t. direction<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp; In fact, this would make B^*(v,e) equivalent to a <em>graphical matroid</em>, another common formalism that generalizes graph-like structures to vector space representations.</p></div><div id="fn6"><p><sup>6</sup>&nbsp;though not always!</p></div></div><p>However, we can be more precise by selecting each row(edge) vector, and partitioning it into two: one for each non-zero column (node) that edge is incident to. This makes every incidence be embedded as standard basis vector <span class="math inline">\(\mathbf{e}\)</span> in the feature space of <span class="math inline">\(B\)</span>, scaled by the corresponding value of <span class="math inline">\(S\)</span>. Let <span class="math inline">\(V_e\)</span> be the set of nodes with (non-zero) incidence to edge <span class="math inline">\(e\)</span>. Then the incidence vectors are:<br>
+<span class="math display">\[\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e\]</span> The unoriented incidence matrix is easily defined as having rows that are sums over the incidence vectors for each edge: <span class="math inline">\(\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)\)</span></p>
+<p>To build the oriented incidence matrix, one could define undirected graphs as equivalent to multidigraphs, where each edge is really two directed edges, in opposing directions. This does allow the matrix <span class="math inline">\(B\)</span> to have the correct range for its entries in this formalism (the directed graph range, <span class="math inline">\(S=\{-1,0,1\}\)</span>), and the edge definition based on sums would hold. The resulting set of incidences would have twice the number of edges than our combinatoric limit for simple graphs, however. Plus, it would necessitate averaging of weights over different edge ID’s to be prior to use of inner products, and many other implementation difficulties.</p>
+<p>Instead we would like to allow for systematic differences between the incidence vectors, without ambiguity. But, now that we have removed the information on “which nodes an edge connects” from our definition (since every edge is a scalar ID), how do we construct <span class="math inline">\(V_e\)</span> without a costly search over all incidences?<br>
+Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes it each edge connects. Using an identity from <span class="citation" data-cites="ParallelEuclideandistance_Angeletti2019"><a href="#ref-ParallelEuclideandistance_Angeletti2019" role="doc-biblioref">[3]</a></span>, we have a closed-form equation both to retrieve the IDs of nodes <span class="math inline">\(u,v\)</span> (given an edge <span class="math inline">\(e\)</span>), and an edge <span class="math inline">\(e\)</span> (given two nodes <span class="math inline">\(u,v\)</span>), for any simple graph with <span class="math inline">\(n\)</span> vertices: <span id="eq-sq-id"><span class="math display">\[
+\begin{aligned}
+    u_n(e) &amp; = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) &amp; = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) &amp; = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{aligned}
+\tag{3.4}\]</span></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-ParallelEuclideandistance_Angeletti2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">M. Angeletti, J.-M. Bonny, and J. Koko, <span>“<span class="nocase">Parallel Euclidean distance matrix computation on big datasets</span>,”</span> 2019. Available: <a href="https://hal.science/hal-02047514">https://hal.science/hal-02047514</a></div>
+</div></div><p>Using this, we can unambiguously define a <em>partition</em> between incidences on <span class="math inline">\(e\)</span>, without needing other metadata or flags to distinguish <span class="math inline">\(u\)</span> from <span class="math inline">\(v\)</span>, since those are defined through <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.4</span></a> unambiguously w.r.t. <span class="math inline">\(e\)</span>. <span class="math display">\[\mathbf{b}_e = \delta_e(u)-\delta_e(v)\]</span></p>
+<p>This could be called an “edge-centric” view of simple graphs, since the nodes involved in a graph are now actually derived w.r.t. the edges and our mapping <span class="math inline">\(B\)</span>, uniquely.</p>
+<!-- ![Edge Relation Observational Model](../images/relation-observations.png) -->
 </section>
-<section id="inner-product-on-edges" class="level3">
-<h3 class="anchored" data-anchor-id="inner-product-on-edges">Inner Product on Edges</h3>
+<section id="inner-products-on-b" class="level3">
+<h3 class="anchored" data-anchor-id="inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></h3>
 <p>Laplacian as inner product on incidence observations. Associated objects (degree vector, o)</p>
 <p>Rescaling to achieve normaalization.</p>
 <p>Use to define kernels (and application e.g.&nbsp;soft-cosine measure)</p>
+<p>…</p>
 </section>
-<section id="from-edge-observations-to-node-activations" class="level3">
-<h3 class="anchored" data-anchor-id="from-edge-observations-to-node-activations">From Edge Observations to Node Activations</h3>
+<section id="metrological-considerations-interaction-vectors" class="level3">
+<h3 class="anchored" data-anchor-id="metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</h3>
 <p>Strictly speaking, we can’t say that nodes are directly observed in this space… edges are. Collections of nodes are measured two-at-a-time (one-per-edge being traversed).</p>
 <p>Another way to approach is to view inner products as a sum of outer products. A each edge uniquely corresponds to 2 nodes (in a simple graph). Use triangle unfolding for closed form bijection.</p>
 <p>Unrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an <em>edgelist</em>, having binary activation vectors on edges rather than nodes. Then each observation in this model is necessarily a set of activated edges. The non-zero (visited) nodes are found using the incidence matrix as an operator.</p>
 </section>
 </section>
-<section id="occurence-as-hypergraph" class="level2">
-<h2 class="anchored" data-anchor-id="occurence-as-hypergraph">Occurence as Hypergraph</h2>
+<section id="graphs-and-node-occurences" class="level2">
+<h2 class="anchored" data-anchor-id="graphs-and-node-occurences">Graphs and Node Occurences</h2>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/hypergraph-observations.png" class="img-fluid figure-img"></p>
@@ -316,9 +389,8 @@ div.csl-indent {
 <p>Roundabout way of describing binary/occurrence data. Inner product is co-occurrences.</p>
 <p>Leads to correlation/covariance, etc.</p>
 </section>
-</section>
-<section id="combining-occurence-dependence" class="level2">
-<h2 class="anchored" data-anchor-id="combining-occurence-dependence">Combining Occurence &amp; Dependence</h2>
+<section id="combining-occurence-dependence" class="level3">
+<h3 class="anchored" data-anchor-id="combining-occurence-dependence">Combining Occurence &amp; Dependence</h3>
 <ul>
 <li>soft cosine</li>
 <li>kernels on graphs (incl.&nbsp;coscia euclidean)</li>
@@ -328,6 +400,8 @@ div.csl-indent {
 
 
 </section>
+</section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
