@@ -167,7 +167,7 @@ $$
 X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j)X(i,j')
 $$ {#eq-gram-mat}
 
-Matrices that can be decomposed into another matrix and its transpose are symmetric, and positive semidefinite, making every gram matrix positive semidefinite.
+Matrices that can be decomposed into another matrix and its transpose are symmetric, and positive semidefinite (PSD), making every gram matrix PSD.
 They are directly related to (squared) euclidean distances through the polarization identity[CITE?]:[^important]
 $$
 d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j') 
@@ -181,10 +181,26 @@ In our example from before, the gram matrix will have entries showing the number
 This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. 
 This is called a _bipartite projection_[CITE] into the authors "mode", and is illustrated visually in @fig-collab. 
 
+Due to [CITE Shoenberg/Mercer], we can generalize @eq-sq-distance such that _any_ function "kernel" function $\kappa(x,y)$ that creates PSD matrix $K(j,j')\in\mathbb{S}^{n\times n}$.
+It says that such a PSD matrix can always be decomposed into a form $K=R^TR$ for any matrix $R(i,j)\in \mathbb{S}^{m\times n}$, thus letting us use the polarization identity to create arbitrary distance metrics. on $\mathbb{S}^n$ [@SimilaritiesgraphsKernels_Avrachenkov2019]^[
+  Distance metric, here, means that $d(x,y)$ satisfies the triangle inequality for all $x,y$.
+]
+$$
+d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
+$${#eq-dist-kernel}
+
+This ability to create valid distance measures from arbitrary kernel functions is the core of a vast area of machine learning and statistics that employs the so-called _kernel trick_. [CITE?]
+Different kernels yield different properties useful for distinguishing points having specific properties.
+One class of kernels are normalized to the range $[0,1]$, such that we ensure that equality along any one dimension is given a weight of $\tilde{K}(j,j)=1$.
+Such a kernel matrix can be derived from any other kernel as
+$$
+\tilde{K}(j,j') = \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}
+$${#eq-norm-diag}
+which should be familiar as the way cosine similarities and correlation matrices are made as well (also having 1s along their diagonal)
 
 ### Incidence structures & dependency
 
-TODO
+Rather than how "close" or "far" to points are in vector space, which is described with the kernels and distances 
 
 foundational model of graph theory and incidence structures more broadly.
 More to come, but get the terminology down.

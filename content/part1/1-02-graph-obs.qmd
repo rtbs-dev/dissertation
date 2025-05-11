@@ -26,7 +26,6 @@ However, if edges and their recovery is so important to us, defining them explic
 Additionally, we have to be very careful to distinguish whether our graph is _(un)directed_, _weighted_, _simple_, etc., and hope that the edge set has been filtered to a subset of $N\times N$ for each case.
 Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.
 
-
 ## Graphs as incidence structures
 
  Instead, we give edges their own set of identifiers, $e\in E=\{1,\cdots \omega\}$.
@@ -76,7 +75,6 @@ $$ {#eq-incidence-graph}
 
 
 
-### Embedding in vector space
 
 The representation of $B$ in @eq-incidence-graph bears a remarkable similarity to our original description of design matrices in @eq-design-mat. 
 In fact, as a matrix, $B(e,v)$ is called the _incidence_ matrix: every row has two non-zero entries, with every column containing a number of non-zero entries equal to that corresponding node's degree in $G$.
@@ -85,22 +83,35 @@ Traditionally, we use an _oriented_ incidence matrix, such that each row has exa
 ]
 Even for undirected graphs, the selection of _which entry_ is positive or negative is left to be ambiguous, since much of the math used later is symmetric w.r.t. direction^[though not always!]. 
 
-However, we can be more precise by selecting each row(edge) vector, and partitioning it into two: one for each non-zero column (node) that edge is incident to.
-This makes every incidence be embedded as standard basis vector $\mathbf{e}$ in the feature space of $B$, scaled by the corresponding value of $S$.
+### Embedding incidences in vector space
+
+A formalism for graphs that starts with incidence matrices would benefit from a _canonical_ oriented incidence matrix, rather than the family that is ambiguous w.r.t. edge orientation.
+To start, we can be more precise by selecting each row(edge) vector, and partitioning it into two: one for each non-zero column (node) that edge is incident to.
+Every incidence can be represented individually as standard basis vector $\mathbf{e}$ in the feature space of $B$, scaled by the corresponding value of $S$.
+
 Let $V_e$ be the set of nodes with (non-zero) incidence to edge $e$.
 Then the incidence vectors are:  
-$$\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e$$
-The unoriented incidence matrix is easily defined as having rows that are sums over the incidence vectors for each edge: $\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)$
+$$\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e$${#eq-incidence-vec}
+And the (unoriented) incidence matrix vectors are recovered as sums over the incidence vectors for each edge:
+$$\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)$${#eq-incidence-edge-sum}
 
-To build the oriented incidence matrix, one could define undirected graphs as equivalent to multidigraphs, where each edge is really two directed edges, in opposing directions.
-This does allow the matrix $B$ to have the correct range for its entries in this formalism (the directed graph range, $S=\{-1,0,1\}$), and the edge definition based on sums would hold. 
-The resulting set of incidences would have twice the number of edges than our combinatoric limit for simple graphs, however.
-Plus, it would necessitate averaging of weights over different edge ID's to be prior to use of inner products, and many other implementation difficulties.
+A traditional approach might then define undirected graphs as equivalent, in some sense, to multidigraphs, where each edge is really two directed edges, in opposing directions.
+This does allow the matrix $B$ to have the correct range for its entries in this formalism (the directed graph range, $S=\{-1,0,1\}$), and the edge identity  based on sums would hold. 
+However, the resulting set of incidences would have twice the number of edges than our combinatoric limit for simple graphs, and prevent the more elegant definition of graph types through the set $\mathbf{S}$.
+Plus, it would necessitate averaging of weights over different edge ID's to arrive at a single undirected "edge weight", and many other implementation details that make keeping track of specifics difficult for practitioners.
 
-Instead we would like to allow for systematic differences between the incidence vectors, without ambiguity.
-But, now that we have removed the information on "which nodes an edge connects" from our definition (since every edge is a scalar ID),  how do we construct $V_e$ without a costly search over all incidences?   
-Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes it each edge connects.
-Using an identity from @ParallelEuclideandistance_Angeletti2019, we have a closed-form equation both to retrieve the IDs of nodes $u,v$ (given an edge $e$), and an edge $e$ (given two nodes $u,v$), for any simple graph with $n$ vertices:
+Instead, we would like a canonical oriented distance matrix, which can be derived from the vectorized incidences in the undirected range of $B$ (the standard basis vectors).
+Without loss of generality, let $u_e,v_e\in V_e$ be nodes such that $u<v$.^[the inequality is strict because self-loops are not allowed.]
+Using this, we can unambiguously define a _partition_ $B(e,\cdot)=B(e,u_e) + B(e,v_e)$ between incidences on $e$, along with a new derived incidence, $B_o$, which has oriented rows like:
+$$B_o(e,\cdot)=\mathbf{b}^o_e = \delta_e(u)-\delta_e(v)$$
+In other words, while the unoriented incidence matrix is the "foundational" representation for graphs in our formalism, the (canonical) oriented one can be derived, even if negative incidence values are not in $\mathbb{S}$.^[
+ This works as long as we are in at least a ring, since semirings in general do not need to define additive inverse operations.
+ In this case we would limit ourselves to the oriented incidence.
+]
+
+But, now that we have removed the information on "which nodes an edge connects" from our definition of edges (since every edge is a scalar ID), how do we construct $V_e$ without a circular dependency on $B$ to find non-zero entries?
+Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes in $V_e$, without searching over the entirety of $B$'s domain.
+Using an identity from @ParallelEuclideandistance_Angeletti2019, we have a closed-form equation both to retrieve the IDs of nodes $u,v$ (given an edge $e$), and an edge $e$ (given two nodes $u,v$), for any simple graph with $n$ vertices.
 $$
 \begin{aligned}
     u_n(e) & = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
@@ -108,20 +119,36 @@ $$
     e_n(u,v) & = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
 \end{aligned}
 $$ {#eq-sq-id}
-
-Using this, we can unambiguously define a _partition_ between incidences on $e$, without needing other metadata or flags to distinguish $u$ from $v$, since those are defined through @eq-sq-id unambiguously w.r.t. $e$.
-$$\mathbf{b}_e = \delta_e(u)-\delta_e(v)$$
-
-This could be called an "edge-centric" view of simple graphs, since the nodes involved in a graph are now actually derived w.r.t. the edges and our mapping $B$, uniquely. 
+Our ease-of-calculation lets us drop some of the excess notation and refer to our (un)oriented incidence matrices in terms of the incidences of each edge on their $u$ or $v$, directly.
+$$
+B = B_u + B_e \qquad B_o \equiv B_u - B_v
+$$
 
 <!-- ![Edge Relation Observational Model](../images/relation-observations.png) -->
 
 ### Inner products on $B$
 
-TODO
-
+With all of this background, the other representations of graphs can seen as derivations from the canonical incidence matrices. 
+The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for orineted edge vectors, is also a squared distance matrix between all pairs of incidences on $(u,v)$.
+The other identities are simply consequences of the polarization identity, since the Laplacian is the also defined as the gram matrix on oriented incidence vectors: 
+$$
+\begin{split}
+L & = B_o^TB_o\\
+  & = \|B_u - B_v \|^2 \\
+  & = 2\|B_u\|^2 +2\|B_v\|^2 - \|B_u + B_v \|^2 \\
+  & = 2D - B^TB = D-A
+\end{split}
+$${#eq-laplacian}
 @eq-sq-distance
 
+We take such pains taken to derive the traditional graph objects because it goes to show how fundamental the _incidences_ are as units of observation.
+Unlike @eq-sq-distance, @eq-laplacian is a distance between two distinct sets of incidences ($e$ on $u$,  ) (not all pairwise combinations within a set). 
+Laplacians are therefore sub-matrices of a larger distance matrix, where each incidence vector is a single standard basis vector, or put another way, _gram matrix_ over incidences
+$$
+G_{\mathcal{I}}=
+\begin{bmatrix} B_u & B_v \end{bmatrix}\begin{bmatrix}B_u\\B_v\end{bmatrix}
+$$
+contains the laplacian in the off-diagonal blocks. 
 Laplacian as inner product on incidence observations.
 Associated objects (degree vector, o)
 
