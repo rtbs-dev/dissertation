@@ -1,34 +1,78 @@
 # Roads to Network Recovery {#sec-lit-review}
 
-## Choosing a structure recovery method
-
-
-
-> Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve
-
-
 ## Organizing Recovery Methods
 
 i.e. Network Recovery as an Inverse Problem, and what information is had at each point. 
 
+
+- Observing Nodes vs Edges
+- Embeddings and Inner Products
+- Preprocessing
+
+
+## Counting, Projection, and Co-Occurrence
+Basic Co-occurrence, and friends.
+Gram is uncentered covariance. 
+
+All estimate some kind of rate
+
+### Cosine Similarity
+
+- Ochiai and uncentered correlation
+- angles don't care about length
+- geometric mean on cond prob, actually
+- that means pseudocounts can make sense
+
+### Hyperbolic Projection
+
+- reweights by degree in original BP
+- mention other ways 
+
+### Transformations of Counts
+
+Come from contingency tables, like CS.
+
+- odds-ratio
+- Yule's Q,Y
+- Mutual Info
+
+## Resource and Information Flow
+
+Backboning
+
+Intuition that the most important edges are on geodesics for many paths
+
+### Resource Projection
+
+### Doubly-stochastic and eOT
+
+### HSS
+
+## Inverse Problems & PGM Structure
+
+### Chow Liu
+Global Tree structure from MI
+
+### Shrinkage & GLASSO
+
+### stability selection 
+
+> Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve
+
+
+## A Path Forward
+
+### Tracing Information Loss Paths
+
 ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png)
 
-### Observing Nodes vs Edges
-
-### Embeddings, Inner Products, & Preprocessing
-
-
-
-## Tracing Information Loss Paths
-
-### Table of Existing Approaches  
+Table of Existing Approaches  
 
 - Observation-level loss (starting with the inner product or kernel)
 - Non-generative model loss (no projection of data into model space)
 - no uncertainty quantification 
 
-
-### A Path Forward
+### Something New
 
 Sorting algorithms... _none address all three!_
 

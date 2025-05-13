@@ -92,7 +92,7 @@ However, if we are "measuring" a probability, we run into issues when we need to
 For instance, an event might be quite rare, but if in our specific sample we _never_ see it, we still do not generally accept a probability of zero.
 
 
-### Additive Smoothing
+### Additive Smoothing {#sec-counting}
 
 One approach to dealing with this involves adding _pseudocounts_ that smooth out our estimates for count/exposure, from which we get the name "additive smoothing".[CITE?]
 $$\hat{p} = \frac{s+\alpha}{k+2\alpha} $$
@@ -100,7 +100,9 @@ Adding 1 success and 1 failure ($\alpha=1$) as pseudocounts to our observations 
   derived when Laplace desired estimates of probability for unobserved phenomena, such as the sun (not) rising tomorrow.
 ] while adding $\alpha=0.5$ successes and failures is called using _Jeffrey's Prior_.
 It's so-called because this pseudocount turns out to be a special case of selecting a Bayesian prior on the binomial probability (a.k.a. a _Beta-Binomial_ distribution) $p\sim \textrm{Beta}(\alpha, \beta)$, such that the posterior distribution after our success/failure counts is $\textrm{Beta}(s+\alpha, k-s+\beta)$, which has the mean:
-$$E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}$$
+$$
+E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}
+$${#eq-beta-binomial}
 
 This exactly recovers additive smoothing with a Jeffrey's prior for $\alpha=\beta=0.5$.^[
   A useful comparison of the two priors (1, 0.5) is to ask, given all of the trials we have seen so far, whether we believe we are near the "end" or "middle" of an average run of trials.
@@ -111,15 +113,18 @@ Such models provide both an estimate of the aleatory uncertainty (via the poster
 Despite being a simple foundation, this treatment of "counts" and "exposure" can be built upon in many ways.
 
 ### Conditional Probabilities & Contingencies
- In dependency/structure recovery, since our goal involves estimating (at least) pairwise relationships, the independence assumption required to estimate node occurrences as Beta-Binomial is clearly violated^[
-  In fact, a recent method from [@MultivariateBernoullidistribution_Dai2013] models probabilistic binary observations, _with dependencies_, by generalizing the mechanics overviewed here to a fully multivariate Bernoulli distribution, capable of including 3rd- and higher-order interractions, not just pairwise.  
-].
 
-However, it's natural to make use of joint ($P(A\cup B)$, how often does A happen with B, out of all data?) and conditional ($P(A|B)$ how often A given B; or $P(B|A)$, how often B given A) probabilities between nodes, while trying to estimate dependencies.
-Once again, we can estimate the base probabilities for each node from marginal sums, but the joint and conditional probabilities can instead be estimated using matrix multiplication using the Gram matrix, discussed below.
+In dependency/structure recovery, since our goal involves estimating (at least) pairwise relationships, the independence assumption required to estimate node occurrences as Beta-Binomial is clearly violated.^[
+  In fact, a recent method from [@MultivariateBernoullidistribution_Dai2013] models probabilistic binary observations, _with dependencies_, by generalizing the mechanics overviewed here to a fully multivariate Bernoulli distribution, capable of including 3rd- and higher-order interractions, not just pairwise.  
+]
+
+However, it's common to estimate how similar two random variables $A,B$ are, e.g. if samples of each correspond to columns of binary $X$.
+For instance, the joint probabilities $P(A\cap B)$ answer "how often does A happen with B, out of all data?"
+Conditional probabilities $P(A|B)=\frac{P(A\cap B)}{P(B)}$ measure how often A occures given B happened.
+Once again, we can estimate the base probabilities $P(A)$ and $P(B)$ with methods like @eq-beta-binomial for each marginal sums $X(\cdot,A)$ or $X(\cdot,B)$, but the joint and conditional probabilities can instead be estimated using matrix multiplication using the Gram matrix, discussed below.
 It encodes pair-wise co-occurrence counts, such that $G(i,i'):\mathbb{Z}^{n\times n}$ has the co-occurrence count for node $i$ with $i'$.
 
-The co-occurrence probability for each pair can be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes.
+The co-occurrence probability $P(A\cap B)$ for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes.
 First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability).
 In fact, without direct observation of edges, we are not able to estimate their count, _or_ their exposure, which can be a source of systemic error from _epistemic uncertainty_.
 We don't know when edges are used, directly, and we also don't have a reliable way to estimate the opportunities each edge had to activate (their exposure), either.
@@ -134,7 +139,7 @@ When comparing estimated edge probability to some known "true" edge existence (i
 We can do this at _every probability/weight threshold value_, as well, and we will return to ways to aggregate all of these values into useful scoring metrics in @sec-FP-experiments. 
 
 
-## Proximity vs. Incidence {#sec-products}
+## Distance vs. Incidence {#sec-products}
 
 As we have already seen, operations from linear algebra make many counting and combinatoric tasks easier, while unifying disparate concepts to a common set of mechanics.
 In addition to having a map from integer indices to sets of interest, these design matrices/vectors are implicitly assumed to have entries that exist in a field $F=(\mathbb{S},\oplus,\otimes)$.
@@ -192,37 +197,43 @@ $${#eq-dist-kernel}
 This ability to create valid distance measures from arbitrary kernel functions is the core of a vast area of machine learning and statistics that employs the so-called _kernel trick_. [CITE?]
 Different kernels yield different properties useful for distinguishing points having specific properties.
 One class of kernels are normalized to the range $[0,1]$, such that we ensure that equality along any one dimension is given a weight of $\tilde{K}(j,j)=1$.
-Such a kernel matrix can be derived from any other kernel as
+Such a kernel matrix can be derived from any other kernel, and is often combined with a logarithmic similarity measure $\tilde{\kappa}(x,y)=\log{s(x,y)}$.
 $$
-\tilde{K}(j,j') = \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}
+\begin{aligned}
+\tilde{K}(j,j') &= \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}\\
+d_{\tilde{K}}(j,j') &= -\log{\tilde{K}(j,j')}
+\end{aligned}
 $${#eq-norm-diag}
-which should be familiar as the way cosine similarities and correlation matrices are made as well (also having 1s along their diagonal)
+Since this is equivalent to applying @eq-dist-kernel to $s$ directly.
+This normalization should be familiar as the way cosine similarities and correlation matrices are made as well (also having 1s along their diagonal), and illustrates how non-metric similarities can be potentially made into (pseudo)metrics.
 
 ### Incidence structures & dependency
 
-Rather than how "close" or "far" to points are in vector space, which is described with the kernels and distances 
+Rather than how "close" or "far" to points are in vector space, which is described with the kernels and distances above, whether something "touches"---or, is incident to---something else is usually described abstractly as an _incidence structure_.
+This is an abstract way to describe how things "touch", such as when a set of points lie on a line/plane, or nodes touch an edge.
+We say an incidence structure is a triple of sets called (for historical reasons) _points_ $\mathcal{P}$, _lines_ $\mathcal{L}$, and _flags_ $\mathcal{I}$.
+$$(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}$$
 
-foundational model of graph theory and incidence structures more broadly.
-More to come, but get the terminology down.
+Representing these as matrices will be further explored in @sec-incidence-vec.
+But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of $\mathcal{I}$, is a very different question from estimating the similarity/distance between two entities in a vector space. 
+
+In statistics, such discrete structures usually arise when we are concerned with direct dependence from indirect.
+Take as an example a set of masses connected together by springs.
+If we shake one mass, all masses will also shake some amount, depending on the spring constants of the springs each mass is "transmitted" force through, and the losses due to friction or air resistance. 
+While the amount of movement over time depends on how "close" in this spring network two masses are, the movement itself can only be transmitted through springs that the masses are _incident_ to.
+Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence.
+If we hold all but two masses still, and moving one doesn't move the other, then we know they are conditionally independent: no spring connects them!
+
+This idea gets formalized as probabilistic graphical models, which are networks that define "incidence" between two variables as conditional dependence.
+Letting the random variables in column-space of $X$ be $A,B$ and the remaining columns be $C=X(\cdot,J\setminus \{A,B\})$, then
+$$
+P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
+$${#eq-cond-indep}
+for a set of incidences $\mathcal{I}$ defining a PGM that was sampled as $X$.  
 
 
 
-- Spring example, road example, etc.
-- partial correlations
+[SPRING GRAPHIC?]
 
+### Conclusion
 
-
-### Implications for networks
-
-TODO
-
-How "close" or "far away" things are.... [@SimilaritiesgraphsKernels_Avrachenkov2019] et al. 
-Usually dependencies are taken as causing or enabling proximity.
-E.g. shortest paths, vs. edges.
-
-
-- Discuss Complex Systems and their representation. 
-
-The approach taken by researchers/investigators...do they assume a level of interchangeability between the two kinds of "relation"?
-Do they define
-Or do they 

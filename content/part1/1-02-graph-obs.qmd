@@ -11,6 +11,7 @@ $$
 G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
 $$
 
+In incidence geometry terms, this would be similar to making two duplicate sets of the same nodes, and defining a graph as the set of incidences between nodes. 
 The _adjacency matrix_ $A$ of $G$, degree matrix $D$, and graph/discrete Laplacian $L$ are then defined as:^[
  The _indicator function_ $\mathbf{1}_A(x)$ is 1 for values of $x$ in the set $A$, and 0 otherwise.
 ] 
@@ -22,11 +23,11 @@ L(u,v) & = D(u,v) - A(u,v) \quad &L : V\times V\rightarrow \mathbb{Z}
 \end{aligned}
 $$
 
-However, if edges and their recovery is so important to us, defining them explicitly as pairs of nodes can be problematic when we wish to estimate their existence (or not) when pairs of nodes co-occur.
+However, if edges and their recovery is so important to us, defining them explicitly as nodes-node incidences can be problematic when we wish to estimate edge existence (or not), given noisy pairs of node co-occurrences.
 Additionally, we have to be very careful to distinguish whether our graph is _(un)directed_, _weighted_, _simple_, etc., and hope that the edge set has been filtered to a subset of $N\times N$ for each case.
 Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.
 
-## Graphs as incidence structures
+## Graphs as incidence structures {#sec-incidence-vec}
 
  Instead, we give edges their own set of identifiers, $e\in E=\{1,\cdots \omega\}$.
  Now, define graphs as incidence structures between nodes and edges such that every edge is incident to either two nodes, or none:
@@ -113,11 +114,11 @@ But, now that we have removed the information on "which nodes an edge connects" 
 Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes in $V_e$, without searching over the entirety of $B$'s domain.
 Using an identity from @ParallelEuclideandistance_Angeletti2019, we have a closed-form equation both to retrieve the IDs of nodes $u,v$ (given an edge $e$), and an edge $e$ (given two nodes $u,v$), for any simple graph with $n$ vertices.
 $$
-\begin{aligned}
-    u_n(e) & = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
-    v_n(e) & = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
-    e_n(u,v) & = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
-\end{aligned}
+\begin{gathered}
+    u_n(e) = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{gathered}
 $$ {#eq-sq-id}
 Our ease-of-calculation lets us drop some of the excess notation and refer to our (un)oriented incidence matrices in terms of the incidences of each edge on their $u$ or $v$, directly.
 $$
@@ -129,8 +130,8 @@ $$
 ### Inner products on $B$
 
 With all of this background, the other representations of graphs can seen as derivations from the canonical incidence matrices. 
-The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for orineted edge vectors, is also a squared distance matrix between all pairs of incidences on $(u,v)$.
-The other identities are simply consequences of the polarization identity, since the Laplacian is the also defined as the gram matrix on oriented incidence vectors: 
+The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for oriented edge vectors, is also related to the gram matrix between all pairs of incidences on $(u,v)$.
+The other identities are simply consequences of the polarization identity: 
 $$
 \begin{split}
 L & = B_o^TB_o\\
@@ -139,42 +140,55 @@ L & = B_o^TB_o\\
   & = 2D - B^TB = D-A
 \end{split}
 $${#eq-laplacian}
-@eq-sq-distance
 
-We take such pains taken to derive the traditional graph objects because it goes to show how fundamental the _incidences_ are as units of observation.
-Unlike @eq-sq-distance, @eq-laplacian is a distance between two distinct sets of incidences ($e$ on $u$,  ) (not all pairwise combinations within a set). 
-Laplacians are therefore sub-matrices of a larger distance matrix, where each incidence vector is a single standard basis vector, or put another way, _gram matrix_ over incidences
+<!-- @eq-sq-distance -->
+<!-- We take such pains taken to derive the traditional graph objects because it goes to show how fundamental the _incidences_ are as units of observation. -->
+<!-- Unlike @eq-sq-distance, @eq-laplacian is a distance between two distinct sets of incidences ($e$ on $u$, $v$) (not all pairwise combinations within a set). -->
+<!-- This explains the non-zero entries along the diagonal, since the set of $u$ and $v$ over $E$ --> 
+<!-- Laplacians are therefore sub-matrices of a larger distance matrix, where each incidence vector is a single standard basis vector, or put another way, _gram matrix_ over incidences -->
+<!-- $$ -->
+<!-- G_{\mathcal{I}}= -->
+<!-- \begin{bmatrix} B_u & B_v \end{bmatrix}\begin{bmatrix}B_u\\B_v\end{bmatrix} -->
+<!-- $$ -->
+<!-- contains the signless laplacian $D+A$ in its off-diagonal blocks. -->
+
+<!-- ### Normed spaces and Laplacians -->
+The Laplacian is often used in defining random-walks and markov chains, such that the degree of each node should be normalized to 1, which can be accomplished either by row- or column-normalizing it: $L^{\textrm{rw}}=D^{-1}L$ or $LD^{-1}$, respectively. 
+If this degree-normalization is desired without de-symmetrizing $L$, we can still perform an operation similar to normed kernels in @eq-norm-diag, called the symmetric normalized Laplacian.
 $$
-G_{\mathcal{I}}=
-\begin{bmatrix} B_u & B_v \end{bmatrix}\begin{bmatrix}B_u\\B_v\end{bmatrix}
+\tilde{L} = D^{-\tfrac{1}{2}}LD^{-\tfrac{1}{2}} = \frac{L(u,v)}{\sqrt{L(u,u)^2L(v,v)^2}}
+$${#eq-norm-laplacian}  
+
+
+### Edge Metrology, Edge Vectors 
+
+Implicitly in the use of $B$ with design matrix mechanics from the previous chapter is a treatment of edges as "observations" (the data space), and nodes as features.
+If an edge _is_ an observation, then unfortunately we cannot really quantify uncertainty over repeated measurements of edges with the simple mechanics from @sec-counting (because that edge _is_ that corresponding observation, and IDs are not duplicated).
+
+So far we have seen two ways of representing the entire graph in matrix form: Incidence matrix $B$ (or $B_o$), and the inner-product matrices derived from it ($L$, $A$).
+Since we can recover node IDs from edge IDs by @eq-sq-id, we can use a single vector to represent an entire graph structure by it's edges alone.
+Then a data dimension for vectors in "edge space" can once again represent observations, with nodes implied by @eq-sq-id.  
+This is either done by contracting $B$ along the nodes (columns) dimension, or by _unrolling_ the upper triangle of $L$ or $A$ according to @eq-sq-id.^[
+ @eq-edge-vectors uses an averaging operation to accomplish the contraction, but any reduction over the two nodes shared by an edge would accomplish the same, especially since we rarely see separate values for edge weight per-node, the way incidences can.
+]
+If each vector represents a value of $B$ associated with a corresponding edge, then $m$ of these vectors would be equivalent to $m$ observations of ${n \choose 2}$ edges on the same set of $n$ nodes. 
+Formally, for the $i$th observed structure on $n$ nodes:
 $$
-contains the laplacian in the off-diagonal blocks. 
-Laplacian as inner product on incidence observations.
-Associated objects (degree vector, o)
+\begin{gathered}
+R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\})\\
+R:I\times E \rightarrow \mathbb{S}\\
+i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
+n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
+\end{gathered}
+$${#eq-edge-vectors}
+This representation formalizes what practitioners call "edgelists" into a data structure that can unambiguously distinguish directed, undirected, and weighted graphs.
+In addition, it allows for repeated measurements of edges over the same set of nodes, while flexibly growing when new nodes arrive.^[
+ For instance, say observations are stored as sparse entries via $R$, and a new node arrives.
+ First, the participating nodes can be recovered in a vectorized manner through @eq-sq-id.
+ Then, a new node id increases $n$, followed by reassignment of the edge IDs with $e_n(u,v)$.
+]
 
-Rescaling to achieve normaalization.
-
-Use to define kernels (and application e.g. soft-cosine measure)
-
-...
-
-### Metrological Considerations: Interaction Vectors 
-
-TODO
-
-Strictly speaking, we can't say that nodes are directly observed in this space... edges are.
-Collections of nodes are measured two-at-a-time (one-per-edge being traversed).
-
-Another way to approach is to view inner products as a sum of outer products.
-A each edge uniquely corresponds to 2 nodes (in a simple graph).
-Use triangle unfolding for closed form bijection.
-
-Unrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an _edgelist_, having binary activation vectors on edges rather than nodes.
-Then each observation in this model is necessarily a set of activated edges.
-The non-zero (visited) nodes are found using the incidence matrix as an operator. 
-
-
-## Graphs and node occurrences 
+## Generalized node occurrence vectors 
 
 TODO
 
@@ -221,5 +235,6 @@ Leads to correlation/covariance, etc.
 
 - soft cosine
 - kernels on graphs (incl. coscia euclidean)
+- Linear operator incidences
 - Retrieving one from the other is hard. 
 

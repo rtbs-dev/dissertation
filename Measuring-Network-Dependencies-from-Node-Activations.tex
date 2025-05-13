@@ -741,7 +741,7 @@ we need to quantify our uncertainty about it. For instance, an event
 might be quite rare, but if in our specific sample we \emph{never} see
 it, we still do not generally accept a probability of zero.
 
-\subsection{Additive Smoothing}\label{additive-smoothing}
+\subsection{Additive Smoothing}\label{sec-counting}
 
 One approach to dealing with this involves adding \emph{pseudocounts}
 that smooth out our estimates for count/exposure, from which we get the
@@ -758,7 +758,9 @@ on the binomial probability (a.k.a. a \emph{Beta-Binomial} distribution)
 \(p\sim \textrm{Beta}(\alpha, \beta)\), such that the posterior
 distribution after our success/failure counts is
 \(\textrm{Beta}(s+\alpha, k-s+\beta)\), which has the mean:
-\[E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}\]
+\begin{equation}\phantomsection\label{eq-beta-binomial}{
+E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}
+}\end{equation}
 
 This exactly recovers additive smoothing with a Jeffrey's prior for
 \(\alpha=\beta=0.5\).\footnote{ A useful comparison of the two priors
@@ -781,44 +783,47 @@ Contingencies}\label{conditional-probabilities-contingencies}
 In dependency/structure recovery, since our goal involves estimating (at
 least) pairwise relationships, the independence assumption required to
 estimate node occurrences as Beta-Binomial is clearly
-violated\footnote{ In fact, a recent method from
+violated.\footnote{ In fact, a recent method from
   \autocite{MultivariateBernoullidistribution_Dai2013} models
   probabilistic binary observations, \emph{with dependencies}, by
   generalizing the mechanics overviewed here to a fully multivariate
   Bernoulli distribution, capable of including 3rd- and higher-order
   interractions, not just pairwise.\\
-}.
+}
 
-However, it's natural to make use of joint (\(P(A\cup B)\), how often
-does A happen with B, out of all data?) and conditional (\(P(A|B)\) how
-often A given B; or \(P(B|A)\), how often B given A) probabilities
-between nodes, while trying to estimate dependencies. Once again, we can
-estimate the base probabilities for each node from marginal sums, but
-the joint and conditional probabilities can instead be estimated using
-matrix multiplication using the Gram matrix, discussed below. It encodes
+However, it's common to estimate how similar two random variables
+\(A,B\) are, e.g.~if samples of each correspond to columns of binary
+\(X\). For instance, the joint probabilities \(P(A\cap B)\) answer ``how
+often does A happen with B, out of all data?'' Conditional probabilities
+\(P(A|B)=\frac{P(A\cap B)}{P(B)}\) measure how often A occures given B
+happened. Once again, we can estimate the base probabilities \(P(A)\)
+and \(P(B)\) with methods like Equation~\ref{eq-beta-binomial} for each
+marginal sums \(X(\cdot,A)\) or \(X(\cdot,B)\), but the joint and
+conditional probabilities can instead be estimated using matrix
+multiplication using the Gram matrix, discussed below. It encodes
 pair-wise co-occurrence counts, such that
 \(G(i,i'):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
 \(i\) with \(i'\).
 
-The co-occurrence probability for each pair can be approximated with the
-beta-binomial scheme mentioned above, but care must be taken not to
-confuse this with the edge strength connecting two nodes. First, nodes
-that rarely activate (low node probability) may nonetheless reliably
-connect to others when they do occur (high edge probability). In fact,
-without direct observation of edges, we are not able to estimate their
-count, \emph{or} their exposure, which can be a source of systemic error
-from \emph{epistemic uncertainty}. We don't know when edges are used,
-directly, and we also don't have a reliable way to estimate the
-opportunities each edge had to activate (their exposure), either. This
-is especially true when we wish to know whether an edge even \emph{can}
-be traversed, i.e.~the edge \emph{support}. Support, as used in this
-sense, is the set of inputs for which we expect a non-zero output.
-Intuitively, this idea captures the sense that we might care more about
-\emph{whether} an edge/dependency exists, not \emph{how important} it
-is. For that, we have to re-assess our simple model: even if we could
-count the number of times an edge might have been traversed, how do we
-estimate the opportunities it had to be available for traversal (it's
-``exposure'')?
+The co-occurrence probability \(P(A\cap B)\) for each pair can also be
+approximated with the beta-binomial scheme mentioned above, but care
+must be taken not to confuse this with the edge strength connecting two
+nodes. First, nodes that rarely activate (low node probability) may
+nonetheless reliably connect to others when they do occur (high edge
+probability). In fact, without direct observation of edges, we are not
+able to estimate their count, \emph{or} their exposure, which can be a
+source of systemic error from \emph{epistemic uncertainty}. We don't
+know when edges are used, directly, and we also don't have a reliable
+way to estimate the opportunities each edge had to activate (their
+exposure), either. This is especially true when we wish to know whether
+an edge even \emph{can} be traversed, i.e.~the edge \emph{support}.
+Support, as used in this sense, is the set of inputs for which we expect
+a non-zero output. Intuitively, this idea captures the sense that we
+might care more about \emph{whether} an edge/dependency exists, not
+\emph{how important} it is. For that, we have to re-assess our simple
+model: even if we could count the number of times an edge might have
+been traversed, how do we estimate the opportunities it had to be
+available for traversal (it's ``exposure'')?
 
 Assuming this kind of epistemic uncertainty can be adequately addressed
 through modeling---attempts at which will be discussed in more detail in
@@ -831,7 +836,7 @@ that), we can count the number of correct predictions, as well as type I
 return to ways to aggregate all of these values into useful scoring
 metrics in Section~\ref{sec-FP-experiments}.
 
-\section{Proximity vs.~Incidence}\label{sec-products}
+\section{Distance vs.~Incidence}\label{sec-products}
 
 As we have already seen, operations from linear algebra make many
 counting and combinatoric tasks easier, while unifying disparate
@@ -876,13 +881,13 @@ X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j
 }\end{equation}
 
 Matrices that can be decomposed into another matrix and its transpose
-are symmetric, and positive semidefinite, making every gram matrix
-positive semidefinite. They are directly related to (squared) euclidean
-distances through the polarization identity{[}CITE?{]}:\footnote{\textbf{Important}:
-  these definitions are all using the \(\mathbf{x}'\) notation to
-  indicate that these measurements are almost exclusively being done in
-  the \emph{data space}, i.e.~on column vectors. While most definitions
-  work on distances in terms of the measurements/objects/data, for
+are symmetric, and positive semidefinite (PSD), making every gram matrix
+PSD. They are directly related to (squared) euclidean distances through
+the polarization identity{[}CITE?{]}:\footnote{\textbf{Important}: these
+  definitions are all using the \(\mathbf{x}'\) notation to indicate
+  that these measurements are almost exclusively being done in the
+  \emph{data space}, i.e.~on column vectors. While most definitions work
+  on distances in terms of the measurements/objects/data, for
   \emph{inverse problems} (like network recovery, structure learning,
   etc.) they are more often applied in terms of the features (here, the
   nodes. This can be seen in statistics as well, where covariance and
@@ -901,40 +906,90 @@ both authors in common. This is called a \emph{bipartite
 projection}{[}CITE{]} into the authors ``mode'', and is illustrated
 visually in Figure~\ref{fig-collab}.
 
+Due to {[}CITE Shoenberg/Mercer{]}, we can generalize
+Equation~\ref{eq-sq-distance} such that \emph{any} function ``kernel''
+function \(\kappa(x,y)\) that creates PSD matrix
+\(K(j,j')\in\mathbb{S}^{n\times n}\). It says that such a PSD matrix can
+always be decomposed into a form \(K=R^TR\) for any matrix
+\(R(i,j)\in \mathbb{S}^{m\times n}\), thus letting us use the
+polarization identity to create arbitrary distance metrics. on
+\(\mathbb{S}^n\)
+\autocite{SimilaritiesgraphsKernels_Avrachenkov2019}\footnote{ Distance
+  metric, here, means that \(d(x,y)\) satisfies the triangle inequality
+  for all \(x,y\).}
+\begin{equation}\phantomsection\label{eq-dist-kernel}{
+d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
+}\end{equation}
+
+This ability to create valid distance measures from arbitrary kernel
+functions is the core of a vast area of machine learning and statistics
+that employs the so-called \emph{kernel trick}. {[}CITE?{]} Different
+kernels yield different properties useful for distinguishing points
+having specific properties. One class of kernels are normalized to the
+range \([0,1]\), such that we ensure that equality along any one
+dimension is given a weight of \(\tilde{K}(j,j)=1\). Such a kernel
+matrix can be derived from any other kernel, and is often combined with
+a logarithmic similarity measure \(\tilde{\kappa}(x,y)=\log{s(x,y)}\).
+\begin{equation}\phantomsection\label{eq-norm-diag}{
+\begin{aligned}
+\tilde{K}(j,j') &= \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}\\
+d_{\tilde{K}}(j,j') &= -\log{\tilde{K}(j,j')}
+\end{aligned}
+}\end{equation} Since this is equivalent to applying
+Equation~\ref{eq-dist-kernel} to \(s\) directly. This normalization
+should be familiar as the way cosine similarities and correlation
+matrices are made as well (also having 1s along their diagonal), and
+illustrates how non-metric similarities can be potentially made into
+(pseudo)metrics.
+
 \subsection{Incidence structures \&
 dependency}\label{incidence-structures-dependency}
 
-TODO
+Rather than how ``close'' or ``far'' to points are in vector space,
+which is described with the kernels and distances above, whether
+something ``touches''---or, is incident to---something else is usually
+described abstractly as an \emph{incidence structure}. This is an
+abstract way to describe how things ``touch'', such as when a set of
+points lie on a line/plane, or nodes touch an edge. We say an incidence
+structure is a triple of sets called (for historical reasons)
+\emph{points} \(\mathcal{P}\), \emph{lines} \(\mathcal{L}\), and
+\emph{flags} \(\mathcal{I}\).
+\[(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}\]
 
-foundational model of graph theory and incidence structures more
-broadly. More to come, but get the terminology down.
+Representing these as matrices will be further explored in
+Section~\ref{sec-incidence-vec}. But, the discrete nature of these
+incidence sets makes it clear that estimating the size and elements of
+\(\mathcal{I}\), is a very different question from estimating the
+similarity/distance between two entities in a vector space.
 
-\begin{itemize}
-\tightlist
-\item
-  Spring example, road example, etc.
-\item
-  partial correlations
-\end{itemize}
+In statistics, such discrete structures usually arise when we are
+concerned with direct dependence from indirect. Take as an example a set
+of masses connected together by springs. If we shake one mass, all
+masses will also shake some amount, depending on the spring constants of
+the springs each mass is ``transmitted'' force through, and the losses
+due to friction or air resistance. While the amount of movement over
+time depends on how ``close'' in this spring network two masses are, the
+movement itself can only be transmitted through springs that the masses
+are \emph{incident} to. Movement could be modeled through
+similarity/distance measurements like correlation, since none of the
+masses are independent (all move when any do), but incidence in terms of
+spring force transmission is modeled in terms of conditional
+(in)dependence. If we hold all but two masses still, and moving one
+doesn't move the other, then we know they are conditionally independent:
+no spring connects them!
 
-\subsection{Implications for networks}\label{implications-for-networks}
+This idea gets formalized as probabilistic graphical models, which are
+networks that define ``incidence'' between two variables as conditional
+dependence. Letting the random variables in column-space of \(X\) be
+\(A,B\) and the remaining columns be \(C=X(\cdot,J\setminus \{A,B\})\),
+then \begin{equation}\phantomsection\label{eq-cond-indep}{
+P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
+}\end{equation} for a set of incidences \(\mathcal{I}\) defining a PGM
+that was sampled as \(X\).
 
-TODO
+{[}SPRING GRAPHIC?{]}
 
-How ``close'' or ``far away'' things are\ldots.
-\autocite{SimilaritiesgraphsKernels_Avrachenkov2019} et al.~ Usually
-dependencies are taken as causing or enabling proximity. E.g. shortest
-paths, vs.~edges.
-
-\begin{itemize}
-\tightlist
-\item
-  Discuss Complex Systems and their representation.
-\end{itemize}
-
-The approach taken by researchers/investigators\ldots do they assume a
-level of interchangeability between the two kinds of ``relation''? Do
-they define Or do they
+\subsection{Conclusion}\label{conclusion}
 
 \chapter{Incidence through vector
 representation}\label{incidence-through-vector-representation}
@@ -956,10 +1011,12 @@ we might say a graph on nodes (or, ``vertices'')
 G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
 \]
 
-The \emph{adjacency matrix} \(A\) of \(G\), degree matrix \(D\), and
-graph/discrete Laplacian \(L\) are then defined as:\footnote{ The
-  \emph{indicator function} \(\mathbf{1}_A(x)\) is 1 for values of \(x\)
-  in the set \(A\), and 0 otherwise.} \[
+In incidence geometry terms, this would be similar to making two
+duplicate sets of the same nodes, and defining a graph as the set of
+incidences between nodes. The \emph{adjacency matrix} \(A\) of \(G\),
+degree matrix \(D\), and graph/discrete Laplacian \(L\) are then defined
+as:\footnote{ The \emph{indicator function} \(\mathbf{1}_A(x)\) is 1 for
+  values of \(x\) in the set \(A\), and 0 otherwise.} \[
 \begin{aligned}
 A(u,v) & =\mathbf{1}_E((u,v)) \quad &A : V\times V\rightarrow \mathbb{B} \\
 D(u,v) & =\mathrm{diag}({\textstyle\sum}_V A(u,v))\quad &D : V\times V\rightarrow \mathbb{N} \\
@@ -968,16 +1025,16 @@ L(u,v) & = D(u,v) - A(u,v) \quad &L : V\times V\rightarrow \mathbb{Z}
 \]
 
 However, if edges and their recovery is so important to us, defining
-them explicitly as pairs of nodes can be problematic when we wish to
-estimate their existence (or not) when pairs of nodes co-occur.
-Additionally, we have to be very careful to distinguish whether our
-graph is \emph{(un)directed}, \emph{weighted}, \emph{simple}, etc., and
-hope that the edge set has been filtered to a subset of \(N\times N\)
-for each case. Instead, we propose a less ambiguous framework for
-vectorizing graphs, based on their underlying incidence structure.
+them explicitly as nodes-node incidences can be problematic when we wish
+to estimate edge existence (or not), given noisy pairs of node
+co-occurrences. Additionally, we have to be very careful to distinguish
+whether our graph is \emph{(un)directed}, \emph{weighted},
+\emph{simple}, etc., and hope that the edge set has been filtered to a
+subset of \(N\times N\) for each case. Instead, we propose a less
+ambiguous framework for vectorizing graphs, based on their underlying
+incidence structure.
 
-\section{Graphs as incidence
-structures}\label{graphs-as-incidence-structures}
+\section{Graphs as incidence structures}\label{sec-incidence-vec}
 
 Instead, we give edges their own set of identifiers,
 \(e\in E=\{1,\cdots \omega\}\). Now, define graphs as incidence
@@ -1051,8 +1108,6 @@ G  = (V,E,B) \quad s.t. \quad & B : E\times V \rightarrow S\\
 \end{aligned}
 }\end{equation}
 
-\subsection{Embedding in vector space}\label{embedding-in-vector-space}
-
 The representation of \(B\) in Equation~\ref{eq-incidence-graph} bears a
 remarkable similarity to our original description of design matrices in
 Equation~\ref{eq-design-mat}. In fact, as a matrix, \(B(e,v)\) is called
@@ -1068,94 +1123,157 @@ graphs, the selection of \emph{which entry} is positive or negative is
 left to be ambiguous, since much of the math used later is symmetric
 w.r.t. direction\footnote{though not always!}.
 
-However, we can be more precise by selecting each row(edge) vector, and
-partitioning it into two: one for each non-zero column (node) that edge
-is incident to. This makes every incidence be embedded as standard basis
-vector \(\mathbf{e}\) in the feature space of \(B\), scaled by the
-corresponding value of \(S\). Let \(V_e\) be the set of nodes with
-(non-zero) incidence to edge \(e\). Then the incidence vectors are:\\
-\[\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e\] The
-unoriented incidence matrix is easily defined as having rows that are
-sums over the incidence vectors for each edge:
-\(\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)\)
+\subsection{Embedding incidences in vector
+space}\label{embedding-incidences-in-vector-space}
 
-To build the oriented incidence matrix, one could define undirected
-graphs as equivalent to multidigraphs, where each edge is really two
-directed edges, in opposing directions. This does allow the matrix \(B\)
-to have the correct range for its entries in this formalism (the
-directed graph range, \(S=\{-1,0,1\}\)), and the edge definition based
-on sums would hold. The resulting set of incidences would have twice the
-number of edges than our combinatoric limit for simple graphs, however.
-Plus, it would necessitate averaging of weights over different edge ID's
-to be prior to use of inner products, and many other implementation
-difficulties.
+A formalism for graphs that starts with incidence matrices would benefit
+from a \emph{canonical} oriented incidence matrix, rather than the
+family that is ambiguous w.r.t. edge orientation. To start, we can be
+more precise by selecting each row(edge) vector, and partitioning it
+into two: one for each non-zero column (node) that edge is incident to.
+Every incidence can be represented individually as standard basis vector
+\(\mathbf{e}\) in the feature space of \(B\), scaled by the
+corresponding value of \(S\).
 
-Instead we would like to allow for systematic differences between the
-incidence vectors, without ambiguity. But, now that we have removed the
-information on ``which nodes an edge connects'' from our definition
-(since every edge is a scalar ID), how do we construct \(V_e\) without a
-costly search over all incidences?\\
-Because of our unique identification of edges up to the combinatoric
-limit, we can still actually provide a unique ordering of the nodes it
-each edge connects. Using an identity from
+Let \(V_e\) be the set of nodes with (non-zero) incidence to edge \(e\).
+Then the incidence vectors are:\\
+\begin{equation}\phantomsection\label{eq-incidence-vec}{\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e}\end{equation}
+And the (unoriented) incidence matrix vectors are recovered as sums over
+the incidence vectors for each edge:
+\begin{equation}\phantomsection\label{eq-incidence-edge-sum}{\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)}\end{equation}
+
+A traditional approach might then define undirected graphs as
+equivalent, in some sense, to multidigraphs, where each edge is really
+two directed edges, in opposing directions. This does allow the matrix
+\(B\) to have the correct range for its entries in this formalism (the
+directed graph range, \(S=\{-1,0,1\}\)), and the edge identity based on
+sums would hold. However, the resulting set of incidences would have
+twice the number of edges than our combinatoric limit for simple graphs,
+and prevent the more elegant definition of graph types through the set
+\(\mathbf{S}\). Plus, it would necessitate averaging of weights over
+different edge ID's to arrive at a single undirected ``edge weight'',
+and many other implementation details that make keeping track of
+specifics difficult for practitioners.
+
+Instead, we would like a canonical oriented distance matrix, which can
+be derived from the vectorized incidences in the undirected range of
+\(B\) (the standard basis vectors). Without loss of generality, let
+\(u_e,v_e\in V_e\) be nodes such that \(u<v\).\footnote{the inequality
+  is strict because self-loops are not allowed.} Using this, we can
+unambiguously define a \emph{partition}
+\(B(e,\cdot)=B(e,u_e) + B(e,v_e)\) between incidences on \(e\), along
+with a new derived incidence, \(B_o\), which has oriented rows like:
+\[B_o(e,\cdot)=\mathbf{b}^o_e = \delta_e(u)-\delta_e(v)\] In other
+words, while the unoriented incidence matrix is the ``foundational''
+representation for graphs in our formalism, the (canonical) oriented one
+can be derived, even if negative incidence values are not in
+\(\mathbb{S}\).\footnote{ This works as long as we are in at least a
+  ring, since semirings in general do not need to define additive
+  inverse operations. In this case we would limit ourselves to the
+  oriented incidence.}
+
+But, now that we have removed the information on ``which nodes an edge
+connects'' from our definition of edges (since every edge is a scalar
+ID), how do we construct \(V_e\) without a circular dependency on \(B\)
+to find non-zero entries? Because of our unique identification of edges
+up to the combinatoric limit, we can still actually provide a unique
+ordering of the nodes in \(V_e\), without searching over the entirety of
+\(B\)'s domain. Using an identity from
 \textcite{ParallelEuclideandistance_Angeletti2019}, we have a
 closed-form equation both to retrieve the IDs of nodes \(u,v\) (given an
 edge \(e\)), and an edge \(e\) (given two nodes \(u,v\)), for any simple
-graph with \(n\) vertices:
+graph with \(n\) vertices.
 \begin{equation}\phantomsection\label{eq-sq-id}{
-\begin{aligned}
-    u_n(e) & = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
-    v_n(e) & = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
-    e_n(u,v) & = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
-\end{aligned}
-}\end{equation}
-
-Using this, we can unambiguously define a \emph{partition} between
-incidences on \(e\), without needing other metadata or flags to
-distinguish \(u\) from \(v\), since those are defined through
-Equation~\ref{eq-sq-id} unambiguously w.r.t. \(e\).
-\[\mathbf{b}_e = \delta_e(u)-\delta_e(v)\]
-
-This could be called an ``edge-centric'' view of simple graphs, since
-the nodes involved in a graph are now actually derived w.r.t. the edges
-and our mapping \(B\), uniquely.
+\begin{gathered}
+    u_n(e) = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{gathered}
+}\end{equation} Our ease-of-calculation lets us drop some of the excess
+notation and refer to our (un)oriented incidence matrices in terms of
+the incidences of each edge on their \(u\) or \(v\), directly. \[
+B = B_u + B_e \qquad B_o \equiv B_u - B_v
+\]
 
 \subsection{\texorpdfstring{Inner products on
 \(B\)}{Inner products on B}}\label{inner-products-on-b}
 
-TODO
+With all of this background, the other representations of graphs can
+seen as derivations from the canonical incidence matrices. The
+Laplacian, which is usually introduced either in terms of
+ajacency/degree, or as the gram matrix for oriented edge vectors, is
+also related to the gram matrix between all pairs of incidences on
+\((u,v)\). The other identities are simply consequences of the
+polarization identity:
+\begin{equation}\phantomsection\label{eq-laplacian}{
+\begin{split}
+L & = B_o^TB_o\\
+  & = \|B_u - B_v \|^2 \\
+  & = 2\|B_u\|^2 +2\|B_v\|^2 - \|B_u + B_v \|^2 \\
+  & = 2D - B^TB = D-A
+\end{split}
+}\end{equation}
 
-Equation~\ref{eq-sq-distance}
+The Laplacian is often used in defining random-walks and markov chains,
+such that the degree of each node should be normalized to 1, which can
+be accomplished either by row- or column-normalizing it:
+\(L^{\textrm{rw}}=D^{-1}L\) or \(LD^{-1}\), respectively. If this
+degree-normalization is desired without de-symmetrizing \(L\), we can
+still perform an operation similar to normed kernels in
+Equation~\ref{eq-norm-diag}, called the symmetric normalized Laplacian.
+\begin{equation}\phantomsection\label{eq-norm-laplacian}{
+\tilde{L} = D^{-\tfrac{1}{2}}LD^{-\tfrac{1}{2}} = \frac{L(u,v)}{\sqrt{L(u,u)^2L(v,v)^2}}
+}\end{equation}
 
-Laplacian as inner product on incidence observations. Associated objects
-(degree vector, o)
+\subsection{Edge Metrology, Edge
+Vectors}\label{edge-metrology-edge-vectors}
 
-Rescaling to achieve normaalization.
+Implicitly in the use of \(B\) with design matrix mechanics from the
+previous chapter is a treatment of edges as ``observations'' (the data
+space), and nodes as features. If an edge \emph{is} an observation, then
+unfortunately we cannot really quantify uncertainty over repeated
+measurements of edges with the simple mechanics from
+Section~\ref{sec-counting} (because that edge \emph{is} that
+corresponding observation, and IDs are not duplicated).
 
-Use to define kernels (and application e.g.~soft-cosine measure)
+So far we have seen two ways of representing the entire graph in matrix
+form: Incidence matrix \(B\) (or \(B_o\)), and the inner-product
+matrices derived from it (\(L\), \(A\)). Since we can recover node IDs
+from edge IDs by Equation~\ref{eq-sq-id}, we can use a single vector to
+represent an entire graph structure by it's edges alone. Then a data
+dimension for vectors in ``edge space'' can once again represent
+observations, with nodes implied by Equation~\ref{eq-sq-id}.\\
+This is either done by contracting \(B\) along the nodes (columns)
+dimension, or by \emph{unrolling} the upper triangle of \(L\) or \(A\)
+according to Equation~\ref{eq-sq-id}.\footnote{
+  Equation~\ref{eq-edge-vectors} uses an averaging operation to
+  accomplish the contraction, but any reduction over the two nodes
+  shared by an edge would accomplish the same, especially since we
+  rarely see separate values for edge weight per-node, the way
+  incidences can.} If each vector represents a value of \(B\) associated
+with a corresponding edge, then \(m\) of these vectors would be
+equivalent to \(m\) observations of \({n \choose 2}\) edges on the same
+set of \(n\) nodes. Formally, for the \(i\)th observed structure on
+\(n\) nodes: \begin{equation}\phantomsection\label{eq-edge-vectors}{
+\begin{gathered}
+R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\})\\
+R:I\times E \rightarrow \mathbb{S}\\
+i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
+n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
+\end{gathered}
+}\end{equation} This representation formalizes what practitioners call
+``edgelists'' into a data structure that can unambiguously distinguish
+directed, undirected, and weighted graphs. In addition, it allows for
+repeated measurements of edges over the same set of nodes, while
+flexibly growing when new nodes arrive.\footnote{ For instance, say
+  observations are stored as sparse entries via \(R\), and a new node
+  arrives. First, the participating nodes can be recovered in a
+  vectorized manner through Equation~\ref{eq-sq-id}. Then, a new node id
+  increases \(n\), followed by reassignment of the edge IDs with
+  \(e_n(u,v)\).}
 
-\ldots{}
-
-\subsection{Metrological Considerations: Interaction
-Vectors}\label{metrological-considerations-interaction-vectors}
-
-TODO
-
-Strictly speaking, we can't say that nodes are directly observed in this
-space\ldots{} edges are. Collections of nodes are measured two-at-a-time
-(one-per-edge being traversed).
-
-Another way to approach is to view inner products as a sum of outer
-products. A each edge uniquely corresponds to 2 nodes (in a simple
-graph). Use triangle unfolding for closed form bijection.
-
-Unrolling 3D tensor of subgraphs along eads to a secondary
-representation of graphs as an \emph{edgelist}, having binary activation
-vectors on edges rather than nodes. Then each observation in this model
-is necessarily a set of activated edges. The non-zero (visited) nodes
-are found using the incidence matrix as an operator.
-
-\section{Graphs and node occurrences}\label{graphs-and-node-occurrences}
+\section{Generalized node occurrence
+vectors}\label{generalized-node-occurrence-vectors}
 
 TODO
 
@@ -1234,23 +1352,106 @@ Dependence}\label{combining-occurrence-dependence}
 \item
   kernels on graphs (incl.~coscia euclidean)
 \item
+  Linear operator incidences
+\item
   Retrieving one from the other is hard.
 \end{itemize}
 
 \chapter{Roads to Network Recovery}\label{sec-lit-review}
 
-\section{Choosing a structure recovery
-method}\label{choosing-a-structure-recovery-method}
+\section{Organizing Recovery Methods}\label{organizing-recovery-methods}
+
+i.e.~Network Recovery as an Inverse Problem, and what information is had
+at each point.
+
+\begin{itemize}
+\tightlist
+\item
+  Observing Nodes vs Edges
+\item
+  Embeddings and Inner Products
+\item
+  Preprocessing
+\end{itemize}
+
+\section{Counting, Projection, and
+Co-Occurrence}\label{counting-projection-and-co-occurrence}
+
+Basic Co-occurrence, and friends. Gram is uncentered covariance.
+
+All estimate some kind of rate
+
+\subsection{Cosine Similarity}\label{cosine-similarity}
+
+\begin{itemize}
+\tightlist
+\item
+  Ochiai and uncentered correlation
+\item
+  angles don't care about length
+\item
+  geometric mean on cond prob, actually
+\item
+  that means pseudocounts can make sense
+\end{itemize}
+
+\subsection{Hyperbolic Projection}\label{hyperbolic-projection}
+
+\begin{itemize}
+\tightlist
+\item
+  reweights by degree in original BP
+\item
+  mention other ways
+\end{itemize}
+
+\subsection{Transformations of Counts}\label{transformations-of-counts}
+
+Come from contingency tables, like CS.
+
+\begin{itemize}
+\tightlist
+\item
+  odds-ratio
+\item
+  Yule's Q,Y
+\item
+  Mutual Info
+\end{itemize}
+
+\section{Resource and Information
+Flow}\label{resource-and-information-flow}
+
+Backboning
+
+Intuition that the most important edges are on geodesics for many paths
+
+\subsection{Resource Projection}\label{resource-projection}
+
+\subsection{Doubly-stochastic and eOT}\label{doubly-stochastic-and-eot}
+
+\subsection{HSS}\label{hss}
+
+\section{Inverse Problems \& PGM
+Structure}\label{inverse-problems-pgm-structure}
+
+\subsection{Chow Liu}\label{chow-liu}
+
+Global Tree structure from MI
+
+\subsection{Shrinkage \& GLASSO}\label{shrinkage-glasso}
+
+\subsection{stability selection}\label{stability-selection}
 
 \begin{quote}
 Takeaway: a way to organize existing algorithms, AND highlight unique
 set of problems we set out to solve
 \end{quote}
 
-\section{Organizing Recovery Methods}\label{organizing-recovery-methods}
+\section{A Path Forward}\label{a-path-forward}
 
-i.e.~Network Recovery as an Inverse Problem, and what information is had
-at each point.
+\subsection{Tracing Information Loss
+Paths}\label{tracing-information-loss-paths}
 
 \begin{figure}[H]
 
@@ -1263,16 +1464,7 @@ operators}
 
 \end{figure}%
 
-\subsection{Observing Nodes vs Edges}\label{observing-nodes-vs-edges}
-
-\subsection{Embeddings, Inner Products, \&
-Preprocessing}\label{embeddings-inner-products-preprocessing}
-
-\section{Tracing Information Loss
-Paths}\label{tracing-information-loss-paths}
-
-\subsection{Table of Existing
-Approaches}\label{table-of-existing-approaches}
+Table of Existing Approaches
 
 \begin{itemize}
 \tightlist
@@ -1284,7 +1476,7 @@ Approaches}\label{table-of-existing-approaches}
   no uncertainty quantification
 \end{itemize}
 
-\subsection{A Path Forward}\label{a-path-forward}
+\subsection{Something New}\label{something-new}
 
 Sorting algorithms\ldots{} \emph{none address all three!}
 
