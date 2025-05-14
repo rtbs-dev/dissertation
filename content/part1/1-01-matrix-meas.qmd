@@ -211,7 +211,7 @@ This normalization should be familiar as the way cosine similarities and correla
 
 Rather than how "close" or "far" to points are in vector space, which is described with the kernels and distances above, whether something "touches"---or, is incident to---something else is usually described abstractly as an _incidence structure_.
 This is an abstract way to describe how things "touch", such as when a set of points lie on a line/plane, or nodes touch an edge.
-We say an incidence structure is a triple of sets called (for historical reasons) _points_ $\mathcal{P}$, _lines_ $\mathcal{L}$, and _flags_ $\mathcal{I}$.
+We say an incidence structure is a triple of sets called (for historical reasons) _points_ $\mathcal{P}$, _lines_ $\mathcal{L}$, and _flags_ $\mathcal{I}$.[@Incidencegeometry_Moorhouse2007]
 $$(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}$$
 
 Representing these as matrices will be further explored in @sec-incidence-vec.
