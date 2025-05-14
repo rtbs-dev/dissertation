@@ -86,7 +86,7 @@ tex_kws = dict(
     preamble=r"""
     \usepackage[otfmath]{XCharter}
     \usepackage{tikz-network}
-    \usetikzlibrary{positioning}
+    \usetikzlibrary{positioning, matrix,calc}
     \SetCoordinates[xAngle=0, yAngle=70, yLength=0.5]
 
     """,
@@ -213,7 +213,7 @@ with open('obs-set.tex') as f:
     fig =TexFragment(
         f.read(),
         
-        **(tex_kws|dict(scale=1.1)),
+        **(tex_kws|dict(scale=1.5)),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -224,17 +224,17 @@ fig
 # Bipartite representation of node "activation" data
 B = nx.Graph()
 
-x1s = 'gceh'
-x2s = 'feah'
-x3s = 'ijfb'
-x4s = 'dhe'
+x2s = 'gceh'
+x3s = 'feah'
+x4s = 'ijfb'
+x1s = 'dhe'
 # Add nodes with the node attribute "bipartite"
 
 B.add_nodes_from([
-    ('x_1',{'color':my_orange, 'pos':(0,-1.5), 'bipartite':0}), 
-    ('x_2',{'color':my_green, 'pos':(0,-0.5), 'bipartite':0}),
-    ('x_3',{'color':my_red, 'pos':(0,0.5), 'bipartite':0}),
-    ('x_4',{'color':my_blue, 'pos':(0,1.5), 'bipartite':0})
+    ('x_4',{'color':my_red, 'pos':(0,-1.5), 'bipartite':0}),
+    ('x_3',{'color':my_green, 'pos':(0,-0.5), 'bipartite':0}),
+    ('x_2',{'color':my_orange, 'pos':(0,0.5), 'bipartite':0}), 
+    ('x_1',{'color':my_blue, 'pos':(0,1.5), 'bipartite':0})
 ], bipartite=0)
 
 B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(1,0.5*(i-4.5))}) for i,a in enumerate('abcdefghij')])
@@ -242,10 +242,10 @@ B.add_nodes_from([(a, {'bipartite':1, 'color':my_grey,'pos':(1,0.5*(i-4.5))}) fo
 # Add edges only between nodes of opposite node sets
 
 B.add_edges_from(
-    [('x_1',n, dict(color=my_orange)) for n in x1s] +\
-    [('x_2',n, dict(color=my_green)) for n in x2s] +\
-    [('x_3',n, dict(color=my_red)) for n in x3s] +\
-    [('x_4',n, dict(color=my_blue)) for n in x4s]
+    [('x_1',n, dict(color=my_blue)) for n in x1s] +\
+    [('x_2',n, dict(color=my_orange)) for n in x2s] +\
+    [('x_3',n, dict(color=my_green)) for n in x3s] +\
+    [('x_4',n, dict(color=my_red)) for n in x4s] 
 )
 
 # bp_pos = nx.layout.bipartite_layout(B, ['x1', 'x2', 'x3'], aspect_ratio=0.1)
@@ -428,3 +428,17 @@ with open('inject-plan.tex') as f:
     ).run_latex(tex_program=tex)
 fig
 ```
+
+```{python}
+#| label: fig-stack-outerprod
+#| fig-cap: Gram matrix as sum of observation outer products
+
+with open('sum-outer.tex') as f: 
+    fig = TexFragment(
+        f.read(),
+        # implicit_tikzpicture=True,
+        **tex_kws,
+    ).run_latex(tex_program=tex)
+fig
+```
+

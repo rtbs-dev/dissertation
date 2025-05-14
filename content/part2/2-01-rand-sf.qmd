@@ -31,38 +31,55 @@ They include a warning not to naively use correlational measures with a threshol
 Still, it would be helpful for practitioners to have a more explicit mental model of _why_ co-occurence-based models yield systematic bias,  
 
 
-### Inner Products as Sums of Cliques
+### Inner-Product Projections and "Clique Bias"
 
 Underlying correlation and co-occurrence models for edge strength is a reliance on inner products between  node occurrence vectors.
 They all use gram matrices (or centered/scaled versions of them), which were brought up in @sec-products.
 The matrix multiplication performed represents inner products between all pairs of feature vectors.
 For $X(i,j)\in\mathbb{B}$, these inner products sum together the times in each observation that two nodes were activated together.
 
+
+{{< embed ../codefigs/graphs.qmd#fig-stack-outerprod >}}
+
 However, another (equivalent) way to view matrix multiplication is as a sum of outer products
-$$ G(i,j) = X^T X = \sum_{i=1}^k X(i,k)X(j,k)= \sum_{i=1}^k \mathbf{x}_k\mathbf{x}_k^T $$
-Those outer products of binary vectors create $m\times m$ matrices that have a 1 in every $i,j$ entry where nodes $i,j$ both occurred---i.e., they can be seen as adjacency matrices of the clique on nodes activated in the $k$th observation
+$$
+G(j,j') = X^T X = \sum_{i=1}^m X(i,j)X(i,j')= \sum_{i=1}^m \mathbf{x}_i\mathbf{x}_i^T
+$$
+Those outer products of binary vectors create $m\times m$ matrices that have a 1 in every $i,j$ entry where nodes $i,j$ both occurred, shown in @fig-stack-outerprod.
+Each outer product is effectively operating as a $D_i+A_i$ with degrees normalized to 1.
+If the off-diagonals can be seen as adjacency matrices, they would strictly represent a clique on nodes activated in the $i$th observation
 In this sense, any method that involves transforming or re-weighting a gram matrix, is implicitly believing that the $k$th observation was a _complete graph_.
 This is illustrated in @fig-stacked-graphs. 
 
-:::{#fig-stacked-graphs layout="[[2,1]]"  layout-valign="bottom"}
+:::{#fig-stacked-graphs layout="[[1,2]]"  layout-valign="center"}
 
+{{< embed ../codefigs/graphs.qmd#fig-obs-set >}}
 {{< embed ../codefigs/graphs.qmd#fig-stack-bow >}}
-{{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
 
-Inner-product projections imply observations of complete graphs, summed. 
+Inner-product projections as sums of cliques illustrating "clique bias". 
 :::
 
 For many modeling scenarios, this paradigm allows practitioners to make a more straight-forward intuition-check: do clique observations _make sense_ here?
 When a list of authors for a paper is finished, does that imply that all authors mutually interacted with all others directly to equally arrive at the decision to publish?
-This would be similar to assuming the authors might simultaneously enter a room, look at a number of others (who all look exclusively at each other, as well), and at once decide to publish together.
+This would be similar to assuming the authors might simultaneously enter the same room, look at a number of others (who all look exclusively at each other, as well), and _all at once_ decide to publish together.
 In our introduction, we described a more likely scenario we could expect from an observer on the ground: a researcher asks a colleague or two to collaborate, who might know a couple more with relevant expertise, and so on. 
 
 
 ## Networks as Desire Path Density Estimates
 
-Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how _easy_ it is to create them from occurrence data.
-What we need is a way to retain the ease of use of inner-product network creation, with a more domain-appropriate graph at the observation level. 
-There are many classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
+Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how _easy_ it is to create them from occurrence data, regardless of this "clique-bias".
+The ability to map an operation onto every observation, e.g. in parallel, and then reduce all the observations into an aggregate edge estimate is a highly desirable algorithmic trait.
+This may be a reason so many projection and backboning techniques attempt two re-weight (but retain) the same basic structure, time and again. 
+
+What we need is a way to maintain the ease-of-use of inner-product network creation:
+
+- map an operation onto each observation
+- reduce to an aggregate edge guess over all observations
+
+but with a more domain-appropriate operator at the observation level. 
+
+Let's start with replacements for the clique assumption.
+There are many non-clique classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
  Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]^[
   e.g. for dependencies based on perception, such as human decision making tendencies, or causes based on color names.
 ], or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]^[
@@ -74,20 +91,29 @@ In any case, these assumptions provide an explicit way to describe the set of _p
 ### Subgraph Distributions
 
 Let's use the notation from @eq-edge-vectors, such that each observation of nodes $\mathbf{x}_i$ is implicitly derived from a set of activated edges $\mathbf{r_i}$.
-These edges, if observed, would have induced a subgraph $c$, which we in turn model as belonging to a class of graphs $\mathcal{C}$ on $V$, i.e.
+To start, our current belief about what overall structure the whole network can take is $G^*=(V,E,B^*)$, where $B^*$ might always return $1$ to start out (the complete graph).
+From this, we construct a $B_i$ for each observation. 
+Each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$, while our domain knowledge takes the form of a constraint on edges, which will induce a family of subgraphs again.
+The "family of subgraphs," in general, can't directly use the edge constraint to create $B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)$, because edges $E_i$ are not directly observed.
+Instead, we model them as inducing a family  $\mathcal{C}_i$ belonging to the relevant class of graphs $\mathcal{C}$ on $V$, i.e.
+
 $$
-c\in\mathcal{C^V}\quad \textrm{s.t.}\quad \mathcal{V}\subseteq V
+\begin{gathered}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\mathcal{V}\subseteq Vi\}\\
+E_i\in\{\mathcal{E}\subseteq\mathbf{P(E)}| g_i[\mathcal{E}]\in\mathcal{C}\}
+\end{gathered}
 $$
+
 In other words, the edges that gave rise to the node activations in a given observation must belong to a graph that in turn belongs to our class.
 
-Assuming we can define an associated measure $\mu_{\mathcal{C}}(c)$ on $\mathcal{C}$, we are able to define a probability distribution over graphs in the class.^[
+Assuming we can define an associated measure for each $\mu_i(c)$ on $\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
  This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $\mathbb{Z}$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
  Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as trees.
 ]
 Using notation similar to distributions over spanning trees in @EfficientComputationExpectations_Zmigrod2021: 
 $$
 \begin{gathered}
-p_{\mathcal{C}}(c|\mathcal{V}) = \frac{\mu_{\mathcal{C}}(c|\mathcal{V})}{\mathbb{Z}}\\
+p_i(c) = \frac{\mu_{\mathcal{C}}(c|\mathcal{V})}{\mathbb{Z}}\\
 \mathbb{Z} = \sum_{c\in\mathcal{C^V}} \mu_{\mathcal{C}}(c|\mathcal{V})
 \end{gathered}
 $$

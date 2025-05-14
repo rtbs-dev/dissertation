@@ -953,7 +953,7 @@ abstract way to describe how things ``touch'', such as when a set of
 points lie on a line/plane, or nodes touch an edge. We say an incidence
 structure is a triple of sets called (for historical reasons)
 \emph{points} \(\mathcal{P}\), \emph{lines} \(\mathcal{L}\), and
-\emph{flags} \(\mathcal{I}\).
+\emph{flags} \(\mathcal{I}\).\autocite{Incidencegeometry_Moorhouse2007}
 \[(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}\]
 
 Representing these as matrices will be further explored in
@@ -980,7 +980,7 @@ no spring connects them!
 
 This idea gets formalized as probabilistic graphical models, which are
 networks that define ``incidence'' between two variables as conditional
-dependence. Letting the random variables in column-space of \(X\) be
+dependence. Letting the random variables in the column-space of \(X\) be
 \(A,B\) and the remaining columns be \(C=X(\cdot,J\setminus \{A,B\})\),
 then \begin{equation}\phantomsection\label{eq-cond-indep}{
 P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
@@ -1560,8 +1560,8 @@ simple 3-node systems will easily yield false positives edges. Still, it
 would be helpful for practitioners to have a more explicit mental model
 of \emph{why} co-occurence-based models yield systematic bias,
 
-\subsection{Inner Products as Sums of
-Cliques}\label{inner-products-as-sums-of-cliques}
+\subsection{Inner-Product Projections and ``Clique
+Bias''}\label{inner-product-projections-and-clique-bias}
 
 Underlying correlation and co-occurrence models for edge strength is a
 reliance on inner products between node occurrence vectors. They all use
@@ -1571,19 +1571,47 @@ represents inner products between all pairs of feature vectors. For
 \(X(i,j)\in\mathbb{B}\), these inner products sum together the times in
 each observation that two nodes were activated together.
 
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-outerprod-output-1.pdf}}
+
+}
+
+\caption{\label{fig-stack-outerprod}Gram matrix as sum of observation
+outer products}
+
+\end{figure}%
+
 However, another (equivalent) way to view matrix multiplication is as a
-sum of outer products
-\[ G(i,j) = X^T X = \sum_{i=1}^k X(i,k)X(j,k)= \sum_{i=1}^k \mathbf{x}_k\mathbf{x}_k^T \]
-Those outer products of binary vectors create \(m\times m\) matrices
-that have a 1 in every \(i,j\) entry where nodes \(i,j\) both
-occurred---i.e., they can be seen as adjacency matrices of the clique on
-nodes activated in the \(k\)th observation In this sense, any method
-that involves transforming or re-weighting a gram matrix, is implicitly
-believing that the \(k\)th observation was a \emph{complete graph}. This
-is illustrated in Figure~\ref{fig-stacked-graphs}.
+sum of outer products \[
+G(j,j') = X^T X = \sum_{i=1}^m X(i,j)X(i,j')= \sum_{i=1}^m \mathbf{x}_i\mathbf{x}_i^T
+\] Those outer products of binary vectors create \(m\times m\) matrices
+that have a 1 in every \(i,j\) entry where nodes \(i,j\) both occurred,
+shown in Figure~\ref{fig-stack-outerprod}. Each outer product is
+effectively operating as a \(D_i+A_i\) with degrees normalized to 1. If
+the off-diagonals can be seen as adjacency matrices, they would strictly
+represent a clique on nodes activated in the \(i\)th observation In this
+sense, any method that involves transforming or re-weighting a gram
+matrix, is implicitly believing that the \(k\)th observation was a
+\emph{complete graph}. This is illustrated in
+Figure~\ref{fig-stacked-graphs}.
 
 \begin{figure}
 
+\begin{minipage}{0.33\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-obs-set-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-obs-set}}
+
+\end{minipage}%
+%
 \begin{minipage}{0.67\linewidth}
 
 \centering{
@@ -1596,22 +1624,9 @@ is illustrated in Figure~\ref{fig-stacked-graphs}.
 (BoW) assumption}
 
 \end{minipage}%
-%
-\begin{minipage}{0.33\linewidth}
 
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
-
-}
-
-\subcaption{\label{fig-bipartite}Bipartite representation of node
-``activation'' data}
-
-\end{minipage}%
-
-\caption{\label{fig-stacked-graphs}Inner-product projections imply
-observations of complete graphs, summed.}
+\caption{\label{fig-stacked-graphs}Inner-product projections as sums of
+cliques illustrating ``clique bias''.}
 
 \end{figure}%
 
@@ -1620,60 +1635,155 @@ a more straight-forward intuition-check: do clique observations
 \emph{make sense} here? When a list of authors for a paper is finished,
 does that imply that all authors mutually interacted with all others
 directly to equally arrive at the decision to publish? This would be
-similar to assuming the authors might simultaneously enter a room, look
-at a number of others (who all look exclusively at each other, as well),
-and at once decide to publish together. In our introduction, we
-described a more likely scenario we could expect from an observer on the
-ground: a researcher asks a colleague or two to collaborate, who might
-know a couple more with relevant expertise, and so on.
+similar to assuming the authors might simultaneously enter the same
+room, look at a number of others (who all look exclusively at each
+other, as well), and \emph{all at once} decide to publish together. In
+our introduction, we described a more likely scenario we could expect
+from an observer on the ground: a researcher asks a colleague or two to
+collaborate, who might know a couple more with relevant expertise, and
+so on.
 
 \section{Networks as Desire Path Density
 Estimates}\label{networks-as-desire-path-density-estimates}
 
 Unfortunately, methods based on inner-product thresholding are still
 incredibly common, in no small part due to how \emph{easy} it is to
-create them from occurrence data. What we need is a way to retain the
-ease of use of inner-product network creation, with a more
-domain-appropriate graph at the observation level. Of course there are
-many classes of graphs we might believe local interactions occur on:
-path-graphs, trees, or any number of graphs that reflect the topolgy or
-mechanism of local interactions in our domain of interest. Authors have
-proposed classes of graphs that mirror human perception of set shapes
-{[}RELATIVE NEIGHBORHOOD{]}\footnote{ e.g.~for dependencies based on
-  perception, such as human decision making tendencies, or causes based
-  on color names.}, or graphs whose modeled dependencies are strictly
-planar {[}planar maximally filtered graps{]}\footnote{ e.g.~when
-  interactions are limited to planar dependencies, like inferring
-  ancient geographic borders.}. Alternatively, the interactions might be
-scale free, small-world, or samples from stochastic block
-models.{[}CITE{]}
+create them from occurrence data, regardless of this ``clique-bias''.
+The ability to map an operation onto every observation, e.g.~in
+parallel, and then reduce all the observations into an aggregate edge
+estimate is a highly desirable algorithmic trait. This may be a reason
+so many projection and backboning techniques attempt two re-weight (but
+retain) the same basic structure, time and again.
 
-In any case, these assumptions provide an explicit way to describe the
-set of \emph{possible} interaction graphs we believe our individual
-observations are sampled from. In other words, we limit our possible
-interaction graph to a set of all possible graphs in our class
-\(\mathcal{C}\), and model the interactions allowed to be inferred from
-the activated nodes as \(c\in\mathcal{C}\). With an associated
-probability measure \(\mu_{\mathcal{C}}(c)\) defined on subgraphs of the
-complete graph on our node set V\footnote{Assuming we can even find one,
-  something we must return to shortly}, we are able to say our
-interactions are sampled from a distribution over graphs in the class.
+What we need is a way to maintain the ease-of-use of inner-product
+network creation:
 
-For simplicity, since unreported/hidden-but-activated nodes is outide
-the scope of our work, we narrow the distribution to be only on the
-induced subgraph \(C(S_k) \in G[S_k])\), where \(S_k\) is the set of
-activated nodes in \(\mathbf{x}_k\). More specifically, we say that an
-observation of \(S\subset V=\{s_1,\cdots, s_t\},\quad t=|S|\) activated
-nodes implies a distribution over edge vectors we could hav observed,
-determined by the chosen class,
+\begin{itemize}
+\tightlist
+\item
+  map an operation onto each observation
+\item
+  reduce to an aggregate edge guess over all observations
+\end{itemize}
 
-\[\mathbf{x}^E_k \in \]
+but with a more domain-appropriate operator at the observation level.
 
-Once an analyst has provided epistemic justification for a \emph{class
-of graphs} to model We propose that the computationally-efficient
-inner-product networks can still be used, but could be made far more
-effective by counting edge observation counts with something more
-appropriate than cliques.
+Let's start with replacements for the clique assumption. There are many
+non-clique classes of graphs we might believe local interactions occur
+on: path-graphs, trees, or any number of graphs that reflect the topolgy
+or mechanism of local interactions in our domain of interest. Authors
+have proposed classes of graphs that mirror human perception of set
+shapes {[}RELATIVE NEIGHBORHOOD{]}\footnote{ e.g.~for dependencies based
+  on perception, such as human decision making tendencies, or causes
+  based on color names.}, or graphs whose modeled dependencies are
+strictly planar {[}planar maximally filtered graps{]}\footnote{
+  e.g.~when interactions are limited to planar dependencies, like
+  inferring ancient geographic borders.}. Alternatively, the
+interactions might be scale free, small-world, trees, or samples from
+stochastic block models.{[}CITE{]} In any case, these assumptions
+provide an explicit way to describe the set of \emph{possible}
+interaction graphs we believe our individual observations are sampled
+from.
+
+\subsection{Subgraph Distributions}\label{subgraph-distributions}
+
+Let's use the notation from Equation~\ref{eq-edge-vectors}, such that
+each observation of nodes \(\mathbf{x}_i\) is implicitly derived from a
+set of activated edges \(\mathbf{r_i}\). To start, our current belief
+about what overall structure the whole network can take is
+\(G^*=(V,E,B^*)\), where \(B^*\) might always return \(1\) to start out
+(the complete graph). From this, we construct a \(B_i\) for each
+observation. Each \(\mathbf{x}_i\) will induce a subgraph
+\(g_i = G^*[V_i]\), where
+\(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\), while our domain
+knowledge takes the form of a constraint on edges, which will induce a
+family of subgraphs again. The ``family of subgraphs,'' in general,
+can't directly use the edge constraint to create
+\(B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\), because edges
+\(E_i\) are not directly observed. Instead, we model them as inducing a
+family \(\mathcal{C}_i\) belonging to the relevant class of graphs
+\(\mathcal{C}\) on \(V\), i.e.
+
+\[
+\begin{gathered}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\mathcal{V}\subseteq Vi\}\\
+E_i\in\{\mathcal{E}\subseteq\mathbf{P(E)}| g_i[\mathcal{E}]\in\mathcal{C}\}
+\end{gathered}
+\]
+
+In other words, the edges that gave rise to the node activations in a
+given observation must belong to a graph that in turn belongs to our
+class.
+
+Assuming we can define an associated measure for each \(\mu_i(c)\) on
+\(\mathcal{C}_i\), we are able to define a probability distribution over
+subgraphs in the class.\footnote{ This is certainly not a trivial
+  assumption, and might either be ill-defined or require techniques like
+  the Gumbel trick\autocite{GradientEstimationStochastic_Paulus2020} to
+  approximate, unless the partition function \(\mathbb{Z}\) has a closed
+  form, or \(\mu\) is already a probability measure on some
+  \(\sigma\)-algebra over \(\mathcal{C}\). Closed-form \(\mathcal{Z}\)
+  values on \(\mathcal{C}\) are known for a handful of graph classes,
+  such as trees.} Using notation similar to distributions over spanning
+trees in \textcite{EfficientComputationExpectations_Zmigrod2021}: \[
+\begin{gathered}
+p_i(c) = \frac{\mu_{\mathcal{C}}(c|\mathcal{V})}{\mathbb{Z}}\\
+\mathbb{Z} = \sum_{c\in\mathcal{C^V}} \mu_{\mathcal{C}}(c|\mathcal{V})
+\end{gathered}
+\]
+
+To further constrain the problem, let us assume that node activation is
+noiseless: any activated nodes were truly activated, and unactivated
+nodes were truly inactive (no false negative or false positive
+activations).\footnote{ Hidden nodes (unobserved nodes beyond the \(n\))
+  are outside the scope of this work, though could potentially be
+  implied for certain structures e.g.~when the metric is known to be
+  tree-like. \textcite{TreeIam_Sonthalia2020} use a greedy embedding
+  that minimizes distortion to estimate the need for added
+  \emph{Steiner} nodes.} If a set of nodes \(V_i\subseteq V\) were
+observed in the \(i\)th observation, this assumption narrows the
+distribution to only the subgraphs \(c\in\mathcal{C}^{V_i}\). This can
+be represented using the vectorization in
+Equation~\ref{eq-edge-vectors}, due to the one-to-one correspondence
+established, so that
+\begin{equation}\phantomsection\label{eq-edgevec-prob}{\mathbf{r}_i|\mathbf{x}_i \sim p_{\mathcal{C}}(c|V_i) }\end{equation}
+
+So we may not have an exact vector, but we have established a way to
+specify a family of edge vectors that could be responsible, along with a
+mechanism to sample them when a partition function is available or able
+to be approximated. Distribitions over graphs are nontrivial, with
+spanning trees being a major exception. Howeber, one way this might be
+accomplished is through random geometric graphs{[}CITE{]}, or possibly
+geometric spanners like Urqhart{[}CITE{]} and Relative Neighborhood
+{[}CITE{]} graphs on a random ``sprinkling'' of points.\\
+Also, the choice of a clique (implied by the inner product) is a trivial
+application of Equation~\ref{eq-edgevec-prob}, since that is equivalent
+to selecting the class of cliques on \(V_i\) nodes. This has only one
+element, making the complete graph the only possible selection, with
+probability 1.
+
+\subsection{Graph Unions as Desire
+Paths}\label{graph-unions-as-desire-paths}
+
+\begin{itemize}
+\tightlist
+\item
+  given a sample/MLE/MAP from each row's distribution
+\item
+  Use beta-bernoulli to estimate each edge's parameters, pairise indep.
+\item
+  graphs don't really exist, so we won't act like they do
+\item
+  approximate a network of paved sidewalks as a network of desire paths
+\item
+  the desirepaths that are ``ahead'' in foot traffic are the ones we
+  expect to be ``paved'' irl.
+\item
+  once traveled, more likely to be traveled again -\textgreater{}
+  arcsine distribution
+\end{itemize}
+
+\section{Tree \& Forest Distributions}\label{tree-forest-distributions}
 
 The class of diffusive processes we focus on ``spread'' from one node to
 another. If a node is activated, it is able to activate other nodes it
@@ -1700,7 +1810,7 @@ When network structure is known, the dynamics of random-walks are used
 to capture the network structure via sampling {[}LITTLEBALLOFFUR,
 etc{]}, estimate node importance's{[}PAGERANK{]}, or predict
 phase-changes in node states (e.g.~infected vs.~uninfected){[}SIR I
-think{]} In our case, Since we have been encoding the activations as
+think{]}. In our case, Since we have been encoding the activations as
 binary activation vectors, the ``jump'' information is
 lost---activations are ``emitted'' for observation only upon the random
 walker's initial visit. {[}CITE INVITE{]} In many cases, however, the
