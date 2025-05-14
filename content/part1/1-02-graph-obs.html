@@ -257,13 +257,13 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#graphs-as-incidence-structures" id="toc-graphs-as-incidence-structures" class="nav-link active" data-scroll-target="#graphs-as-incidence-structures">Graphs as incidence structures</a>
+  <li><a href="#sec-incidence-vec" id="toc-sec-incidence-vec" class="nav-link active" data-scroll-target="#sec-incidence-vec">Graphs as incidence structures</a>
   <ul class="collapse">
   <li><a href="#embedding-incidences-in-vector-space" id="toc-embedding-incidences-in-vector-space" class="nav-link" data-scroll-target="#embedding-incidences-in-vector-space">Embedding incidences in vector space</a></li>
   <li><a href="#inner-products-on-b" id="toc-inner-products-on-b" class="nav-link" data-scroll-target="#inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></a></li>
-  <li><a href="#metrological-considerations-interaction-vectors" id="toc-metrological-considerations-interaction-vectors" class="nav-link" data-scroll-target="#metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</a></li>
+  <li><a href="#edge-metrology-edge-vectors" id="toc-edge-metrology-edge-vectors" class="nav-link" data-scroll-target="#edge-metrology-edge-vectors">Edge Metrology, Edge Vectors</a></li>
   </ul></li>
-  <li><a href="#graphs-and-node-occurrences" id="toc-graphs-and-node-occurrences" class="nav-link" data-scroll-target="#graphs-and-node-occurrences">Graphs and node occurrences</a>
+  <li><a href="#generalized-node-occurrence-vectors" id="toc-generalized-node-occurrence-vectors" class="nav-link" data-scroll-target="#generalized-node-occurrence-vectors">Generalized node occurrence vectors</a>
   <ul class="collapse">
   <li><a href="#hyperedges-as-vectors-of-node-occurrence" id="toc-hyperedges-as-vectors-of-node-occurrence" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-node-occurrence">Hyperedges as vectors of node occurrence</a></li>
   <li><a href="#inner-product-on-hyperedges" id="toc-inner-product-on-hyperedges" class="nav-link" data-scroll-target="#inner-product-on-hyperedges">Inner product on Hyperedges</a></li>
@@ -302,16 +302,16 @@ G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. Kepner <em>et al.</em>, <span>“Mathematical foundations of the <span>GraphBLAS</span>,”</span> in <em>2016 <span>IEEE</span> high performance extreme computing conference (<span> HPEC</span>)</em>, Sep. 2016, pp. 1–9. doi: <a href="https://doi.org/10.1109/HPEC.2016.7761646">10.1109/HPEC.2016.7761646</a>.</div>
 </div><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
-</div><div id="fn1"><p><sup>1</sup>&nbsp; The <em>indicator function</em> <span class="math inline">\(\mathbf{1}_A(x)\)</span> is 1 for values of <span class="math inline">\(x\)</span> in the set <span class="math inline">\(A\)</span>, and 0 otherwise.</p></div></div><p>The <em>adjacency matrix</em> <span class="math inline">\(A\)</span> of <span class="math inline">\(G\)</span>, degree matrix <span class="math inline">\(D\)</span>, and graph/discrete Laplacian <span class="math inline">\(L\)</span> are then defined as:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
+</div><div id="fn1"><p><sup>1</sup>&nbsp; The <em>indicator function</em> <span class="math inline">\(\mathbf{1}_A(x)\)</span> is 1 for values of <span class="math inline">\(x\)</span> in the set <span class="math inline">\(A\)</span>, and 0 otherwise.</p></div></div><p>In incidence geometry terms, this would be similar to making two duplicate sets of the same nodes, and defining a graph as the set of incidences between nodes. The <em>adjacency matrix</em> <span class="math inline">\(A\)</span> of <span class="math inline">\(G\)</span>, degree matrix <span class="math inline">\(D\)</span>, and graph/discrete Laplacian <span class="math inline">\(L\)</span> are then defined as:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
 \begin{aligned}
 A(u,v) &amp; =\mathbf{1}_E((u,v)) \quad &amp;A : V\times V\rightarrow \mathbb{B} \\
 D(u,v) &amp; =\mathrm{diag}({\textstyle\sum}_V A(u,v))\quad &amp;D : V\times V\rightarrow \mathbb{N} \\
 L(u,v) &amp; = D(u,v) - A(u,v) \quad &amp;L : V\times V\rightarrow \mathbb{Z}
 \end{aligned}
 \]</span></p>
-<p>However, if edges and their recovery is so important to us, defining them explicitly as pairs of nodes can be problematic when we wish to estimate their existence (or not) when pairs of nodes co-occur. Additionally, we have to be very careful to distinguish whether our graph is <em>(un)directed</em>, <em>weighted</em>, <em>simple</em>, etc., and hope that the edge set has been filtered to a subset of <span class="math inline">\(N\times N\)</span> for each case. Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.</p>
-<section id="graphs-as-incidence-structures" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="graphs-as-incidence-structures">Graphs as incidence structures</h2>
+<p>However, if edges and their recovery is so important to us, defining them explicitly as nodes-node incidences can be problematic when we wish to estimate edge existence (or not), given noisy pairs of node co-occurrences. Additionally, we have to be very careful to distinguish whether our graph is <em>(un)directed</em>, <em>weighted</em>, <em>simple</em>, etc., and hope that the edge set has been filtered to a subset of <span class="math inline">\(N\times N\)</span> for each case. Instead, we propose a less ambiguous framework for vectorizing graphs, based on their underlying incidence structure.</p>
+<section id="sec-incidence-vec" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-incidence-vec">Graphs as incidence structures</h2>
 <p>Instead, we give edges their own set of identifiers, <span class="math inline">\(e\in E=\{1,\cdots \omega\}\)</span>. Now, define graphs as incidence structures between nodes and edges such that every edge is incident to either two nodes, or none:</p>
 <p><span id="eq-simple-incidence"><span class="math display">\[
 G = (V,E,\mathcal{I}) \quad s.t. \quad \mathcal{I} \subseteq E\times V
@@ -332,29 +332,33 @@ G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:
 <li>Weighted, directed graphs are supported on any scalar e.g.&nbsp;<span class="math inline">\(S=\mathbb{R}_{\neq0}\)</span></li>
 </ul>
 <p>If the “absence” of incidence needs to be modeled explicitly, a “null” stand-in (0,False) can be added to each <span class="math inline">\(S\)</span>, which is useful for representing each structure as arrays for use with linear algebra (i.e.&nbsp;<span class="math inline">\(\{0,1\}\)</span>,<span class="math inline">\(\{-1,0,-1\}\)</span>,<span class="math inline">\(\mathbb{R}^+_0\)</span>, and <span class="math inline">\(\mathbb{R}\)</span>, respectively). By doing so, we can also place an exact limit on the maximum possible size of <span class="math inline">\(\omega=\|E\|\)</span> in the simple graph case, and indicate edges by their unique ID, such that <span class="math inline">\(\mathcal{I}= E\times V\)</span> is no longer a subset relation for <span class="math inline">\(E=\{1,\cdots,{n\choose2} \}\)</span>. Instead of existence in <span class="math inline">\(\mathcal{I}\)</span>, we explicitly use incidence relation <span class="math inline">\(S\)</span> to tell us whether each possible edge “exists” or not, simplifying our graph definition further<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>:</p>
-<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp; if we allow multi-edges, then </p></div></div><p><span id="eq-incidence-graph"><span class="math display">\[
-\begin{aligned}
-G  = (V,E,B) \quad s.t. \quad &amp; B : E\times V \rightarrow S\\
-&amp; v \in V = \{1,\cdots, n\}\quad \\
-&amp; e \in E = \left\{1,\cdots, {n\choose 2} \right\}
-\end{aligned}
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp; if we allomulti-edges , then </p></div></div><p><span id="eq-incidence-graph"><span class="math display">\[
+\begin{gathered}
+G  = (V,E,B) \quad s.t. \quad B : E\times V \rightarrow S\\
+v \in V = \{1,\cdots, n\}\quad \\
+e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{gathered}
 \tag{3.3}\]</span></span></p>
 <p>The representation of <span class="math inline">\(B\)</span> in <a href="#eq-incidence-graph" class="quarto-xref">Equation&nbsp;<span>3.3</span></a> bears a remarkable similarity to our original description of design matrices in <a href="1-01-matrix-meas.html#eq-design-mat" class="quarto-xref">Equation&nbsp;<span>2.1</span></a>. In fact, as a matrix, <span class="math inline">\(B(e,v)\)</span> is called the <em>incidence</em> matrix: every row has two non-zero entries, with every column containing a number of non-zero entries equal to that corresponding node’s degree in <span class="math inline">\(G\)</span>. Traditionally, we use an <em>oriented</em> incidence matrix, such that each row has exactly one positive (non-zero) value, and one negative (non-zero) value.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Even for undirected graphs, the selection of <em>which entry</em> is positive or negative is left to be ambiguous, since much of the math used later is symmetric w.r.t. direction<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>.</p>
 <div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp; In fact, this would make B^*(v,e) equivalent to a <em>graphical matroid</em>, another common formalism that generalizes graph-like structures to vector space representations.</p></div><div id="fn6"><p><sup>6</sup>&nbsp;though not always!</p></div></div><section id="embedding-incidences-in-vector-space" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="embedding-incidences-in-vector-space">Embedding incidences in vector space</h3>
 <p>A formalism for graphs that starts with incidence matrices would benefit from a <em>canonical</em> oriented incidence matrix, rather than the family that is ambiguous w.r.t. edge orientation. To start, we can be more precise by selecting each row(edge) vector, and partitioning it into two: one for each non-zero column (node) that edge is incident to. Every incidence can be represented individually as standard basis vector <span class="math inline">\(\mathbf{e}\)</span> in the feature space of <span class="math inline">\(B\)</span>, scaled by the corresponding value of <span class="math inline">\(S\)</span>.</p>
 <p>Let <span class="math inline">\(V_e\)</span> be the set of nodes with (non-zero) incidence to edge <span class="math inline">\(e\)</span>. Then the incidence vectors are:<br>
-<span id="eq-incidence-vec"><span class="math display">\[\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e \tag{3.4}\]</span></span> And the (unoriented) incidence matrix vectors are recovered as sums over the incidence vectors for each edge: <span id="eq-incidence-edge-sum"><span class="math display">\[\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v) \tag{3.5}\]</span></span></p>
+<span id="eq-incidence-vec"><span class="math display">\[
+\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e
+\tag{3.4}\]</span></span> And the (unoriented) incidence matrix vectors are recovered as sums over the incidence vectors for each edge: <span id="eq-incidence-edge-sum"><span class="math display">\[
+\mathbf{b}_e = \sum_{v\in V_e} \delta_e(v)
+\tag{3.5}\]</span></span></p>
 <p>A traditional approach might then define undirected graphs as equivalent, in some sense, to multidigraphs, where each edge is really two directed edges, in opposing directions. This does allow the matrix <span class="math inline">\(B\)</span> to have the correct range for its entries in this formalism (the directed graph range, <span class="math inline">\(S=\{-1,0,1\}\)</span>), and the edge identity based on sums would hold. However, the resulting set of incidences would have twice the number of edges than our combinatoric limit for simple graphs, and prevent the more elegant definition of graph types through the set <span class="math inline">\(\mathbf{S}\)</span>. Plus, it would necessitate averaging of weights over different edge ID’s to arrive at a single undirected “edge weight”, and many other implementation details that make keeping track of specifics difficult for practitioners.</p>
 <p>Instead, we would like a canonical oriented distance matrix, which can be derived from the vectorized incidences in the undirected range of <span class="math inline">\(B\)</span> (the standard basis vectors). Without loss of generality, let <span class="math inline">\(u_e,v_e\in V_e\)</span> be nodes such that <span class="math inline">\(u&lt;v\)</span>.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Using this, we can unambiguously define a <em>partition</em> <span class="math inline">\(B(e,\cdot)=B(e,u_e) + B(e,v_e)\)</span> between incidences on <span class="math inline">\(e\)</span>, along with a new derived incidence, <span class="math inline">\(B_o\)</span>, which has oriented rows like: <span class="math display">\[B_o(e,\cdot)=\mathbf{b}^o_e = \delta_e(u)-\delta_e(v)\]</span> In other words, while the unoriented incidence matrix is the “foundational” representation for graphs in our formalism, the (canonical) oriented one can be derived, even if negative incidence values are not in <span class="math inline">\(\mathbb{S}\)</span>.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;the inequality is strict because self-loops are not allowed.</p></div><div id="fn8"><p><sup>8</sup>&nbsp; This works as long as we are in at least a ring, since semirings in general do not need to define additive inverse operations. In this case we would limit ourselves to the oriented incidence.</p></div><div id="ref-ParallelEuclideandistance_Angeletti2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[3] </div><div class="csl-right-inline">M. Angeletti, J.-M. Bonny, and J. Koko, <span>“<span class="nocase">Parallel Euclidean distance matrix computation on big datasets</span>,”</span> 2019. Available: <a href="https://hal.science/hal-02047514">https://hal.science/hal-02047514</a></div>
 </div></div><p>But, now that we have removed the information on “which nodes an edge connects” from our definition of edges (since every edge is a scalar ID), how do we construct <span class="math inline">\(V_e\)</span> without a circular dependency on <span class="math inline">\(B\)</span> to find non-zero entries? Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes in <span class="math inline">\(V_e\)</span>, without searching over the entirety of <span class="math inline">\(B\)</span>’s domain. Using an identity from <span class="citation" data-cites="ParallelEuclideandistance_Angeletti2019"><a href="#ref-ParallelEuclideandistance_Angeletti2019" role="doc-biblioref">[3]</a></span>, we have a closed-form equation both to retrieve the IDs of nodes <span class="math inline">\(u,v\)</span> (given an edge <span class="math inline">\(e\)</span>), and an edge <span class="math inline">\(e\)</span> (given two nodes <span class="math inline">\(u,v\)</span>), for any simple graph with <span class="math inline">\(n\)</span> vertices. <span id="eq-sq-id"><span class="math display">\[
-\begin{aligned}
-    u_n(e) &amp; = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
-    v_n(e) &amp; = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
-    e_n(u,v) &amp; = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
-\end{aligned}
+\begin{gathered}
+    u_n(e) = n - 2 - \left\lfloor\frac{\sqrt{-8e + 4n(n - 1) - 7}-1}{2}\right\rfloor\\
+    v_n(e) = e + u_n(e) + 1 -\frac{1}{2} \left(n (n - 1) + (n - u_n(e))^2 - n+u_n(e)\right)\\
+    e_n(u,v) = \frac{1}{2}\left(n(n - 1) - ((n - u)^2 - n+u)\right) + v - u - 1
+\end{gathered}
 \tag{3.6}\]</span></span> Our ease-of-calculation lets us drop some of the excess notation and refer to our (un)oriented incidence matrices in terms of the incidences of each edge on their <span class="math inline">\(u\)</span> or <span class="math inline">\(v\)</span>, directly. <span class="math display">\[
 B = B_u + B_e \qquad B_o \equiv B_u - B_v
 \]</span></p>
@@ -362,32 +366,44 @@ B = B_u + B_e \qquad B_o \equiv B_u - B_v
 </section>
 <section id="inner-products-on-b" class="level3">
 <h3 class="anchored" data-anchor-id="inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></h3>
-<p>With all of this background, the other representations of graphs can seen as derivations from the canonical incidence matrices. The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for orineted edge vectors, is also a squared distance matrix between all pairs of incidences on <span class="math inline">\((u,v)\)</span>. The other identities are simply consequences of the polarization identity, since the Laplacian is the also defined as the gram matrix on oriented incidence vectors: <span id="eq-laplacian"><span class="math display">\[
+<p>With all of this background, the other representations of graphs can seen as derivations from the canonical incidence matrices. The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for oriented edge vectors, is also related to the gram matrix between all pairs of incidences on <span class="math inline">\((u,v)\)</span>. The other identities are simply consequences of the polarization identity: <span id="eq-laplacian"><span class="math display">\[
 \begin{split}
 L &amp; = B_o^TB_o\\
   &amp; = \|B_u - B_v \|^2 \\
   &amp; = 2\|B_u\|^2 +2\|B_v\|^2 - \|B_u + B_v \|^2 \\
   &amp; = 2D - B^TB = D-A
 \end{split}
-\tag{3.7}\]</span></span> <a href="1-01-matrix-meas.html#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.3</span></a></p>
-<p>We take such pains taken to derive the traditional graph objects because it goes to show how fundamental the <em>incidences</em> are as units of observation. Unlike <a href="1-01-matrix-meas.html#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.3</span></a>, <a href="#eq-laplacian" class="quarto-xref">Equation&nbsp;<span>3.7</span></a> is a distance between two distinct sets of incidences (<span class="math inline">\(e\)</span> on <span class="math inline">\(u\)</span>, ) (not all pairwise combinations within a set). Laplacians are therefore sub-matrices of a larger distance matrix, where each incidence vector is a single standard basis vector, or put another way, <em>gram matrix</em> over incidences <span class="math display">\[
-G_{\mathcal{I}}=
-\begin{bmatrix} B_u &amp; B_v \end{bmatrix}\begin{bmatrix}B_u\\B_v\end{bmatrix}
-\]</span> contains the laplacian in the off-diagonal blocks. Laplacian as inner product on incidence observations. Associated objects (degree vector, o)</p>
-<p>Rescaling to achieve normaalization.</p>
-<p>Use to define kernels (and application e.g.&nbsp;soft-cosine measure)</p>
-<p>…</p>
+\tag{3.7}\]</span></span></p>
+<!-- @eq-sq-distance -->
+<!-- We take such pains taken to derive the traditional graph objects because it goes to show how fundamental the _incidences_ are as units of observation. -->
+<!-- Unlike @eq-sq-distance, @eq-laplacian is a distance between two distinct sets of incidences ($e$ on $u$, $v$) (not all pairwise combinations within a set). -->
+<!-- This explains the non-zero entries along the diagonal, since the set of $u$ and $v$ over $E$ -->
+<!-- Laplacians are therefore sub-matrices of a larger distance matrix, where each incidence vector is a single standard basis vector, or put another way, _gram matrix_ over incidences -->
+<!-- $$ -->
+<!-- G_{\mathcal{I}}= -->
+<!-- \begin{bmatrix} B_u & B_v \end{bmatrix}\begin{bmatrix}B_u\\B_v\end{bmatrix} -->
+<!-- $$ -->
+<!-- contains the signless laplacian $D+A$ in its off-diagonal blocks. -->
+<!-- ### Normed spaces and Laplacians -->
+<p>The Laplacian is often used in defining random-walks and markov chains, such that the degree of each node should be normalized to 1, which can be accomplished either by row- or column-normalizing it: <span class="math inline">\(L^{\textrm{rw}}=D^{-1}L\)</span> or <span class="math inline">\(LD^{-1}\)</span>, respectively. If this degree-normalization is desired without de-symmetrizing <span class="math inline">\(L\)</span>, we can still perform an operation similar to normed kernels in <a href="1-01-matrix-meas.html#eq-norm-diag" class="quarto-xref">Equation&nbsp;<span>2.6</span></a>, called the symmetric normalized Laplacian. <span id="eq-norm-laplacian"><span class="math display">\[
+\tilde{L} = D^{-\tfrac{1}{2}}LD^{-\tfrac{1}{2}} = \frac{L(u,v)}{\sqrt{L(u,u)^2L(v,v)^2}}
+\tag{3.8}\]</span></span></p>
 </section>
-<section id="metrological-considerations-interaction-vectors" class="level3">
-<h3 class="anchored" data-anchor-id="metrological-considerations-interaction-vectors">Metrological Considerations: Interaction Vectors</h3>
-<p>TODO</p>
-<p>Strictly speaking, we can’t say that nodes are directly observed in this space… edges are. Collections of nodes are measured two-at-a-time (one-per-edge being traversed).</p>
-<p>Another way to approach is to view inner products as a sum of outer products. A each edge uniquely corresponds to 2 nodes (in a simple graph). Use triangle unfolding for closed form bijection.</p>
-<p>Unrolling 3D tensor of subgraphs along eads to a secondary representation of graphs as an <em>edgelist</em>, having binary activation vectors on edges rather than nodes. Then each observation in this model is necessarily a set of activated edges. The non-zero (visited) nodes are found using the incidence matrix as an operator.</p>
+<section id="edge-metrology-edge-vectors" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="edge-metrology-edge-vectors">Edge Metrology, Edge Vectors</h3>
+<p>Implicitly in the use of <span class="math inline">\(B\)</span> with design matrix mechanics from the previous chapter is a treatment of edges as “observations” (the data space), and nodes as features. If an edge <em>is</em> an observation, then unfortunately we cannot really quantify uncertainty over repeated measurements of edges with the simple mechanics from <a href="1-01-matrix-meas.html#sec-counting" class="quarto-xref"><span>Additive Smoothing</span></a> (because that edge <em>is</em> that corresponding observation, and IDs are not duplicated).</p>
+<p>So far we have seen two ways of representing the entire graph in matrix form: Incidence matrix <span class="math inline">\(B\)</span> (or <span class="math inline">\(B_o\)</span>), and the inner-product matrices derived from it (<span class="math inline">\(L\)</span>, <span class="math inline">\(A\)</span>). Since we can recover node IDs from edge IDs by <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>, we can use a single vector to represent an entire graph structure by it’s edges alone. Then a data dimension for vectors in “edge space” can once again represent observations, with nodes implied by <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>. This is either done by contracting <span class="math inline">\(B\)</span> along the nodes (columns) dimension, or by <em>unrolling</em> the upper triangle of <span class="math inline">\(L\)</span> or <span class="math inline">\(A\)</span> according to <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> If each vector represents a value of <span class="math inline">\(B\)</span> associated with a corresponding edge, then <span class="math inline">\(m\)</span> of these vectors would be equivalent to <span class="math inline">\(m\)</span> observations of <span class="math inline">\({n \choose 2}\)</span> edges on the same set of <span class="math inline">\(n\)</span> nodes. Formally, for the <span class="math inline">\(i\)</span>th observed structure on <span class="math inline">\(n\)</span> nodes: <span id="eq-edge-vectors"><span class="math display">\[
+\begin{gathered}
+R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\}) \\
+\quad \textrm{s.t.} \quad R:I\times E \rightarrow \mathbb{S}\\
+i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
+n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
+\end{gathered}
+\tag{3.9}\]</span></span> This representation formalizes what practitioners call “edgelists” into a data structure that can unambiguously distinguish directed, undirected, and weighted graphs. In addition, it allows for repeated measurements of edges over the same set of nodes, while flexibly growing when new nodes arrive.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp; <a href="#eq-edge-vectors" class="quarto-xref">Equation&nbsp;<span>3.9</span></a> uses an averaging operation to accomplish the contraction, but any reduction over the two nodes shared by an edge would accomplish the same, especially since we rarely see separate values for edge weight per-node, the way incidences can.</p></div><div id="fn10"><p><sup>10</sup>&nbsp; For instance, say observations are stored as sparse entries via <span class="math inline">\(R\)</span>, and a new node arrives. First, the participating nodes can be recovered in a vectorized manner through <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>. Then, a new node id increases <span class="math inline">\(n\)</span>, followed by reassignment of the edge IDs with <span class="math inline">\(e_n(u,v)\)</span>.</p></div></div></section>
 </section>
-</section>
-<section id="graphs-and-node-occurrences" class="level2">
-<h2 class="anchored" data-anchor-id="graphs-and-node-occurrences">Graphs and node occurrences</h2>
+<section id="generalized-node-occurrence-vectors" class="level2">
+<h2 class="anchored" data-anchor-id="generalized-node-occurrence-vectors">Generalized node occurrence vectors</h2>
 <p>TODO</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -462,6 +478,7 @@ Figure&nbsp;3.1
 <ul>
 <li>soft cosine</li>
 <li>kernels on graphs (incl.&nbsp;coscia euclidean)</li>
+<li>Linear operator incidences</li>
 <li>Retrieving one from the other is hard.</li>
 </ul>
 

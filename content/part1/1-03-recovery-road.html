@@ -208,16 +208,29 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#choosing-a-structure-recovery-method" id="toc-choosing-a-structure-recovery-method" class="nav-link active" data-scroll-target="#choosing-a-structure-recovery-method">Choosing a structure recovery method</a></li>
-  <li><a href="#organizing-recovery-methods" id="toc-organizing-recovery-methods" class="nav-link" data-scroll-target="#organizing-recovery-methods">Organizing Recovery Methods</a>
+  <li><a href="#organizing-recovery-methods" id="toc-organizing-recovery-methods" class="nav-link active" data-scroll-target="#organizing-recovery-methods">Organizing Recovery Methods</a></li>
+  <li><a href="#counting-projection-and-co-occurrence" id="toc-counting-projection-and-co-occurrence" class="nav-link" data-scroll-target="#counting-projection-and-co-occurrence">Counting, Projection, and Co-Occurrence</a>
   <ul class="collapse">
-  <li><a href="#observing-nodes-vs-edges" id="toc-observing-nodes-vs-edges" class="nav-link" data-scroll-target="#observing-nodes-vs-edges">Observing Nodes vs Edges</a></li>
-  <li><a href="#embeddings-inner-products-preprocessing" id="toc-embeddings-inner-products-preprocessing" class="nav-link" data-scroll-target="#embeddings-inner-products-preprocessing">Embeddings, Inner Products, &amp; Preprocessing</a></li>
+  <li><a href="#cosine-similarity" id="toc-cosine-similarity" class="nav-link" data-scroll-target="#cosine-similarity">Cosine Similarity</a></li>
+  <li><a href="#hyperbolic-projection" id="toc-hyperbolic-projection" class="nav-link" data-scroll-target="#hyperbolic-projection">Hyperbolic Projection</a></li>
+  <li><a href="#transformations-of-counts" id="toc-transformations-of-counts" class="nav-link" data-scroll-target="#transformations-of-counts">Transformations of Counts</a></li>
   </ul></li>
-  <li><a href="#tracing-information-loss-paths" id="toc-tracing-information-loss-paths" class="nav-link" data-scroll-target="#tracing-information-loss-paths">Tracing Information Loss Paths</a>
+  <li><a href="#resource-and-information-flow" id="toc-resource-and-information-flow" class="nav-link" data-scroll-target="#resource-and-information-flow">Resource and Information Flow</a>
   <ul class="collapse">
-  <li><a href="#table-of-existing-approaches" id="toc-table-of-existing-approaches" class="nav-link" data-scroll-target="#table-of-existing-approaches">Table of Existing Approaches</a></li>
-  <li><a href="#a-path-forward" id="toc-a-path-forward" class="nav-link" data-scroll-target="#a-path-forward">A Path Forward</a></li>
+  <li><a href="#resource-projection" id="toc-resource-projection" class="nav-link" data-scroll-target="#resource-projection">Resource Projection</a></li>
+  <li><a href="#doubly-stochastic-and-eot" id="toc-doubly-stochastic-and-eot" class="nav-link" data-scroll-target="#doubly-stochastic-and-eot">Doubly-stochastic and eOT</a></li>
+  <li><a href="#hss" id="toc-hss" class="nav-link" data-scroll-target="#hss">HSS</a></li>
+  </ul></li>
+  <li><a href="#inverse-problems-pgm-structure" id="toc-inverse-problems-pgm-structure" class="nav-link" data-scroll-target="#inverse-problems-pgm-structure">Inverse Problems &amp; PGM Structure</a>
+  <ul class="collapse">
+  <li><a href="#chow-liu" id="toc-chow-liu" class="nav-link" data-scroll-target="#chow-liu">Chow Liu</a></li>
+  <li><a href="#shrinkage-glasso" id="toc-shrinkage-glasso" class="nav-link" data-scroll-target="#shrinkage-glasso">Shrinkage &amp; GLASSO</a></li>
+  <li><a href="#stability-selection" id="toc-stability-selection" class="nav-link" data-scroll-target="#stability-selection">stability selection</a></li>
+  </ul></li>
+  <li><a href="#a-path-forward" id="toc-a-path-forward" class="nav-link" data-scroll-target="#a-path-forward">A Path Forward</a>
+  <ul class="collapse">
+  <li><a href="#tracing-information-loss-paths" id="toc-tracing-information-loss-paths" class="nav-link" data-scroll-target="#tracing-information-loss-paths">Tracing Information Loss Paths</a></li>
+  <li><a href="#something-new" id="toc-something-new" class="nav-link" data-scroll-target="#something-new">Something New</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -244,40 +257,94 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="choosing-a-structure-recovery-method" class="level2">
-<h2 class="anchored" data-anchor-id="choosing-a-structure-recovery-method">Choosing a structure recovery method</h2>
+<section id="organizing-recovery-methods" class="level2">
+<h2 class="anchored" data-anchor-id="organizing-recovery-methods">Organizing Recovery Methods</h2>
+<p>i.e.&nbsp;Network Recovery as an Inverse Problem, and what information is had at each point.</p>
+<ul>
+<li>Observing Nodes vs Edges</li>
+<li>Embeddings and Inner Products</li>
+<li>Preprocessing</li>
+</ul>
+</section>
+<section id="counting-projection-and-co-occurrence" class="level2">
+<h2 class="anchored" data-anchor-id="counting-projection-and-co-occurrence">Counting, Projection, and Co-Occurrence</h2>
+<p>Basic Co-occurrence, and friends. Gram is uncentered covariance.</p>
+<p>All estimate some kind of rate</p>
+<section id="cosine-similarity" class="level3">
+<h3 class="anchored" data-anchor-id="cosine-similarity">Cosine Similarity</h3>
+<ul>
+<li>Ochiai and uncentered correlation</li>
+<li>angles don’t care about length</li>
+<li>geometric mean on cond prob, actually</li>
+<li>that means pseudocounts can make sense</li>
+</ul>
+</section>
+<section id="hyperbolic-projection" class="level3">
+<h3 class="anchored" data-anchor-id="hyperbolic-projection">Hyperbolic Projection</h3>
+<ul>
+<li>reweights by degree in original BP</li>
+<li>mention other ways</li>
+</ul>
+</section>
+<section id="transformations-of-counts" class="level3">
+<h3 class="anchored" data-anchor-id="transformations-of-counts">Transformations of Counts</h3>
+<p>Come from contingency tables, like CS.</p>
+<ul>
+<li>odds-ratio</li>
+<li>Yule’s Q,Y</li>
+<li>Mutual Info</li>
+</ul>
+</section>
+</section>
+<section id="resource-and-information-flow" class="level2">
+<h2 class="anchored" data-anchor-id="resource-and-information-flow">Resource and Information Flow</h2>
+<p>Backboning</p>
+<p>Intuition that the most important edges are on geodesics for many paths</p>
+<section id="resource-projection" class="level3">
+<h3 class="anchored" data-anchor-id="resource-projection">Resource Projection</h3>
+</section>
+<section id="doubly-stochastic-and-eot" class="level3">
+<h3 class="anchored" data-anchor-id="doubly-stochastic-and-eot">Doubly-stochastic and eOT</h3>
+</section>
+<section id="hss" class="level3">
+<h3 class="anchored" data-anchor-id="hss">HSS</h3>
+</section>
+</section>
+<section id="inverse-problems-pgm-structure" class="level2">
+<h2 class="anchored" data-anchor-id="inverse-problems-pgm-structure">Inverse Problems &amp; PGM Structure</h2>
+<section id="chow-liu" class="level3">
+<h3 class="anchored" data-anchor-id="chow-liu">Chow Liu</h3>
+<p>Global Tree structure from MI</p>
+</section>
+<section id="shrinkage-glasso" class="level3">
+<h3 class="anchored" data-anchor-id="shrinkage-glasso">Shrinkage &amp; GLASSO</h3>
+</section>
+<section id="stability-selection" class="level3">
+<h3 class="anchored" data-anchor-id="stability-selection">stability selection</h3>
 <blockquote class="blockquote">
 <p>Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve</p>
 </blockquote>
 </section>
-<section id="organizing-recovery-methods" class="level2">
-<h2 class="anchored" data-anchor-id="organizing-recovery-methods">Organizing Recovery Methods</h2>
-<p>i.e.&nbsp;Network Recovery as an Inverse Problem, and what information is had at each point.</p>
+</section>
+<section id="a-path-forward" class="level2">
+<h2 class="anchored" data-anchor-id="a-path-forward">A Path Forward</h2>
+<section id="tracing-information-loss-paths" class="level3">
+<h3 class="anchored" data-anchor-id="tracing-information-loss-paths">Tracing Information Loss Paths</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="../images/adjoint-cheatsheet.png" class="img-fluid figure-img"></p>
 <figcaption>Relating Graphs and Hypergraph/bipartite structures as adjoint operators</figcaption>
 </figure>
 </div>
-<section id="observing-nodes-vs-edges" class="level3">
-<h3 class="anchored" data-anchor-id="observing-nodes-vs-edges">Observing Nodes vs Edges</h3>
-</section>
-<section id="embeddings-inner-products-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="embeddings-inner-products-preprocessing">Embeddings, Inner Products, &amp; Preprocessing</h3>
-</section>
-</section>
-<section id="tracing-information-loss-paths" class="level2">
-<h2 class="anchored" data-anchor-id="tracing-information-loss-paths">Tracing Information Loss Paths</h2>
-<section id="table-of-existing-approaches" class="level3">
-<h3 class="anchored" data-anchor-id="table-of-existing-approaches">Table of Existing Approaches</h3>
+<p>Table of Existing Approaches</p>
 <ul>
 <li>Observation-level loss (starting with the inner product or kernel)</li>
 <li>Non-generative model loss (no projection of data into model space)</li>
 <li>no uncertainty quantification</li>
 </ul>
 </section>
-<section id="a-path-forward" class="level3">
-<h3 class="anchored" data-anchor-id="a-path-forward">A Path Forward</h3>
+<section id="something-new" class="level3">
+<h3 class="anchored" data-anchor-id="something-new">Something New</h3>
 <p>Sorting algorithms… <em>none address all three!</em></p>
 <p>i.e.&nbsp;MOTIVATES FOREST PURSUIT</p>
 
