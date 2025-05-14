@@ -160,7 +160,7 @@ Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
 $$
 For ease-of-use, we will assume the standard field for any given set $(\mathbb{S},+,\times)$ if not specified otherwise, which recovers standard inner products $\langle\cdot,\cdot\rangle$.
 However, @MathematicalfoundationsGraphBLAS_Kepner2016 illustrates the usefulness of various fields (or semirings).
-They allow linear-algebraic representation of many graph operations, such as shortest paths through inner products over $(\mathbb{R}\cup -\inf,\textrm{min}, +)$.
+They allow linear-algebraic representation of many graph operations, such as shortest paths through inner products over $(\mathbb{R}\cup -\infty,\textrm{min}, +)$.
 This works because discrete/boolean edge weights will not accumulate extra strength beyond 1 under contraction over observations.
 
 
@@ -211,11 +211,11 @@ This normalization should be familiar as the way cosine similarities and correla
 
 Rather than how "close" or "far" to points are in vector space, which is described with the kernels and distances above, whether something "touches"---or, is incident to---something else is usually described abstractly as an _incidence structure_.
 This is an abstract way to describe how things "touch", such as when a set of points lie on a line/plane, or nodes touch an edge.
-We say an incidence structure is a triple of sets called (for historical reasons) _points_ $\mathcal{P}$, _lines_ $\mathcal{L}$, and _flags_ $\mathcal{I}$.[@Incidencegeometry_Moorhouse2007]
-$$(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}$$
+We say an incidence structure is a triple of sets called (for historical reasons) _points_ $\mathfrak{P}$, _lines_ $\mathfrak{L}$, and _flags_ $\mathfrak{I}$.[@Incidencegeometry_Moorhouse2007]
+$$(\mathfrak{P,L,I})\quad \mathfrak{I}\subseteq \mathfrak{P}\times\mathfrak{L}$$
 
 Representing these as matrices will be further explored in @sec-incidence-vec.
-But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of $\mathcal{I}$, is a very different question from estimating the similarity/distance between two entities in a vector space. 
+But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of $\mathfrak{I}$, is a very different question from estimating the similarity/distance between two entities in a vector space. 
 
 In statistics, such discrete structures usually arise when we are concerned with direct dependence from indirect.
 Take as an example a set of masses connected together by springs.
@@ -227,9 +227,9 @@ If we hold all but two masses still, and moving one doesn't move the other, then
 This idea gets formalized as probabilistic graphical models, which are networks that define "incidence" between two variables as conditional dependence.
 Letting the random variables in the column-space of $X$ be $A,B$ and the remaining columns be $C=X(\cdot,J\setminus \{A,B\})$, then
 $$
-P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
+P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak{I}
 $${#eq-cond-indep}
-for a set of incidences $\mathcal{I}$ defining a PGM that was sampled as $X$.  
+for a set of incidences $\mathfrak{I}$ defining a PGM that was sampled as $X$.  
 
 
 

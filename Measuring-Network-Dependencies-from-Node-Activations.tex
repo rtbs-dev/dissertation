@@ -866,7 +866,7 @@ standard inner products \(\langle\cdot,\cdot\rangle\). However,
 \textcite{MathematicalfoundationsGraphBLAS_Kepner2016} illustrates the
 usefulness of various fields (or semirings). They allow linear-algebraic
 representation of many graph operations, such as shortest paths through
-inner products over \((\mathbb{R}\cup -\inf,\textrm{min}, +)\). This
+inner products over \((\mathbb{R}\cup -\infty,\textrm{min}, +)\). This
 works because discrete/boolean edge weights will not accumulate extra
 strength beyond 1 under contraction over observations.
 
@@ -952,14 +952,14 @@ described abstractly as an \emph{incidence structure}. This is an
 abstract way to describe how things ``touch'', such as when a set of
 points lie on a line/plane, or nodes touch an edge. We say an incidence
 structure is a triple of sets called (for historical reasons)
-\emph{points} \(\mathcal{P}\), \emph{lines} \(\mathcal{L}\), and
-\emph{flags} \(\mathcal{I}\).\autocite{Incidencegeometry_Moorhouse2007}
-\[(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}\]
+\emph{points} \(\mathfrak{P}\), \emph{lines} \(\mathfrak{L}\), and
+\emph{flags} \(\mathfrak{I}\).\autocite{Incidencegeometry_Moorhouse2007}
+\[(\mathfrak{P,L,I})\quad \mathfrak{I}\subseteq \mathfrak{P}\times\mathfrak{L}\]
 
 Representing these as matrices will be further explored in
 Section~\ref{sec-incidence-vec}. But, the discrete nature of these
 incidence sets makes it clear that estimating the size and elements of
-\(\mathcal{I}\), is a very different question from estimating the
+\(\mathfrak{I}\), is a very different question from estimating the
 similarity/distance between two entities in a vector space.
 
 In statistics, such discrete structures usually arise when we are
@@ -983,8 +983,8 @@ networks that define ``incidence'' between two variables as conditional
 dependence. Letting the random variables in the column-space of \(X\) be
 \(A,B\) and the remaining columns be \(C=X(\cdot,J\setminus \{A,B\})\),
 then \begin{equation}\phantomsection\label{eq-cond-indep}{
-P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
-}\end{equation} for a set of incidences \(\mathcal{I}\) defining a PGM
+P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak{I}
+}\end{equation} for a set of incidences \(\mathfrak{I}\) defining a PGM
 that was sampled as \(X\).
 
 {[}SPRING GRAPHIC?{]}
@@ -1704,16 +1704,17 @@ can't directly use the edge constraint to create
 family \(\mathcal{C}_i\) belonging to the relevant class of graphs
 \(\mathcal{C}\) on \(V\), i.e.
 
-\[
+\begin{equation}\phantomsection\label{eq-subgraph-family}{
 \begin{gathered}
 \mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\mathcal{V}\subseteq Vi\}\\
-E_i\in\{\mathcal{E}\subseteq\mathbf{P(E)}| g_i[\mathcal{E}]\in\mathcal{C}\}
+E_i\in\{\mathcal{E}\subseteq\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
 \end{gathered}
-\]
+}\end{equation}\footnote{\(\mathcal{P}(A)\) is the \emph{powerset} of
+  \(A\), i.e.~the set of all subsets of \(A\).}
 
-In other words, the edges that gave rise to the node activations in a
-given observation must belong to a graph that in turn belongs to our
-class.
+In other words, the edges that ``caused'' to the node activations in a
+given observation must \emph{together} belong to a graph that, in turn,
+belongs to our desired class.
 
 Assuming we can define an associated measure for each \(\mu_i(c)\) on
 \(\mathcal{C}_i\), we are able to define a probability distribution over
@@ -1724,13 +1725,22 @@ subgraphs in the class.\footnote{ This is certainly not a trivial
   form, or \(\mu\) is already a probability measure on some
   \(\sigma\)-algebra over \(\mathcal{C}\). Closed-form \(\mathcal{Z}\)
   values on \(\mathcal{C}\) are known for a handful of graph classes,
-  such as trees.} Using notation similar to distributions over spanning
-trees in \textcite{EfficientComputationExpectations_Zmigrod2021}: \[
+  such as the space of spanning trees, \(\mathcal{C}=\mathcal{T}\).
+  However, another way this might be accomplished is through random
+  geometric graphs{[}CITE{]}, or geometric spanners like
+  Urqhart{[}CITE{]} and Relative Neighborhood {[}CITE{]} graphs on a
+  ``sprinkling'' of points that preserves their observed pairwise
+  distances.\\
+  This is further discussed in Section~\ref{sec-future-hyperbolic}.}
+Using notation similar to distributions over spanning trees in
+\textcite{EfficientComputationExpectations_Zmigrod2021}:
+
+\begin{equation}\phantomsection\label{eq-subgraph-prob}{
 \begin{gathered}
-p_i(c) = \frac{\mu_{\mathcal{C}}(c|\mathcal{V})}{\mathbb{Z}}\\
-\mathbb{Z} = \sum_{c\in\mathcal{C^V}} \mu_{\mathcal{C}}(c|\mathcal{V})
+p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
+\mathbb{Z}_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
 \end{gathered}
-\]
+}\end{equation}
 
 To further constrain the problem, let us assume that node activation is
 noiseless: any activated nodes were truly activated, and unactivated
@@ -1746,21 +1756,21 @@ distribution to only the subgraphs \(c\in\mathcal{C}^{V_i}\). This can
 be represented using the vectorization in
 Equation~\ref{eq-edge-vectors}, due to the one-to-one correspondence
 established, so that
-\begin{equation}\phantomsection\label{eq-edgevec-prob}{\mathbf{r}_i|\mathbf{x}_i \sim p_{\mathcal{C}}(c|V_i) }\end{equation}
+\begin{equation}\phantomsection\label{eq-edgevec-prob}{\mathbf{r}_i|\mathbf{x}_i \sim p_i(c) }\end{equation}
 
 So we may not have an exact vector, but we have established a way to
-specify a family of edge vectors that could be responsible, along with a
-mechanism to sample them when a partition function is available or able
-to be approximated. Distribitions over graphs are nontrivial, with
-spanning trees being a major exception. Howeber, one way this might be
-accomplished is through random geometric graphs{[}CITE{]}, or possibly
-geometric spanners like Urqhart{[}CITE{]} and Relative Neighborhood
-{[}CITE{]} graphs on a random ``sprinkling'' of points.\\
-Also, the choice of a clique (implied by the inner product) is a trivial
-application of Equation~\ref{eq-edgevec-prob}, since that is equivalent
-to selecting the class of cliques on \(V_i\) nodes. This has only one
-element, making the complete graph the only possible selection, with
-probability 1.
+specify a family of edge vectors that could be responsible. With
+\(p_i(c)\), we also have a mechanism to sample them when a partition
+function is available (or able to be approximated).
+
+With these mechanics in place, we see the choice of a clique (implied by
+the inner product) is a trivial application of
+Equation~\ref{eq-edgevec-prob}, since that is equivalent to selecting
+the class of cliques on \(V_i\) nodes. This has only one element
+(\(\|\mathcal{C}_{\text{clique}}\|=1\)), there is only 1 possible
+selection, with probability \(p_i(K^{V_i})=1\).
+
+{[}ENTROPY?{]}
 
 \subsection{Graph Unions as Desire
 Paths}\label{graph-unions-as-desire-paths}
@@ -2268,6 +2278,16 @@ isolates}
 low-certainty/rare nodes from a preserved central structure.}
 
 \end{figure}%
+
+\chapter{Conclusion \& Future Work}\label{conclusion-future-work}
+
+\section{Limitations of Desire Path Densities}\label{sec-issues}
+
+\section{Modifications and Extensions to Forest
+Pursuit}\label{sec-future-fp}
+
+\section{Generalizing Inner Products on
+Incidences}\label{sec-future-hyperbolic}
 
 
 \singlespacing

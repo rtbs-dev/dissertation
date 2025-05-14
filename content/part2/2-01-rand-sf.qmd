@@ -99,24 +99,29 @@ Instead, we model them as inducing a family  $\mathcal{C}_i$ belonging to the re
 
 $$
 \begin{gathered}
-\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\mathcal{V}\subseteq Vi\}\\
-E_i\in\{\mathcal{E}\subseteq\mathbf{P(E)}| g_i[\mathcal{E}]\in\mathcal{C}\}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=B^*(e,v)\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\}\\
+E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
+V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 \end{gathered}
-$$
+$${#eq-subgraph-family}^[$\mathcal{P}(A)$ is the _powerset_ of $A$, i.e. the set of all subsets of $A$. ]
 
-In other words, the edges that gave rise to the node activations in a given observation must belong to a graph that in turn belongs to our class.
+In other words, the edges that "caused" to the node activations in a given observation must _together_ belong to a graph that, in turn, belongs to our desired class.
 
 Assuming we can define an associated measure for each $\mu_i(c)$ on $\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
  This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $\mathbb{Z}$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
- Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as trees.
+ Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as the space of spanning trees, $\mathcal{C}=\mathcal{T}$.
+ However, another way this might be accomplished is through random geometric graphs[CITE], or geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a "sprinkling" of points that preserves their observed pairwise distances.   
+ This is further discussed in @sec-future-hyperbolic.
 ]
 Using notation similar to distributions over spanning trees in @EfficientComputationExpectations_Zmigrod2021: 
+
 $$
 \begin{gathered}
-p_i(c) = \frac{\mu_{\mathcal{C}}(c|\mathcal{V})}{\mathbb{Z}}\\
-\mathbb{Z} = \sum_{c\in\mathcal{C^V}} \mu_{\mathcal{C}}(c|\mathcal{V})
+p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
+\mathbb{Z}_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
 \end{gathered}
-$$
+$$ {#eq-subgraph-prob}
+
 
 To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).^[
  Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures e.g. when the metric is known to be tree-like.
@@ -124,13 +129,15 @@ To further constrain the problem, let us assume that node activation is noiseles
 ]
 If a set of nodes $V_i\subseteq V$ were observed in the $i$th observation, this assumption narrows the distribution to only the subgraphs $c\in\mathcal{C}^{V_i}$.
 This can be represented using the vectorization in @eq-edge-vectors, due to the one-to-one correspondence established, so that 
-$$\mathbf{r}_i|\mathbf{x}_i \sim p_{\mathcal{C}}(c|V_i) $${#eq-edgevec-prob}
+$$\mathbf{r}_i|\mathbf{x}_i \sim p_i(c) $${#eq-edgevec-prob}
 
-So we may not have an exact vector, but we have established a way to specify a family of edge vectors that could be responsible, along with a mechanism to sample them when a partition function is available or able to be approximated.
-Distribitions over graphs are nontrivial, with spanning trees being a major exception.
-Howeber, one way this might be accomplished is through random geometric graphs[CITE], or possibly geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a random "sprinkling" of points.   
-Also, the choice of a clique (implied by the inner product) is a trivial application of @eq-edgevec-prob, since that is equivalent to selecting the class of cliques on $V_i$ nodes.
-This has only one element, making the complete graph  the only possible selection, with probability 1.  
+So we may not have an exact vector, but we have established a way to specify a family of edge vectors that could be responsible.
+With $p_i(c)$, we also have a mechanism to sample them when a partition function is available (or able to be approximated).
+
+With these mechanics in place, we see the choice of a clique (implied by the inner product) is a trivial application of @eq-edgevec-prob, since that is equivalent to selecting the class of cliques on $V_i$ nodes.
+This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1 possible selection, with probability $p_i(K^{V_i})=1$.  
+
+[ENTROPY?]
 
 <!-- Once an analyst has provided epistemic justification for a _class of graphs_ to model --> 
 <!-- We propose that the computationally-efficient inner-product networks can still be used, but could be made far more effective by counting edge observation counts with something more appropriate than cliques. --> 

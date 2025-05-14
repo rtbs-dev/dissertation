@@ -34,7 +34,7 @@ book:
         # - 
     # - appendices:
   keyword: "demo,test"
-  downloads: "pdf"
+  downloads: [pdf]
   page-navigation: true
   sidebar:
     collapse-level: 1
