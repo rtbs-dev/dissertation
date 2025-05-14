@@ -62,16 +62,18 @@ $$ {#eq-map-incidence}
 If the "absence" of incidence needs to be modeled explicitly, a "null" stand-in (0,False) can be added to each $S$, which is useful for representing each structure as arrays for use with linear algebra (i.e. $\{0,1\}$,$\{-1,0,-1\}$,$\mathbb{R}^+_0$, and $\mathbb{R}$, respectively).
 By doing so, we can also place an exact limit on the maximum possible size of $\omega=\|E\|$ in the simple graph case, and indicate edges by their unique ID, such that $\mathcal{I}= E\times V$ is no longer a subset relation for $E=\{1,\cdots,{n\choose2} \}$.
 Instead of existence in $\mathcal{I}$, we explicitly use incidence relation $S$ to tell us whether each possible edge "exists" or not, simplifying our graph definition further^[
- if we allow multi-edges, then 
+ if we allomulti-edges
+ , then 
 ]:
+
 
   
 $$
-\begin{aligned}
-G  = (V,E,B) \quad s.t. \quad & B : E\times V \rightarrow S\\
-& v \in V = \{1,\cdots, n\}\quad \\
-& e \in E = \left\{1,\cdots, {n\choose 2} \right\}
-\end{aligned}
+\begin{gathered}
+G  = (V,E,B) \quad s.t. \quad B : E\times V \rightarrow S\\
+v \in V = \{1,\cdots, n\}\quad \\
+e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{gathered}
 $$ {#eq-incidence-graph}
 
 
@@ -92,9 +94,13 @@ Every incidence can be represented individually as standard basis vector $\mathb
 
 Let $V_e$ be the set of nodes with (non-zero) incidence to edge $e$.
 Then the incidence vectors are:  
-$$\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e$${#eq-incidence-vec}
+$$
+\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e
+$${#eq-incidence-vec}
 And the (unoriented) incidence matrix vectors are recovered as sums over the incidence vectors for each edge:
-$$\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)$${#eq-incidence-edge-sum}
+$$
+\mathbf{b}_e = \sum_{v\in V_e} \delta_e(v)
+$${#eq-incidence-edge-sum}
 
 A traditional approach might then define undirected graphs as equivalent, in some sense, to multidigraphs, where each edge is really two directed edges, in opposing directions.
 This does allow the matrix $B$ to have the correct range for its entries in this formalism (the directed graph range, $S=\{-1,0,1\}$), and the edge identity  based on sums would hold. 
@@ -167,7 +173,7 @@ If an edge _is_ an observation, then unfortunately we cannot really quantify unc
 
 So far we have seen two ways of representing the entire graph in matrix form: Incidence matrix $B$ (or $B_o$), and the inner-product matrices derived from it ($L$, $A$).
 Since we can recover node IDs from edge IDs by @eq-sq-id, we can use a single vector to represent an entire graph structure by it's edges alone.
-Then a data dimension for vectors in "edge space" can once again represent observations, with nodes implied by @eq-sq-id.  
+Then a data dimension for vectors in "edge space" can once again represent observations, with nodes implied by @eq-sq-id.
 This is either done by contracting $B$ along the nodes (columns) dimension, or by _unrolling_ the upper triangle of $L$ or $A$ according to @eq-sq-id.^[
  @eq-edge-vectors uses an averaging operation to accomplish the contraction, but any reduction over the two nodes shared by an edge would accomplish the same, especially since we rarely see separate values for edge weight per-node, the way incidences can.
 ]
@@ -175,8 +181,8 @@ If each vector represents a value of $B$ associated with a corresponding edge, t
 Formally, for the $i$th observed structure on $n$ nodes:
 $$
 \begin{gathered}
-R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\})\\
-R:I\times E \rightarrow \mathbb{S}\\
+R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\}) \\
+\quad \textrm{s.t.} \quad R:I\times E \rightarrow \mathbb{S}\\
 i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
 n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
 \end{gathered}

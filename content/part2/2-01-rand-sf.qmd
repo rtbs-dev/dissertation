@@ -15,6 +15,7 @@ As we saw repeatedly in @sec-lit-review, networks are regularly assumed to arise
 This assumption can be a significant a source of bias in the measurement of edges.
 _Why_ a flat count of co-occurrence leads to "hairballs" and bias for dense clusters can be related to the use of inner products on node activation vectors. 
 
+
 ### Gambit of the Group
 
 It seems reasonable, when interactions are unobserved, to assume some evidence for all possible interactions is implied by co-occurrence.
@@ -28,6 +29,7 @@ This work was rediscovered in the context of measuring assortativity for social 
 The general problems with failing to specify a model of what "edges" actually _are_ get analyzed in more depth in @Statisticalinferencelinks_Peel2022.
 They include a warning not to naively use correlational measures with a threshold, since even simple 3-node systems will easily yield false positives edges.
 Still, it would be helpful for practitioners to have a more explicit mental model of _why_ co-occurence-based models yield systematic bias,  
+
 
 ### Inner Products as Sums of Cliques
 
@@ -60,22 +62,40 @@ In our introduction, we described a more likely scenario we could expect from an
 
 Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how _easy_ it is to create them from occurrence data.
 What we need is a way to retain the ease of use of inner-product network creation, with a more domain-appropriate graph at the observation level. 
-Of course there are many classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
+There are many classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
  Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]^[
   e.g. for dependencies based on perception, such as human decision making tendencies, or causes based on color names.
 ], or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]^[
   e.g. when interactions are limited to planar dependencies, like inferring ancient geographic borders.
 ].
-Alternatively, the interactions might be scale free, small-world, or samples from stochastic block models.[CITE] 
-
+Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[CITE] 
 In any case, these assumptions provide an explicit way to describe the set of _possible_ interaction graphs we believe our individual observations are sampled from.
-In other words, we limit our possible interaction graph to a set of all possible graphs in our class $\mathcal{C}$, and model the interactions allowed to be inferred from the activated nodes as $c\in\mathcal{C}$.
-With an associated probability measure $\mu_{\mathcal{C}}(c)$ defined on subgraphs of the complete graph on our node set V^[Assuming we can even find one, something we must return to shortly], we are able to say our interactions are sampled from a distribution over graphs in the class.
 
-For simplicity, since unreported/hidden-but-activated nodes is outide the scope of our work, we narrow the distribution to be only on the induced subgraph $C(S_k) \in G[S_k])$, where $S_k$ is the set of activated nodes in $\mathbf{x}_k$.
-More specifically, we say that an observation of $S\subset V=\{s_1,\cdots, s_t\},\quad t=|S|$ activated nodes implies a distribution over edge vectors we could hav observed, determined by the chosen class,
+### Subgraph Distributions
 
-$$\mathbf{x}^E_k \in $$ 
+Let's use the notation from @eq-edge-vectors, such that each observation is implicitly represented by some subgraph $c$ of the complete graph on $n$ nodes.
+We are limiting our possible observation vector to a set of all possible subgraphs in our desired graph class $\mathcal{C}$, such that the edge-induced subgraph $c=K_V[E_c]\in\mathcal{C}$ of the complete graph $K_V$, with $E_c$ being the edge-set of $c$.
+Plainly, the edges that gave rise to the node activations in a given observation must belong to a graph that in turn belongs to our class.
+Assuming we can define an associated measure $\mu_{\mathcal{C}}(c)$ on $\mathcal{C}$, we are able to define a probability distribution over graphs in the class.^[
+ This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trkick [CITE] to approximate, unless the partition function $\mathbb{Z}$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
+ Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as trees.
+]
+Using notation similar to distributions over spanning trees in @EfficientComputationExpectations_Zmigrod2021: 
+$$
+\begin{gathered}
+p_{\mathcal{C}}(c) = \frac{\mu_{\mathcal{C}}(c)}{\mathbb{Z}}\\
+\mathbb{Z} = \sum_{c\in\mathcal{C}} \mu_{\mathcal{C}}(c)
+\end{gathered}
+$$
+
+To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).^[
+ Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures e.g. when the metric is known to be tree-like.
+ @TreeIam_Sonthalia2020 use a greedy embedding that minimizes distortion to estimate the need for added _Steiner_ nodes. 
+]
+If a set of nodes $V_i\subseteq V$ were observed in the $i$th observation, this assumption narrows the distribution to only the subgraphs $c=K_{V_i}[E_c]\in\mathcal{C}\equiv\mathcal{C}[V_i]$.
+
+The can be represented instead using the vectorization in @eq-edge-vectors, so that 
+$$\mathbf{r}_i|\mathbf{x}_i \sim p_{\mathcal{C}[x_i]} $$ 
 
 Once an analyst has provided epistemic justification for a _class of graphs_ to model 
 We propose that the computationally-efficient inner-product networks can still be used, but could be made far more effective by counting edge observation counts with something more appropriate than cliques. 
@@ -85,7 +105,10 @@ If a node is activated, it is able to activate other nodes it is connected to, d
 In this case, a node activates when another node it depends on spreads their state to it.
 These single-cause activations are equivalent to imagining a random-walk on the dependency graph, where visiting a node activates it.
 
+### Graph Unions as Desire Paths
 
+
+## Tree & Forest Distributions
 
 ### Random Walk Activations 
 Random walks are regularly employed to model spreading and diffusive processes on networks.

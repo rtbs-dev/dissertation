@@ -21,6 +21,7 @@ contributes:
         - partials/_titlepage.tex
         - partials/_prelim.tex
         - partials/before-body.tex
+        - partials/biblio.tex
         # - partials/toc.tex
       format-resources: 
         - thesis.cls

@@ -1098,14 +1098,14 @@ graph case, and indicate edges by their unique ID, such that
 \(E=\{1,\cdots,{n\choose2} \}\). Instead of existence in
 \(\mathcal{I}\), we explicitly use incidence relation \(S\) to tell us
 whether each possible edge ``exists'' or not, simplifying our graph
-definition further\footnote{ if we allow multi-edges, then}:
+definition further\footnote{ if we allomulti-edges , then}:
 
 \begin{equation}\phantomsection\label{eq-incidence-graph}{
-\begin{aligned}
-G  = (V,E,B) \quad s.t. \quad & B : E\times V \rightarrow S\\
-& v \in V = \{1,\cdots, n\}\quad \\
-& e \in E = \left\{1,\cdots, {n\choose 2} \right\}
-\end{aligned}
+\begin{gathered}
+G  = (V,E,B) \quad s.t. \quad B : E\times V \rightarrow S\\
+v \in V = \{1,\cdots, n\}\quad \\
+e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+\end{gathered}
 }\end{equation}
 
 The representation of \(B\) in Equation~\ref{eq-incidence-graph} bears a
@@ -1137,10 +1137,13 @@ corresponding value of \(S\).
 
 Let \(V_e\) be the set of nodes with (non-zero) incidence to edge \(e\).
 Then the incidence vectors are:\\
-\begin{equation}\phantomsection\label{eq-incidence-vec}{\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e}\end{equation}
-And the (unoriented) incidence matrix vectors are recovered as sums over
-the incidence vectors for each edge:
-\begin{equation}\phantomsection\label{eq-incidence-edge-sum}{\mathbf{b}^+_e = \sum_{v\in V_e} \delta_e(v)}\end{equation}
+\begin{equation}\phantomsection\label{eq-incidence-vec}{
+\delta_e(v) = B(e,v)\mathbf{e}_v \quad \forall v\in V_e
+}\end{equation} And the (unoriented) incidence matrix vectors are
+recovered as sums over the incidence vectors for each edge:
+\begin{equation}\phantomsection\label{eq-incidence-edge-sum}{
+\mathbf{b}_e = \sum_{v\in V_e} \delta_e(v)
+}\end{equation}
 
 A traditional approach might then define undirected graphs as
 equivalent, in some sense, to multidigraphs, where each edge is really
@@ -1242,22 +1245,22 @@ matrices derived from it (\(L\), \(A\)). Since we can recover node IDs
 from edge IDs by Equation~\ref{eq-sq-id}, we can use a single vector to
 represent an entire graph structure by it's edges alone. Then a data
 dimension for vectors in ``edge space'' can once again represent
-observations, with nodes implied by Equation~\ref{eq-sq-id}.\\
-This is either done by contracting \(B\) along the nodes (columns)
-dimension, or by \emph{unrolling} the upper triangle of \(L\) or \(A\)
-according to Equation~\ref{eq-sq-id}.\footnote{
-  Equation~\ref{eq-edge-vectors} uses an averaging operation to
-  accomplish the contraction, but any reduction over the two nodes
-  shared by an edge would accomplish the same, especially since we
-  rarely see separate values for edge weight per-node, the way
-  incidences can.} If each vector represents a value of \(B\) associated
-with a corresponding edge, then \(m\) of these vectors would be
-equivalent to \(m\) observations of \({n \choose 2}\) edges on the same
-set of \(n\) nodes. Formally, for the \(i\)th observed structure on
-\(n\) nodes: \begin{equation}\phantomsection\label{eq-edge-vectors}{
+observations, with nodes implied by Equation~\ref{eq-sq-id}. This is
+either done by contracting \(B\) along the nodes (columns) dimension, or
+by \emph{unrolling} the upper triangle of \(L\) or \(A\) according to
+Equation~\ref{eq-sq-id}.\footnote{ Equation~\ref{eq-edge-vectors} uses
+  an averaging operation to accomplish the contraction, but any
+  reduction over the two nodes shared by an edge would accomplish the
+  same, especially since we rarely see separate values for edge weight
+  per-node, the way incidences can.} If each vector represents a value
+of \(B\) associated with a corresponding edge, then \(m\) of these
+vectors would be equivalent to \(m\) observations of \({n \choose 2}\)
+edges on the same set of \(n\) nodes. Formally, for the \(i\)th observed
+structure on \(n\) nodes:
+\begin{equation}\phantomsection\label{eq-edge-vectors}{
 \begin{gathered}
-R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\})\\
-R:I\times E \rightarrow \mathbb{S}\\
+R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\}) \\
+\quad \textrm{s.t.} \quad R:I\times E \rightarrow \mathbb{S}\\
 i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
 n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
 \end{gathered}
@@ -2157,8 +2160,9 @@ low-certainty/rare nodes from a preserved central structure.}
 \end{figure}%
 
 
+\singlespacing
 \printbibliography
 
-
+\doublespacing
 
 \end{document}

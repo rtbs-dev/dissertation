@@ -225,7 +225,7 @@ Movement could be modeled through similarity/distance measurements like correlat
 If we hold all but two masses still, and moving one doesn't move the other, then we know they are conditionally independent: no spring connects them!
 
 This idea gets formalized as probabilistic graphical models, which are networks that define "incidence" between two variables as conditional dependence.
-Letting the random variables in column-space of $X$ be $A,B$ and the remaining columns be $C=X(\cdot,J\setminus \{A,B\})$, then
+Letting the random variables in the column-space of $X$ be $A,B$ and the remaining columns be $C=X(\cdot,J\setminus \{A,B\})$, then
 $$
 P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
 $${#eq-cond-indep}
