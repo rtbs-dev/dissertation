@@ -1487,8 +1487,7 @@ i.e.~MOTIVATES FOREST PURSUIT
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
-\chapter{Desire Paths and Spanning
-Forests}\label{desire-paths-and-spanning-forests}
+\chapter{Graph Reduce \& Desire Paths}\label{graph-reduce-desire-paths}
 
 Addressing gaps discussed in the previous section to reach a generative
 model for network recovery requires careful attention to the generation
@@ -1706,8 +1705,9 @@ family \(\mathcal{C}_i\) belonging to the relevant class of graphs
 
 \begin{equation}\phantomsection\label{eq-subgraph-family}{
 \begin{gathered}
-\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\mathcal{V}\subseteq Vi\}\\
-E_i\in\{\mathcal{E}\subseteq\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=B^*(e,v)\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\}\\
+E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
+V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 \end{gathered}
 }\end{equation}\footnote{\(\mathcal{P}(A)\) is the \emph{powerset} of
   \(A\), i.e.~the set of all subsets of \(A\).}
@@ -1775,25 +1775,106 @@ selection, with probability \(p_i(K^{V_i})=1\).
 \subsection{Graph Unions as Desire
 Paths}\label{graph-unions-as-desire-paths}
 
-\begin{itemize}
-\tightlist
-\item
-  given a sample/MLE/MAP from each row's distribution
-\item
-  Use beta-bernoulli to estimate each edge's parameters, pairise indep.
-\item
-  graphs don't really exist, so we won't act like they do
-\item
-  approximate a network of paved sidewalks as a network of desire paths
-\item
-  the desirepaths that are ``ahead'' in foot traffic are the ones we
-  expect to be ``paved'' irl.
-\item
-  once traveled, more likely to be traveled again -\textgreater{}
-  arcsine distribution
-\end{itemize}
+With a distribution over subgraphs each observation, we are potentially
+able to sambple from them for bootstrap or Monte Carlo estimation
+purposes, or simply find a maximum likelihood estimate for each
+distribution. Assuming this is true, we may now sample or approximate a
+matrix \(R(i,e):I\times E \rightarrow \mathbb{B}\).\\
+Methods for doing this efficiently in certain cases are the focus of
+Section~\ref{sec-FP} and Section~\ref{sec-lfa-gibbs}. However, once
+\(R(i,e)\) is estimated, a reasonable mechanism for estimating the
+support of the set of edges is to use
+\(\frac{\text{count}}{\text{exposure}}\), but with a few needed
+modifications.
 
-\section{Tree \& Forest Distributions}\label{tree-forest-distributions}
+First, while the nodes counts in \(\sum_i B(i,\cdot)\) are by assumption
+\emph{not} independent, or even pairwise independent, the \emph{edge
+traversal} counts \(\sum_i R(i,\cdot)\) could more reasonably be
+considered so. A model certainly could be constructed where edge
+existence depends on other edges existing (or not). But nothing is
+inherently self-inconsistent with a model that assumes the
+traversability of individual edges will be independent of one another.
+
+let P(e) be the probability that an edge is traversed (in any
+observation), and P(u,v) the probability that nodes \(u,v\) co-occur. To
+approximate the overall traversability of an edge, we can calculate an
+empirical estimate for the conditional probability
+\(P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}\) that an edge is traversed,
+given that the two incident nodes are activated. This estimate can use
+the same beta-bernoulli distribution from
+Equation~\ref{eq-beta-binomial}.
+
+How do we ensure our estimate is approximating traversability, so that
+the probability that an edge probability converges toward 1 as long as
+it \emph{has to be possible} for \(e\) to be traversed? Recall from the
+introduction that, from a measurement perspective, the underlying
+networks rarely ``exist'' in the sense that we never truly find the
+underlying network, but only samples from (or caused by) it. Imagine
+that the ``real'' network is a set of paved sidewalks: our procedure is
+similar to watching people walk along paths between locations, and
+wanting to estimate which of the paths would be tread ``enough'' to be
+paved. This is where we build on an intuition based on the popular idea
+of \emph{desire paths} which is a colloquial name for paths that form
+when individuals walk over grass or dirt enough to carve a trail. In
+network analysis and recovery, we usually are only allowed to see the
+desire paths that might have formed from our data, never the actual
+``pavement''.
+
+If presented with two equivalent paths, an individual is likely to
+choose the one that tread more often i.e.~that looks the most clearly
+defined. So, we don't want a probability that an edge has been
+traversed, but a probability over fractions of the time we expect an
+edge to have been traversed \emph{more often than not}. This is
+accomplished by forcing \(\alpha, \beta < 1\). For the case where
+\(\alpha=\beta=0.5\), we call this special case an \emph{arcsine}
+distribution. In a coin tossing game where each ``heads'' gives a point
+to player A and ``tails'' to player B, then the point differential is
+modeled as a random walk. The arcsine distribution
+\(\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})\) is exactly the probability
+distribution for the fraction of time we expect one player to be
+``ahead'' of the other. \autocite{WhatisArcsine_Ackelsberg2018}
+
+\begin{quote}
+``\emph{Contrary to popular opinion, it is quite likely that in a long
+coin-tossing game one of the players remains practically the whole time
+on the winning side, the other on the losing side.''}
+
+William Feller\autocite[Chapter
+III]{IntroductionProbabilityTheory_Feller1968}
+\end{quote}
+
+This is desirable behavior for a distribution over edge traversability!
+We expect the vast majority of edges to have a 0 or 1 as the most likely
+values, with the expected fraction of observations that an edge being
+traversed was ``ahead'' of it being \emph{not} traversed matching our
+empirical count.
+
+We generalize this with \(\alpha = 1-\beta\), with
+\(\alpha + \beta = 1\), such that the new beta-binomial posterior from
+Equation~\ref{eq-beta-binomial} with \(s\) successes over \(k\) trials
+is:
+
+\begin{equation}\phantomsection\label{eq-desirepath-binom}{
+\begin{gathered}
+p_{DP} \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
+c = \frac{s-ak}{k+1}\\
+E[p_{DP}|s,k] = \alpha + c
+\end{gathered}
+}\end{equation}
+
+Important to note is that \(k\) is measured over the
+\emph{co-occurrences} \((u,v)\), and successes are the traversals \(e\)
+derived from our samples in \(R\).
+
+\chapter{Forest Pursuit: Approximate Recovery in Near-linear
+Time}\label{forest-pursuit-approximate-recovery-in-near-linear-time}
+
+\begin{quote}
+filling the gap we saw in the literature
+\end{quote}
+
+\section{Random Walks as Spanning
+Forests}\label{random-walks-as-spanning-forests}
 
 The class of diffusive processes we focus on ``spread'' from one node to
 another. If a node is activated, it is able to activate other nodes it
@@ -1845,7 +1926,7 @@ The whole graph isn't a tree\ldots.Every data point is.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
 
 }
 
@@ -1869,19 +1950,6 @@ Theorems}\label{matrix-tree-and-forest-theorems}
   one from Chebotarv
 \end{itemize}
 
-\section{Generative Model
-Specification}\label{generative-model-specification}
-
-\pandocbounded{\includegraphics[keepaspectratio]{content/part2/../images/random-spanning-forests.png}}
-- hierarchical model - marginalize over the root node.
-
-\chapter{Forest Pursuit: Approximate Recovery in Near-linear
-Time}\label{forest-pursuit-approximate-recovery-in-near-linear-time}
-
-\begin{quote}
-filling the gap we saw in the literature
-\end{quote}
-
 \section{Sparse Dictionary Learning}\label{sparse-dictionary-learning}
 
 \subsection{Problem Specification}\label{problem-specification}
@@ -1891,7 +1959,7 @@ filling the gap we saw in the literature
 \subsection{Space of Spanning Forests}\label{space-of-spanning-forests}
 
 \section{Forest Pursuit: Approximate Recovery in Near-linear
-Time}\label{forest-pursuit-approximate-recovery-in-near-linear-time-1}
+Time}\label{sec-FP}
 
 I.e. the PLOS paper (modified basis-pursuit via MSTs) \#\#\# Algorithm
 Summary
@@ -1980,29 +2048,40 @@ computation time)}
 \chapter{LFA: Latent Forest
 Allocation}\label{lfa-latent-forest-allocation}
 
-\section{Radom Spanning Trees}\label{radom-spanning-trees}
+\section{Random Spanning Forests}\label{random-spanning-forests}
+
+\subsection{Uniform Random Spanning
+Trees}\label{uniform-random-spanning-trees}
 
 \begin{itemize}
 \tightlist
 \item
   Methods for sampling i.e.~wilson's and Duan's (other? Energy paper?)
 \item
-  Tree Likelihoods, other facts
+  Tree Likelihoods, other facts (edge expectations)
 \end{itemize}
 
-\section{Bayesian Estimation by Gibbs
-Sampling}\label{bayesian-estimation-by-gibbs-sampling}
+\subsection{}\label{section}
+
+\section{Generative Model
+Specification}\label{generative-model-specification}
+
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/../images/random-spanning-forests.png}}
+- hierarchical model - marginalize over the root node.
+
+\section{Bayesian Estimation by Gibbs Sampling}\label{sec-lfa-gibbs}
 
 \begin{itemize}
-\tightlist
 \item
   comparison with LDA
 \item
   Simplifying Assumptions (conditional prob IS prob for this)
+
+  I.e. the unwritten paper, modifying technique by
+  \textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
 \end{itemize}
 
-I.e. the unwritten paper, modifying technique by
-\textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
+\section{Expected Forest Maximization}\label{sec-lfa-efm}
 
 \section{Simulation Study}\label{simulation-study}
 

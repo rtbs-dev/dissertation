@@ -148,7 +148,7 @@ This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1
 
 With a distribution over subgraphs each observation, we are potentially able to sambple from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution.
 Assuming this is true, we may now sample or approximate a matrix $R(i,e):I\times E \rightarrow \mathbb{B}$.  
-Methods for doing this efficiently in certain cases are the focus of @sec-FP and @sec-LFA-gibbs.
+Methods for doing this efficiently in certain cases are the focus of @sec-FP and @sec-lfa-gibbs.
 However, once $R(i,e)$ is estimated, a reasonable mechanism for estimating the support of the set of edges is to use $\frac{\text{count}}{\text{exposure}}$, but with a few needed modifications.
 
 First, while the nodes counts in $\sum_i B(i,\cdot)$ are by assumption _not_ independent, or even pairwise independent, the _edge traversal_ counts $\sum_i R(i,\cdot)$ could more reasonably be considered so.
@@ -167,7 +167,7 @@ In network analysis and recovery, we usually are only allowed to see the desire 
 
 If presented with two equivalent paths, an individual is likely to choose the one that tread more often i.e. that looks the most clearly defined.
 So, we don't want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed _more often than not_.
-This is accomplished by forcing $\alpha, \beta\lt 1$.
+This is accomplished by forcing $\alpha, \beta < 1$.
 For the case where $\alpha=\beta=0.5$, we call this special case an _arcsine_ distribution.
 In a coin tossing game where each "heads" gives a point to player A and "tails" to player B, then the point differential is modeled as a random walk.
 The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is exactly the probability distribution for the fraction of time we expect one player to be "ahead" of the other. [@WhatisArcsine_Ackelsberg2018]  
