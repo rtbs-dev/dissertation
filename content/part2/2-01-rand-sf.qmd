@@ -92,10 +92,13 @@ In any case, these assumptions provide an explicit way to describe the set of _p
 
 Let's use the notation from @eq-edge-vectors, such that each observation of nodes $\mathbf{x}_i$ is implicitly derived from a set of activated edges $\mathbf{r_i}$.
 To start, our current belief about what overall structure the whole network can take is $G^*=(V,E,B^*)$, where $B^*$ might always return $1$ to start out (the complete graph).
-From this, we construct a $B_i$ for each observation. 
-Each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$, while our domain knowledge takes the form of a constraint on edges, which will induce a family of subgraphs again.
-The "family of subgraphs," in general, can't directly use the edge constraint to create $B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)$, because edges $E_i$ are not directly observed.
-Instead, we model them as inducing a family  $\mathcal{C}_i$ belonging to the relevant class of graphs $\mathcal{C}$ on $V$, i.e.
+To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).^[
+ Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures e.g. when the metric is known to be tree-like.
+ @TreeIam_Sonthalia2020 use a greedy embedding that minimizes distortion to estimate the need for added _Steiner_ nodes. 
+]
+So, each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$.
+Then, our domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on $g_i$.
+This family  $\mathcal{C}_i$ belongs to the relevant class of graphs $\mathcal{C}$, limited to nodes $V_i$, i.e.
 
 $$
 \begin{gathered}
@@ -105,9 +108,9 @@ V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 \end{gathered}
 $${#eq-subgraph-family}^[$\mathcal{P}(A)$ is the _powerset_ of $A$, i.e. the set of all subsets of $A$. ]
 
-In other words, the edges that "caused" to the node activations in a given observation must _together_ belong to a graph that, in turn, belongs to our desired class.
+In other words, the edges that "caused" to the node activations in a given observation must _together_ belong to a graph that, in turn, belongs to our desired class, which must occur on the nodes that were activated.
 
-Assuming we can define an associated measure for each $\mu_i(c)$ on $\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
+Assuming we can define an associated measure $\mu_i(c)$ onfor each $c\in\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
  This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $\mathbb{Z}$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
  Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as the space of spanning trees, $\mathcal{C}=\mathcal{T}$.
  However, another way this might be accomplished is through random geometric graphs[CITE], or geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a "sprinkling" of points that preserves their observed pairwise distances.   
@@ -123,13 +126,10 @@ p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
 $$ {#eq-subgraph-prob}
 
 
-To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).^[
- Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures e.g. when the metric is known to be tree-like.
- @TreeIam_Sonthalia2020 use a greedy embedding that minimizes distortion to estimate the need for added _Steiner_ nodes. 
-]
-If a set of nodes $V_i\subseteq V$ were observed in the $i$th observation, this assumption narrows the distribution to only the subgraphs $c\in\mathcal{C}^{V_i}$.
-This can be represented using the vectorization in @eq-edge-vectors, due to the one-to-one correspondence established, so that 
-$$\mathbf{r}_i|\mathbf{x}_i \sim p_i(c) $${#eq-edgevec-prob}
+This can be represented using the vectorization in @eq-edge-vectors, due to the one-to-one correspondence established, so that, with a slight abuse of notation treating $\mathcal{C}_i$ as the parameter of distribution $p_i$: 
+$$
+\mathbf{r}_{i}(e)|\mathbf{x_i} \sim p_i(\mathcal{C},E,V)
+$${#eq-edgevec-prob}
 
 So we may not have an exact vector, but we have established a way to specify a family of edge vectors that could be responsible.
 With $p_i(c)$, we also have a mechanism to sample them when a partition function is available (or able to be approximated).
@@ -137,7 +137,6 @@ With $p_i(c)$, we also have a mechanism to sample them when a partition function
 With these mechanics in place, we see the choice of a clique (implied by the inner product) is a trivial application of @eq-edgevec-prob, since that is equivalent to selecting the class of cliques on $V_i$ nodes.
 This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1 possible selection, with probability $p_i(K^{V_i})=1$.  
 
-[ENTROPY?]
 
 <!-- Once an analyst has provided epistemic justification for a _class of graphs_ to model --> 
 <!-- We propose that the computationally-efficient inner-product networks can still be used, but could be made far more effective by counting edge observation counts with something more appropriate than cliques. --> 
@@ -159,16 +158,17 @@ let P(e) be the probability that an edge is traversed (in any observation), and 
 To approximate the overall traversability of an edge, we can calculate an empirical estimate for the conditional probability $P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}$ that an edge is traversed, given that the two incident nodes are activated.
 This estimate can use the same beta-bernoulli distribution from @eq-beta-binomial.
 
-How do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it _has to be possible_ for $e$ to be traversed?
+Still, how do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it _has to be possible_ for $e$ to be traversed?
 Recall from the introduction that, from a measurement perspective, the underlying networks rarely "exist" in the sense that we never truly find the underlying network, but only samples from (or caused by) it.
 Imagine that the "real" network is a set of paved sidewalks: our procedure is similar to watching people walk along paths between locations, and wanting to estimate which of the paths would be tread "enough" to be paved. 
 This is where we build on an intuition based on the popular idea of _desire paths_ which is a colloquial name for paths that form when individuals walk over grass or dirt enough to carve a trail.
 In network analysis and recovery, we usually are only allowed to see the desire paths that might have formed from our data, never the actual "pavement".
 
-If presented with two equivalent paths, an individual is likely to choose the one that tread more often i.e. that looks the most clearly defined.
-So, we don't want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed _more often than not_.
+If presented with two equivalent paths, an individual is likely to choose the one that has been tread more often before i.e. the "more beaten" path.
+So, we don't want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed _more often than not_: how likely it is to "be beaten".
 This is accomplished by forcing $\alpha, \beta < 1$.
 For the case where $\alpha=\beta=0.5$, we call this special case an _arcsine_ distribution.
+
 In a coin tossing game where each "heads" gives a point to player A and "tails" to player B, then the point differential is modeled as a random walk.
 The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is exactly the probability distribution for the fraction of time we expect one player to be "ahead" of the other. [@WhatisArcsine_Ackelsberg2018]  
 
@@ -178,17 +178,28 @@ The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is exactly the
 
 This is desirable behavior for a distribution over edge traversability!
 We expect the vast majority of edges to have a 0 or 1 as the most likely values, with the expected fraction of observations that an edge being traversed was "ahead" of it being _not_ traversed matching our empirical count.
-
-We generalize this with $\alpha = 1-\beta$, with $\alpha + \beta = 1$, such that the new beta-binomial posterior from @eq-beta-binomial with $s$ successes over $k$ trials is:
+We generalize this with $\alpha = 1-\beta$, with $\alpha + \beta = 1$, such that the new beta posterior from @eq-beta-binomial with $s$ successes over $k$ trials is:
 
 $$
 \begin{gathered}
-p_{DP} \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
+\pi \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
 c = \frac{s-ak}{k+1}\\
-E[p_{DP}|s,k] = \alpha + c
 \end{gathered}
 $${#eq-desirepath-binom} 
 
 Important to note is that $k$ is measured over the _co-occurrences_ $(u,v)$, and successes are the traversals $e$ derived from our samples in $R$.
+This lets us formulate a likelihood model for each edge's traversibility in the global network $G$ (i.e. whether $B(e,v)>0$ for any $v$), which is i.i.d. Bernoulli. 
+$$
+\begin{gathered}
+\pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\ 
+E \sim \text{Bernoulli}(\pi_e), e \in E
+\end{gathered}
+$$ 
 
+This does not yet specify a likelihood for $\mathcal{C}_i$, because we have not included a mechanism for the down-selection to each $\mathbf{x}_i$.
+This will be addressed more completely for the special case of $\mathcal{C}=\mathcal{F}$, the set of spanning forests on a graph, in @sec-lfa-like.
+In general, however, failing to specify the prior distribution on $\mathcal{C}_i$ does not necessarily make @eq-edgevec-prob unusable, but necessitates an "empirical bayes" approach.
+With the marginals and co-occurrence counts for nonzero values in $X$, we can make a point estimate for each edge _given_ a node subset, without needing to consider a prior distribution for each $\mathbf{x_i}$.
+
+The nonparametric approach, in cases that merit the use of spanning trees, will be central to accurate, scalable estimation of $B$ through our proposed method, Forest Pursuit. 
 

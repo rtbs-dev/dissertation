@@ -99,9 +99,9 @@ $$\hat{p} = \frac{s+\alpha}{k+2\alpha} $$
 Adding 1 success and 1 failure ($\alpha=1$) as pseudocounts to our observations is called _Laplace's Rule of Succession_, or simply "Laplace smoothing,"^[
   derived when Laplace desired estimates of probability for unobserved phenomena, such as the sun (not) rising tomorrow.
 ] while adding $\alpha=0.5$ successes and failures is called using _Jeffrey's Prior_.
-It's so-called because this pseudocount turns out to be a special case of selecting a Bayesian prior on the binomial probability (a.k.a. a _Beta-Binomial_ distribution) $p\sim \textrm{Beta}(\alpha, \beta)$, such that the posterior distribution after our success/failure counts is $\textrm{Beta}(s+\alpha, k-s+\beta)$, which has the mean:
+It's so-called because this pseudocount turns out to be a special case of selecting a Beta prior on the Bernoulli probability $p\sim \textrm{Beta}(\alpha, \beta)$, such that the posterior distribution for $p$ after our observations is $\textrm{Beta}(s+\alpha, k-s+\beta)$, which has the mean:
 $$
-E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}
+E[p|s,k]=\frac{s+\alpha}{k-\alpha+\beta}
 $${#eq-beta-binomial}
 
 This exactly recovers additive smoothing with a Jeffrey's prior for $\alpha=\beta=0.5$.^[

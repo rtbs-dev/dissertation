@@ -753,13 +753,12 @@ smoothing,''\footnote{ derived when Laplace desired estimates of
   probability for unobserved phenomena, such as the sun (not) rising
   tomorrow.} while adding \(\alpha=0.5\) successes and failures is
 called using \emph{Jeffrey's Prior}. It's so-called because this
-pseudocount turns out to be a special case of selecting a Bayesian prior
-on the binomial probability (a.k.a. a \emph{Beta-Binomial} distribution)
-\(p\sim \textrm{Beta}(\alpha, \beta)\), such that the posterior
-distribution after our success/failure counts is
+pseudocount turns out to be a special case of selecting a Beta prior on
+the Bernoulli probability \(p\sim \textrm{Beta}(\alpha, \beta)\), such
+that the posterior distribution for \(p\) after our observations is
 \(\textrm{Beta}(s+\alpha, k-s+\beta)\), which has the mean:
 \begin{equation}\phantomsection\label{eq-beta-binomial}{
-E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}
+E[p|s,k]=\frac{s+\alpha}{k-\alpha+\beta}
 }\end{equation}
 
 This exactly recovers additive smoothing with a Jeffrey's prior for
@@ -1398,6 +1397,41 @@ All estimate some kind of rate
   that means pseudocounts can make sense
 \end{itemize}
 
+we can actually interpret ochiai/cosine as an approximate bayes update.
+
+Say we observe binary variables A and B, along with others.
+
+Now, we want a probability of conditional dependence between A and B
+(does information flow directly between a and b when a and b happen
+together?). So we want the probability ofand edge \(E_{ab}\) being used,
+given that such an edge had the opportunity to be used. E.g. did two
+people have a causal interraction to make each other sick, given a time
+when we know they were both exposed/became sick.
+\[P(E|O) = P(O|E)P(E)/P(O)\]
+
+The denominator is hard, because while we can estimate the frequency of
+each node as the occurrences/opportunities (i.e.~events/exposure), so,
+\(n_i/N\), we can't use that for an exposure for ``number of times an
+edge between A,B could have been used''. If we multiply \(N(a)N(b)\),
+then we have the number of \emph{ways} a or b could be related over all
+chances, but this won't be a fraction of the number of samples, and
+could possible be much bigger. So dividing the number of times both
+\emph{did} happen together by that number won't get us a probability. So
+instead, we fib a bit.
+
+The number of chances (out of all samples) that a pair had to happen
+together is somewhere between the chances each had separately. We make a
+pseudo-variable that uses this fact, but averaging the rates. but we are
+dealing with probabilities, which are based around ``areas'' and their
+ratios. So we want one count, such that watching it with a copy of
+itself has the same exposure as watching A and B separately. This is
+exaclty what geometric means are for:
+
+Then, a point estimate for the probability of an edge occurring is its
+actual co-ocurrence \(n_{a,b}/N\). It's the ratio of these that give us
+the Ochiai as a probability: divided by the estimate for the
+co-ocurrence opportunities
+
 \subsection{Hyperbolic Projection}\label{hyperbolic-projection}
 
 \begin{itemize}
@@ -1691,17 +1725,21 @@ each observation of nodes \(\mathbf{x}_i\) is implicitly derived from a
 set of activated edges \(\mathbf{r_i}\). To start, our current belief
 about what overall structure the whole network can take is
 \(G^*=(V,E,B^*)\), where \(B^*\) might always return \(1\) to start out
-(the complete graph). From this, we construct a \(B_i\) for each
-observation. Each \(\mathbf{x}_i\) will induce a subgraph
-\(g_i = G^*[V_i]\), where
-\(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\), while our domain
-knowledge takes the form of a constraint on edges, which will induce a
-family of subgraphs again. The ``family of subgraphs,'' in general,
-can't directly use the edge constraint to create
-\(B_i(e,v)=\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\), because edges
-\(E_i\) are not directly observed. Instead, we model them as inducing a
-family \(\mathcal{C}_i\) belonging to the relevant class of graphs
-\(\mathcal{C}\) on \(V\), i.e.
+(the complete graph). To further constrain the problem, let us assume
+that node activation is noiseless: any activated nodes were truly
+activated, and unactivated nodes were truly inactive (no false negative
+or false positive activations).\footnote{ Hidden nodes (unobserved nodes
+  beyond the \(n\)) are outside the scope of this work, though could
+  potentially be implied for certain structures e.g.~when the metric is
+  known to be tree-like. \textcite{TreeIam_Sonthalia2020} use a greedy
+  embedding that minimizes distortion to estimate the need for added
+  \emph{Steiner} nodes.} So, each \(\mathbf{x}_i\) will induce a
+subgraph \(g_i = G^*[V_i]\), where
+\(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\). Then, our domain
+knowledge takes the form of a constraint on edges within that subgraph,
+which will induce a family of subgraphs on \(g_i\). This family
+\(\mathcal{C}_i\) belongs to the relevant class of graphs
+\(\mathcal{C}\), limited to nodes \(V_i\), i.e.
 
 \begin{equation}\phantomsection\label{eq-subgraph-family}{
 \begin{gathered}
@@ -1714,11 +1752,12 @@ V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 
 In other words, the edges that ``caused'' to the node activations in a
 given observation must \emph{together} belong to a graph that, in turn,
-belongs to our desired class.
+belongs to our desired class, which must occur on the nodes that were
+activated.
 
-Assuming we can define an associated measure for each \(\mu_i(c)\) on
-\(\mathcal{C}_i\), we are able to define a probability distribution over
-subgraphs in the class.\footnote{ This is certainly not a trivial
+Assuming we can define an associated measure \(\mu_i(c)\) onfor each
+\(c\in\mathcal{C}_i\), we are able to define a probability distribution
+over subgraphs in the class.\footnote{ This is certainly not a trivial
   assumption, and might either be ill-defined or require techniques like
   the Gumbel trick\autocite{GradientEstimationStochastic_Paulus2020} to
   approximate, unless the partition function \(\mathbb{Z}\) has a closed
@@ -1742,21 +1781,13 @@ p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
 \end{gathered}
 }\end{equation}
 
-To further constrain the problem, let us assume that node activation is
-noiseless: any activated nodes were truly activated, and unactivated
-nodes were truly inactive (no false negative or false positive
-activations).\footnote{ Hidden nodes (unobserved nodes beyond the \(n\))
-  are outside the scope of this work, though could potentially be
-  implied for certain structures e.g.~when the metric is known to be
-  tree-like. \textcite{TreeIam_Sonthalia2020} use a greedy embedding
-  that minimizes distortion to estimate the need for added
-  \emph{Steiner} nodes.} If a set of nodes \(V_i\subseteq V\) were
-observed in the \(i\)th observation, this assumption narrows the
-distribution to only the subgraphs \(c\in\mathcal{C}^{V_i}\). This can
-be represented using the vectorization in
+This can be represented using the vectorization in
 Equation~\ref{eq-edge-vectors}, due to the one-to-one correspondence
-established, so that
-\begin{equation}\phantomsection\label{eq-edgevec-prob}{\mathbf{r}_i|\mathbf{x}_i \sim p_i(c) }\end{equation}
+established, so that, with a slight abuse of notation treating
+\(\mathcal{C}_i\) as the parameter of distribution \(p_i\):
+\begin{equation}\phantomsection\label{eq-edgevec-prob}{
+\mathbf{r}_{i}(e)|\mathbf{x_i} \sim p_i(\mathcal{C},E,V)
+}\end{equation}
 
 So we may not have an exact vector, but we have established a way to
 specify a family of edge vectors that could be responsible. With
@@ -1769,8 +1800,6 @@ Equation~\ref{eq-edgevec-prob}, since that is equivalent to selecting
 the class of cliques on \(V_i\) nodes. This has only one element
 (\(\|\mathcal{C}_{\text{clique}}\|=1\)), there is only 1 possible
 selection, with probability \(p_i(K^{V_i})=1\).
-
-{[}ENTROPY?{]}
 
 \subsection{Graph Unions as Desire
 Paths}\label{graph-unions-as-desire-paths}
@@ -1804,10 +1833,10 @@ given that the two incident nodes are activated. This estimate can use
 the same beta-bernoulli distribution from
 Equation~\ref{eq-beta-binomial}.
 
-How do we ensure our estimate is approximating traversability, so that
-the probability that an edge probability converges toward 1 as long as
-it \emph{has to be possible} for \(e\) to be traversed? Recall from the
-introduction that, from a measurement perspective, the underlying
+Still, how do we ensure our estimate is approximating traversability, so
+that the probability that an edge probability converges toward 1 as long
+as it \emph{has to be possible} for \(e\) to be traversed? Recall from
+the introduction that, from a measurement perspective, the underlying
 networks rarely ``exist'' in the sense that we never truly find the
 underlying network, but only samples from (or caused by) it. Imagine
 that the ``real'' network is a set of paved sidewalks: our procedure is
@@ -1821,15 +1850,17 @@ desire paths that might have formed from our data, never the actual
 ``pavement''.
 
 If presented with two equivalent paths, an individual is likely to
-choose the one that tread more often i.e.~that looks the most clearly
-defined. So, we don't want a probability that an edge has been
+choose the one that has been tread more often before i.e.~the ``more
+beaten'' path. So, we don't want a probability that an edge has been
 traversed, but a probability over fractions of the time we expect an
-edge to have been traversed \emph{more often than not}. This is
-accomplished by forcing \(\alpha, \beta < 1\). For the case where
-\(\alpha=\beta=0.5\), we call this special case an \emph{arcsine}
-distribution. In a coin tossing game where each ``heads'' gives a point
-to player A and ``tails'' to player B, then the point differential is
-modeled as a random walk. The arcsine distribution
+edge to have been traversed \emph{more often than not}: how likely it is
+to ``be beaten''. This is accomplished by forcing \(\alpha, \beta < 1\).
+For the case where \(\alpha=\beta=0.5\), we call this special case an
+\emph{arcsine} distribution.
+
+In a coin tossing game where each ``heads'' gives a point to player A
+and ``tails'' to player B, then the point differential is modeled as a
+random walk. The arcsine distribution
 \(\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})\) is exactly the probability
 distribution for the fraction of time we expect one player to be
 ``ahead'' of the other. \autocite{WhatisArcsine_Ackelsberg2018}
@@ -1847,24 +1878,44 @@ This is desirable behavior for a distribution over edge traversability!
 We expect the vast majority of edges to have a 0 or 1 as the most likely
 values, with the expected fraction of observations that an edge being
 traversed was ``ahead'' of it being \emph{not} traversed matching our
-empirical count.
-
-We generalize this with \(\alpha = 1-\beta\), with
-\(\alpha + \beta = 1\), such that the new beta-binomial posterior from
+empirical count. We generalize this with \(\alpha = 1-\beta\), with
+\(\alpha + \beta = 1\), such that the new beta posterior from
 Equation~\ref{eq-beta-binomial} with \(s\) successes over \(k\) trials
 is:
 
 \begin{equation}\phantomsection\label{eq-desirepath-binom}{
 \begin{gathered}
-p_{DP} \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
+\pi \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
 c = \frac{s-ak}{k+1}\\
-E[p_{DP}|s,k] = \alpha + c
 \end{gathered}
 }\end{equation}
 
 Important to note is that \(k\) is measured over the
 \emph{co-occurrences} \((u,v)\), and successes are the traversals \(e\)
-derived from our samples in \(R\).
+derived from our samples in \(R\). This lets us formulate a likelihood
+model for each edge's traversibility in the global network \(G\)
+(i.e.~whether \(B(e,v)>0\) for any \(v\)), which is i.i.d. Bernoulli. \[
+\begin{gathered}
+\pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\ 
+E \sim \text{Bernoulli}(\pi_e), e \in E
+\end{gathered}
+\]
+
+This does not yet specify a likelihood for \(\mathcal{C}_i\), because we
+have not included a mechanism for the down-selection to each
+\(\mathbf{x}_i\). This will be addressed more completely for the special
+case of \(\mathcal{C}=\mathcal{F}\), the set of spanning forests on a
+graph, in Section~\ref{sec-lfa-like}. In general, however, failing to
+specify the prior distribution on \(\mathcal{C}_i\) does not necessarily
+make Equation~\ref{eq-edgevec-prob} unusable, but necessitates an
+``empirical bayes'' approach. With the marginals and co-occurrence
+counts for nonzero values in \(X\), we can make a point estimate for
+each edge \emph{given} a node subset, without needing to consider a
+prior distribution for each \(\mathbf{x_i}\).
+
+The nonparametric approach, in cases that merit the use of spanning
+trees, will be central to accurate, scalable estimation of \(B\) through
+our proposed method, Forest Pursuit.
 
 \chapter{Forest Pursuit: Approximate Recovery in Near-linear
 Time}\label{forest-pursuit-approximate-recovery-in-near-linear-time}
@@ -2063,8 +2114,7 @@ Trees}\label{uniform-random-spanning-trees}
 
 \subsection{}\label{section}
 
-\section{Generative Model
-Specification}\label{generative-model-specification}
+\section{Generative Model Specification}\label{sec-lfa-like}
 
 \pandocbounded{\includegraphics[keepaspectratio]{content/part2/../images/random-spanning-forests.png}}
 - hierarchical model - marginalize over the root node.

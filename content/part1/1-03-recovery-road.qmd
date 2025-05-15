@@ -23,6 +23,24 @@ All estimate some kind of rate
 - geometric mean on cond prob, actually
 - that means pseudocounts can make sense
 
+
+we can actually interpret ochiai/cosine as an approximate bayes update. 
+
+Say we observe binary variables A and B, along with others. 
+
+Now, we want a probability of conditional dependence between A and B (does information flow directly between a and b when a and b happen together?). So we want the probability ofand edge $E_{ab}$ being used, given that such an edge had the opportunity to be used. E.g. did two people have a causal interraction to make each other sick, given a time when we know they were both exposed/became sick. 
+$$P(E|O) = P(O|E)P(E)/P(O)$$
+
+The denominator is hard, because while we can estimate the frequency of each node as the occurrences/opportunities (i.e. events/exposure), so, $n_i/N$, we can't use that for an exposure for "number of times an edge between A,B could have been used".
+If we multiply $N(a)N(b)$, then we have the number of _ways_ a or b could be related over all chances, but this won't be a fraction of the number of samples, and could possible be much bigger.
+So dividing the number of times both _did_ happen together by that number won't get us a probability.
+So instead, we fib a bit. 
+
+The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exaclty what geometric means are for: 
+
+
+Then, a point estimate for the probability of an edge occurring is its actual co-ocurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-ocurrence opportunities
+
 ### Hyperbolic Projection
 
 - reweights by degree in original BP
