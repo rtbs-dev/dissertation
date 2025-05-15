@@ -1,4 +1,4 @@
-# Desire Paths and Spanning Forests
+# Graph Reduce & Desire Paths
 
 Addressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations.
 While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that _causes_ activation patterns will give us useful ways to narrow down the generative specification.
@@ -146,55 +146,49 @@ This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1
 
 ### Graph Unions as Desire Paths
 
-- given a sample/MLE/MAP from each row's distribution
-- Use beta-bernoulli to estimate each edge's parameters, pairise indep. 
-- graphs don't really exist, so we won't act like they do
-- approximate a network of paved sidewalks as a network of desire paths
-- the desirepaths that are "ahead" in foot traffic are the ones we expect to be "paved" irl.
-- once traveled, more likely to be traveled again -> arcsine distribution
+With a distribution over subgraphs each observation, we are potentially able to sambple from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution.
+Assuming this is true, we may now sample or approximate a matrix $R(i,e):I\times E \rightarrow \mathbb{B}$.  
+Methods for doing this efficiently in certain cases are the focus of @sec-FP and @sec-LFA-gibbs.
+However, once $R(i,e)$ is estimated, a reasonable mechanism for estimating the support of the set of edges is to use $\frac{\text{count}}{\text{exposure}}$, but with a few needed modifications.
 
-## Tree & Forest Distributions
+First, while the nodes counts in $\sum_i B(i,\cdot)$ are by assumption _not_ independent, or even pairwise independent, the _edge traversal_ counts $\sum_i R(i,\cdot)$ could more reasonably be considered so.
+A model certainly could be constructed where edge existence depends on other edges existing (or not).
+But nothing is inherently self-inconsistent with a model that assumes the traversability of individual edges will be independent of one another. 
 
-The class of diffusive processes we focus on "spread" from one node to another.
-If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes "depend" on others to be activated.
-In this case, a node activates when another node it depends on spreads their state to it.
-These single-cause activations are equivalent to imagining a random-walk on the dependency graph, where visiting a node activates it.
+let P(e) be the probability that an edge is traversed (in any observation), and P(u,v) the probability that nodes $u,v$ co-occur.
+To approximate the overall traversability of an edge, we can calculate an empirical estimate for the conditional probability $P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}$ that an edge is traversed, given that the two incident nodes are activated.
+This estimate can use the same beta-bernoulli distribution from @eq-beta-binomial.
 
-### Random Walk Activations 
-Random walks are regularly employed to model spreading and diffusive processes on networks.
-If a network consists of locations, states, agents, etc. as "nodes", and relationships between nodes as "edges", then random walks consist of a stochastic process that "visits" nodes by randomly "walking" between them along connecting edges.
-Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [CITE...lots?]
+How do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it _has to be possible_ for $e$ to be traversed?
+Recall from the introduction that, from a measurement perspective, the underlying networks rarely "exist" in the sense that we never truly find the underlying network, but only samples from (or caused by) it.
+Imagine that the "real" network is a set of paved sidewalks: our procedure is similar to watching people walk along paths between locations, and wanting to estimate which of the paths would be tread "enough" to be paved. 
+This is where we build on an intuition based on the popular idea of _desire paths_ which is a colloquial name for paths that form when individuals walk over grass or dirt enough to carve a trail.
+In network analysis and recovery, we usually are only allowed to see the desire paths that might have formed from our data, never the actual "pavement".
 
-When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance's[PAGERANK], or predict phase-changes in node states (e.g. infected vs. uninfected)[SIR I think].
-In our case, Since we have been encoding the activations as binary activation vectors, the "jump" information is lost---activations are "emitted" for observation only upon the random walker's initial visit. [CITE INVITE]
-In many cases, however, the existence of relationships is not known already, and analysts might *assume* their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.
+If presented with two equivalent paths, an individual is likely to choose the one that tread more often i.e. that looks the most clearly defined.
+So, we don't want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed _more often than not_.
+This is accomplished by forcing $\alpha, \beta\lt 1$.
+For the case where $\alpha=\beta=0.5$, we call this special case an _arcsine_ distribution.
+In a coin tossing game where each "heads" gives a point to player A and "tails" to player B, then the point differential is modeled as a random walk.
+The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is exactly the probability distribution for the fraction of time we expect one player to be "ahead" of the other. [@WhatisArcsine_Ackelsberg2018]  
 
+> "_Contrary to popular opinion, it is quite likely that in a long coin-tossing game one of the players remains practically the whole time on the winning side, the other on the losing side."_
+> 
+> William Feller[@IntroductionProbabilityTheory_Feller1968, Chapter III]
 
-- useful tool for analysis of our data: reg laplacian
-- interpretations 
+This is desirable behavior for a distribution over edge traversability!
+We expect the vast majority of edges to have a 0 or 1 as the most likely values, with the expected fraction of observations that an edge being traversed was "ahead" of it being _not_ traversed matching our empirical count.
 
-### Dependencies as Trees
-The whole graph isn't a tree....Every data point is.
+We generalize this with $\alpha = 1-\beta$, with $\alpha + \beta = 1$, such that the new beta-binomial posterior from @eq-beta-binomial with $s$ successes over $k$ trials is:
 
+$$
+\begin{gathered}
+p_{DP} \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
+c = \frac{s-ak}{k+1}\\
+E[p_{DP}|s,k] = \alpha + c
+\end{gathered}
+$${#eq-desirepath-binom} 
 
-{{< embed ../codefigs/graphs.qmd#fig-stack-tree >}}
+Important to note is that $k$ is measured over the _co-occurrences_ $(u,v)$, and successes are the traversals $e$ derived from our samples in $R$.
 
-
-[GRAPHIC 1 - my data]
-
-[GRAPHIC 2 - infection vector from meta node]
-
-
-
-
-### Matrix Tree and Forest Theorems 
-
-- one from kirchoff
-- one from Chebotarv
-
-## Generative Model Specification
-
-![Explanation of the Random Spanning Forest generative model for binary activation observations](../images/random-spanning-forests.png)
-- hierarchical model
-- marginalize over the root node. 
 
