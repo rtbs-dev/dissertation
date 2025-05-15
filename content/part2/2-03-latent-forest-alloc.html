@@ -60,7 +60,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5d62b351f593b6aa3c9c8d58139cde76.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -180,7 +180,7 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Desire Paths and Spanning Forests</span></a>
+  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph Reduce &amp; Desire Paths</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -216,7 +216,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3-08-conclusion.html</span></a>
+  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
   </div>
 </li>
       </ul>
@@ -231,8 +231,14 @@ div.csl-indent {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#radom-spanning-trees" id="toc-radom-spanning-trees" class="nav-link active" data-scroll-target="#radom-spanning-trees">Radom Spanning Trees</a></li>
-  <li><a href="#bayesian-estimation-by-gibbs-sampling" id="toc-bayesian-estimation-by-gibbs-sampling" class="nav-link" data-scroll-target="#bayesian-estimation-by-gibbs-sampling">Bayesian Estimation by Gibbs Sampling</a></li>
+  <li><a href="#random-spanning-forests" id="toc-random-spanning-forests" class="nav-link active" data-scroll-target="#random-spanning-forests">Random Spanning Forests</a>
+  <ul class="collapse">
+  <li><a href="#uniform-random-spanning-trees" id="toc-uniform-random-spanning-trees" class="nav-link" data-scroll-target="#uniform-random-spanning-trees">Uniform Random Spanning Trees</a></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"></a></li>
+  </ul></li>
+  <li><a href="#generative-model-specification" id="toc-generative-model-specification" class="nav-link" data-scroll-target="#generative-model-specification">Generative Model Specification</a></li>
+  <li><a href="#sec-lfa-gibbs" id="toc-sec-lfa-gibbs" class="nav-link" data-scroll-target="#sec-lfa-gibbs">Bayesian Estimation by Gibbs Sampling</a></li>
+  <li><a href="#sec-lfa-efm" id="toc-sec-lfa-efm" class="nav-link" data-scroll-target="#sec-lfa-efm">Expected Forest Maximization</a></li>
   <li><a href="#simulation-study" id="toc-simulation-study" class="nav-link" data-scroll-target="#simulation-study">Simulation Study</a>
   <ul class="collapse">
   <li><a href="#score-improvement" id="toc-score-improvement" class="nav-link" data-scroll-target="#score-improvement">Score Improvement</a></li>
@@ -263,23 +269,36 @@ div.csl-indent {
 </header>
 
 
-<section id="radom-spanning-trees" class="level2">
-<h2 class="anchored" data-anchor-id="radom-spanning-trees">Radom Spanning Trees</h2>
+<section id="random-spanning-forests" class="level2">
+<h2 class="anchored" data-anchor-id="random-spanning-forests">Random Spanning Forests</h2>
+<section id="uniform-random-spanning-trees" class="level3">
+<h3 class="anchored" data-anchor-id="uniform-random-spanning-trees">Uniform Random Spanning Trees</h3>
 <ul>
 <li>Methods for sampling i.e.&nbsp;wilson’s and Duan’s (other? Energy paper?)</li>
-<li>Tree Likelihoods, other facts</li>
+<li>Tree Likelihoods, other facts (edge expectations)</li>
 </ul>
 </section>
-<section id="bayesian-estimation-by-gibbs-sampling" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="bayesian-estimation-by-gibbs-sampling">Bayesian Estimation by Gibbs Sampling</h2>
+<section id="section" class="level3">
+<h3 class="anchored" data-anchor-id="section"></h3>
+</section>
+</section>
+<section id="generative-model-specification" class="level2">
+<h2 class="anchored" data-anchor-id="generative-model-specification">Generative Model Specification</h2>
+<p><img src="../images/random-spanning-forests.png" class="img-fluid" alt="Explanation of the Random Spanning Forest generative model for binary activation observations"> - hierarchical model - marginalize over the root node.</p>
+</section>
+<section id="sec-lfa-gibbs" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-lfa-gibbs">Bayesian Estimation by Gibbs Sampling</h2>
 <ul>
-<li>comparison with LDA</li>
-<li>Simplifying Assumptions (conditional prob IS prob for this)</li>
+<li><p>comparison with LDA</p></li>
+<li><p>Simplifying Assumptions (conditional prob IS prob for this)</p>
+<p>I.e. the unwritten paper, modifying technique by <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[1]</a></span> for RSF instead of RSTs</p></li>
 </ul>
-<p>I.e. the unwritten paper, modifying technique by <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[1]</a></span> for RSF instead of RSTs</p>
 <div class="no-row-height column-margin column-container"><div id="ref-BayesianSpanningTree_Duan2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
 </div></div></section>
+<section id="sec-lfa-efm" class="level2">
+<h2 class="anchored" data-anchor-id="sec-lfa-efm">Expected Forest Maximization</h2>
+</section>
 <section id="simulation-study" class="level2">
 <h2 class="anchored" data-anchor-id="simulation-study">Simulation Study</h2>
 <section id="score-improvement" class="level3">

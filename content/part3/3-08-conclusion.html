@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>conclusion – Measuring Network Dependencies from Node Activations</title>
+<title>Conclusion &amp; Future Work – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -39,7 +39,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5d62b351f593b6aa3c9c8d58139cde76.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -80,7 +80,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-08-conclusion.html"><span class="chapter-title">3-08-conclusion.html</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-08-conclusion.html"><span class="chapter-title">Conclusion &amp; Future Work</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -156,7 +156,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Desire Paths and Spanning Forests</span></a>
+  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph Reduce &amp; Desire Paths</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -192,7 +192,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">3-08-conclusion.html</span></a>
+  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
   </div>
 </li>
       </ul>
@@ -202,17 +202,50 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#sec-issues" id="toc-sec-issues" class="nav-link active" data-scroll-target="#sec-issues">Limitations of Desire Path Densities</a></li>
+  <li><a href="#sec-future-fp" id="toc-sec-future-fp" class="nav-link" data-scroll-target="#sec-future-fp">Modifications and Extensions to Forest Pursuit</a></li>
+  <li><a href="#sec-future-hyperbolic" id="toc-sec-future-hyperbolic" class="nav-link" data-scroll-target="#sec-future-hyperbolic">Generalizing Inner Products on Incidences</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content column-page-right" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-08-conclusion.html"><span class="chapter-title">3-08-conclusion.html</span></a></li></ol></nav></header>
+<main class="content column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-08-conclusion.html"><span class="chapter-title">Conclusion &amp; Future Work</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Conclusion &amp; Future Work</span></h1>
+</div>
 
 
 
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
 
 
+</header>
 
+
+<section id="sec-issues" class="level2">
+<h2 class="anchored" data-anchor-id="sec-issues">Limitations of Desire Path Densities</h2>
+</section>
+<section id="sec-future-fp" class="level2">
+<h2 class="anchored" data-anchor-id="sec-future-fp">Modifications and Extensions to Forest Pursuit</h2>
+</section>
+<section id="sec-future-hyperbolic" class="level2">
+<h2 class="anchored" data-anchor-id="sec-future-hyperbolic">Generalizing Inner Products on Incidences</h2>
+
+
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -632,7 +665,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-<nav class="page-navigation column-page-right">
+<nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="../../content/part3/3-07-ordered.html" class="pagination-link" aria-label="Recovery from Partial Orders">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Recovery from Partial Orders</span></span>

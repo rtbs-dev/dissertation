@@ -60,7 +60,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-5d62b351f593b6aa3c9c8d58139cde76.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -206,7 +206,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Desire Paths and Spanning Forests</span></a>
+  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph Reduce &amp; Desire Paths</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -242,7 +242,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">3-08-conclusion.html</span></a>
+  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
   </div>
 </li>
       </ul>
@@ -349,7 +349,7 @@ E[p|s,k]=\frac{s+\alpha}{k+\alpha+\beta}
 X\in\mathbb{S}^{m\times n}\quad Y\in\mathbb{S}^{n\times m} \\
 Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
 \end{aligned}
-\]</span> For ease-of-use, we will assume the standard field for any given set <span class="math inline">\((\mathbb{S},+,\times)\)</span> if not specified otherwise, which recovers standard inner products <span class="math inline">\(\langle\cdot,\cdot\rangle\)</span>. However, <span class="citation" data-cites="MathematicalfoundationsGraphBLAS_Kepner2016"><a href="#ref-MathematicalfoundationsGraphBLAS_Kepner2016" role="doc-biblioref">[2]</a></span> illustrates the usefulness of various fields (or semirings). They allow linear-algebraic representation of many graph operations, such as shortest paths through inner products over <span class="math inline">\((\mathbb{R}\cup -\inf,\textrm{min}, +)\)</span>. This works because discrete/boolean edge weights will not accumulate extra strength beyond 1 under contraction over observations.</p>
+\]</span> For ease-of-use, we will assume the standard field for any given set <span class="math inline">\((\mathbb{S},+,\times)\)</span> if not specified otherwise, which recovers standard inner products <span class="math inline">\(\langle\cdot,\cdot\rangle\)</span>. However, <span class="citation" data-cites="MathematicalfoundationsGraphBLAS_Kepner2016"><a href="#ref-MathematicalfoundationsGraphBLAS_Kepner2016" role="doc-biblioref">[2]</a></span> illustrates the usefulness of various fields (or semirings). They allow linear-algebraic representation of many graph operations, such as shortest paths through inner products over <span class="math inline">\((\mathbb{R}\cup -\infty,\textrm{min}, +)\)</span>. This works because discrete/boolean edge weights will not accumulate extra strength beyond 1 under contraction over observations.</p>
 <section id="kernels-distances" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="kernels-distances">Kernels &amp; distances</h3>
 <p>As alluded to in the previous section, co-occurrence have a deep connection to a Gram matrix, which is a matrix of all pairwise inner products over a set of vectors.</p>
@@ -374,14 +374,14 @@ d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 </section>
 <section id="incidence-structures-dependency" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="incidence-structures-dependency">Incidence structures &amp; dependency</h3>
-<p>Rather than how “close” or “far” to points are in vector space, which is described with the kernels and distances above, whether something “touches”—or, is incident to—something else is usually described abstractly as an <em>incidence structure</em>. This is an abstract way to describe how things “touch”, such as when a set of points lie on a line/plane, or nodes touch an edge. We say an incidence structure is a triple of sets called (for historical reasons) <em>points</em> <span class="math inline">\(\mathcal{P}\)</span>, <em>lines</em> <span class="math inline">\(\mathcal{L}\)</span>, and <em>flags</em> <span class="math inline">\(\mathcal{I}\)</span>.<span class="citation" data-cites="Incidencegeometry_Moorhouse2007"><a href="#ref-Incidencegeometry_Moorhouse2007" role="doc-biblioref">[5]</a></span> <span class="math display">\[(\mathcal{P,L,I})\quad \mathcal{I}\subseteq \mathcal{P}\times\mathcal{L}\]</span></p>
+<p>Rather than how “close” or “far” to points are in vector space, which is described with the kernels and distances above, whether something “touches”—or, is incident to—something else is usually described abstractly as an <em>incidence structure</em>. This is an abstract way to describe how things “touch”, such as when a set of points lie on a line/plane, or nodes touch an edge. We say an incidence structure is a triple of sets called (for historical reasons) <em>points</em> <span class="math inline">\(\mathfrak{P}\)</span>, <em>lines</em> <span class="math inline">\(\mathfrak{L}\)</span>, and <em>flags</em> <span class="math inline">\(\mathfrak{I}\)</span>.<span class="citation" data-cites="Incidencegeometry_Moorhouse2007"><a href="#ref-Incidencegeometry_Moorhouse2007" role="doc-biblioref">[5]</a></span> <span class="math display">\[(\mathfrak{P,L,I})\quad \mathfrak{I}\subseteq \mathfrak{P}\times\mathfrak{L}\]</span></p>
 <div class="no-row-height column-margin column-container"><div id="ref-Incidencegeometry_Moorhouse2007" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[5] </div><div class="csl-right-inline">G. E. Moorhouse, <span>“Incidence geometry,”</span> <em>University of Wyoming</em>, pp. 3–5, 2007.</div>
-</div></div><p>Representing these as matrices will be further explored in <a href="1-02-graph-obs.html#sec-incidence-vec" class="quarto-xref"><span>Graphs as incidence structures</span></a>. But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of <span class="math inline">\(\mathcal{I}\)</span>, is a very different question from estimating the similarity/distance between two entities in a vector space.</p>
+</div></div><p>Representing these as matrices will be further explored in <a href="1-02-graph-obs.html#sec-incidence-vec" class="quarto-xref"><span>Graphs as incidence structures</span></a>. But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of <span class="math inline">\(\mathfrak{I}\)</span>, is a very different question from estimating the similarity/distance between two entities in a vector space.</p>
 <p>In statistics, such discrete structures usually arise when we are concerned with direct dependence from indirect. Take as an example a set of masses connected together by springs. If we shake one mass, all masses will also shake some amount, depending on the spring constants of the springs each mass is “transmitted” force through, and the losses due to friction or air resistance. While the amount of movement over time depends on how “close” in this spring network two masses are, the movement itself can only be transmitted through springs that the masses are <em>incident</em> to. Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence. If we hold all but two masses still, and moving one doesn’t move the other, then we know they are conditionally independent: no spring connects them!</p>
 <p>This idea gets formalized as probabilistic graphical models, which are networks that define “incidence” between two variables as conditional dependence. Letting the random variables in the column-space of <span class="math inline">\(X\)</span> be <span class="math inline">\(A,B\)</span> and the remaining columns be <span class="math inline">\(C=X(\cdot,J\setminus \{A,B\})\)</span>, then <span id="eq-cond-indep"><span class="math display">\[
-P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathcal{I}
-\tag{2.7}\]</span></span> for a set of incidences <span class="math inline">\(\mathcal{I}\)</span> defining a PGM that was sampled as <span class="math inline">\(X\)</span>.</p>
+P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak{I}
+\tag{2.7}\]</span></span> for a set of incidences <span class="math inline">\(\mathfrak{I}\)</span> defining a PGM that was sampled as <span class="math inline">\(X\)</span>.</p>
 <p>[SPRING GRAPHIC?]</p>
 </section>
 <section id="conclusion" class="level3">
