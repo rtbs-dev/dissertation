@@ -1,12 +1,12 @@
 # LFA: Latent Forest Allocation  
 
-## Random Spanning Forests
+## LFA as Factorization 
 
-### Uniform Random Spanning Trees
-- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
-- Tree Likelihoods, other facts (edge expectations)
+### Dictionary Learning
 
-### 
+### Interaction Degree, not Binary
+- "plan" from avrachenkov
+
 
 ## Generative Model Specification {#sec-lfa-like}
 
@@ -14,8 +14,14 @@
 - hierarchical model
 - marginalize over the root node. 
 
+
 ## Bayesian Estimation by Gibbs Sampling {#sec-lfa-gibbs} 
 
+### Uniform Random Spanning Trees
+- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
+- Tree Likelihoods, other facts (edge expectations)
+
+### Approximate Forest Samples
 - comparison with LDA
 - Simplifying Assumptions (conditional prob IS prob for this)
 
@@ -23,7 +29,13 @@
 
 ## Expected Forest Maximization {#sec-lfa-efm}
 
+### Alternating Directions
+- estimate laplacian to get $Q_i$ as shortest path distance
 
+### degree normalization
+sym laplacian before forest kernel
+
+### algorithm overview
 
 ## Simulation Study
 
@@ -33,3 +45,5 @@
 ### Odds of Individual Edge Improvement 
 {{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
 
+### Time Difference
+?
