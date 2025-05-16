@@ -40,7 +40,8 @@ book:
     collapse-level: 1
 bibliography: resource/pubs.bib  
 csl: resource/ieee.csl
-# filters:
+filters:
+  - pseudocode
 #   - diagram
 # diagram:
 #   engine:
