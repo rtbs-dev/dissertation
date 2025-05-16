@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -72,10 +92,39 @@ ul.task-list li input[type="checkbox"] {
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -214,10 +263,10 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#random-walks-as-spanning-forests" id="toc-random-walks-as-spanning-forests" class="nav-link active" data-scroll-target="#random-walks-as-spanning-forests">Random Walks as Spanning Forests</a>
   <ul class="collapse">
   <li><a href="#random-walk-activations" id="toc-random-walk-activations" class="nav-link" data-scroll-target="#random-walk-activations">Random Walk Activations</a></li>
-  <li><a href="#dependencies-as-trees" id="toc-dependencies-as-trees" class="nav-link" data-scroll-target="#dependencies-as-trees">Dependencies as Trees</a></li>
-  <li><a href="#matrix-tree-and-forest-theorems" id="toc-matrix-tree-and-forest-theorems" class="nav-link" data-scroll-target="#matrix-tree-and-forest-theorems">Matrix Tree and Forest Theorems</a></li>
+  <li><a href="#finite-activations-spanning-forest" id="toc-finite-activations-spanning-forest" class="nav-link" data-scroll-target="#finite-activations-spanning-forest">Finite Activations &amp; Spanning Forest</a></li>
+  <li><a href="#spreading-dependencies-as-trees" id="toc-spreading-dependencies-as-trees" class="nav-link" data-scroll-target="#spreading-dependencies-as-trees">Spreading Dependencies as Trees</a></li>
   </ul></li>
-  <li><a href="#sparse-dictionary-learning" id="toc-sparse-dictionary-learning" class="nav-link" data-scroll-target="#sparse-dictionary-learning">Sparse Dictionary Learning</a>
+  <li><a href="#sparse-approximation" id="toc-sparse-approximation" class="nav-link" data-scroll-target="#sparse-approximation">Sparse Approximation</a>
   <ul class="collapse">
   <li><a href="#problem-specification" id="toc-problem-specification" class="nav-link" data-scroll-target="#problem-specification">Problem Specification</a></li>
   <li><a href="#matching-pursuit" id="toc-matching-pursuit" class="nav-link" data-scroll-target="#matching-pursuit">Matching Pursuit</a></li>
@@ -242,7 +291,7 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content page-columns page-full column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-01-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-02-forest-pursuit.html"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -263,23 +312,41 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<blockquote class="blockquote">
-<p>filling the gap we saw in the literature</p>
-</blockquote>
-<section id="random-walks-as-spanning-forests" class="level2">
+<p>In this chapter, we build on the notion of “Desire Path” estimation of a dependency network from node activations — sampling from a class of subgraphs constrained to active nodes, then merging them. We present <em>Forest Pursuit</em> (FP), a method that is scalable, trivially parallelizes, and offline-capable, while also outperforming commonly used algorithms across a battery of standardized tests and metrics. The key application for using FP is in domains where node activation can be reasonably modeled as arising due to <em>random walks</em>—or similar spreading process—on an underlying dependency graph.</p>
+<p>First, we build an intuition for the use of trees as an unbiased estimator for desire path estimation when spreading processes are at work on the latent network. Then, the groundwork for FP is laid by combining sparse approximation through <em>matching pursuit</em> with a loss function modeled after the Chow Liu representation for joint probability distributions. The approximate complexity for FP is linear in the spreading rate of the modeled random walks, and linear in dataset size, while running in <span class="math inline">\(O(1)\)</span> time with respect to the network size. This departs dramatically from other methods in the space, all of which assume to scale in the number of nodes. We then test FP against an array of alternative methods (including GLASSO) with MENDR, a newly-developed standard reference dataset and testbench for network recovery. FP outperforms other tested algorithms in nearly every case, and empirically confirms its complexity scaling for sub-thousand network sizes.</p>
+<section id="random-walks-as-spanning-forests" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="random-walks-as-spanning-forests">Random Walks as Spanning Forests</h2>
-<p>The class of diffusive processes we focus on “spread” from one node to another. If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes “depend” on others to be activated. In this case, a node activates when another node it depends on spreads their state to it. These single-cause activations are equivalent to imagining a random-walk on the dependency graph, where visiting a node activates it.</p>
-<section id="random-walk-activations" class="level3">
+<p>The class of diffusive processes we focus on “spread” from one node to another. If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes “depend” on others to be activated. In this case, a node activates when another node it depends on spreads their state to it. These single-cause activations are often modeled as a random-walk on the dependency graph: visiting a node leads to its activation.</p>
+<section id="random-walk-activations" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="random-walk-activations">Random Walk Activations</h3>
 <p>Random walks are regularly employed to model spreading and diffusive processes on networks. If a network consists of locations, states, agents, etc. as “nodes”, and relationships between nodes as “edges”, then random walks consist of a stochastic process that “visits” nodes by randomly “walking” between them along connecting edges. Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [CITE…lots?]</p>
-<p>When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance’s[PAGERANK], or predict phase-changes in node states (e.g.&nbsp;infected vs.&nbsp;uninfected)[SIR I think]. In our case, Since we have been encoding the activations as binary activation vectors, the “jump” information is lost—activations are “emitted” for observation only upon the random walker’s initial visit. [CITE INVITE] In many cases, however, the existence of relationships is not known already, and analysts might <em>assume</em> their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.</p>
-<ul>
-<li>useful tool for analysis of our data: reg laplacian</li>
-<li>interpretations</li>
-</ul>
+<p>When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance’s[PAGERANK], or predict phase-changes in node states (e.g.&nbsp;infected vs.&nbsp;uninfected)[SIR I think]. In our case, Since we have been encoding the activations as binary activation vectors, the “jump” information is lost—activations are “emitted” for observation only upon the random walker’s initial visit.<span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[1]</a></span> Further, the ordering of emissions has been removed in our binary vector representation, leaving only co-occurrence groups in each <span class="math inline">\(\mathbf{x}_i\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In many cases, however, the existence of relationships is not known already, and analysts might <em>assume</em> their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Humanmemorysearch_Jun2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">K.-S. Jun, J. Zhu, T. T. Rogers, Z. Yang, <em>et al.</em>, <span>“Human memory search as initial-visit emitting random walk,”</span> <em>Advances in neural information processing systems</em>, vol. 28, no. 20, pp. 2389–2393, 2015, doi: <a href="https://doi.org/10.1016/j.physleta.2019.04.060">10.1016/j.physleta.2019.04.060</a>.</div>
+</div><div id="fn1"><p><sup>1</sup>&nbsp;For a brief treatment of the case that INVITE emission order is preserved, see <a href="../part3/3-07-ordered.html" class="quarto-xref"><span>Recovery from Partial Orders</span></a></p></div></div></section>
+<section id="finite-activations-spanning-forest" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="finite-activations-spanning-forest">Finite Activations &amp; Spanning Forest</h3>
+<p>As a general setting, the number of node activations (e.g.&nbsp;for datasets like co-authorship) is much smaller than the set of nodes (<span class="math inline">\(\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n\)</span>)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a><br>
+<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[2]</a></span> go to some length describing discrete- and continuous-time random walk models that can give rise to binary activation vectors like our <span class="math inline">\(X(i,j):I\times J\rightarrow \mathbb{B}\)</span>. The <em>regularized laplacian</em> (or <em>forest</em>)kernel of a graph<span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[3]</a></span> plays a central role in their analysis, as it will in our discussion going forward.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(\|\cdot\|_0\)</span> is the <span class="math inline">\(\ell_0\)</span> “pseudonorm”, counting non-zero elements (the support) of its argument.</p></div><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
+</div><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and D. Rubanov, <span>“Similarities on graphs: Kernels versus proximity measures,”</span> <em>European Journal of Combinatorics</em>, vol. 80, pp. 47–56, Aug. 2019, doi: <a href="https://doi.org/10.1016/j.ejc.2018.02.002">10.1016/j.ejc.2018.02.002</a>.</div>
+</div></div><p><span id="eq-regulap"><span class="math display">\[
+Q_{\beta} = (I+\beta L)^{-1}
+\tag{6.1}\]</span></span></p>
+<p>In that work, it is discussed as the optimal solution to the semi-supervised “node labeling” problem, having a regularization parameter <span class="math inline">\(\beta\)</span>, though its uses go far beyond this.<span class="citation" data-cites="GraphLaplacianRegularization_Pang2017 Countingrootedforests_Knill2013 MatrixForestTheorem_Chebotarev2006"><a href="#ref-GraphLaplacianRegularization_Pang2017" role="doc-biblioref">[4]</a>, <a href="#ref-Countingrootedforests_Knill2013" role="doc-biblioref">[5]</a>, <a href="#ref-MatrixForestTheorem_Chebotarev2006" role="doc-biblioref">[6]</a></span> <span class="math inline">\(Q\)</span> generalizes the so-called “heat kernel” <span class="math inline">\(\exp{(-t\tilde{L})}\)</span>, in the sense that it solves a lagrangian relaxation of a loss function based on the heat equation. This can be related to the PageRank (<span class="math inline">\(\exp{(-tL^{\text{rw}})}\)</span>) kernel as well, which is explicitly based on random walk transition probabilities.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-GraphLaplacianRegularization_Pang2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">J. Pang and G. Cheung, <span>“Graph laplacian regularization for image denoising: Analysis in the continuous domain,”</span> <em><span>IEEE</span> Transactions on Image Processing</em>, vol. 26, no. 4, pp. 1770–1785, Apr. 2017, doi: <a href="https://doi.org/10.1109/TIP.2017.2651400">10.1109/TIP.2017.2651400</a>.</div>
+</div><div id="ref-Countingrootedforests_Knill2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">O. Knill, <span>“Counting rooted forests in a network,”</span> <span>arXiv</span>, <span>arXiv</span>:1307.3810, Jul. 2013. doi: <a href="https://doi.org/10.48550/arXiv.1307.3810">10.48550/arXiv.1307.3810</a>.</div>
+</div><div id="ref-MatrixForestTheorem_Chebotarev2006" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">P. Chebotarev and E. Shamis, <span>“The matrix-forest theorem and measuring relations in small social groups,”</span> <span>arXiv</span>, <span>arXiv</span>:math/0602070, Feb. 2006. doi: <a href="https://doi.org/10.48550/arXiv.math/0602070">10.48550/arXiv.math/0602070</a>.</div>
+</div><div id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">\(Q\)</span> can also be interpreted as a continuous-time random walk location probability, after exponentially distributed time, if spending exponentially-distributed time in each node.</p></div><div id="fn4"><p><sup>4</sup>&nbsp;edge weights scaled by </p></div></div><p>In fact, <span class="math inline">\(Q\)</span> can be viewed as a transition matrix for a random walk having a geometrically distributed number of steps, giving us a small expected support for <span class="math inline">\(\mathbf{x}_i\)</span>, as needed.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> However we interpret <span class="math inline">\(Q\)</span>, a remarkable fact emerges due to a theorem by Chebotarev: each entry <span class="math inline">\(q=Q(u,v)\)</span> is equal to the probability<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> that nodes <span class="math inline">\(u,v\)</span> are connected in a randomly sampled <em>spanning rooted forest</em></p>
+<p>In other words, co-occurring node activations due to a random walk or heat kernel are deeply tied to the chance that those nodes find themselves <em>on the same tree in a forest</em>.</p>
 </section>
-<section id="dependencies-as-trees" class="level3">
-<h3 class="anchored" data-anchor-id="dependencies-as-trees">Dependencies as Trees</h3>
+<section id="spreading-dependencies-as-trees" class="level3">
+<h3 class="anchored" data-anchor-id="spreading-dependencies-as-trees">Spreading Dependencies as Trees</h3>
 <p>The whole graph isn’t a tree….Every data point is.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-tree">
 <div id="cell-fig-stack-tree" class="cell" data-execution_count="18">
@@ -297,19 +364,10 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 </div>
 </div>
 </div>
-<p>[GRAPHIC 1 - my data]</p>
-<p>[GRAPHIC 2 - infection vector from meta node]</p>
-</section>
-<section id="matrix-tree-and-forest-theorems" class="level3">
-<h3 class="anchored" data-anchor-id="matrix-tree-and-forest-theorems">Matrix Tree and Forest Theorems</h3>
-<ul>
-<li>one from kirchoff</li>
-<li>one from Chebotarv</li>
-</ul>
 </section>
 </section>
-<section id="sparse-dictionary-learning" class="level2">
-<h2 class="anchored" data-anchor-id="sparse-dictionary-learning">Sparse Dictionary Learning</h2>
+<section id="sparse-approximation" class="level2">
+<h2 class="anchored" data-anchor-id="sparse-approximation">Sparse Approximation</h2>
 <section id="problem-specification" class="level3">
 <h3 class="anchored" data-anchor-id="problem-specification">Problem Specification</h3>
 </section>
@@ -429,8 +487,10 @@ Figure&nbsp;6.6: Partial Residuals (regression on computation time)
 <p><img src="../images/PR.svg" class="img-fluid"></p>
 
 
+
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
