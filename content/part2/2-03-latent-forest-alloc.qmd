@@ -45,5 +45,8 @@ sym laplacian before forest kernel
 ### Odds of Individual Edge Improvement 
 {{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
 
-### Time Difference
-?
+### Runtime Cost
+
+{{< embed ../codefigs/results.qmd#fig-efm-runtime >}}
+
+{{< embed ../codefigs/results.qmd#fig-efm-partials-runtime >}}
