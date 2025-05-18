@@ -1,4 +1,4 @@
-# Forest Pursuit: Approximate Recovery in Near-linear Time 
+# Approximate Recovery in Near-linear Time 
 
 In this chapter, we build on the notion of "Desire Path" estimation of a dependency network from node activations --- sampling from a class of subgraphs constrained to active nodes, then merging them.
 We present _Forest Pursuit_ (FP), a method that is scalable, trivially parallelizes, and offline-capable, while also outperforming commonly used algorithms across a battery of standardized tests and metrics. 
@@ -105,7 +105,7 @@ There are some oddities to take into account here.
 As a linear operator (see @sec-lin-ops), $B^T$ takes a vector of edges to node-space, counting the number of edges each node was incident to.
 This means that, even with a ground-truth set of interactions, $B^T$ would take them to a new matrix $X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}$, which has entries of the number of interactions each individual in observation $i$ was involved in.
 While very useful for downstream analysis (see @sec-fp-preprocess), the MSE loss in @eq-sparse-approx-tree will never be zero, since $X_{\text{deg}}$ entries are not boolean.
-Large-degree "hub" nodes in the true graph would give a large residual. 
+Large-degree "hub" nodes in the true graph would give a large residual, and the adjoint would subsequently fail to remove the effect of $B^T$ on the edge vectors. 
 
 It might be possible to utilize a specific semiring, such as $(\min,+)$, to enforce inner products (see @sec-products) that take us back to a binary vector.^[
   This is more than a simple hack, and belies a great depth of possible connection to the problem at hand.
@@ -125,20 +125,32 @@ $${#eq-sparse-approx-tree}
 The point estimate $\hat{\mathbf{r}}$ is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.[@EfficientComputationExpectations_Zmigrod2021]
 If we allow the use of all observations $X$ to find an empirical prior for $\mathbf{r}$, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate.
 One algorithm for finding a maximum spanning tree is Prim's[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e. non-zero entry in our vector) one-by-one.
-In this way, we effectively _do_ perform matching pursuit, but minimizing the KL-divergence between observed co-occurrences of nodes 
+In this way, we effectively _do_ perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).
+
+However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights.
+There is reason to believe that edge weights based on pairwise joint probabilities might also be appropriate.
+Namely, the Hunter-Worsley bound for unions of (dependent) variables says that the sum of marginal probabilities over-counts the true union of activations (including by dependence relations).
+This alone would be known as Boole's inequality, but the amount it overcounts is _at most_ the weight of the maximum spanning tree over pairwise joint probabilities.[@upperboundprobability_Hunter1976]
+Adding the tree of joint co-occurrence probabilities is the most conservative way to arrive at the observed marginals from the probability of at least one node occurring (which could then be the "root").
+
+Finally, we realize that the problem statement ("find the maximum weight tree on the subgraph") is not the same as an MST, per-se, but rather the so-called "Steiner Tree" problem.
+In other words, we would like our tree of interactions to be of minimum weight on a node-induced subgraph _of the true graph_.
+The distribution of trees that our interactions are sampled from should be over the available edges in the recovered graph, _which we do not yet have_.
+Thankfully, a well-known algorithm for approximating the (graph) Steiner tree problem instead finds the minimum spanning tree over the _metric closure_ of the graph.[@fastalgorithmSteiner_Kou1981]
+
+This metric closure is a complete graph having weights given by the shortest-path distances between nodes.
+While we don't know those exact values either, we do have the fact that the distance metric implied by the forest kernel (in @eq-regulap) is something of a relaxation of shortest paths.
+In the limit $\beta\rightarrow 0$, $Q$ is proportional to shortest path distances, while $\beta\rightarrow\infty$ instead gives commute/resistance distances.[@Semisupervisedlearning_Avrachenkov2017]
+And that kernel is counting the probability of co-occurrence on trees in any random spanning forest!
+
+All this is to say that node co-occurrence measures are more similar to node-node distances in the underlying graph, _not estimators of edge existence_.
+But we can use this as an empirical prior to approximate Steiner trees that _are on the true graph_.
 
 
-- aggregate/marginalize over roots in a rooted tree (efficient expectations)...also MI is symmetric (same tree for any root)
-- total tree: overcounting of independence is at most the spanning tree (hunter worsely)
-- generally max spanning tree is the mode for distribution, so there's our point estimate.
 
-MST for each node set
+<!-- - KL-divergence is convex (we can minimize sum of dists, not just dist of sum) -->
 
-- KL-divergence is convex (we can minimize sum of dists, not just dist of sum)
-- steiner tree and approx with closure...which we don't have 
-- oh look! counting trees is similar. use cosine because geometric pooling
-
-## Forest Pursuit: Approximate Recovery in Near-linear Time {#sec-FP}
+## Forest Pursuit {#sec-FP}
 
 I.e. the PLOS paper (modified basis-pursuit via MSTs)
 
@@ -170,7 +182,7 @@ example:
 \Procedure{Partition}{$A, p, r$}
   \State $x = A[r]$
   \State $i = p - 1$
-  \For{$j = p$ \To $r - 1$}
+  \For{$j = p$}
     \If{$A[j] < x$}
       \State $i = i + 1$
       \State exchange
