@@ -213,7 +213,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a>
+  <a href="../../content/part2/2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -434,7 +434,7 @@ p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
 <section id="graph-unions-as-desire-paths" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="graph-unions-as-desire-paths">Graph Unions as Desire Paths</h3>
 <p>With a distribution over subgraphs each observation, we are potentially able to sambple from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution. Assuming this is true, we may now sample or approximate a matrix <span class="math inline">\(R(i,e):I\times E \rightarrow \mathbb{B}\)</span>.<br>
-Methods for doing this efficiently in certain cases are the focus of <a href="2-02-forest-pursuit.html#sec-FP" class="quarto-xref"><span>Forest Pursuit: Approximate Recovery in Near-linear Time</span></a> and <a href="2-03-latent-forest-alloc.html#sec-lfa-gibbs" class="quarto-xref"><span>Bayesian Estimation by Gibbs Sampling</span></a>. However, once <span class="math inline">\(R(i,e)\)</span> is estimated, a reasonable mechanism for estimating the support of the set of edges is to use <span class="math inline">\(\frac{\text{count}}{\text{exposure}}\)</span>, but with a few needed modifications.</p>
+Methods for doing this efficiently in certain cases are the focus of <a href="2-02-forest-pursuit.html#sec-FP" class="quarto-xref"><span>Forest Pursuit</span></a> and <a href="2-03-latent-forest-alloc.html#sec-lfa-gibbs" class="quarto-xref"><span>Bayesian Estimation by Gibbs Sampling</span></a>. However, once <span class="math inline">\(R(i,e)\)</span> is estimated, a reasonable mechanism for estimating the support of the set of edges is to use <span class="math inline">\(\frac{\text{count}}{\text{exposure}}\)</span>, but with a few needed modifications.</p>
 <p>First, while the nodes counts in <span class="math inline">\(\sum_i B(i,\cdot)\)</span> are by assumption <em>not</em> independent, or even pairwise independent, the <em>edge traversal</em> counts <span class="math inline">\(\sum_i R(i,\cdot)\)</span> could more reasonably be considered so. A model certainly could be constructed where edge existence depends on other edges existing (or not). But nothing is inherently self-inconsistent with a model that assumes the traversability of individual edges will be independent of one another.</p>
 <p>let P(e) be the probability that an edge is traversed (in any observation), and P(u,v) the probability that nodes <span class="math inline">\(u,v\)</span> co-occur. To approximate the overall traversability of an edge, we can calculate an empirical estimate for the conditional probability <span class="math inline">\(P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}\)</span> that an edge is traversed, given that the two incident nodes are activated. This estimate can use the same beta-bernoulli distribution from <a href="../part1/1-01-matrix-meas.html#eq-beta-binomial" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>.</p>
 <p>Still, how do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it <em>has to be possible</em> for <span class="math inline">\(e\)</span> to be traversed? Recall from the introduction that, from a measurement perspective, the underlying networks rarely “exist” in the sense that we never truly find the underlying network, but only samples from (or caused by) it. Imagine that the “real” network is a set of paved sidewalks: our procedure is similar to watching people walk along paths between locations, and wanting to estimate which of the paths would be tread “enough” to be paved. This is where we build on an intuition based on the popular idea of <em>desire paths</em> which is a colloquial name for paths that form when individuals walk over grass or dirt enough to carve a trail. In network analysis and recovery, we usually are only allowed to see the desire paths that might have formed from our data, never the actual “pavement”.</p>
@@ -897,8 +897,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../content/part2/2-02-forest-pursuit.html" class="pagination-link" aria-label="Forest Pursuit: Approximate Recovery in Near-linear Time">
-        <span class="nav-page-text"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../content/part2/2-02-forest-pursuit.html" class="pagination-link" aria-label="Approximate Recovery in Near-linear Time">
+        <span class="nav-page-text"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

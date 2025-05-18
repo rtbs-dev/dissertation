@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Forest Pursuit: Approximate Recovery in Near-linear Time – Measuring Network Dependencies from Node Activations</title>
+<title>Approximate Recovery in Near-linear Time – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,7 +135,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-01-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-02-forest-pursuit.html"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-01-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-02-forest-pursuit.html"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,7 +216,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a>
+  <a href="../../content/part2/2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -273,7 +273,7 @@ window.Quarto = {
   <li><a href="#problem-specification" id="toc-problem-specification" class="nav-link" data-scroll-target="#problem-specification">Problem Specification</a></li>
   <li><a href="#max.-spanning-steiner-trees" id="toc-max.-spanning-steiner-trees" class="nav-link" data-scroll-target="#max.-spanning-steiner-trees">Max. Spanning (Steiner) Trees</a></li>
   </ul></li>
-  <li><a href="#sec-FP" id="toc-sec-FP" class="nav-link" data-scroll-target="#sec-FP">Forest Pursuit: Approximate Recovery in Near-linear Time</a>
+  <li><a href="#sec-FP" id="toc-sec-FP" class="nav-link" data-scroll-target="#sec-FP">Forest Pursuit</a>
   <ul class="collapse">
   <li><a href="#algorithm-summary" id="toc-algorithm-summary" class="nav-link" data-scroll-target="#algorithm-summary">Algorithm Summary</a></li>
   <li><a href="#approximate-complexity" id="toc-approximate-complexity" class="nav-link" data-scroll-target="#approximate-complexity">Approximate Complexity</a></li>
@@ -295,9 +295,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-01-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-02-forest-pursuit.html"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-01-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-02-forest-pursuit.html"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Forest Pursuit: Approximate Recovery in Near-linear Time</span></h1>
+<h1 class="title"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></h1>
 </div>
 
 
@@ -330,9 +330,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="activations-in-a-forest">Activations in a Forest</h3>
 <p>As a general setting, the number of node activations (e.g.&nbsp;for datasets like co-authorship) is much smaller than the set of nodes (<span class="math inline">\(\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n\)</span>)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a><br>
 <span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[2]</a></span> go to some length describing discrete- and continuous-time random walk models that can give rise to binary activation vectors like our <span class="math inline">\(X(i,j):I\times J\rightarrow \mathbb{B}\)</span>. The <em>regularized laplacian</em> (or <em>forest</em>)kernel of a graph<span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[3]</a></span> plays a central role in their analysis, as it will in our discussion going forward.</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(\|\cdot\|_0\)</span> is the <span class="math inline">\(\ell_0\)</span> “pseudonorm”, counting non-zero elements (the support) of its argument.</p></div><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
-</div><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(\|\cdot\|_0\)</span> is the <span class="math inline">\(\ell_0\)</span> “pseudonorm”, counting non-zero elements (the support) of its argument.</p></div><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and D. Rubanov, <span>“Similarities on graphs: Kernels versus proximity measures,”</span> <em>European Journal of Combinatorics</em>, vol. 80, pp. 47–56, Aug. 2019, doi: <a href="https://doi.org/10.1016/j.ejc.2018.02.002">10.1016/j.ejc.2018.02.002</a>.</div>
 </div></div><p><span id="eq-regulap"><span class="math display">\[
 Q_{\beta} = (I+\beta L)^{-1}
@@ -392,7 +390,7 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 </div></div><p>We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree). Our dictionary in this case will be the set of edges given by <span class="math inline">\(B\)</span> (see <a href="2-01-rand-sf.html#sec-subgraph-dists" class="quarto-xref"><span>Subgraph Distributions</span></a>), while our sparsity is given by the relationship of the numbers of nodes and edges in a tree: <span id="eq-sparse-approx-tree"><span class="math display">\[
 \mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
 \tag{6.3}\]</span></span></p>
-<p>There are some oddities to take into account here. As a linear operator (see <a href="../part1/1-01-matrix-meas.html#sec-lin-ops" class="quarto-xref"><span>Models &amp; linear operators</span></a>), <span class="math inline">\(B^T\)</span> takes a vector of edges to node-space, counting the number of edges each node was incident to. This means that, even with a ground-truth set of interactions, <span class="math inline">\(B^T\)</span> would take them to a new matrix <span class="math inline">\(X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}\)</span>, which has entries of the number of interactions each individual in observation <span class="math inline">\(i\)</span> was involved in. While very useful for downstream analysis (see <a href="../part3/3-07-ordered.html#sec-fp-preprocess" class="quarto-xref"><span>Forest Pursuit as Preprocessing</span></a>), the MSE loss in <a href="#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> will never be zero, since <span class="math inline">\(X_{\text{deg}}\)</span> entries are not boolean. Large-degree “hub” nodes in the true graph would give a large residual.</p>
+<p>There are some oddities to take into account here. As a linear operator (see <a href="../part1/1-01-matrix-meas.html#sec-lin-ops" class="quarto-xref"><span>Models &amp; linear operators</span></a>), <span class="math inline">\(B^T\)</span> takes a vector of edges to node-space, counting the number of edges each node was incident to. This means that, even with a ground-truth set of interactions, <span class="math inline">\(B^T\)</span> would take them to a new matrix <span class="math inline">\(X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}\)</span>, which has entries of the number of interactions each individual in observation <span class="math inline">\(i\)</span> was involved in. While very useful for downstream analysis (see <a href="../part3/3-07-ordered.html#sec-fp-preprocess" class="quarto-xref"><span>Forest Pursuit as Preprocessing</span></a>), the MSE loss in <a href="#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> will never be zero, since <span class="math inline">\(X_{\text{deg}}\)</span> entries are not boolean. Large-degree “hub” nodes in the true graph would give a large residual, and the adjoint would subsequently fail to remove the effect of <span class="math inline">\(B^T\)</span> on the edge vectors.</p>
 <p>It might be possible to utilize a specific semiring, such as <span class="math inline">\((\min,+)\)</span>, to enforce inner products (see <a href="../part1/1-01-matrix-meas.html#sec-products" class="quarto-xref"><span>Distance vs.&nbsp;Incidence</span></a>) that take us back to a binary vector.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Instead, we will take an empirical bayes approach to the estimation of sparse vectors.<span class="citation" data-cites="EmpiricalBayesianStrategy_Wipf2007"><a href="#ref-EmpiricalBayesianStrategy_Wipf2007" role="doc-biblioref">[15]</a></span> As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) MRF [explained?] on the activated nodes. This is underdetermined (any spanning tree could equally emit the observed activations), so we use an empirical prior as a form of shrinkage: the co-occurrences of nodes across all observed activation patterns. This let’s us optimize a likelihood from <a href="2-01-rand-sf.html#eq-edgevec-prob" class="quarto-xref">Equation&nbsp;<span>5.3</span></a>, for the distribution of spanning trees on the subgraph of <span class="math inline">\(G^*\)</span> inducted by <span class="math inline">\(\mathbf{x}\)</span>. <span id="eq-sparse-approx-tree"><span class="math display">\[
 \mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
 \tag{6.4}\]</span></span></p>
@@ -410,28 +408,27 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 <p>The point estimate <span class="math inline">\(\hat{\mathbf{r}}\)</span> is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.<span class="citation" data-cites="EfficientComputationExpectations_Zmigrod2021"><a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[16]</a></span> If we allow the use of all observations <span class="math inline">\(X\)</span> to find an empirical prior for <span class="math inline">\(\mathbf{r}\)</span>, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate. One algorithm for finding a maximum spanning tree is Prim’s[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e.&nbsp;non-zero entry in our vector) one-by-one. In this way, we effectively <em>do</em> perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).</p>
 <div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[16] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
-</div></div><p>However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights. There is reason to believe that edge weights based on pairwise joint probabilities might also be appropriate. Namely, the Hunter-Worsely bound for unions of (dependent) variables says that the sum of marginal probabilities over-counts the true union of activations (including by dependence relations). This alone would be known as Boole’s inequality, but the amount it overcounts by is <em>at most</em> the weight of the maximum spanning tree over pairwise joint probabilities.</p>
-<ul>
-<li>aggregate/marginalize over roots in a rooted tree (efficient expectations)…also MI is symmetric (same tree for any root)</li>
-<li>total tree: overcounting of independence is at most the spanning tree (hunter worsely)</li>
-<li>generally max spanning tree is the mode for distribution, so there’s our point estimate.</li>
-</ul>
-<p>MST for each node set</p>
-<ul>
-<li>KL-divergence is convex (we can minimize sum of dists, not just dist of sum)</li>
-<li>steiner tree and approx with closure…which we don’t have</li>
-<li>oh look! counting trees is similar. use cosine because geometric pooling</li>
-</ul>
+</div><div id="ref-upperboundprobability_Hunter1976" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">D. Hunter, <span>“An upper bound for the probability of a union,”</span> <em>Journal of Applied Probability</em>, vol. 13, no. 3, pp. 597–603, Sep. 1976, doi: <a href="https://doi.org/10.2307/3212481">10.2307/3212481</a>.</div>
+</div></div><p>However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights. There is reason to believe that edge weights based on pairwise joint probabilities might also be appropriate. Namely, the Hunter-Worsley bound for unions of (dependent) variables says that the sum of marginal probabilities over-counts the true union of activations (including by dependence relations). This alone would be known as Boole’s inequality, but the amount it overcounts is <em>at most</em> the weight of the maximum spanning tree over pairwise joint probabilities.<span class="citation" data-cites="upperboundprobability_Hunter1976"><a href="#ref-upperboundprobability_Hunter1976" role="doc-biblioref">[17]</a></span> Adding the tree of joint co-occurrence probabilities is the most conservative way to arrive at the observed marginals from the probability of at least one node occurring (which could then be the “root”).</p>
+<p>Finally, we realize that the problem statement (“find the maximum weight tree on the subgraph”) is not the same as an MST, per-se, but rather the so-called “Steiner Tree” problem. In other words, we would like our tree of interactions to be of minimum weight on a node-induced subgraph <em>of the true graph</em>. The distribution of trees that our interactions are sampled from should be over the available edges in the recovered graph, <em>which we do not yet have</em>. Thankfully, a well-known algorithm for approximating the (graph) Steiner tree problem instead finds the minimum spanning tree over the <em>metric closure</em> of the graph.<span class="citation" data-cites="fastalgorithmSteiner_Kou1981"><a href="#ref-fastalgorithmSteiner_Kou1981" role="doc-biblioref">[18]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-fastalgorithmSteiner_Kou1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">L. Kou, G. Markowsky, and L. Berman, <span>“A fast algorithm for steiner trees,”</span> <em>Acta Informatica</em>, vol. 15, no. 2, pp. 141–145, 1981, doi: <a href="https://doi.org/10.1007/bf00288961">10.1007/bf00288961</a>.</div>
+</div><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
+</div></div><p>This metric closure is a complete graph having weights given by the shortest-path distances between nodes. While we don’t know those exact values either, we do have the fact that the distance metric implied by the forest kernel (in <a href="#eq-regulap" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>) is something of a relaxation of shortest paths. In the limit <span class="math inline">\(\beta\rightarrow 0\)</span>, <span class="math inline">\(Q\)</span> is proportional to shortest path distances, while <span class="math inline">\(\beta\rightarrow\infty\)</span> instead gives commute/resistance distances.<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[2]</a></span> And that kernel is counting the probability of co-occurrence on trees in any random spanning forest!</p>
+<p>All this is to say that node co-occurrence measures are more similar to node-node distances in the underlying graph, <em>not estimators of edge existence</em>. But we can use this as an empirical prior to approximate Steiner trees that <em>are on the true graph</em>.</p>
+<!-- - KL-divergence is convex (we can minimize sum of dists, not just dist of sum) -->
 </section>
 </section>
 <section id="sec-FP" class="level2">
-<h2 class="anchored" data-anchor-id="sec-FP">Forest Pursuit: Approximate Recovery in Near-linear Time</h2>
+<h2 class="anchored" data-anchor-id="sec-FP">Forest Pursuit</h2>
 <p>I.e. the PLOS paper (modified basis-pursuit via MSTs)</p>
 <section id="algorithm-summary" class="level3">
 <h3 class="anchored" data-anchor-id="algorithm-summary">Algorithm Summary</h3>
 <p>code box</p>
 <p>example:</p>
-<div class="pseudocode-container quarto-float" data-no-end="false" data-caption-prefix="Algorithm" data-line-number="true" data-comment-delimiter="//" data-indent-size="1.2em" data-line-number-punc=":" data-pseudocode-number="1">
+<div class="pseudocode-container quarto-float" data-no-end="false" data-line-number="true" data-line-number-punc=":" data-comment-delimiter="//" data-indent-size="1.2em" data-pseudocode-number="1" data-caption-prefix="Algorithm">
 <div class="pseudocode">
 \begin{algorithm} \caption{Quicksort} \begin{algorithmic} \Procedure{Quicksort}{$A, p, r$} \If{$p &lt; r$} \State $q = $ \Call{Partition}{$A, p, r$} \State \Call{Quicksort}{$A, p, q - 1$} \State \Call{Quicksort}{$A, q + 1, r$} \EndIf \EndProcedure \Procedure{Partition}{$A, p, r$} \State $x = A[r]$ \State $i = p - 1$ \For{$j = p$} \If{$A[j] &lt; x$} \State $i = i + 1$ \State exchange $A[i]$ with $A[j]$ \EndIf \State exchange $A[i]$ with $A[r]$ \EndFor \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
