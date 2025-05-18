@@ -61,6 +61,8 @@ div.csl-indent {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -285,6 +287,7 @@ window.Quarto = {
   <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
   <ul class="collapse">
   <li><a href="#interaction-probability" id="toc-interaction-probability" class="nav-link" data-scroll-target="#interaction-probability">Interaction Probability</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -373,17 +376,41 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 </div></div><p><a href="#fig-stack-tree" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> demonstrates the use of trees as the distribution for subgraphs, instead of outer-products/cliques.</p>
 </section>
 </section>
-<section id="sparse-approximation" class="level2">
+<section id="sparse-approximation" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sparse-approximation">Sparse Approximation</h2>
-<section id="problem-specification" class="level3">
+<p>As indicated previously, we desire a representation of each observation that takes the “node space” vectors (<span class="math inline">\(\mathbf{x}_i\)</span>) to “edge space” ones (<span class="math inline">\(\mathbf{r}_i\)</span>). We have separated each observation with the intention of finding a point-estimate for the “best” edges, such that the edge vector induces a subgraph belonging to a desired class. If we assume that each edge vector is in <span class="math inline">\(\mathbb{B}^{\omega}\)</span>, so that the interactions are unweighted, undirected, simple graphs, then for any family of subgraphs we will be selecting from at most <span class="math inline">\(\omega\leq {n\choose 2}\)</span> edges.</p>
+<p>Representing a vector as sparse combination of a known set of vectors (also known as “atoms”) is called <em>sparse approximation</em>.</p>
+<section id="problem-specification" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="problem-specification">Problem Specification</h3>
-<ul>
-<li>min 0 norm</li>
-<li>Matching Pursuit</li>
-</ul>
-</section>
-<section id="max.-spanning-steiner-trees" class="level3">
+<p>Sparse approximation of a vector <span class="math inline">\(\mathbf{x}\)</span> as a representation <span class="math inline">\(\mathbf{r}\)</span> using a dictionary of atoms (columns of <span class="math inline">\(D\)</span>) is specified more concretely as <span class="citation" data-cites="EfficientimplementationK_Rubinstein2008"><a href="#ref-EfficientimplementationK_Rubinstein2008" role="doc-biblioref">[9]</a></span>: <span id="eq-sparse-approx"><span class="math display">\[\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-D\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq N  \tag{6.2}\]</span></span> where <span class="math inline">\(N\)</span> serves as a sparsity constraint (at most <span class="math inline">\(N\)</span> non-zero entries). This is known to be NP-hard, though a number of efficient methods to approximate a solution are well-studies and widely used. Solving the lagrangian form of <a href="#eq-sparse-approx" class="quarto-xref">Equation&nbsp;<span>6.2</span></a>, with an <span class="math inline">\(\ell_1\)</span>-norm in place of <span class="math inline">\(\ell_0\)</span>, is known as _Basis Pursuit<span class="citation" data-cites="SparseApproximateSolutions_Natarajan1995"><a href="#ref-SparseApproximateSolutions_Natarajan1995" role="doc-biblioref">[10]</a></span>, while greedily solving for the non-zeros of <span class="math inline">\(\mathbf{r}\)</span> one-at-a-time is called <em>matching pursuit</em><span class="citation" data-cites="Matchingpursuitstime_Mallat1993"><a href="#ref-Matchingpursuitstime_Mallat1993" role="doc-biblioref">[11]</a></span>. In that work, each iteration selects the atom with the largest inner product <span class="math inline">\(\langle \mathbf{d}_{i'},\mathbf{x}\rangle\)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-EfficientimplementationK_Rubinstein2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">R. Rubinstein, M. Zibulevsky, and M. Elad, <span>“Efficient implementation of the k-SVD algorithm using batch orthogonal matching pursuit,”</span> <em>Cs Technion</em>, vol. 40, no. 8, pp. 1–15, 2008.</div>
+</div><div id="ref-SparseApproximateSolutions_Natarajan1995" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">B. K. Natarajan, <span>“Sparse approximate solutions to linear systems,”</span> <em>SIAM Journal on Computing</em>, vol. 24, no. 2, pp. 227–234, Apr. 1995, doi: <a href="https://doi.org/10.1137/s0097539792240406">10.1137/s0097539792240406</a>.</div>
+</div><div id="ref-Matchingpursuitstime_Mallat1993" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">S. G. Mallat and Z. Zhang, <span>“Matching pursuits with time-frequency dictionaries,”</span> <em>IEEE Transactions on Signal Processing</em>, vol. 41, no. 12, pp. 3397–3415, 1993, doi: <a href="https://doi.org/10.1109/78.258082">10.1109/78.258082</a>.</div>
+</div></div><p>We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree). Our dictionary in this case will be the set of edges given by <span class="math inline">\(B\)</span> (see <a href="2-01-rand-sf.html#sec-subgraph-dists" class="quarto-xref"><span>Subgraph Distributions</span></a>), while our sparsity is given by the relationship of the numbers of nodes and edges in a tree: <span id="eq-sparse-approx-tree"><span class="math display">\[
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
+\tag{6.3}\]</span></span></p>
+<p>There are some oddities to take into account here. As a linear operator (see <a href="../part1/1-01-matrix-meas.html#sec-lin-ops" class="quarto-xref"><span>Models &amp; linear operators</span></a>), <span class="math inline">\(B^T\)</span> takes a vector of edges to node-space, counting the number of edges each node was incident to. This means that, even with a ground-truth set of interactions, <span class="math inline">\(B^T\)</span> would take them to a new matrix <span class="math inline">\(X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}\)</span>, which has entries of the number of interactions each individual in observation <span class="math inline">\(i\)</span> was involved in. While very useful for downstream analysis (see <a href="../part3/3-07-ordered.html#sec-fp-preprocess" class="quarto-xref"><span>Forest Pursuit as Preprocessing</span></a>), the MSE loss in <a href="#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> will never be zero, since <span class="math inline">\(X_{\text{deg}}\)</span> entries are not boolean. Large-degree “hub” nodes in the true graph would give a large residual.</p>
+<p>It might be possible to utilize a specific semiring, such as <span class="math inline">\((\min,+)\)</span>, to enforce inner products (see <a href="../part1/1-01-matrix-meas.html#sec-products" class="quarto-xref"><span>Distance vs.&nbsp;Incidence</span></a>) that take us back to a binary vector.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Instead, we will take an empirical bayes approach to the estimation of sparse vectors.<span class="citation" data-cites="EmpiricalBayesianStrategy_Wipf2007"><a href="#ref-EmpiricalBayesianStrategy_Wipf2007" role="doc-biblioref">[15]</a></span> As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) MRF [explained?] on the activated nodes. This is underdetermined (any spanning tree could equally emit the observed activations), so we use an empirical prior as a form of shrinkage: the co-occurrences of nodes across all observed activation patterns. This let’s us optimize a likelihood from <a href="2-01-rand-sf.html#eq-edgevec-prob" class="quarto-xref">Equation&nbsp;<span>5.3</span></a>, for the distribution of spanning trees on the subgraph of <span class="math inline">\(G^*\)</span> inducted by <span class="math inline">\(\mathbf{x}\)</span>. <span id="eq-sparse-approx-tree"><span class="math display">\[
+\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
+\tag{6.4}\]</span></span></p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp; This is more than a simple hack, and belies a great depth of possible connection to the problem at hand. It is known that “lines” (arising from equations of the inner product) in tropical projective space <em>are trees</em>.<span class="citation" data-cites="tropicalGrassmannian_2004"><a href="#ref-tropicalGrassmannian_2004" role="doc-biblioref">[12]</a></span> In addition, the tropical equivalent to Kirchoff’s polynomial (which counts over all possible spanning trees), is the direct computation of the minimum spanning tree.<span class="citation" data-cites="TropicalKirchhoffsformula_Jukna2021"><a href="#ref-TropicalKirchhoffsformula_Jukna2021" role="doc-biblioref">[13]</a></span> For treatment of sparse approximation using tropical matrix factorization, see <span class="citation" data-cites="Sparsedataembedding_Omanovic2021"><a href="#ref-Sparsedataembedding_Omanovic2021" role="doc-biblioref">[14]</a></span></p><div id="ref-tropicalGrassmannian_2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span>“The tropical grassmannian,”</span> <em>advg</em>, vol. 4, no. 3, pp. 389–411, Jul. 2004, doi: <a href="https://doi.org/10.1515/advg.2004.023">10.1515/advg.2004.023</a>.</div>
+</div><div id="ref-TropicalKirchhoffsformula_Jukna2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">S. Jukna and H. Seiwert, <span>“Tropical kirchhoff’s formula and postoptimality in matroid optimization,”</span> <em>Discrete Applied Mathematics</em>, vol. 289, pp. 12–21, Jan. 2021, doi: <a href="https://doi.org/10.1016/j.dam.2020.09.018">10.1016/j.dam.2020.09.018</a>.</div>
+</div><div id="ref-Sparsedataembedding_Omanovic2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">A. Omanović, H. Kazan, P. Oblak, and T. Curk, <span>“Sparse data embedding and prediction by tropical matrix factorization,”</span> <em>BMC Bioinformatics</em>, vol. 22, no. 1, Feb. 2021, doi: <a href="https://doi.org/10.1186/s12859-021-04023-9">10.1186/s12859-021-04023-9</a>.</div>
+</div></div><div id="ref-EmpiricalBayesianStrategy_Wipf2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">D. P. Wipf and B. D. Rao, <span>“An empirical bayesian strategy for solving the simultaneous sparse approximation problem,”</span> <em>IEEE Transactions on Signal Processing</em>, vol. 55, no. 7, pp. 3704–3716, Jul. 2007, doi: <a href="https://doi.org/10.1109/tsp.2007.894265">10.1109/tsp.2007.894265</a>.</div>
+</div></div></section>
+<section id="max.-spanning-steiner-trees" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="max.-spanning-steiner-trees">Max. Spanning (Steiner) Trees</h3>
+<p>The point estimate <span class="math inline">\(\hat{\mathbf{r}}\)</span> is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.<span class="citation" data-cites="EfficientComputationExpectations_Zmigrod2021"><a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[16]</a></span> If we allow the use of all observations <span class="math inline">\(X\)</span> to find an empirical prior for <span class="math inline">\(\mathbf{r}\)</span>, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate. One algorithm for finding a maximum spanning tree is Prim’s[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e.&nbsp;non-zero entry in our vector) one-by-one. In this way, we effectively <em>do</em> perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
+</div></div><p>However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights. There is reason to believe that edge weights based on pairwise joint probabilities might also be appropriate. Namely, the Hunter-Worsely bound for unions of (dependent) variables says that the sum of marginal probabilities over-counts the true union of activations (including by dependence relations). This alone would be known as Boole’s inequality, but the amount it overcounts by is <em>at most</em> the weight of the maximum spanning tree over pairwise joint probabilities.</p>
 <ul>
 <li>aggregate/marginalize over roots in a rooted tree (efficient expectations)…also MI is symmetric (same tree for any root)</li>
 <li>total tree: overcounting of independence is at most the spanning tree (hunter worsely)</li>
@@ -403,6 +430,12 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 <section id="algorithm-summary" class="level3">
 <h3 class="anchored" data-anchor-id="algorithm-summary">Algorithm Summary</h3>
 <p>code box</p>
+<p>example:</p>
+<div class="pseudocode-container quarto-float" data-no-end="false" data-caption-prefix="Algorithm" data-line-number="true" data-comment-delimiter="//" data-indent-size="1.2em" data-line-number-punc=":" data-pseudocode-number="1">
+<div class="pseudocode">
+\begin{algorithm} \caption{Quicksort} \begin{algorithmic} \Procedure{Quicksort}{$A, p, r$} \If{$p &lt; r$} \State $q = $ \Call{Partition}{$A, p, r$} \State \Call{Quicksort}{$A, p, q - 1$} \State \Call{Quicksort}{$A, q + 1, r$} \EndIf \EndProcedure \Procedure{Partition}{$A, p, r$} \State $x = A[r]$ \State $i = p - 1$ \For{$j = p$} \If{$A[j] &lt; x$} \State $i = i + 1$ \State exchange $A[i]$ with $A[j]$ \EndIf \State exchange $A[i]$ with $A[r]$ \EndFor \EndProcedure \end{algorithmic} \end{algorithm}
+</div>
+</div>
 </section>
 <section id="approximate-complexity" class="level3">
 <h3 class="anchored" data-anchor-id="approximate-complexity">Approximate Complexity</h3>
@@ -507,6 +540,9 @@ Figure&nbsp;6.6: Partial Residuals (regression on computation time)
 <section id="interaction-probability" class="level3">
 <h3 class="anchored" data-anchor-id="interaction-probability">Interaction Probability</h3>
 <p><img src="../images/PR.svg" class="img-fluid"></p>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
 
 
 
@@ -945,6 +981,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 

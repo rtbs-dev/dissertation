@@ -61,6 +61,8 @@ div.csl-indent {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -236,7 +238,7 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#edge-connective-effiency-and-diversity" id="toc-edge-connective-effiency-and-diversity" class="nav-link" data-scroll-target="#edge-connective-effiency-and-diversity">Edge Connective Effiency and Diversity</a></li>
   <li><a href="#thresholded-structure-preservation" id="toc-thresholded-structure-preservation" class="nav-link" data-scroll-target="#thresholded-structure-preservation">Thresholded Structure Preservation</a></li>
-  <li><a href="#forest-pursuit-as-preprocessing" id="toc-forest-pursuit-as-preprocessing" class="nav-link" data-scroll-target="#forest-pursuit-as-preprocessing">Forest Pursuit as Preprocessing</a></li>
+  <li><a href="#sec-fp-preprocess" id="toc-sec-fp-preprocess" class="nav-link" data-scroll-target="#sec-fp-preprocess">Forest Pursuit as Preprocessing</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -383,8 +385,8 @@ Figure&nbsp;9.5: When only retaining the top 2% of edge strengths, blah
 </div>
 <!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
 </section>
-<section id="forest-pursuit-as-preprocessing" class="level3">
-<h3 class="anchored" data-anchor-id="forest-pursuit-as-preprocessing">Forest Pursuit as Preprocessing</h3>
+<section id="sec-fp-preprocess" class="level3">
+<h3 class="anchored" data-anchor-id="sec-fp-preprocess">Forest Pursuit as Preprocessing</h3>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preprocess">
 <div class="cell" data-execution_count="41">
 <p>Differences in structural preservation with increased thresholding.</p>
@@ -862,6 +864,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 

@@ -61,6 +61,8 @@ div.csl-indent {
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -264,7 +266,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#networks-as-desire-path-density-estimates" id="toc-networks-as-desire-path-density-estimates" class="nav-link" data-scroll-target="#networks-as-desire-path-density-estimates">Networks as Desire Path Density Estimates</a>
   <ul class="collapse">
-  <li><a href="#subgraph-distributions" id="toc-subgraph-distributions" class="nav-link" data-scroll-target="#subgraph-distributions">Subgraph Distributions</a></li>
+  <li><a href="#sec-subgraph-dists" id="toc-sec-subgraph-dists" class="nav-link" data-scroll-target="#sec-subgraph-dists">Subgraph Distributions</a></li>
   <li><a href="#graph-unions-as-desire-paths" id="toc-graph-unions-as-desire-paths" class="nav-link" data-scroll-target="#graph-unions-as-desire-paths">Graph Unions as Desire Paths</a></li>
   </ul></li>
   </ul>
@@ -396,8 +398,8 @@ Figure&nbsp;5.2: Inner-product projections as sums of cliques illustrating “cl
 </ul>
 <p>but with a more domain-appropriate operator at the observation level.</p>
 <p>Let’s start with replacements for the clique assumption. There are many non-clique classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest. Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[CITE] In any case, these assumptions provide an explicit way to describe the set of <em>possible</em> interaction graphs we believe our individual observations are sampled from.</p>
-<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; e.g.&nbsp;for dependencies based on perception, such as human decision making tendencies, or causes based on color names.</p></div><div id="fn3"><p><sup>3</sup>&nbsp; e.g.&nbsp;when interactions are limited to planar dependencies, like inferring ancient geographic borders.</p></div></div><section id="subgraph-distributions" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="subgraph-distributions">Subgraph Distributions</h3>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; e.g.&nbsp;for dependencies based on perception, such as human decision making tendencies, or causes based on color names.</p></div><div id="fn3"><p><sup>3</sup>&nbsp; e.g.&nbsp;when interactions are limited to planar dependencies, like inferring ancient geographic borders.</p></div></div><section id="sec-subgraph-dists" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-subgraph-dists">Subgraph Distributions</h3>
 <p>Let’s use the notation from <a href="../part1/1-02-graph-obs.html#eq-edge-vectors" class="quarto-xref">Equation&nbsp;<span>3.9</span></a>, such that each observation of nodes <span class="math inline">\(\mathbf{x}_i\)</span> is implicitly derived from a set of activated edges <span class="math inline">\(\mathbf{r_i}\)</span>. To start, our current belief about what overall structure the whole network can take is <span class="math inline">\(G^*=(V,E,B^*)\)</span>, where <span class="math inline">\(B^*\)</span> might always return <span class="math inline">\(1\)</span> to start out (the complete graph). To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> So, each <span class="math inline">\(\mathbf{x}_i\)</span> will induce a subgraph <span class="math inline">\(g_i = G^*[V_i]\)</span>, where <span class="math inline">\(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\)</span>. Then, our domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on <span class="math inline">\(g_i\)</span>. This family <span class="math inline">\(\mathcal{C}_i\)</span> belongs to the relevant class of graphs <span class="math inline">\(\mathcal{C}\)</span>, limited to nodes <span class="math inline">\(V_i\)</span>, i.e.</p>
 <div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp; Hidden nodes (unobserved nodes beyond the <span class="math inline">\(n\)</span>) are outside the scope of this work, though could potentially be implied for certain structures e.g.&nbsp;when the metric is known to be tree-like. <span class="citation" data-cites="TreeIam_Sonthalia2020"><a href="#ref-TreeIam_Sonthalia2020" role="doc-biblioref">[7]</a></span> use a greedy embedding that minimizes distortion to estimate the need for added <em>Steiner</em> nodes. </p><div id="ref-TreeIam_Sonthalia2020" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">R. Sonthalia and A. C. Gilbert, <span>“Tree! I am no tree! I am a low dimensional hyperbolic embedding,”</span> <span>arXiv</span>; arXiv, <span>arXiv</span>:2005.03847, Oct. 2020. doi: <a href="https://doi.org/10.48550/arXiv.2005.03847">10.48550/arXiv.2005.03847</a>.</div>
@@ -901,6 +903,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   </div>
 </nav>
 </div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
 
 
 
