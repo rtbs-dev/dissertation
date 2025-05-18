@@ -80,15 +80,53 @@ The possibility for multi-way interactions would necessitate the use of either a
 
 ## Sparse Approximation
 
-
+As indicated previously, we desire a representation of each observation that takes the "node space" vectors ($\mathbf{x}_i$) to "edge space" ones ($\mathbf{r}_i$).
+We have separated each observation with the intention of finding a point-estimate for the "best" edges, such that the edge vector induces a subgraph belonging to a desired class.
+If we assume that each edge vector is in $\mathbb{B}^{\omega}$, so that the interactions are unweighted, undirected, simple graphs, then for any family of subgraphs we will be selecting from at most $\omega\leq {n\choose 2}$ edges.
+ 
+Representing a vector as sparse combination of a known set of vectors (also known as "atoms") is called _sparse approximation_.
 
 ### Problem Specification
-- min 0 norm [@EfficientimplementationK_Rubinstein2008]
 
+Sparse approximation of a vector $\mathbf{x}$ as a representation $\mathbf{r}$ using a dictionary of atoms (columns of $D$) is specified more concretely as [@EfficientimplementationK_Rubinstein2008]: 
+$$\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-D\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq N $${#eq-sparse-approx}
+where $N$ serves as a sparsity constraint (at most $N$ non-zero entries).
+This is known to be NP-hard, though a number of efficient methods to approximate a solution are well-studies and widely used.
+Solving the lagrangian form of @eq-sparse-approx, with an $\ell_1$-norm in place of $\ell_0$, is known as _Basis Pursuit[@SparseApproximateSolutions_Natarajan1995], while greedily solving for the non-zeros of $\mathbf{r}$ one-at-a-time is called _matching pursuit_[@Matchingpursuitstime_Mallat1993].
+In that work, each iteration selects the atom with the largest inner product $\langle \mathbf{d}_{i'},\mathbf{x}\rangle$.
 
--  Matching Pursuit
+We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree).
+Our dictionary in this case will be the set of edges given by $B$ (see @sec-subgraph-dists), while our sparsity is given by the relationship of the numbers of nodes and edges in a tree:
+$$
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
+$${#eq-sparse-approx-tree}
+
+There are some oddities to take into account here.
+As a linear operator (see @sec-lin-ops), $B^T$ takes a vector of edges to node-space, counting the number of edges each node was incident to.
+This means that, even with a ground-truth set of interactions, $B^T$ would take them to a new matrix $X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}$, which has entries of the number of interactions each individual in observation $i$ was involved in.
+While very useful for downstream analysis (see @sec-fp-preprocess), the MSE loss in @eq-sparse-approx-tree will never be zero, since $X_{\text{deg}}$ entries are not boolean.
+Large-degree "hub" nodes in the true graph would give a large residual. 
+
+It might be possible to utilize a specific semiring, such as $(\min,+)$, to enforce inner products (see @sec-products) that take us back to a binary vector.^[
+  This is more than a simple hack, and belies a great depth of possible connection to the problem at hand.
+  It is known that "lines" (arising from equations of the inner product) in tropical projective space _are trees_.[@tropicalGrassmannian_2004]
+  In addition, the tropical equivalent to Kirchoff's polynomial (which counts over all possible spanning trees), is the direct computation of the minimum spanning tree.[@TropicalKirchhoffsformula_Jukna2021]
+  For treatment of sparse approximation using tropical matrix factorization, see @Sparsedataembedding_Omanovic2021
+] 
+Instead, we will take an empirical bayes approach to the estimation of sparse vectors.[@EmpiricalBayesianStrategy_Wipf2007]
+As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) MRF [explained?] on the activated nodes.
+This is underdetermined (any spanning tree could equally emit the observed activations), so we use an empirical prior as a form of shrinkage: the co-occurrences of nodes across all observed activation patterns.
+This let's us optimize a likelihood from @eq-edgevec-prob, for the distribution of spanning trees on the subgraph of $G^*$ inducted by $\mathbf{x}$. 
+$$
+\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
+$${#eq-sparse-approx-tree}
 
 ### Max. Spanning (Steiner) Trees
+The point estimate $\hat{\mathbf{r}}$ is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.[@EfficientComputationExpectations_Zmigrod2021]
+If we allow the use of all observations $X$ to find an empirical prior for $\mathbf{r}$, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate.
+One algorithm for finding a maximum spanning tree is Prim's[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e. non-zero entry in our vector) one-by-one.
+In this way, we effectively _do_ perform matching pursuit, but minimizing the KL-divergence between observed co-occurrences of nodes 
+
 
 - aggregate/marginalize over roots in a rooted tree (efficient expectations)...also MI is symmetric (same tree for any root)
 - total tree: overcounting of independence is at most the spanning tree (hunter worsely)
@@ -169,9 +207,12 @@ what kinds, distributions, etc.
 {{< embed ../codefigs/results.qmd#fig-runtime >}}
 
 {{< embed ../codefigs/results.qmd#fig-partials-runtime >}}
+
 ## Discussion
 
 
 ### Interaction Probability
 
 ![](../images/PR.svg)
+
+### Conclusion

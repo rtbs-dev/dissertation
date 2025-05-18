@@ -88,7 +88,7 @@ There are many non-clique classes of graphs we might believe local interactions 
 Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[CITE] 
 In any case, these assumptions provide an explicit way to describe the set of _possible_ interaction graphs we believe our individual observations are sampled from.
 
-### Subgraph Distributions
+### Subgraph Distributions {#sec-subgraph-dists}
 
 Let's use the notation from @eq-edge-vectors, such that each observation of nodes $\mathbf{x}_i$ is implicitly derived from a set of activated edges $\mathbf{r_i}$.
 To start, our current belief about what overall structure the whole network can take is $G^*=(V,E,B^*)$, where $B^*$ might always return $1$ to start out (the complete graph).

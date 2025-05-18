@@ -20,6 +20,6 @@ _insert from [@OrganizingTaggedKnowledge_Sexton2020;@UsingSemanticFluency_Sexton
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-preservation >}}
 
 <!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
-### Forest Pursuit as Preprocessing
+### Forest Pursuit as Preprocessing {#sec-fp-preprocess}
 
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-preprocess >}}
