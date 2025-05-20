@@ -276,18 +276,15 @@ window.Quarto = {
   <li><a href="#sec-FP" id="toc-sec-FP" class="nav-link" data-scroll-target="#sec-FP">Forest Pursuit</a>
   <ul class="collapse">
   <li><a href="#algorithm-summary" id="toc-algorithm-summary" class="nav-link" data-scroll-target="#algorithm-summary">Algorithm Summary</a></li>
-  <li><a href="#approximate-complexity" id="toc-approximate-complexity" class="nav-link" data-scroll-target="#approximate-complexity">Approximate Complexity</a></li>
+  <li><a href="#sec-fp-complexity" id="toc-sec-fp-complexity" class="nav-link" data-scroll-target="#sec-fp-complexity">Approximate Complexity</a></li>
   </ul></li>
   <li><a href="#sec-FP-experiments" id="toc-sec-FP-experiments" class="nav-link" data-scroll-target="#sec-FP-experiments">Simulation Study</a>
   <ul class="collapse">
-  <li><a href="#method" id="toc-method" class="nav-link" data-scroll-target="#method">Method</a></li>
+  <li><a href="#experimental-method" id="toc-experimental-method" class="nav-link" data-scroll-target="#experimental-method">Experimental Method</a></li>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">Metrics</a></li>
   <li><a href="#results---scoring" id="toc-results---scoring" class="nav-link" data-scroll-target="#results---scoring">Results - Scoring</a></li>
-  <li><a href="#results---performance" id="toc-results---performance" class="nav-link" data-scroll-target="#results---performance">Results - Performance</a></li>
-  </ul></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
-  <ul class="collapse">
-  <li><a href="#interaction-probability" id="toc-interaction-probability" class="nav-link" data-scroll-target="#interaction-probability">Interaction Probability</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#results---runtime-performance" id="toc-results---runtime-performance" class="nav-link" data-scroll-target="#results---runtime-performance">Results - Runtime Performance</a></li>
+  <li><a href="#sec-fpi" id="toc-sec-fpi" class="nav-link" data-scroll-target="#sec-fpi">Interaction Probability</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -429,30 +426,215 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 <div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp; Note that any kernel could be used, given other justification, though anectdotal evidence has the negative-log-Ochiai distance performing marginally better than MI distance or Yule’s <span class="math inline">\(Q\)</span>.</p></div><div id="ref-fastalgorithmSteiner_Kou1981" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[18] </div><div class="csl-right-inline">L. Kou, G. Markowsky, and L. Berman, <span>“A fast algorithm for steiner trees,”</span> <em>Acta Informatica</em>, vol. 15, no. 2, pp. 141–145, 1981, doi: <a href="https://doi.org/10.1007/bf00288961">10.1007/bf00288961</a>.</div>
 </div></div><p>For each observation, the provided distances serve to approximate the metric closure of the underlying subgraph induced by <span class="math inline">\(\mathbf{x}\)</span>. This is passed to an algorithm for finding the minimum spanning tree. Given a metric closure, the MST in turn would be an approximation of the desired Steiner tree within <span class="math inline">\(2-\tfrac{2}{\|\mathbf{x}\|_0}\)</span> of optimal.<span class="citation" data-cites="fastalgorithmSteiner_Kou1981"><a href="#ref-fastalgorithmSteiner_Kou1981" role="doc-biblioref">[18]</a></span> For <span class="math inline">\(\|\mathbf{x}\|_0 \ll n\)</span>, this error bound will often be close to 1, and approaching 2 as the expected number of activations-per-observation grows.</p>
-<p>After the point estimates for <span class="math inline">\(\mathbf{r}\)</span> have been calculated as trees, we can use the desire-path beta-binomial model (<a href="2-01-rand-sf.html#eq-desirepath-binom" class="quarto-xref">Equation&nbsp;<span>5.4</span></a>) to calculate the overall empirical Bayes estimate for <span class="math inline">\(\hat{G}\)</span>. As a prior for <span class="math inline">\(\alpha\)</span>, instead of a Jeffrey’s or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity. In other words, we assume that <span class="math inline">\(n\)</span> nodes only need about <span class="math inline">\(n-1\)</span> edges to be fully connected, which implies a prior expected sparsity of <span class="math display">\[ \alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}\]</span> which we can use as a sparsity-promoting initial value for <span class="math inline">\(\text{Beta}(\alpha^*,1-\alpha^*)\)</span>.</p>
-<div id="alg-fp" class="pseudocode-container quarto-float" data-line-number="true" data-indent-size="1.2em" data-line-number-punc=":" data-no-end="false" data-comment-delimiter="//" data-caption-prefix="Algorithm" data-pseudocode-number="1">
+<p>After the point estimates for <span class="math inline">\(\mathbf{r}\)</span> have been calculated as trees, we can use the desire-path beta-binomial model (<a href="2-01-rand-sf.html#eq-desirepath-binom" class="quarto-xref">Equation&nbsp;<span>5.4</span></a>) to calculate the overall empirical Bayes estimate for <span class="math inline">\(\hat{G}\)</span>. As a prior for <span class="math inline">\(\alpha\)</span>, instead of a Jeffrey’s or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity. In other words, we assume that <span class="math inline">\(n\)</span> nodes only need about <span class="math inline">\(n-1\)</span> edges to be fully connected, which implies a prior expected sparsity of <span id="eq-min-connect"><span class="math display">\[
+\alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}
+\tag{6.5}\]</span></span> which we can use as a sparsity-promoting initial value for <span class="math inline">\(\text{Beta}(\alpha^*,1-\alpha^*)\)</span>.</p>
+<div id="alg-fp" class="pseudocode-container quarto-float" data-indent-size="1.2em" data-caption-prefix="Algorithm" data-line-number-punc=":" data-pseudocode-number="1" data-comment-delimiter="//" data-no-end="false" data-line-number="true">
 <div class="pseudocode">
 \begin{algorithm} \caption{Forest Pursuit} \begin{algorithmic} \Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0&lt;\alpha&lt;1$ \Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$ \Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$} \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$} \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \Procedure{ForestPursuit}{$X, d_K$} \State $R(\cdot,\cdot) \gets 0$ \For{$i\gets 1, m$}\Comment{\textit{each observation}} \State $\mathbf{x}_i \gets X(i,\cdot)$ \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} \EndFor \State \textbf{return} $R$ \EndProcedure \Procedure{PursueTree}{$\mathbf{x}, d$} \Comment{\textit{Approximate Steiner Tree}} \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$ \Comment{\textit{activated nodes}} \State $T \gets$\Call{MST}{$d[V,V]$} \Comment{\textit{e.g. Prim's Algorithm}} \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$ \State $\mathbf{r} \gets e_n(\mathbf{u,v})$ \Comment{\textit{unroll tree adjacency}} \State \textbf{return} $\mathbf{r}$ \EndProcedure \Procedure{DesirePathBeta}{$X,R, \alpha$} \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$ \State $\sigma \gets \sum_{i=1}^m X(i,j)$ \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$ \Comment{\textit{co-occurrence counts}} \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$ \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
 </div>
 <p><a href="#alg-fp" class="quarto-xref">Algorithm 1</a> outlines the algorithm in pseudocode for reproducibility.</p>
 </section>
-<section id="approximate-complexity" class="level3">
-<h3 class="anchored" data-anchor-id="approximate-complexity">Approximate Complexity</h3>
-<p>Note the use of MST algorithm could apply Prim’s or Kruskal’s algorithm, or similar. It is recommended to utilize Prims in this case, however, since Prim’s on a sufficiently dense graph can be made to run in <span class="math inline">\(O(n)\)</span> time for <span class="math inline">\(n\)</span> nodes by using a <em>d</em>-tree for its heap queue.[CITE] Since we are always using the metric closure, Prim’s will always run on a complete graph.</p>
+<section id="sec-fp-complexity" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-fp-complexity">Approximate Complexity</h3>
+<p>The Forest Pursuit calculation presented in <a href="#alg-fp" class="quarto-xref">Algorithm 1</a> assumes an initial value for the distance matrix, which is similar to the covariance estimate that is pre-computed (as an initial guess) for GLASSO. Therefore we do not include the matrix multiplication for the gram matrix in our analysis, at least in the non-streaming case. Because every observation is dealt with completely independently, the FP estimation of <span class="math inline">\(R\)</span> is linear in observation count. It is also trivially parallelizeable,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> and the bayesian update for <span class="math inline">\(\hat{\alpha}_m\)</span> can be performed in a streaming manner, as well.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;Although, no common python implementation of MST algorithms are as-yet vectorized or parallelized for simultaneous application over many observations. We see development of non-blocking MSTs in common analysis frameworks as important future work.</p></div></div><p>Each observation requires a call to “PursueTree”, which involves an MST call for the pre-computed subset of distances onnodes activated for that observation. Note the use of MST algorithm could apply Prim’s or Kr uskal’s algorithm, or similar. It is recommended to utilize Prims in this case, however, since Prim’s on a sufficiently dense graph can be made to run in <span class="math inline">\(O(n)\)</span> time for <span class="math inline">\(n\)</span> activated nodes by using a <em>d</em>-tree for its heap queue.[CITE] Since we are always using the metric closure, Prim’s will always run on a complete graph.</p>
+<p>Importantly, this means that FP does not scale with the the size of the network, but only the worst-case activation count of a given observation, <span class="math inline">\(O(s_{\text{max}})\)</span>, where <span class="math inline">\(s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}\)</span> We say this is <em>approximately</em> constant in node size:</p>
+<ul>
+<li>the total number of nodes is typically a <em>given</em> for a single problem setting</li>
+<li>in many domains, the basic <em>spreading</em> rate of diffusion model (e.g.&nbsp;<span class="math inline">\(R_0\)</span>, or heat conductivity), does not scale with the total size of an observation</li>
+</ul>
+<p>That last point means that constant scaling with network size is generally down to the domain in question. For instance, a heat equation simulated over a small area, having a given conductivity, will not have a different conductivity over a larger area; conductivity is a material property. Similarly, a virus might have a particular basic reproduction rate, or a set of authors might have a static distribution over how many collaborators they wish to work with. The former is down to viral load generation, and the latter a sociological limit: more a bigger department usually doesnt imply more co-authors.</p>
+<p>Similar to <a href="#eq-min-connect" class="quarto-xref">Equation&nbsp;<span>6.5</span></a>, we might reasonably assume that the expected degree of nodes is roughly constant with network size i.e.&nbsp;a property of domain. So, the the density of activation vectors (as a fraction of all possible edges) is going go scale with the inverse of <span class="math inline">\(n\)</span>. This makes a process linear in activation count to be constant in network size. Then, if <span class="math inline">\(\bar{s}\)</span> is the expected non-zero count of each row of <span class="math inline">\(X\)</span>, the final approximate complexity of FP is <span class="math inline">\(O(m\bar{s})\)</span>.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn8"><p><sup>8</sup>&nbsp; In our reference implementation, which uses Kruskal’s algorithm, the theoretical complexity is likewise <span class="math inline">\(O(m\bar{s}^2\log{\bar{s}})\)</span>, though in our experience the values of <span class="math inline">\(\bar{s}\)</span> are small enough to not impact the runtime significantly.</p></div></div></section>
 </section>
-</section>
-<section id="sec-FP-experiments" class="level2">
+<section id="sec-FP-experiments" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sec-FP-experiments">Simulation Study</h2>
-<p>MENDR + affinis</p>
-<section id="method" class="level3">
-<h3 class="anchored" data-anchor-id="method">Method</h3>
-<p>what kinds, distributions, etc. - glasso gets 5CV to select reg param</p>
+<p>To test the performance of FP against other backboning and recovery methods, we have developed a public repository <a href="https://github.com/rtbs-dev/affinis"><code>affinis</code></a> containing reference implementations for FP, along with many co-occurrence and backboning techniques. The library contains source code and examples for many of the presented methods, and more. [UPDATE w/ DOI?]</p>
+<p>In addition, to support the community and provide for a standard set of benchmarks for network recovery from activations, the <a href="https://github.com/rtbs-dev/mendr"><code>MENDR</code></a> reference dataset and testbench was developed. To make reproducible comparison of recovery algorithms easier, <code>MENDR</code> includes hundreds of randomly generated networks in several classes, along with random walks sampled <em>on those networks</em>. It can also be extended through community contribution, using data versioning to allow consistent comparison between different reports and publications over time.</p>
+<section id="experimental-method" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="experimental-method">Experimental Method</h3>
+<p>For each algorithm shown in <a href="#tbl-methods" class="quarto-xref">Table&nbsp;<span>6.2</span></a>, every combination of the parameters in <a href="#tbl-mendr" class="quarto-xref">Table&nbsp;<span>6.1</span></a> was tested. 30 random graphs for each of nodes were tested, which was repeated again for each of Tree, Block, and scale-free types.</p>
+<div id="tbl-mendr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mendr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: Experiment Settings (MENDR Dataset)
+</figcaption>
+<div aria-describedby="tbl-mendr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>parameters</th>
+<th style="text-align: center;">values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>random graph <strong>kind</strong></td>
+<td style="text-align: center;">Tree, Block, BA<span class="math inline">\((m\in\{1,2\}\)</span>)</td>
+</tr>
+<tr class="even">
+<td>network <strong><span class="math inline">\(n\)</span>-nodes</strong></td>
+<td style="text-align: center;">10,30,100,300</td>
+</tr>
+<tr class="odd">
+<td>random <strong>walks</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(m\sim\text{NegBinomial}(2,n^{-1})+10\)</span></td>
+</tr>
+<tr class="even">
+<td>random walk <strong>jumps</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(n_sim\text{Geometric}(n^{-1})+5\)</span></td>
+</tr>
+<tr class="odd">
+<td>random walk <strong>root</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(n_0 \sim \text{Multinomial}(\textbf{n}^{-1},1)\)</span></td>
+</tr>
+<tr class="even">
+<td>random <strong>seed</strong></td>
+<td style="text-align: center;">1, 2, … , 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-methods" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-tbl figure page-columns page-full">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: Summary of algorithms compared
+</figcaption>
+<div aria-describedby="tbl-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Algorithm</th>
+<th style="text-align: center;">abbrev.</th>
+<th style="text-align: center;"><span class="math inline">\(\alpha\)</span>?</th>
+<th style="text-align: center;">class</th>
+<th style="text-align: right;">source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Forest Pursuit</td>
+<td style="text-align: center;">FP</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">hybrid</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GLASSO</td>
+<td style="text-align: center;">GL</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">MRF</td>
+<td style="text-align: right;"><span class="citation" data-cites="Sparseinversecovariance_Friedman2008 Structureestimationdiscrete_Loh2012"><a href="#ref-Sparseinversecovariance_Friedman2008" role="doc-biblioref">[19]</a>, <a href="#ref-Structureestimationdiscrete_Loh2012" role="doc-biblioref">[20]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ochiai Coef.</td>
+<td style="text-align: center;">CS</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Counts</td>
+<td style="text-align: right;"><span class="citation" data-cites="Measuresecologicalassociation_Janson1981"><a href="#ref-Measuresecologicalassociation_Janson1981" role="doc-biblioref">[21]</a></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hyperbolic Projection</td>
+<td style="text-align: center;">HYP</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">Counts</td>
+<td style="text-align: right;"><span class="citation" data-cites="Scientificcollaborationnetworks._Newman2001"><a href="#ref-Scientificcollaborationnetworks._Newman2001" role="doc-biblioref">[22]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Doubly-Stochastic</td>
+<td style="text-align: center;">eOT</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="twostagealgorithm_Slater2009 Sinkhorndistanceslightspeed_Cuturi2013"><a href="#ref-twostagealgorithm_Slater2009" role="doc-biblioref">[23]</a>, <a href="#ref-Sinkhorndistanceslightspeed_Cuturi2013" role="doc-biblioref">[24]</a></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">High-Salience Skeleton</td>
+<td style="text-align: center;">HSS</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="Robustclassificationsalient_Grady2012"><a href="#ref-Robustclassificationsalient_Grady2012" role="doc-biblioref">[25]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Resource Allocation</td>
+<td style="text-align: center;">RP</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="Bipartitenetworkprojection_Zhou2007"><a href="#ref-Bipartitenetworkprojection_Zhou2007" role="doc-biblioref">[26]</a></span></td>
+</tr>
+</tbody>
+</table>
+<div class="no-row-height column-margin column-container"><div id="ref-Sparseinversecovariance_Friedman2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline">J. Friedman, T. Hastie, and R. Tibshirani, <span>“Sparse inverse covariance estimation with the graphical lasso,”</span> <em>Biostatistics</em>, vol. 9, no. 3, pp. 432–441, Jul. 2008, doi: <a href="https://doi.org/10.1093/biostatistics/kxm045">10.1093/biostatistics/kxm045</a>.</div>
+</div><div id="ref-Measuresecologicalassociation_Janson1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline">S. Janson and J. Vegelius, <span>“Measures of ecological association,”</span> <em>Oecologia</em>, vol. 49, no. 3, pp. 371–376, Jul. 1981, doi: <a href="https://doi.org/10.1007/bf00347601">10.1007/bf00347601</a>.</div>
+</div><div id="ref-Scientificcollaborationnetworks._Newman2001" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,”</span> <em>Physical Review E</em>, vol. 64, no. 1, p. 016132, Jun. 2001, doi: <a href="https://doi.org/10.1103/physreve.64.016132">10.1103/physreve.64.016132</a>.</div>
+</div><div id="ref-twostagealgorithm_Slater2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline">P. B. Slater, <span>“A two-stage algorithm for extracting the multiscale backbone of complex weighted networks,”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 106, no. 26, pp. E66–E66, Jun. 2009, doi: <a href="https://doi.org/10.1073/pnas.0904725106">10.1073/pnas.0904725106</a>.</div>
+</div><div id="ref-Sinkhorndistanceslightspeed_Cuturi2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline">M. Cuturi, <span>“Sinkhorn distances: Lightspeed computation of optimal transport,”</span> in <em>Proceedings of the 27th international conference on neural information processing systems - volume 2</em>, in NIPS’13. Red Hook, NY, USA: Curran Associates Inc., 2013, pp. 2292–2300.</div>
+</div><div id="ref-Robustclassificationsalient_Grady2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline">D. Grady, C. Thiemann, and D. Brockmann, <span>“Robust classification of salient links in complex networks,”</span> <em>Nature Communications</em>, vol. 3, no. 1, May 2012, doi: <a href="https://doi.org/10.1038/ncomms1847">10.1038/ncomms1847</a>.</div>
+</div><div id="ref-Bipartitenetworkprojection_Zhou2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline">T. Zhou, J. Ren, M. s. Medo, and Y.-C. Zhang, <span>“Bipartite network projection and personal recommendation,”</span> <em>Phys. Rev. E</em>, vol. 76, no. 4, 4, p. 046115, Oct. 2007, doi: <a href="https://doi.org/10.1103/PhysRevE.76.046115">10.1103/PhysRevE.76.046115</a>.</div>
+</div></div></div>
+</figure>
+</div>
+<p>For each algorithm that could be supplied a prior via additive smoothing, seen in <a href="#tbl-methods" class="quarto-xref">Table&nbsp;<span>6.2</span></a> as “<span class="math inline">\(\alpha\)</span>?: Yes”, a minimum connected (tree) level of sparsity wasy supplied <span class="math inline">\(\alpha=\tfrac{2}{n}\)</span>. The others, esp.&nbsp;GLASSO, do not have a <span class="math inline">\(\tfrac{\text{count}}{\text{exposure}}\)</span> form, and could not be easily interpreted in a way that allowed for additive smoothing. However, since the regularizaiton parameter for GLASSO is often critical for finding good solutions, a 5-fold cross validation was performed for each experiment to select a “best” value, with the final result run using that value. While this does have a constant-time penalty for each experiment, the reconstruction accuracy is significantly improved with this technique, and would reflect common practice in using GLASSO for this reason.</p>
+<p>The three classes of random graphs represent common use cases in sparse graph recovery. In addition, the block and tree graphs are types we expect GLASSO to correctly recover in this binary setting.<span class="citation" data-cites="Structureestimationdiscrete_Loh2012"><a href="#ref-Structureestimationdiscrete_Loh2012" role="doc-biblioref">[20]</a></span> The block graphs of size <span class="math inline">\(n\)</span> were formed by taking the line-graph of randomly generated trees of size <span class="math inline">\(n+1\)</span>.<br>
+Trees were randomly generated using Prüfer sequences as impelmented in NetworkX [CITE]. To simulate possible social networks and other complex systems that show evidence of preferential attachment, scale-free graphs were sampled through the Barabási–Albert (BA) model, which was randomly seeded with a re-attachment paramenter <span class="math inline">\(m\)</span> of either 1 or 2.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Structureestimationdiscrete_Loh2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline">P. Loh and M. J. Wainwright, <span>“Structure estimation for discrete graphical models: Generalized covariance matrices and their inverses,”</span> in <em>Advances in neural information processing systems</em>, Curran Associates, Inc., 2012. doi: <a href="https://doi.org/10.1214/13-aos1162">10.1214/13-aos1162</a>.</div>
+</div></div><p>Every graph has a static ID provided by MENDR, along with generation and retrieval code for public review. New graphs kinds and sizes are simple to add for future benchmarking capability.</p>
+</section>
+<section id="metrics" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
+<p>To compare each algorithm consistently, several performance measures have been included in the MENDR testbench. They are all functions of the True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN) values.</p>
+<dl class="page-columns page-full">
+<dt>Precision (P)</dt>
+<dd>
+Fraction of positive predictions that are true, also called “positive predictive value” (PPV) <span class="math display">\[P= \frac{TP}{TP+FP}\]</span>
+</dd>
+<dt>Recall (R)</dt>
+<dd>
+Fraction of true values that were returned as positive. Also called the TP-rate (TPR), and has an inherent trade-off with precision. <span class="math display">\[R=\frac{TP}{TP+FN} \]</span>
+</dd>
+<dt>Matthews Correlation Coefficient (MCC)</dt>
+<dd>
+Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems (like sparse recovery) <span class="citation" data-cites="statisticalcomparisonMatthews_Chicco2023"><a href="#ref-statisticalcomparisonMatthews_Chicco2023" role="doc-biblioref">[27]</a></span> <span class="math display">\[\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}\]</span>
+</dd>
+<div class="no-row-height column-margin column-container"><div id="ref-statisticalcomparisonMatthews_Chicco2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline">D. Chicco and G. Jurman, <span>“A statistical comparison between matthews correlation coefficient ( <span>MCC</span>), prevalence threshold, and fowlkes–mallows index,”</span> <em>Journal of Biomedical Informatics</em>, vol. 144, p. 104426, Aug. 2023, doi: <a href="https://doi.org/10.1016/j.jbi.2023.104426">10.1016/j.jbi.2023.104426</a>.</div>
+</div></div><dt>Fowlkes-Mallows (F-M)</dt>
+<dd>
+Geometric mean of Precision and Recall, as opposed to the F-Measure that returns the harmonic mean. Also known to be the limit of the MCC as TN approaches infinity<span class="citation" data-cites="MCCapproachesgeometric_Crall2023"><a href="#ref-MCCapproachesgeometric_Crall2023" role="doc-biblioref">[28]</a></span>, which is useful as TN grows with <span class="math inline">\(n^2\)</span> but TP only with <span class="math inline">\(n\)</span>. <span class="math display">\[\sqrt{P\cdot R}\]</span>
+</dd>
+<div class="no-row-height column-margin column-container"><div id="ref-MCCapproachesgeometric_Crall2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline">J. Crall, <span>“The MCC approaches the geometric mean of precision and recall as true negatives approach infinity,”</span> Apr. 2023, doi: <a href="https://doi.org/10.48550/ARXIV.2305.00594">10.48550/ARXIV.2305.00594</a>.</div>
+</div></div></dl>
+<p>Because this work is focused on unsupervised performance, specifically for the use of these algorithms by analysts investigating dependencies, we opt to calculate TP,TN,FP,FN at every unique edge probability/strength value returned by each algorithm. Then, because we do not know a priori which threshold level will be selected by an analyst in the unsupervised setting, we take a conservative approach and report the expected values E[MCC] and E[F-M] over all unique threshold values. To consistently compare the expected values, we transform the thresholds for every experiment to the range <span class="math inline">\([\epsilon, 1-\epsilon]\)</span>, to avoid division-by-0 at the extremes.</p>
+<p>Another common approach is to report the Average Precision Score (APS). This is not the average precision over the thresholds however, but instead the expected precision over the possible recall values achievable by the algorithm. It is approximating the integral under the parametric P-R curve, instead of the thresholds themselves. <span class="math display">\[\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))\]</span> where <span class="math inline">\(P(e)\)</span> and <span class="math inline">\(R(e)\)</span> are the precision and recall at the threshold set by the edge <span class="math inline">\(e\)</span>, in rank-order. This is more commonly done for supervised settings, however, and will report a high value as long as <em>any</em> threshold is able to return a both a high precision and a high recall, simultaneously.</p>
 </section>
 <section id="results---scoring" class="level3">
 <h3 class="anchored" data-anchor-id="results---scoring">Results - Scoring</h3>
+<p>The results over every experiment are shown in <a href="#fig-fp-overall" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>. Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8. GLASSO is clearly the second-best at recovery in these experiments, though for scale-free networks the improvement over simply thresholding the Ochiai coefficient is negligible. For APS, both GLASSO and Ochiai are equally able to return high scores, indicating at least one threshold for each that performed well. A simple mechanism for FP to perform equally well at APS is discussed in <a href="#sec-fpi" class="quarto-xref"><span>Interaction Probability</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-overall">
-<div id="cell-fig-fp-overall" class="cell" data-execution_count="12">
+<div id="cell-fig-fp-overall" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div id="fig-fp-overall" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -467,8 +649,9 @@ Figure&nbsp;6.2: Comparison of MENDR recovery scores
 </div>
 </div>
 </div>
+<p>Breaking down the results by graph kind in <a href="#fig-fp-compare" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>, we see the remarkable ability of FP to dramatically outperform every other algorithm in MCC and F-M, showing remarkable accuracy <em>together with stability</em> over the set of threshold values. This is indicative of FP’s ability to more directly estimate the support of each edge, with lower values occurring only when co-occurrences aren’t being consistently explained with the same set of incidences.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-compare">
-<div id="cell-fig-fp-compare" class="cell" data-execution_count="14">
+<div id="cell-fig-fp-compare" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div id="fig-fp-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -483,8 +666,60 @@ Figure&nbsp;6.3: Comparison of MENDR Recovery Scores by Graph Type
 </div>
 </div>
 </div>
+<p>Another important capability of any recovery algorithm is to improve its estimate when provided with more data. Of course, this also will depend on other factors, such as the dimensionality of the problem (network size), and specifically for us, whether <em>longer</em> random walks makes network inference better or worse.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-mendr-trends">
+<div class="cell" data-execution_count="16">
+<div id="fig-mendr-trends" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="16">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mendr-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Trend: MCC vs network size
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Trend: MCC vs observation count
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Trend: MCC vs random-walk length
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mendr-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: Score trends vs problem scaling
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> shows, FP is positively correlated with <em>all three</em>. Most importantly, the trend for FP is strongest as the number of observations increases, which is not a phenomenon seen in the other methods. In fact, it appears that count-based methods’ scores are negatively correlated with added random walk length and added observations. Only HYP and CS scores are shown in <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>, but all other tested methods (other than FP and GLASSO) show the same trend.</p>
+<p>However, because the graph sampling protocol includes <span class="math inline">\(n\)</span> in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The <em>partial resitual</em> plots are shown in <a href="#fig-partials-mcc" class="quarto-xref">Figure&nbsp;<span>6.5</span></a>, which shows the trends of each variable after controlling for the others.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-mcc">
-<div id="cell-fig-partials-mcc" class="cell" data-execution_count="18">
+<div id="cell-fig-partials-mcc" class="cell" data-execution_count="17">
 <div class="cell-output cell-output-display">
 <div id="fig-partials-mcc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -492,18 +727,20 @@ Figure&nbsp;6.3: Comparison of MENDR Recovery Scores by Graph Type
 <img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-partials-mcc-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partials-mcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.4: Partial Residuals (regression on E[MCC])
+Figure&nbsp;6.5: Partial Residuals (regression on E[MCC])
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>This analysis indicates that <em>all</em> methods should likely increase in their performance when extra observations are added, though FP does this more efficiently than either CS or GLASSO. Interestingly, CS is largely unaffected by network size, compared to FP and GL, though GL performs the worst in this regard. However, it is in the random-walk length that we see the benefit of dependency-based algorithms. The Ochiai coefficient suffers dramatically as more nodes are activated by the spreading process, since this means the implied clique size grows by the square of the number of activations. FP remains unaffected by walk-length, while (impressively) GLASSO appears to have a marginal boost in performance when walk lengths are high.</p>
 </section>
-<section id="results---performance" class="level3">
-<h3 class="anchored" data-anchor-id="results---performance">Results - Performance</h3>
+<section id="results---runtime-performance" class="level3">
+<h3 class="anchored" data-anchor-id="results---runtime-performance">Results - Runtime Performance</h3>
+<p>For both Forest Pursuit and GLASSO, runtime efficiency is critical if these algorithms are going to be adopted by analysts for backboning and recovery. <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> shows the (log-)seconds against the same parameters from before. For similar sized networks, FP is consistently taking 10-100x less time to reach a result than GLASSO does. Additionally, many of the experiments led to ill-conditioned matrices that failed to converge for GLASSO under any of the regularization parameters tests (the “x” markers in <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>). As expected, the number of observations plot shows a clear limit in terms of controlling the lower-bound of FPs runtime, since in this serial version every observation runs one more call to MST. On the other hand, GLASSO appears to have signiicant banding for walk length and observation counts, likely indicating dominance of network size for its runtime.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-runtime">
-<div id="cell-fig-runtime" class="cell" data-execution_count="21">
+<div id="cell-fig-runtime" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div id="fig-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -511,15 +748,16 @@ Figure&nbsp;6.4: Partial Residuals (regression on E[MCC])
 <img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-runtime-output-1.png" width="578" height="491" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.5: Runtime Scaling (Forest-Pursuit vs GLASSO)
+Figure&nbsp;6.6: Runtime Scaling (Forest-Pursuit vs GLASSO)
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>To control for each of the variables, and to empirically validate the theoretical analysis in <a href="#sec-fp-complexity" class="quarto-xref"><span>Approximate Complexity</span></a>}, a regression of the same three (log-)parametwers was performed against (log-)seconds. The slopes in <a href="#fig-partials-runtime" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>, which are plotted on a log-log scale, correspond roughly to polynomial powers in linear scale. In regression terms, we are fitting the log of <span class="math display">\[y_{\text{sec}} = ax_{\text{param}}^\gamma\]</span> so that the slope in a log-log plot is <span class="math inline">\(\gamma\)</span>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-runtime">
-<div id="cell-fig-partials-runtime" class="cell" data-execution_count="23">
+<div id="cell-fig-partials-runtime" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div id="fig-partials-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -527,23 +765,199 @@ Figure&nbsp;6.5: Runtime Scaling (Forest-Pursuit vs GLASSO)
 <img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-partials-runtime-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partials-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;6.6: Partial Residuals (regression on computation time)
+Figure&nbsp;6.7: Partial Residuals (regression on computation time)
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>In a very close match to our previous analysis, the scaling of FP is almost entirely explained by the observation count and random-walk length, alone: the coefficient on network size shows constant-time scaling. Similarly, the scaling with observation count is very nearly linear time, as predicted. The residuals show non-linear behavior for the random-walk length parameter, which would make sense, due to the theoretical <span class="math inline">\(\|E\|\log\|V\|\)</span> scaling of kruskal’s algorithm. At this scale, <span class="math inline">\(n\log n\)</span> and <span class="math inline">\(n^2\log n\)</span> complexity might appear smaller than linear time, due to the log factor. GLASSO hardly scales with random walk length, and only marginally with observation count. In typical GLASSO, the observation count has already been collapsed to calculate the empirical covariance matrix, so its effects here might be due instead to the cross-validation and the need to calculate empirical covariance for observation subsets. The big difference, however, is GLASSO scaling in significantly superlinear time—almost <span class="math inline">\(O(n^2)\)</span>. This is usually the limiting factor for analyst use of such an algorithm in network analysis more generally.</p>
 </section>
-</section>
-<section id="discussion" class="level2">
-<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-<section id="interaction-probability" class="level3">
-<h3 class="anchored" data-anchor-id="interaction-probability">Interaction Probability</h3>
-<p><img src="../images/PR.svg" class="img-fluid"></p>
-</section>
-<section id="conclusion" class="level3">
-<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<section id="sec-fpi" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-fpi">Interaction Probability</h3>
+<p>Without using stability selection<span class="citation" data-cites="StabilitySelection_Meinshausen2010"><a href="#ref-StabilitySelection_Meinshausen2010" role="doc-biblioref">[29]</a></span>, GLASSO is not directly estimating the “support” of the edge matrix, but the strength of each edge. to do similar with FP, we could directly estimate the frequency of edge occurrence using <span class="math inline">\(R(i,e)\)</span> marginal averages, rather than conditioning on co-occurrence. Simply multiplying each FP edge probability by the co-occurrence probability of each node-node pair gives this as well, which we call FPi: the direct “interaction probability” for each pair of nodes.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-StabilitySelection_Meinshausen2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[29] </div><div class="csl-right-inline">N. Meinshausen and P. Bühlmann, <span>“Stability selection,”</span> <em>Journal of the Royal Statistical Society Series B: Statistical Methodology</em>, vol. 72, no. 4, pp. 417–473, Aug. 2010, doi: <a href="https://doi.org/10.1111/j.1467-9868.2010.00740.x">10.1111/j.1467-9868.2010.00740.x</a>.</div>
+</div></div><p>By doing this simple re-weighting, FPi actually beats GLASSO’s median APS for the dataset, but at the cost of MCC and F-M scores (which both drop to between FP and GLASSO), as <a href="#fig-fpi" class="quarto-xref">Figure&nbsp;<span>6.8</span></a> demonstrates. Similarly, the individual breakdown by graph kind in <a href="#tbl-fpi" class="quarto-xref">Table&nbsp;<span>6.3</span></a> shows a similar pattern, with FPi coming close to GLASSO for scale-free networks, but exceeding it for trees and matching for block graphs. Still, the difference is small enough, and at such a significant penaly to MCC and F-M scores over a variety of thresholds, that it is hard to recommend the FPi re-weighting unless rate-based edge analysis is desired, e.g.&nbsp;if Poisson or Exponential occurrence models are desired.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-tbl-fpi" style="flex-basis: 50.0%;justify-content: center;">
+<div class="cell" data-execution_count="27">
+<div id="tbl-fpi" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="27">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.3: Comparing scores for FP, FPi and GLASSO
+</figcaption>
+<div aria-describedby="tbl-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fnabezombz" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>
+#fnabezombz table {
+          font-family: 'Bitstream Charter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+        }
+
+#fnabezombz thead, tbody, tfoot, tr, td, th { border-style: none; }
+ tr { background-color: transparent; }
+#fnabezombz p { margin: 0; padding: 0; }
+ #fnabezombz .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: #FFFFFF; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
+ #fnabezombz .gt_caption { padding-top: 4px; padding-bottom: 4px; }
+ #fnabezombz .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; border-bottom-color: #FFFFFF; border-bottom-width: 0; }
+ #fnabezombz .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 3px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; border-top-color: #FFFFFF; border-top-width: 0; }
+ #fnabezombz .gt_heading { background-color: #FFFFFF; text-align: center; border-bottom-color: #FFFFFF; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #fnabezombz .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #fnabezombz .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
+ #fnabezombz .gt_col_heading { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
+ #fnabezombz .gt_column_spanner_outer { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
+ #fnabezombz .gt_column_spanner_outer:first-child { padding-left: 0; }
+ #fnabezombz .gt_column_spanner_outer:last-child { padding-right: 0; }
+ #fnabezombz .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 5px; padding-bottom: 5px; overflow-x: hidden; display: inline-block; width: 100%; }
+ #fnabezombz .gt_spanner_row { border-bottom-style: hidden; }
+ #fnabezombz .gt_group_heading { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
+ #fnabezombz .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
+ #fnabezombz .gt_from_md> :first-child { margin-top: 0; }
+ #fnabezombz .gt_from_md> :last-child { margin-bottom: 0; }
+ #fnabezombz .gt_row { padding-top: 8px; padding-bottom: 8px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; overflow-x: hidden; }
+ #fnabezombz .gt_stub { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
+ #fnabezombz .gt_stub_row_group { color: #333333; background-color: #FFFFFF; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
+ #fnabezombz .gt_row_group_first td { border-top-width: 2px; }
+ #fnabezombz .gt_row_group_first th { border-top-width: 2px; }
+ #fnabezombz .gt_striped { background-color: rgba(128,128,128,0.05); }
+ #fnabezombz .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
+ #fnabezombz .gt_sourcenotes { color: #333333; background-color: #FFFFFF; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
+ #fnabezombz .gt_sourcenote { font-size: 90%; padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; text-align: left; }
+ #fnabezombz .gt_left { text-align: left; }
+ #fnabezombz .gt_center { text-align: center; }
+ #fnabezombz .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
+ #fnabezombz .gt_font_normal { font-weight: normal; }
+ #fnabezombz .gt_font_bold { font-weight: bold; }
+ #fnabezombz .gt_font_italic { font-style: italic; }
+ #fnabezombz .gt_super { font-size: 65%; }
+ #fnabezombz .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
+ #fnabezombz .gt_asterisk { font-size: 100%; vertical-align: 0; }
+ 
+</style>
+
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th class="gt_col_heading gt_columns_bottom_border gt_left" style="text-align: left;" data-quarto-table-cell-role="th" scope="col"></th>
+<th id="FP" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">FP</th>
+<th id="FPi" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">FPi</th>
+<th id="GL" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">GL</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="gt_group_heading_row odd">
+<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">Block</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
+<td class="gt_row gt_right" style="text-align: left;">0.78</td>
+<td class="gt_row gt_right" style="text-align: left;">0.9</td>
+<td class="gt_row gt_right" style="text-align: left;">0.9</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
+<td class="gt_row gt_right" style="text-align: left;">0.74</td>
+<td class="gt_row gt_right" style="text-align: left;">0.57</td>
+<td class="gt_row gt_right" style="text-align: left;">0.51</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
+<td class="gt_row gt_right" style="text-align: left;">0.7</td>
+<td class="gt_row gt_right" style="text-align: left;">0.55</td>
+<td class="gt_row gt_right" style="text-align: left;">0.46</td>
+</tr>
+<tr class="gt_group_heading_row odd">
+<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">ScaleFree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
+<td class="gt_row gt_right" style="text-align: left;">0.69</td>
+<td class="gt_row gt_right" style="text-align: left;">0.76</td>
+<td class="gt_row gt_right" style="text-align: left;">0.81</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
+<td class="gt_row gt_right" style="text-align: left;">0.67</td>
+<td class="gt_row gt_right" style="text-align: left;">0.46</td>
+<td class="gt_row gt_right" style="text-align: left;">0.44</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
+<td class="gt_row gt_right" style="text-align: left;">0.63</td>
+<td class="gt_row gt_right" style="text-align: left;">0.43</td>
+<td class="gt_row gt_right" style="text-align: left;">0.36</td>
+</tr>
+<tr class="gt_group_heading_row odd">
+<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">Tree</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
+<td class="gt_row gt_right" style="text-align: left;">0.9</td>
+<td class="gt_row gt_right" style="text-align: left;">0.92</td>
+<td class="gt_row gt_right" style="text-align: left;">0.88</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
+<td class="gt_row gt_right" style="text-align: left;">0.81</td>
+<td class="gt_row gt_right" style="text-align: left;">0.66</td>
+<td class="gt_row gt_right" style="text-align: left;">0.53</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
+<td class="gt_row gt_right" style="text-align: left;">0.78</td>
+<td class="gt_row gt_right" style="text-align: left;">0.65</td>
+<td class="gt_row gt_right" style="text-align: left;">0.49</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+        
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fpi" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="cell-fig-fpi" class="cell" data-execution_count="30">
+<div class="cell-output cell-output-display">
+<div id="fig-fpi" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-02-forest-pursuit_files/figure-html/..-codefigs-results-fig-fpi-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.8: FPi shows best APS, lower MCC,F-M
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>To illustrate what is going on, we have selected two specific experiments as a case study, in <a href="#fig-pr-curves" class="quarto-xref">Figure&nbsp;<span>6.9</span></a> In the first, <code>BL-N030S01</code>, a 30-node block graph with 53 random walk samples, has FP performing worse than GLASSO and Ochiai, in terms of APS (which is reported in the legends). We see that FP shows high precision, which drops off significantly to increase recall at all. Only a few edges had high probability (which is usually desirable for sparse approximation), and some of the true edges were missed this way. However, FPi rescaling makes rarer edges fall off earlier in the thresholding, letting the recall rise by dropping rare edges, rather than simply the low-confidence ones.</p>
+<p>In the second, <code>SC-N300S01</code> is a 300-node scale-free network with 281 walks. Both FP and FPi show significantly better recovery capability, since enough walks have visited a variety of nodes to give FP better edge coverage. In this graph, no algorithm comes within 0.25 of FP’s impressive 0.88 APS for 300 nodes fewer than that many walks.</p>
+<div id="fig-pr-curves" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pr-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/PR.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pr-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.9: P-R curves for two experiments
+</figcaption>
+</figure>
+</div>
 
 
 
