@@ -16,7 +16,7 @@ Gram is uncentered covariance.
 
 All estimate some kind of rate
 
-### Cosine Similarity{#sec-ochiai}
+### Cosine Similarity {#sec-ochiai}
 
 - Ochiai and uncentered correlation
 - angles don't care about length
@@ -36,10 +36,10 @@ If we multiply $N(a)N(b)$, then we have the number of _ways_ a or b could be rel
 So dividing the number of times both _did_ happen together by that number won't get us a probability.
 So instead, we fib a bit. 
 
-The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exaclty what geometric means are for: 
+The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exactly what geometric means are for: 
 
 
-Then, a point estimate for the probability of an edge occurring is its actual co-ocurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-ocurrence opportunities
+Then, a point estimate for the probability of an edge occurring is its actual co-occurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities
 
 ### Hyperbolic Projection
 

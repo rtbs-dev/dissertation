@@ -1438,12 +1438,12 @@ pseudo-variable that uses this fact, but averaging the rates. but we are
 dealing with probabilities, which are based around ``areas'' and their
 ratios. So we want one count, such that watching it with a copy of
 itself has the same exposure as watching A and B separately. This is
-exaclty what geometric means are for:
+exactly what geometric means are for:
 
 Then, a point estimate for the probability of an edge occurring is its
-actual co-ocurrence \(n_{a,b}/N\). It's the ratio of these that give us
+actual co-occurrence \(n_{a,b}/N\). It's the ratio of these that give us
 the Ochiai as a probability: divided by the estimate for the
-co-ocurrence opportunities
+co-occurrence opportunities
 
 \subsection{Hyperbolic Projection}\label{hyperbolic-projection}
 
@@ -2286,9 +2286,10 @@ Jeffrey's or Laplace prior, we bias the network toward maximal sparsity,
 while still retaining connectivity. In other words, we assume that \(n\)
 nodes only need about \(n-1\) edges to be fully connected, which implies
 a prior expected sparsity of
-\[ \alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}\] which we can
-use as a sparsity-promoting initial value for
-\(\text{Beta}(\alpha^*,1-\alpha^*)\).
+\begin{equation}\phantomsection\label{eq-min-connect}{
+\alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}
+}\end{equation} which we can use as a sparsity-promoting initial value
+for \(\text{Beta}(\alpha^*,1-\alpha^*)\).
 
 \begin{algorithm}[htb!]
 \caption{Forest Pursuit}
@@ -2334,24 +2335,277 @@ use as a sparsity-promoting initial value for
 Algorithm~\ref{alg-fp} outlines the algorithm in pseudocode for
 reproducibility.
 
-\subsection{Approximate Complexity}\label{approximate-complexity}
+\subsection{Approximate Complexity}\label{sec-fp-complexity}
 
-Note the use of MST algorithm could apply Prim's or Kruskal's algorithm,
-or similar. It is recommended to utilize Prims in this case, however,
-since Prim's on a sufficiently dense graph can be made to run in
-\(O(n)\) time for \(n\) nodes by using a \emph{d}-tree for its heap
-queue.{[}CITE{]} Since we are always using the metric closure, Prim's
-will always run on a complete graph.
+The Forest Pursuit calculation presented in Algorithm~\ref{alg-fp}
+assumes an initial value for the distance matrix, which is similar to
+the covariance estimate that is pre-computed (as an initial guess) for
+GLASSO. Therefore we do not include the matrix multiplication for the
+gram matrix in our analysis, at least in the non-streaming case. Because
+every observation is dealt with completely independently, the FP
+estimation of \(R\) is linear in observation count. It is also trivially
+parallelizeable,\footnote{Although, no common python implementation of
+  MST algorithms are as-yet vectorized or parallelized for simultaneous
+  application over many observations. We see development of non-blocking
+  MSTs in common analysis frameworks as important future work.} and the
+bayesian update for \(\hat{\alpha}_m\) can be performed in a streaming
+manner, as well.
+
+Each observation requires a call to ``PursueTree'', which involves an
+MST call for the pre-computed subset of distances onnodes activated for
+that observation. Note the use of MST algorithm could apply Prim's or Kr
+uskal's algorithm, or similar. It is recommended to utilize Prims in
+this case, however, since Prim's on a sufficiently dense graph can be
+made to run in \(O(n)\) time for \(n\) activated nodes by using a
+\emph{d}-tree for its heap queue.{[}CITE{]} Since we are always using
+the metric closure, Prim's will always run on a complete graph.
+
+Importantly, this means that FP does not scale with the the size of the
+network, but only the worst-case activation count of a given
+observation, \(O(s_{\text{max}})\), where
+\(s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}\) We say this is
+\emph{approximately} constant in node size:
+
+\begin{itemize}
+\tightlist
+\item
+  the total number of nodes is typically a \emph{given} for a single
+  problem setting
+\item
+  in many domains, the basic \emph{spreading} rate of diffusion model
+  (e.g.~\(R_0\), or heat conductivity), does not scale with the total
+  size of an observation
+\end{itemize}
+
+That last point means that constant scaling with network size is
+generally down to the domain in question. For instance, a heat equation
+simulated over a small area, having a given conductivity, will not have
+a different conductivity over a larger area; conductivity is a material
+property. Similarly, a virus might have a particular basic reproduction
+rate, or a set of authors might have a static distribution over how many
+collaborators they wish to work with. The former is down to viral load
+generation, and the latter a sociological limit: more a bigger
+department usually doesnt imply more co-authors.
+
+Similar to Equation~\ref{eq-min-connect}, we might reasonably assume
+that the expected degree of nodes is roughly constant with network size
+i.e.~a property of domain. So, the the density of activation vectors (as
+a fraction of all possible edges) is going go scale with the inverse of
+\(n\). This makes a process linear in activation count to be constant in
+network size. Then, if \(\bar{s}\) is the expected non-zero count of
+each row of \(X\), the final approximate complexity of FP is
+\(O(m\bar{s})\).\footnote{ In our reference implementation, which uses
+  Kruskal's algorithm, the theoretical complexity is likewise
+  \(O(m\bar{s}^2\log{\bar{s}})\), though in our experience the values of
+  \(\bar{s}\) are small enough to not impact the runtime significantly.}
 
 \section{Simulation Study}\label{sec-FP-experiments}
 
-MENDR + affinis
+To test the performance of FP against other backboning and recovery
+methods, we have developed a public repository
+\href{https://github.com/rtbs-dev/affinis}{\texttt{affinis}} containing
+reference implementations for FP, along with many co-occurrence and
+backboning techniques. The library contains source code and examples for
+many of the presented methods, and more. {[}UPDATE w/ DOI?{]}
 
-\subsection{Method}\label{method}
+In addition, to support the community and provide for a standard set of
+benchmarks for network recovery from activations, the
+\href{https://github.com/rtbs-dev/mendr}{\texttt{MENDR}} reference
+dataset and testbench was developed. To make reproducible comparison of
+recovery algorithms easier, \texttt{MENDR} includes hundreds of randomly
+generated networks in several classes, along with random walks sampled
+\emph{on those networks}. It can also be extended through community
+contribution, using data versioning to allow consistent comparison
+between different reports and publications over time.
 
-what kinds, distributions, etc. - glasso gets 5CV to select reg param
+\subsection{Experimental Method}\label{experimental-method}
+
+For each algorithm shown in Table~\ref{tbl-methods}, every combination
+of the parameters in Table~\ref{tbl-mendr} was tested. 30 random graphs
+for each of nodes were tested, which was repeated again for each of
+Tree, Block, and scale-free types.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.2500}}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.7500}}@{}}
+\caption{Experiment Settings (MENDR
+Dataset)}\label{tbl-mendr}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+parameters
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+values
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+parameters
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+values
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+random graph \textbf{kind} & Tree, Block, BA\((m\in\{1,2\}\)) \\
+network \textbf{\(n\)-nodes} & 10,30,100,300 \\
+random \textbf{walks} & 1 sample
+\(m\sim\text{NegBinomial}(2,n^{-1})+10\) \\
+random walk \textbf{jumps} & 1 sample
+\(n_sim\text{Geometric}(n^{-1})+5\) \\
+random walk \textbf{root} & 1 sample
+\(n_0 \sim \text{Multinomial}(\textbf{n}^{-1},1)\) \\
+random \textbf{seed} & 1, 2, \ldots{} , 30 \\
+\end{longtable}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3729}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1525}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1695}}
+  >{\centering\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1695}}
+  >{\raggedleft\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.1356}}@{}}
+\caption{Summary of algorithms
+compared}\label{tbl-methods}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Algorithm
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+abbrev.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\alpha\)?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+source
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Algorithm
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+abbrev.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+\(\alpha\)?
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+class
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedleft
+source
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Forest Pursuit & FP & Yes & hybrid & - \\
+GLASSO & GL & No & MRF &
+\autocite{Sparseinversecovariance_Friedman2008,Structureestimationdiscrete_Loh2012} \\
+Ochiai Coef. & CS & Yes & Counts &
+\autocite{Measuresecologicalassociation_Janson1981} \\
+Hyperbolic Projection & HYP & No & Counts &
+\autocite{Scientificcollaborationnetworks._Newman2001} \\
+Doubly-Stochastic & eOT & Yes & Transport &
+\autocite{twostagealgorithm_Slater2009,Sinkhorndistanceslightspeed_Cuturi2013} \\
+High-Salience Skeleton & HSS & Yes & Transport &
+\autocite{Robustclassificationsalient_Grady2012} \\
+Resource Allocation & RP & Yes & Transport &
+\autocite{Bipartitenetworkprojection_Zhou2007} \\
+\end{longtable}
+
+For each algorithm that could be supplied a prior via additive
+smoothing, seen in Table~\ref{tbl-methods} as ``\(\alpha\)?: Yes'', a
+minimum connected (tree) level of sparsity wasy supplied
+\(\alpha=\tfrac{2}{n}\). The others, esp.~GLASSO, do not have a
+\(\tfrac{\text{count}}{\text{exposure}}\) form, and could not be easily
+interpreted in a way that allowed for additive smoothing. However, since
+the regularizaiton parameter for GLASSO is often critical for finding
+good solutions, a 5-fold cross validation was performed for each
+experiment to select a ``best'' value, with the final result run using
+that value. While this does have a constant-time penalty for each
+experiment, the reconstruction accuracy is significantly improved with
+this technique, and would reflect common practice in using GLASSO for
+this reason.
+
+The three classes of random graphs represent common use cases in sparse
+graph recovery. In addition, the block and tree graphs are types we
+expect GLASSO to correctly recover in this binary
+setting.\autocite{Structureestimationdiscrete_Loh2012} The block graphs
+of size \(n\) were formed by taking the line-graph of randomly generated
+trees of size \(n+1\).\\
+Trees were randomly generated using Prüfer sequences as impelmented in
+NetworkX {[}CITE{]}. To simulate possible social networks and other
+complex systems that show evidence of preferential attachment,
+scale-free graphs were sampled through the Barabási--Albert (BA) model,
+which was randomly seeded with a re-attachment paramenter \(m\) of
+either 1 or 2.
+
+Every graph has a static ID provided by MENDR, along with generation and
+retrieval code for public review. New graphs kinds and sizes are simple
+to add for future benchmarking capability.
+
+\subsection{Metrics}\label{metrics}
+
+To compare each algorithm consistently, several performance measures
+have been included in the MENDR testbench. They are all functions of the
+True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN)
+values.
+
+\begin{description}
+\tightlist
+\item[Precision (P)]
+Fraction of positive predictions that are true, also called ``positive
+predictive value'' (PPV) \[P= \frac{TP}{TP+FP}\]
+\item[Recall (R)]
+Fraction of true values that were returned as positive. Also called the
+TP-rate (TPR), and has an inherent trade-off with precision.
+\[R=\frac{TP}{TP+FN} \]
+\item[Matthews Correlation Coefficient (MCC)]
+Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems
+(like sparse recovery)
+\autocite{statisticalcomparisonMatthews_Chicco2023}
+\[\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}\]
+\item[Fowlkes-Mallows (F-M)]
+Geometric mean of Precision and Recall, as opposed to the F-Measure that
+returns the harmonic mean. Also known to be the limit of the MCC as TN
+approaches infinity\autocite{MCCapproachesgeometric_Crall2023}, which is
+useful as TN grows with \(n^2\) but TP only with \(n\).
+\[\sqrt{P\cdot R}\]
+\end{description}
+
+Because this work is focused on unsupervised performance, specifically
+for the use of these algorithms by analysts investigating dependencies,
+we opt to calculate TP,TN,FP,FN at every unique edge
+probability/strength value returned by each algorithm. Then, because we
+do not know a priori which threshold level will be selected by an
+analyst in the unsupervised setting, we take a conservative approach and
+report the expected values E{[}MCC{]} and E{[}F-M{]} over all unique
+threshold values. To consistently compare the expected values, we
+transform the thresholds for every experiment to the range
+\([\epsilon, 1-\epsilon]\), to avoid division-by-0 at the extremes.
+
+Another common approach is to report the Average Precision Score (APS).
+This is not the average precision over the thresholds however, but
+instead the expected precision over the possible recall values
+achievable by the algorithm. It is approximating the integral under the
+parametric P-R curve, instead of the thresholds themselves.
+\[\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))\] where \(P(e)\)
+and \(R(e)\) are the precision and recall at the threshold set by the
+edge \(e\), in rank-order. This is more commonly done for supervised
+settings, however, and will report a high value as long as \emph{any}
+threshold is able to return a both a high precision and a high recall,
+simultaneously.
 
 \subsection{Results - Scoring}\label{results---scoring}
+
+The results over every experiment are shown in
+Figure~\ref{fig-fp-overall}. Only FP is able to report MCC and F-M
+values with medians over about 0.5, regularly reaching over 0.8. GLASSO
+is clearly the second-best at recovery in these experiments, though for
+scale-free networks the improvement over simply thresholding the Ochiai
+coefficient is negligible. For APS, both GLASSO and Ochiai are equally
+able to return high scores, indicating at least one threshold for each
+that performed well. A simple mechanism for FP to perform equally well
+at APS is discussed in Section~\ref{sec-fpi}.
 
 \begin{figure}
 
@@ -2364,6 +2618,14 @@ what kinds, distributions, etc. - glasso gets 5CV to select reg param
 \caption{\label{fig-fp-overall}Comparison of MENDR recovery scores}
 
 \end{figure}%
+
+Breaking down the results by graph kind in Figure~\ref{fig-fp-compare},
+we see the remarkable ability of FP to dramatically outperform every
+other algorithm in MCC and F-M, showing remarkable accuracy
+\emph{together with stability} over the set of threshold values. This is
+indicative of FP's ability to more directly estimate the support of each
+edge, with lower values occurring only when co-occurrences aren't being
+consistently explained with the same set of incidences.
 
 \begin{figure}
 
@@ -2378,6 +2640,62 @@ Graph Type}
 
 \end{figure}%
 
+Another important capability of any recovery algorithm is to improve its
+estimate when provided with more data. Of course, this also will depend
+on other factors, such as the dimensionality of the problem (network
+size), and specifically for us, whether \emph{longer} random walks makes
+network inference better or worse.
+
+\begin{figure}
+
+\centering{
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-mendr-trends-1}Trend: MCC vs network size}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-2.pdf}}
+
+}
+
+\subcaption{\label{fig-mendr-trends-2}Trend: MCC vs observation count}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-3.pdf}}
+
+}
+
+\subcaption{\label{fig-mendr-trends-3}Trend: MCC vs random-walk length}
+
+}
+
+\caption{\label{fig-mendr-trends}Score trends vs problem scaling}
+
+\end{figure}%
+
+As Figure~\ref{fig-mendr-trends} shows, FP is positively correlated with
+\emph{all three}. Most importantly, the trend for FP is strongest as the
+number of observations increases, which is not a phenomenon seen in the
+other methods. In fact, it appears that count-based methods' scores are
+negatively correlated with added random walk length and added
+observations. Only HYP and CS scores are shown in
+Figure~\ref{fig-mendr-trends}, but all other tested methods (other than
+FP and GLASSO) show the same trend.
+
+However, because the graph sampling protocol includes \(n\) in the
+distributions for the observation count and random-walk length, we
+additionally performed a linear regression on the (log) parameters. The
+\emph{partial resitual} plots are shown in
+Figure~\ref{fig-partials-mcc}, which shows the trends of each variable
+after controlling for the others.
+
 \begin{figure}
 
 \centering{
@@ -2391,7 +2709,35 @@ E{[}MCC{]})}
 
 \end{figure}%
 
-\subsection{Results - Performance}\label{results---performance}
+This analysis indicates that \emph{all} methods should likely increase
+in their performance when extra observations are added, though FP does
+this more efficiently than either CS or GLASSO. Interestingly, CS is
+largely unaffected by network size, compared to FP and GL, though GL
+performs the worst in this regard. However, it is in the random-walk
+length that we see the benefit of dependency-based algorithms. The
+Ochiai coefficient suffers dramatically as more nodes are activated by
+the spreading process, since this means the implied clique size grows by
+the square of the number of activations. FP remains unaffected by
+walk-length, while (impressively) GLASSO appears to have a marginal
+boost in performance when walk lengths are high.
+
+\subsection{Results - Runtime
+Performance}\label{results---runtime-performance}
+
+For both Forest Pursuit and GLASSO, runtime efficiency is critical if
+these algorithms are going to be adopted by analysts for backboning and
+recovery. Figure~\ref{fig-runtime} shows the (log-)seconds against the
+same parameters from before. For similar sized networks, FP is
+consistently taking 10-100x less time to reach a result than GLASSO
+does. Additionally, many of the experiments led to ill-conditioned
+matrices that failed to converge for GLASSO under any of the
+regularization parameters tests (the ``x'' markers in
+Figure~\ref{fig-runtime}). As expected, the number of observations plot
+shows a clear limit in terms of controlling the lower-bound of FPs
+runtime, since in this serial version every observation runs one more
+call to MST. On the other hand, GLASSO appears to have signiicant
+banding for walk length and observation counts, likely indicating
+dominance of network size for its runtime.
 
 \begin{figure}
 
@@ -2404,6 +2750,15 @@ E{[}MCC{]})}
 \caption{\label{fig-runtime}Runtime Scaling (Forest-Pursuit vs GLASSO)}
 
 \end{figure}%
+
+To control for each of the variables, and to empirically validate the
+theoretical analysis in Section~\ref{sec-fp-complexity}\}, a regression
+of the same three (log-)parametwers was performed against (log-)seconds.
+The slopes in Figure~\ref{fig-partials-runtime}, which are plotted on a
+log-log scale, correspond roughly to polynomial powers in linear scale.
+In regression terms, we are fitting the log of
+\[y_{\text{sec}} = ax_{\text{param}}^\gamma\] so that the slope in a
+log-log plot is \(\gamma\).
 
 \begin{figure}
 
@@ -2418,13 +2773,130 @@ computation time)}
 
 \end{figure}%
 
-\section{Discussion}\label{discussion}
+In a very close match to our previous analysis, the scaling of FP is
+almost entirely explained by the observation count and random-walk
+length, alone: the coefficient on network size shows constant-time
+scaling. Similarly, the scaling with observation count is very nearly
+linear time, as predicted. The residuals show non-linear behavior for
+the random-walk length parameter, which would make sense, due to the
+theoretical \(\|E\|\log\|V\|\) scaling of kruskal's algorithm. At this
+scale, \(n\log n\) and \(n^2\log n\) complexity might appear smaller
+than linear time, due to the log factor. GLASSO hardly scales with
+random walk length, and only marginally with observation count. In
+typical GLASSO, the observation count has already been collapsed to
+calculate the empirical covariance matrix, so its effects here might be
+due instead to the cross-validation and the need to calculate empirical
+covariance for observation subsets. The big difference, however, is
+GLASSO scaling in significantly superlinear time---almost \(O(n^2)\).
+This is usually the limiting factor for analyst use of such an algorithm
+in network analysis more generally.
 
-\subsection{Interaction Probability}\label{interaction-probability}
+\subsection{Interaction Probability}\label{sec-fpi}
+
+Without using stability
+selection\autocite{StabilitySelection_Meinshausen2010}, GLASSO is not
+directly estimating the ``support'' of the edge matrix, but the strength
+of each edge. to do similar with FP, we could directly estimate the
+frequency of edge occurrence using \(R(i,e)\) marginal averages, rather
+than conditioning on co-occurrence. Simply multiplying each FP edge
+probability by the co-occurrence probability of each node-node pair
+gives this as well, which we call FPi: the direct ``interaction
+probability'' for each pair of nodes.
+
+By doing this simple re-weighting, FPi actually beats GLASSO's median
+APS for the dataset, but at the cost of MCC and F-M scores (which both
+drop to between FP and GLASSO), as Figure~\ref{fig-fpi} demonstrates.
+Similarly, the individual breakdown by graph kind in Table~\ref{tbl-fpi}
+shows a similar pattern, with FPi coming close to GLASSO for scale-free
+networks, but exceeding it for trees and matching for block graphs.
+Still, the difference is small enough, and at such a significant penaly
+to MCC and F-M scores over a variety of thresholds, that it is hard to
+recommend the FPi re-weighting unless rate-based edge analysis is
+desired, e.g.~if Poisson or Exponential occurrence models are desired.
+
+\begin{figure}
+
+\begin{minipage}{0.50\linewidth}
+
+\begin{longtable}[]{@{}llll@{}}
+
+\caption{\label{tbl-fpi}Comparing scores for FP, FPi and GLASSO}
+
+\tabularnewline
+
+\toprule\noalign{}
+& FP & FPi & GL \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\multicolumn{4}{@{}l@{}}{%
+Block} \\
+APS & 0.78 & 0.9 & 0.9 \\
+F-M & 0.74 & 0.57 & 0.51 \\
+MCC & 0.7 & 0.55 & 0.46 \\
+\multicolumn{4}{@{}l@{}}{%
+ScaleFree} \\
+APS & 0.69 & 0.76 & 0.81 \\
+F-M & 0.67 & 0.46 & 0.44 \\
+MCC & 0.63 & 0.43 & 0.36 \\
+\multicolumn{4}{@{}l@{}}{%
+Tree} \\
+APS & 0.9 & 0.92 & 0.88 \\
+F-M & 0.81 & 0.66 & 0.53 \\
+MCC & 0.78 & 0.65 & 0.49 \\
+
+\end{longtable}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\begin{figure}[H]
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
+
+}
+
+\caption{\label{fig-fpi}FPi shows best APS, lower MCC,F-M}
+
+\end{figure}%
+
+\end{minipage}%
+
+\end{figure}%
+
+To illustrate what is going on, we have selected two specific
+experiments as a case study, in Figure~\ref{fig-pr-curves} In the first,
+\texttt{BL-N030S01}, a 30-node block graph with 53 random walk samples,
+has FP performing worse than GLASSO and Ochiai, in terms of APS (which
+is reported in the legends). We see that FP shows high precision, which
+drops off significantly to increase recall at all. Only a few edges had
+high probability (which is usually desirable for sparse approximation),
+and some of the true edges were missed this way. However, FPi rescaling
+makes rarer edges fall off earlier in the thresholding, letting the
+recall rise by dropping rare edges, rather than simply the
+low-confidence ones.
+
+In the second, \texttt{SC-N300S01} is a 300-node scale-free network with
+281 walks. Both FP and FPi show significantly better recovery
+capability, since enough walks have visited a variety of nodes to give
+FP better edge coverage. In this graph, no algorithm comes within 0.25
+of FP's impressive 0.88 APS for 300 nodes fewer than that many walks.
+
+\begin{figure}
+
+\centering{
 
 \pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/../images/PR.pdf}}
 
-\subsection{Conclusion}\label{conclusion-1}
+}
+
+\caption{\label{fig-pr-curves}P-R curves for two experiments}
+
+\end{figure}%
 
 \chapter{LFA: Latent Forest
 Allocation}\label{lfa-latent-forest-allocation}

@@ -1,5 +1,6 @@
 ---
 title: Source for results
+html-table-processing: none
 execute:
   cache: true
 jupyter:
@@ -90,7 +91,6 @@ def semilog_partial_residuals(df, algs, target, feats, fig=None):
     f.legend(handles, labels, loc='lower center', ncols=len(algs))
     f.subplots_adjust(bottom=0.25)
     return f
-    
 ```
 
 ```{python}
@@ -328,6 +328,11 @@ def compare_scores_vs(tidy, xvar, alg_order=alg_order, metric='MCC'):
 
 ```{python}
 #| label: fig-mendr-trends
+#| fig-cap: Score trends vs problem scaling
+#| fig-subcap:
+#|   - 'Trend: MCC vs network size'
+#|   - 'Trend: MCC vs observation count'
+#|   - 'Trend: MCC vs random-walk length'
 compare_scores_vs(tidy,'n-nodes', metric='MCC', alg_order=['FP','GL','CS','HYP'])
 compare_scores_vs(tidy,'n-walks', metric='MCC', alg_order=['FP','GL','CS','HYP'])
 compare_scores_vs(tidy,'n-jumps', metric='MCC', alg_order=['FP','GL','CS','HYP'])
@@ -625,7 +630,6 @@ def log_partial_residuals(df, algs, target, feats, fig=None):
 
     f.subplots_adjust(bottom=0.25)
     return f
-    
 ```
 
 ```{python}
@@ -801,18 +805,32 @@ f
 ```
 
 ```{python}
-# from mendr.metrics import Contingent
-# from mendr.experiments import _metrics
-# a = si[0]['ground']
+#| label: tbl-fpi
+#| tbl-cap: Comparing scores for FP, FPi and GLASSO
+
+
+from IPython.display import Markdown
+from tabulate import tabulate
+from great_tables import GT, md, html, style, loc
 int_tidy = tidy_up(df, ['FP', 'FPi', 'GL'], graph_order, metric_order)
 
-pd.concat([
+fpi_tbl = pd.concat([
     # int_tidy.groupby(['metric','kind','name'], observed=True)['score'].mean().unstack()[['FP','FPi','GL']],#.round(2)
     # int_tidy.groupby(['kind','name'], observed=True)['MIR'].mean().to_frame().T[['FP','FPi','GL']]
-    int_tidy.groupby(['name','kind','metric'], observed=True)['score'].mean().unstack().loc[['FP', 'FPi', 'GL']],
-    int_tidy.groupby(['name','kind'], observed=True)['MIR'].mean().to_frame().loc[['FP','FPi','GL']]
+    int_tidy.groupby(['kind','metric','name'], observed=False)['score'].mean().unstack()#.loc[['FP', 'FPi', 'GL']],
+    # int_tidy.groupby(['name','kind'], observed=True)['MIR'].mean().to_frame().loc[['FP','FPi','GL']]
 
-], axis=1).round(2).swaplevel().sort_index()
+], axis=1).round(2).swaplevel().sort_index()[['FP', 'FPi', 'GL']].reset_index().query('metric in @metric_order');#[metric_order]#.to_markdown()
+
+# from IPython.display import Markdown
+
+# Markdown(tabulate(fpi_tbl, tablefmt='github', headers=metric_order))
+GT(fpi_tbl,rowname_col="metric", groupname_col="kind").opt_table_font(
+    font='Bitstream Charter'
+).show()
+# fpi_tbl
+# pd.DataFrame.to_markdown
+# fpi_tbl.to_markdown()
 ```
 
 ```{python}
@@ -824,14 +842,23 @@ pd.concat([
 ```
 
 ```{python}
-compare_algs(int_tidy, ['FP','FPi','GL'], graph_order, metric_order,height=1.2, aspect=1.6)
+compare_algs(int_tidy, ['FP','FPi','GL'], graph_order, metric_order,height=1.3, aspect=1.2)
 # sns.FacetGrid()
 # plt.tight_layout()
 ```
 
 ```{python}
-compare_algs_single(int_tidy, ['FP','FPi','GL'])
-plt.xlabel('avg. E[MCC]');
+#| label: fig-fpi
+#| fig-cap: FPi shows best APS, lower MCC,F-M
+
+f,ax = plt.subplots(nrows=3, figsize=((2.5,6)), sharey=True)
+compare_algs_single(int_tidy, ['FP','FPi','GL'], metric='MCC', ax=ax[0])
+ax[0].set_xlabel('E[MCC]');
+compare_algs_single(int_tidy, ['FP','FPi','GL'], metric='F-M', ax=ax[1])
+ax[1].set_xlabel('E[F-M]');
+compare_algs_single(int_tidy, ['FP','FPi','GL'], metric='APS', ax=ax[2])
+plt.xlabel('APS');
+plt.tight_layout()
 ```
 
 ```{python}
@@ -998,4 +1025,3 @@ f = plt.figure(figsize=(figsize[0], figsize[1]/1.8))
 
 f=log_partial_residuals(df, ['FP','GL','EFM'], 'seconds', ['n-jumps', 'n-nodes','n-walks'], fig=f)
 ```
-
