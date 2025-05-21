@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Metrology as matrices – Measuring Network Dependencies from Node Activations</title>
+<title>Metrology with matrices – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -60,7 +60,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -132,7 +132,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html"><span class="chapter-title">Metrology as matrices</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html"><span class="chapter-title">Metrology with matrices</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -182,7 +182,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Metrology as matrices</span></a>
+  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Metrology with matrices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -218,7 +218,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LFA: Latent Forest Allocation</span></a>
+  <a href="../../content/part2/2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
   </div>
 </li>
       </ul>
@@ -278,9 +278,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html"><span class="chapter-title">Metrology as matrices</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html"><span class="chapter-title">Metrology with matrices</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Metrology as matrices</span></h1>
+<h1 class="title"><span class="chapter-title">Metrology with matrices</span></h1>
 </div>
 
 
@@ -337,7 +337,18 @@ E[p|s,k]=\frac{s+\alpha}{k-\alpha+\beta}
 </p><div id="ref-MultivariateBernoullidistribution_Dai2013" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[3] </div><div class="csl-right-inline">B. Dai, S. Ding, and G. Wahba, <span>“Multivariate bernoulli distribution,”</span> <em>Bernoulli</em>, vol. 19, no. 4, Sep. 2013, doi: <a href="https://doi.org/10.3150/12-bejsp10">10.3150/12-bejsp10</a>.</div>
 </div></div></div><p>However, it’s common to estimate how similar two random variables <span class="math inline">\(A,B\)</span> are, e.g.&nbsp;if samples of each correspond to columns of binary <span class="math inline">\(X\)</span>. For instance, the joint probabilities <span class="math inline">\(P(A\cap B)\)</span> answer “how often does A happen with B, out of all data?” Conditional probabilities <span class="math inline">\(P(A|B)=\frac{P(A\cap B)}{P(B)}\)</span> measure how often A occures given B happened. Once again, we can estimate the base probabilities <span class="math inline">\(P(A)\)</span> and <span class="math inline">\(P(B)\)</span> with methods like <a href="#eq-beta-binomial" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> for each marginal sums <span class="math inline">\(X(\cdot,A)\)</span> or <span class="math inline">\(X(\cdot,B)\)</span>, but the joint and conditional probabilities can instead be estimated using matrix multiplication using the Gram matrix, discussed below. It encodes pair-wise co-occurrence counts, such that <span class="math inline">\(G(i,i'):\mathbb{Z}^{n\times n}\)</span> has the co-occurrence count for node <span class="math inline">\(i\)</span> with <span class="math inline">\(i'\)</span>.</p>
-<p>The co-occurrence probability <span class="math inline">\(P(A\cap B)\)</span> for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes. First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability). In fact, without direct observation of edges, we are not able to estimate their count, <em>or</em> their exposure, which can be a source of systemic error from <em>epistemic uncertainty</em>. We don’t know when edges are used, directly, and we also don’t have a reliable way to estimate the opportunities each edge had to activate (their exposure), either. This is especially true when we wish to know whether an edge even <em>can</em> be traversed, i.e.&nbsp;the edge <em>support</em>. Support, as used in this sense, is the set of inputs for which we expect a non-zero output. Intuitively, this idea captures the sense that we might care more about <em>whether</em> an edge/dependency exists, not <em>how important</em> it is. For that, we have to re-assess our simple model: even if we could count the number of times an edge might have been traversed, how do we estimate the opportunities it had to be available for traversal (it’s “exposure”)?</p>
+<p>For binary data, we typically create association meatures from values on a <span class="math inline">\(2\times2\)</span> contingency table, with counts and marginals. A shorthand notation for these values is:</p>
+<p><span id="eq-contingency"><span class="math display">\[
+\begin{array}{c|cc|c}
+      &amp; B=1         &amp; B=0         &amp; \sum_B \\
+\hline
+A=1   &amp; p_{11}      &amp; p_{10}      &amp; p_{1\bullet} \\
+A=0   &amp; p_{01}      &amp; p_{00}      &amp; p_{0\bullet} \\
+\hline
+\sum_A   &amp; p_{\bullet 1} &amp; p_{\bullet 0} &amp; p_\bullet \\
+\end{array}
+\tag{2.3}\]</span></span></p>
+<p>The co-occurrence probability <span class="math inline">\(p_{11}=P(A\cap B)\)</span> for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes. First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability). In fact, without direct observation of edges, we are not able to estimate their count, <em>or</em> their exposure, which can be a source of systemic error from <em>epistemic uncertainty</em>. We don’t know when edges are used, directly, and we also don’t have a reliable way to estimate the opportunities each edge had to activate (their exposure), either. This is especially true when we wish to know whether an edge even <em>can</em> be traversed, i.e.&nbsp;the edge <em>support</em>. Support, as used in this sense, is the set of inputs for which we expect a non-zero output. Intuitively, this idea captures the sense that we might care more about <em>whether</em> an edge/dependency exists, not <em>how important</em> it is. For that, we have to re-assess our simple model: even if we could count the number of times an edge might have been traversed, how do we estimate the opportunities it had to be available for traversal (it’s “exposure”)?</p>
 <p>Assuming this kind of epistemic uncertainty can be adequately addressed through modeling—attempts at which will be discussed in more detail in <a href="1-03-recovery-road.html" class="quarto-xref"><span>Roads to Network Recovery</span></a>—conditional probability/contingency tables will again be useful for validation. When comparing estimated edge probability to some known “true” edge existence (if we have that), we can count the number of correct predictions, as well as type I (false positive) and type II (false negative) errors. We can do this at <em>every probability/weight threshold value</em>, as well, and we will return to ways to aggregate all of these values into useful scoring metrics in <a href="../part2/2-02-forest-pursuit.html#sec-FP-experiments" class="quarto-xref"><span>Simulation Study</span></a>.</p>
 </section>
 </section>
@@ -357,14 +368,14 @@ Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
 <p>As alluded to in the previous section, co-occurrence have a deep connection to a Gram matrix, which is a matrix of all pairwise inner products over a set of vectors.</p>
 <p><span id="eq-gram-mat"><span class="math display">\[
 X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j)X(i,j')
-\tag{2.3}\]</span></span></p>
+\tag{2.4}\]</span></span></p>
 <p>Matrices that can be decomposed into another matrix and its transpose are symmetric, and positive semidefinite (PSD), making every gram matrix PSD. They are directly related to (squared) euclidean distances through the polarization identity[CITE?]:<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> <span id="eq-sq-distance"><span class="math display">\[
 d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j')
-\tag{2.4}\]</span></span></p>
-<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<strong>Important</strong>: these definitions are all using the <span class="math inline">\(\mathbf{x}'\)</span> notation to indicate that these measurements are almost exclusively being done in the <em>data space</em>, i.e.&nbsp;on column vectors. While most definitions work on distances in terms of the measurements/objects/data, for <em>inverse problems</em> (like network recovery, structure learning, etc.) they are more often applied in terms of the features (here, the nodes. This can be seen in statistics as well, where covariance and correlation matrices (which are related to the gram and distance matrix definitions above), are defined as relationships between features/dimensions, not individual samples.</p></div></div><p>In our example from before, the gram matrix will have entries showing the number of papers shared by two authors (or total papers by each, on the diagonal). This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. This is called a <em>bipartite projection</em>[CITE] into the authors “mode”, and is illustrated visually in <a href="../0-intro.html#fig-collab" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>.</p>
-<p>Due to [CITE Shoenberg/Mercer], we can generalize <a href="#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.4</span></a> such that <em>any</em> function “kernel” function <span class="math inline">\(\kappa(x,y)\)</span> that creates PSD matrix <span class="math inline">\(K(j,j')\in\mathbb{S}^{n\times n}\)</span>. It says that such a PSD matrix can always be decomposed into a form <span class="math inline">\(K=R^TR\)</span> for any matrix <span class="math inline">\(R(i,j)\in \mathbb{S}^{m\times n}\)</span>, thus letting us use the polarization identity to create arbitrary distance metrics. on <span class="math inline">\(\mathbb{S}^n\)</span> <span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[4]</a></span><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> <span id="eq-dist-kernel"><span class="math display">\[
-d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
 \tag{2.5}\]</span></span></p>
+<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<strong>Important</strong>: these definitions are all using the <span class="math inline">\(\mathbf{x}'\)</span> notation to indicate that these measurements are almost exclusively being done in the <em>data space</em>, i.e.&nbsp;on column vectors. While most definitions work on distances in terms of the measurements/objects/data, for <em>inverse problems</em> (like network recovery, structure learning, etc.) they are more often applied in terms of the features (here, the nodes. This can be seen in statistics as well, where covariance and correlation matrices (which are related to the gram and distance matrix definitions above), are defined as relationships between features/dimensions, not individual samples.</p></div></div><p>In our example from before, the gram matrix will have entries showing the number of papers shared by two authors (or total papers by each, on the diagonal). This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. This is called a <em>bipartite projection</em>[CITE] into the authors “mode”, and is illustrated visually in <a href="../0-intro.html#fig-collab" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>.</p>
+<p>Due to [CITE Shoenberg/Mercer], we can generalize <a href="#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.5</span></a> such that <em>any</em> function “kernel” function <span class="math inline">\(\kappa(x,y)\)</span> that creates PSD matrix <span class="math inline">\(K(j,j')\in\mathbb{S}^{n\times n}\)</span>. It says that such a PSD matrix can always be decomposed into a form <span class="math inline">\(K=R^TR\)</span> for any matrix <span class="math inline">\(R(i,j)\in \mathbb{S}^{m\times n}\)</span>, thus letting us use the polarization identity to create arbitrary distance metrics. on <span class="math inline">\(\mathbb{S}^n\)</span> <span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[4]</a></span><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> <span id="eq-dist-kernel"><span class="math display">\[
+d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
+\tag{2.6}\]</span></span></p>
 <div class="no-row-height column-margin column-container"><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and D. Rubanov, <span>“Similarities on graphs: Kernels versus proximity measures,”</span> <em>European Journal of Combinatorics</em>, vol. 80, pp. 47–56, Aug. 2019, doi: <a href="https://doi.org/10.1016/j.ejc.2018.02.002">10.1016/j.ejc.2018.02.002</a>.</div>
 </div><div id="fn10"><p><sup>10</sup>&nbsp; Distance metric, here, means that <span class="math inline">\(d(x,y)\)</span> satisfies the triangle inequality for all <span class="math inline">\(x,y\)</span>.</p></div></div><p>This ability to create valid distance measures from arbitrary kernel functions is the core of a vast area of machine learning and statistics that employs the so-called <em>kernel trick</em>. [CITE?] Different kernels yield different properties useful for distinguishing points having specific properties. One class of kernels are normalized to the range <span class="math inline">\([0,1]\)</span>, such that we ensure that equality along any one dimension is given a weight of <span class="math inline">\(\tilde{K}(j,j)=1\)</span>. Such a kernel matrix can be derived from any other kernel, and is often combined with a logarithmic similarity measure <span class="math inline">\(\tilde{\kappa}(x,y)=\log{s(x,y)}\)</span>. <span id="eq-norm-diag"><span class="math display">\[
@@ -372,7 +383,7 @@ d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
 \tilde{K}(j,j') &amp;= \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}\\
 d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 \end{aligned}
-\tag{2.6}\]</span></span> Since this is equivalent to applying <a href="#eq-dist-kernel" class="quarto-xref">Equation&nbsp;<span>2.5</span></a> to <span class="math inline">\(s\)</span> directly. This normalization should be familiar as the way cosine similarities and correlation matrices are made as well (also having 1s along their diagonal), and illustrates how non-metric similarities can be potentially made into (pseudo)metrics.</p>
+\tag{2.7}\]</span></span> Since this is equivalent to applying <a href="#eq-dist-kernel" class="quarto-xref">Equation&nbsp;<span>2.6</span></a> to <span class="math inline">\(s\)</span> directly. This normalization should be familiar as the way cosine similarities and correlation matrices are made as well (also having 1s along their diagonal), and illustrates how non-metric similarities can be potentially made into (pseudo)metrics.</p>
 </section>
 <section id="incidence-structures-dependency" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="incidence-structures-dependency">Incidence structures &amp; dependency</h3>
@@ -383,7 +394,7 @@ d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 <p>In statistics, such discrete structures usually arise when we are concerned with direct dependence from indirect. Take as an example a set of masses connected together by springs. If we shake one mass, all masses will also shake some amount, depending on the spring constants of the springs each mass is “transmitted” force through, and the losses due to friction or air resistance. While the amount of movement over time depends on how “close” in this spring network two masses are, the movement itself can only be transmitted through springs that the masses are <em>incident</em> to. Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence. If we hold all but two masses still, and moving one doesn’t move the other, then we know they are conditionally independent: no spring connects them!</p>
 <p>This idea gets formalized as probabilistic graphical models, which are networks that define “incidence” between two variables as conditional dependence. Letting the random variables in the column-space of <span class="math inline">\(X\)</span> be <span class="math inline">\(A,B\)</span> and the remaining columns be <span class="math inline">\(C=X(\cdot,J\setminus \{A,B\})\)</span>, then <span id="eq-cond-indep"><span class="math display">\[
 P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak{I}
-\tag{2.7}\]</span></span> for a set of incidences <span class="math inline">\(\mathfrak{I}\)</span> defining a PGM that was sampled as <span class="math inline">\(X\)</span>.</p>
+\tag{2.8}\]</span></span> for a set of incidences <span class="math inline">\(\mathfrak{I}\)</span> defining a PGM that was sampled as <span class="math inline">\(X\)</span>.</p>
 <p>[SPRING GRAPHIC?]</p>
 </section>
 <section id="conclusion" class="level3">

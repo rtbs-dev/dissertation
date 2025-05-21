@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -40,7 +60,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-941c87d78a707b6482f405bf020959b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -103,7 +123,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -162,7 +182,7 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology as matrices</span></a>
+  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology with matrices</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -198,7 +218,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">LFA: Latent Forest Allocation</span></a>
+  <a href="../../content/part2/2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
   </div>
 </li>
       </ul>
@@ -239,24 +259,11 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#organizing-recovery-methods" id="toc-organizing-recovery-methods" class="nav-link active" data-scroll-target="#organizing-recovery-methods">Organizing Recovery Methods</a></li>
-  <li><a href="#counting-projection-and-co-occurrence" id="toc-counting-projection-and-co-occurrence" class="nav-link" data-scroll-target="#counting-projection-and-co-occurrence">Counting, Projection, and Co-Occurrence</a>
+  <li><a href="#organizing-recovery-methods" id="toc-organizing-recovery-methods" class="nav-link active" data-scroll-target="#organizing-recovery-methods">Organizing Recovery Methods</a>
   <ul class="collapse">
-  <li><a href="#sec-ochiai" id="toc-sec-ochiai" class="nav-link" data-scroll-target="#sec-ochiai">Cosine Similarity</a></li>
-  <li><a href="#hyperbolic-projection" id="toc-hyperbolic-projection" class="nav-link" data-scroll-target="#hyperbolic-projection">Hyperbolic Projection</a></li>
-  <li><a href="#transformations-of-counts" id="toc-transformations-of-counts" class="nav-link" data-scroll-target="#transformations-of-counts">Transformations of Counts</a></li>
-  </ul></li>
-  <li><a href="#resource-and-information-flow" id="toc-resource-and-information-flow" class="nav-link" data-scroll-target="#resource-and-information-flow">Resource and Information Flow</a>
-  <ul class="collapse">
-  <li><a href="#resource-projection" id="toc-resource-projection" class="nav-link" data-scroll-target="#resource-projection">Resource Projection</a></li>
-  <li><a href="#doubly-stochastic-and-eot" id="toc-doubly-stochastic-and-eot" class="nav-link" data-scroll-target="#doubly-stochastic-and-eot">Doubly-stochastic and eOT</a></li>
-  <li><a href="#hss" id="toc-hss" class="nav-link" data-scroll-target="#hss">HSS</a></li>
-  </ul></li>
-  <li><a href="#inverse-problems-pgm-structure" id="toc-inverse-problems-pgm-structure" class="nav-link" data-scroll-target="#inverse-problems-pgm-structure">Inverse Problems &amp; PGM Structure</a>
-  <ul class="collapse">
-  <li><a href="#chow-liu" id="toc-chow-liu" class="nav-link" data-scroll-target="#chow-liu">Chow Liu</a></li>
-  <li><a href="#shrinkage-glasso" id="toc-shrinkage-glasso" class="nav-link" data-scroll-target="#shrinkage-glasso">Shrinkage &amp; GLASSO</a></li>
-  <li><a href="#stability-selection" id="toc-stability-selection" class="nav-link" data-scroll-target="#stability-selection">stability selection</a></li>
+  <li><a href="#local-structure-additivity-assumptions" id="toc-local-structure-additivity-assumptions" class="nav-link" data-scroll-target="#local-structure-additivity-assumptions">Local Structure &amp; Additivity Assumptions</a></li>
+  <li><a href="#resource-and-information-flow" id="toc-resource-and-information-flow" class="nav-link" data-scroll-target="#resource-and-information-flow">Resource and Information Flow</a></li>
+  <li><a href="#global-structural-assumptions" id="toc-global-structural-assumptions" class="nav-link" data-scroll-target="#global-structural-assumptions">Global Structural Assumptions</a></li>
   </ul></li>
   <li><a href="#a-path-forward" id="toc-a-path-forward" class="nav-link" data-scroll-target="#a-path-forward">A Path Forward</a>
   <ul class="collapse">
@@ -267,7 +274,7 @@ window.Quarto = {
 </nav>
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content page-columns page-full column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-03-recovery-road.html"><span class="chapter-title">Roads to Network Recovery</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -288,92 +295,288 @@ window.Quarto = {
 </header>
 
 
-<section id="organizing-recovery-methods" class="level2">
+<p>Here we give a brief overview of the key approaches to backboning and dependency reovery for networks through binary activations. This is by far an incomplete overview, though other existing approaches are likely to fall within the provided outline due to its generality. Finally, we assess patterns in the assumptions made by the presented algorithms, and motivate a new one to fill a gap perceived in the network recovery space.</p>
+<section id="organizing-recovery-methods" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="organizing-recovery-methods">Organizing Recovery Methods</h2>
-<p>i.e.&nbsp;Network Recovery as an Inverse Problem, and what information is had at each point.</p>
+<p>All recovery methods will require assumptions in addition to data to accomplish their task. As discussed in <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[1]</a></span>, there are fundamental difference in dependency capability between the network and hypergraphic/bipartite representations of complex systems. Necessarily, some information will be lost in translation between the two forms.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div></div><p>As a (hopefully) helpful way to organize the various <em>kinds</em> of assumptions that are taking bipartite observations to simple graphs, we present an organization of common modeling assupmtions into three loosely-defined groups:</p>
 <ul>
-<li>Observing Nodes vs Edges</li>
-<li>Embeddings and Inner Products</li>
-<li>Preprocessing</li>
+<li>Local Structure &amp; Additivity</li>
+<li>Information Flow &amp; Resource Constraints</li>
+<li>Global Structure Models</li>
 </ul>
+<p>In truth, this classification should be viewed as more of a sliding scale, with approaches falling somewhere within. Some approaches make very few assumptions about the shape a resulting network “should” take, but do so by making strong assumptions about how individual observations relate to a desired quantity, and especially how those observations are able to be combined to result in an “answer”, however that looks. Others instead provide clear normative constraints on the overall network topology, or emission mechanism, but this allows for flexibility in how data is individually handled.</p>
+<p>This idea could be thought of as similar to pooling in bayesian inference. Do individuals all have fundamentally separate distributions, so that global behavior (and by extension, uncertainty) is an aggregate phenomena? Or do individuals inherit parameters from a global distribution shared by all, and anything outside that structural assumption must be “noise”? In between the extremes, some other assumption as to how the global and local scales mitigate information between them is required, i.e.&nbsp;<em>partial pooling</em>. In this domain, what we often see are attempts to perform noise corrections through the way information is thought to travel between nodes, generally.</p>
+<p>For each, we provide examples to illustrate modeling patterns and highlight common practice, though for a deeper assessment of the broad space of backboning and edge prediction in general a reader may see the overview in <span class="citation" data-cites="atlasaspiringnetwork_Coscia2021"><a href="#ref-atlasaspiringnetwork_Coscia2021" role="doc-biblioref">[2]</a></span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-atlasaspiringnetwork_Coscia2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">M. Coscia, <em>The atlas for the aspiring network scientist</em>. Michele Coscia, 2021. Available: <a href="https://arxiv.org/abs/2101.00863">https://arxiv.org/abs/2101.00863</a></div>
+</div></div><section id="local-structure-additivity-assumptions" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="local-structure-additivity-assumptions">Local Structure &amp; Additivity Assumptions</h3>
+<p>These are, together, typically called “association” measures. While they are sometimes presented as functions of the entire dataset, they nearly always find a basis in the inner-product operation, and have definitions in terms of <em>contractions</em> along the data/observation dimension. By relying on the (Euclidean) inner product, even with various re-weighting or normalization schemes, an analyst is making strong assumptions about their ability to reliably take measurements from linear combinations of observed activation vectors.</p>
+<p>Essentially, if a measure relies on marginal counts or summation over the data axis, then the main assumptions are at the <em>local</em> level, about whether what we are adding together estimates our target correctly. The most basic would be to count co-occurrences, and consequently the co-occurrence probability <span class="math inline">\(p_{11}=P(A,B)\)</span>. However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance. This idea leads to “cosine similarity”</p>
+<div id="tip-cs" class="callout callout-style-simple callout-note no-icon callout-titled" title="Ochiai Coefficient (Cosine)[@Measuresecologicalassociation_Janson1981]">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.1: Ochiai Coefficient (Cosine)<span class="citation" data-cites="Measuresecologicalassociation_Janson1981"><a href="#ref-Measuresecologicalassociation_Janson1981" role="doc-biblioref">[3]</a></span>
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Effectively an uncentered correlation, but for binary observations the “cosine similarity” is also called the <em>Ochiai Coefficient</em> between two sets <span class="math inline">\(A,B\)</span>, where binary “1” stands for an element belonging to the set. In our use case, it is measured as <span class="math display">\[
+\frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
+\]</span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Measuresecologicalassociation_Janson1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">S. Janson and J. Vegelius, <span>“Measures of ecological association,”</span> <em>Oecologia</em>, vol. 49, no. 3, pp. 371–376, Jul. 1981, doi: <a href="https://doi.org/10.1007/bf00347601">10.1007/bf00347601</a>.</div>
+</div><div id="ref-ProbabilityAggregationMethods_Allard2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">D. Allard, A. Comunian, and P. Renard, <span>“Probability aggregation methods in geoscience,”</span> <em>Math Geosci</em>, vol. 44, no. 5, pp. 545–581, Jul. 2012, doi: <a href="https://doi.org/10.1007/s11004-012-9396-3">10.1007/s11004-012-9396-3</a>.</div>
+</div></div><p>This interpretation of cosine similarity as the geometric mean of conditional probabilities is particularly useful when trying to approximate interaction rates. The geometric mean as a pooling operator is conserved through Bayesian updates <span class="citation" data-cites="ProbabilityAggregationMethods_Allard2012"><a href="#ref-ProbabilityAggregationMethods_Allard2012" role="doc-biblioref">[4]</a></span>, so the use of a prior with co-occurrences as base counts is possible for additive smoothing. To do this, the goemetric mean of marginal counts acts as a “psedovariable” for exposure somewhere between A and B. Empirically, this is a powerful approximation with good performance characteristics, for relatively little effort.</p>
+<!-- Say we observe binary variables A and B, along with others. -->
+<!-- Now, we want a probability of conditional dependence between A and B (does information flow directly between a and b when a and b happen together?). So we want the probability ofand edge $E_{ab}$ being used, given that such an edge had the opportunity to be used. E.g. did two people have a causal interraction to make each other sick, given a time when we know they were both exposed/became sick. -->
+<!-- $$P(E|O) = P(O|E)P(E)/P(O)$$ -->
+<!-- The denominator is hard, because while we can estimate the frequency of each node as the occurrences/opportunities (i.e. events/exposure), so, $n_i/N$, we can't use that for an exposure for "number of times an edge between A,B could have been used". -->
+<!-- If we multiply $N(a)N(b)$, then we have the number of _ways_ a or b could be related over all chances, but this won't be a fraction of the number of samples, and could possible be much bigger. -->
+<!-- So dividing the number of times both _did_ happen together by that number won't get us a probability. -->
+<!-- So instead, we fib a bit. -->
+<!-- The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exactly what geometric means are for: -->
+<!-- Then, a point estimate for the probability of an edge occurring is its actual co-occurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities -->
+<div id="tip-or" class="callout callout-style-simple callout-note no-icon callout-titled" title="Odds Ratios">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.2: Odds Ratios
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Along with others derived from it, the Odds ratio is based on the ratio of conditional probabilities, and takes the form <span class="math display">\[\text{OR}=\frac{p_{11}p_{00}}{p_{01}p_{10}}\]</span> Yule’s Q and Y <span class="citation" data-cites="MethodsMeasuringAssociation_Yule1912"><a href="#ref-MethodsMeasuringAssociation_Yule1912" role="doc-biblioref">[5]</a></span> are mobius transforms of the (inverse) <span class="math inline">\(\text{OR}\)</span> and <span class="math inline">\(\sqrt{\text{OR}}\)</span>, respectively, that map association values to <span class="math inline">\([-1,1]\)</span>. <span class="math display">\[Q = \frac{\text{OR}-1}{\text{OR}+1}\quad Y=\frac{\sqrt{\text{OR}}-1}{\sqrt{\text{OR}}+1}\]</span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-MethodsMeasuringAssociation_Yule1912" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">G. U. Yule, <span>“On the methods of measuring association between two attributes,”</span> <em>Journal of the Royal Statistical Society</em>, vol. 75, no. 6, p. 579, May 1912, doi: <a href="https://doi.org/10.2307/2340126">10.2307/2340126</a>.</div>
+</div></div><p>Odds ratio is important to logistic regression, where the coefficients are usually the log-odds ratios of occurrence vs.&nbsp;not (<span class="math inline">\(\log{\text{OR}}\)</span>).<br>
+Yule’s Y, also called the “coefficient of colligation”, tends to scale with association strength in an intuitive way, so that proximity to 1 or -1 paints a more useful picture than the odds-ratio alone.</p>
+<p>Another association measure, based in information theory, asks “how much can I learn about one variable by observing another?”</p>
+<div id="tip-mi" class="callout callout-style-simple callout-note no-icon callout-titled" title="Mutual information">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.3: Mutual information
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An estimate for the mutual information (i.e.&nbsp;between the sample distributions) can be derived from the marginals, as above, though it is more compactly represented as a pairwise sum over the domains of each distribution being compared: <span class="math display">\[
+\text{MI}(A,B)\approx \sum_{i,j\in[0,1]} p_{ij} \log \left( \frac{p_{ij}}{p_{i\bullet}p_{\bullet j}} \right)
+\]</span></p>
+</div>
+</div>
+<p>It is non-negative, with 0 occurring when A and B are independent. There are many other information-theoretic measures related to MI, but we specifically bring this up as it will be the basis for the Chow Liu method, later on.</p>
+<p>Sometimes, especially in social networks, we might want to avoid overcounting relationships with very well-connected nodes. This was brought up with respect to the normalized Laplacian before, but we could also perform a normalization on the underlying bipartite adjacencies.</p>
+<div id="tip-hyp" class="callout callout-style-simple callout-note no-icon callout-titled" title="Hyperbolic Projection">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.4: Hyperbolic Projection
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs.&nbsp;rarer ones.<span class="citation" data-cites="Scientificcollaborationnetworks._Newman2001"><a href="#ref-Scientificcollaborationnetworks._Newman2001" role="doc-biblioref">[6]</a></span> <span class="math display">\[ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}\]</span> This reweights each observation by its degree in the original biartite graph.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Scientificcollaborationnetworks._Newman2001" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,”</span> <em>Physical Review E</em>, vol. 64, no. 1, p. 016132, Jun. 2001, doi: <a href="https://doi.org/10.1103/physreve.64.016132">10.1103/physreve.64.016132</a>.</div>
+</div></div><p>So far this is the first measure that re-weights observations <em>before</em> contraction, so that it depends on having the individual observations available (rather than only the gram matrix). In this case, each observation’s entries are all equally re-weighted by the number of activations in it (each nodes “activation fraction” in that observation).</p>
 </section>
-<section id="counting-projection-and-co-occurrence" class="level2">
-<h2 class="anchored" data-anchor-id="counting-projection-and-co-occurrence">Counting, Projection, and Co-Occurrence</h2>
-<p>Basic Co-occurrence, and friends. Gram is uncentered covariance.</p>
-<p>All estimate some kind of rate</p>
-<section id="sec-ochiai" class="level3">
-<h3 class="anchored" data-anchor-id="sec-ochiai">Cosine Similarity</h3>
+<section id="resource-and-information-flow" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="resource-and-information-flow">Resource and Information Flow</h3>
+<p>These methods are somewhere between local and global constraint scales. This is accomplished by imagining nodes as having some amount of a resource (like information or energy) and correcting for observed noise in edge activation by reinforcing the <em>geodesics</em> that most likely transmitted that resource.</p>
+<p>First, closely related to hyperbolic re-weighting, we can imagine the bipartite connections as evenly dividing each nodes’ resources, before reallocating them to the nodes they touch, in turn. For instance, we might say each author splits their time among all of the papers they are on, and in turn every co-author “receives” an evenly divided proportion of everyone’s time they are co-authoring with.</p>
+<div id="tip-rp" class="callout callout-style-simple callout-note no-icon callout-titled" title="Resource Allocation">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.5: Resource Allocation
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Goes one step further than hyperbolic projection, by viewing each node as having some “amount” of a resource to spend, which gets re-allocated by observational unit. <span class="citation" data-cites="Bipartitenetworkprojection_Zhou2007"><a href="#ref-Bipartitenetworkprojection_Zhou2007" role="doc-biblioref">[7]</a></span> <span class="math display">\[ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X \]</span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Bipartitenetworkprojection_Zhou2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">T. Zhou, J. Ren, M. s. Medo, and Y.-C. Zhang, <span>“Bipartite network projection and personal recommendation,”</span> <em>Phys. Rev. E</em>, vol. 76, no. 4, 4, p. 046115, Oct. 2007, doi: <a href="https://doi.org/10.1103/PhysRevE.76.046115">10.1103/PhysRevE.76.046115</a>.</div>
+</div></div><p>Interestingly, we could see this as a two-step random-walk normalization of the bipartite adjacency matrix <span class="math display">\[
+\begin{pmatrix}
+0_{n,n} &amp; X^T \\
+X &amp; 0_{m,m}
+\end{pmatrix}
+\]</span> First the row-normalized, then the column-normalized. This matrix is asymmetric, so a symmetric edge strength estimate is often retrieved by mean, max, or min reduction operations.</p>
+<p>Rather than stop after two iterations, continuing to enforce unit marginals to convergence is known as the Sinkhorn-Knopp algorithm, which converges to a doubly-stochastic matrix (both marginal directions sum to 1).</p>
+<div id="tip-ot" class="callout callout-style-simple callout-note no-icon callout-titled" title="Doubly Stochastic">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.6: Doubly Stochastic
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If <span class="math inline">\(A\in \mathbb{S}^{n\times n}\)</span> is positive, then there exists <span class="math inline">\(d_1,d_2\)</span> such that <span class="math display">\[W=\text{diag}(d_1)A\text{diag}(d_2)\]</span> is doubly-stochastic, and <span class="math inline">\(W(u,v)\)</span> is the <em>optimal transport plan</em> between <span class="math inline">\(u\)</span> and <span class="math inline">\(v\)</span> with regularized Euclidean distance between them on a graph.<span class="citation" data-cites="RobustInferenceManifold_Landa2023 Sinkhorndistanceslightspeed_Cuturi2013"><a href="#ref-RobustInferenceManifold_Landa2023" role="doc-biblioref">[8]</a>, <a href="#ref-Sinkhorndistanceslightspeed_Cuturi2013" role="doc-biblioref">[9]</a></span></p>
+<p>The doubly-stochastic filter removes edges from <span class="math inline">\(W\)</span> until just before the graph would become disconnected.</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Sinkhorndistanceslightspeed_Cuturi2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">M. Cuturi, <span>“Sinkhorn distances: Lightspeed computation of optimal transport,”</span> in <em>Proceedings of the 27th international conference on neural information processing systems - volume 2</em>, in NIPS’13. Red Hook, NY, USA: Curran Associates Inc., 2013, pp. 2292–2300.</div>
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-RobustInferenceManifold_Landa2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">B. Landa and X. Cheng, <span>“Robust inference of manifold density and geometry by doubly stochastic scaling,”</span> <em><span>SIAM</span> Journal on Mathematics of Data Science</em>, vol. 5, no. 3, pp. 589–614, Sep. 2023, doi: <a href="https://doi.org/10.1137/22M1516968">10.1137/22M1516968</a>.</div>
+</div></div><p>As the name implies, the optimal transport plan reflects the minimum cost to move some amount of resource from one node to another. By focusing on best-case cost, we enforce a kind of “principle of least action” to bias recovery toward edges along these geodesics.</p>
+<p>A more direct way to do this, perhaps, is to find the shortest paths from every node to each other node, and aggregate them.</p>
+<div id="tip-hss" class="callout callout-style-simple callout-note no-icon callout-titled" title="High-Salience Skeleton">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.7: High-Salience Skeleton
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Count the number of shortest-path trees an edge participates in, out of all the shortest-path-tres (one for every node). <span class="math display">\[ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) \]</span> where <span class="math inline">\(\mathcal{T}_{\text{sp}}(n)\)</span> is the shortest-path tree rooted at <span class="math inline">\(n\)</span> <span class="citation" data-cites="Robustclassificationsalient_Grady2012"><a href="#ref-Robustclassificationsalient_Grady2012" role="doc-biblioref">[10]</a></span>Intuition that the most important edges are on geodesics for many paths blah</p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Robustclassificationsalient_Grady2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">D. Grady, C. Thiemann, and D. Brockmann, <span>“Robust classification of salient links in complex networks,”</span> <em>Nature Communications</em>, vol. 3, no. 1, May 2012, doi: <a href="https://doi.org/10.1038/ncomms1847">10.1038/ncomms1847</a>.</div>
+</div></div><p>Unfortunately, HSS is forced to scale with the number of nodes, and must calculate the entire spanning tree for each one.</p>
+</section>
+<section id="global-structural-assumptions" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="global-structural-assumptions">Global Structural Assumptions</h3>
+<p>Often times these constraints are as simple as “the underlying dependency graph must belong to a family <span class="math inline">\(\mathcal{C}\)</span>” of graphs. Observations are thought of as emissions from a set of node distributions, where edges are representations of dependency relationship between them. To provide a foundation to formalize this notion, one framework is that of Markov Random Fields, which are undirected generalizations of bayes nets [CITE?] that use edges to encode <em>conditional dependence</em> between node distributions.</p>
+<p>One of the original structures for MRFs that we could recover from observed data was a <em>tree</em>.</p>
+<div id="tip-chowliu" class="callout callout-style-simple callout-note no-icon callout-titled" title="Chow-Liu Spanning Tree">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.8: Chow-Liu Spanning Tree
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Enforces tree structure globally. Approximates a joint probability <span class="math display">\[
+P\left(\bigcap_{i=1}^n v_i\right) \approx P' = \prod_{e\in T} P(u_n(e)|v_n(e)) \quad T\in \mathcal{T}
+\]</span> where <span class="math inline">\(\mathcal{T}\)</span> is the set of spanning trees for the nodes. The Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence <span class="math inline">\(\text{KL}(P \| P')\)</span> by finding the minimum spanning tree over pairwise mutual information weights.<span class="citation" data-cites="Approximatingdiscreteprobability_Chow1968"><a href="#ref-Approximatingdiscreteprobability_Chow1968" role="doc-biblioref">[11]</a></span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Approximatingdiscreteprobability_Chow1968" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">C. Chow and C. Liu, <span>“Approximating discrete probability distributions with dependence trees,”</span> <em>IEEE Transactions on Information Theory</em>, vol. 14, no. 3, pp. 462–467, May 1968, doi: <a href="https://doi.org/10.1109/tit.1968.1054142">10.1109/tit.1968.1054142</a>.</div>
+</div><div id="ref-BayesianSpanningTree_Duan2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
+</div></div><p>Recent work has made it possible to enforce spanning tree structure while efficiently performing monte-carlo-style bayesian inference, which estimates a distribution over spanning trees that explain observed behavior, and by extension the likelihood each edge is in one of these trees. <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[12]</a></span></p>
+<div id="tip-glasso" class="callout callout-style-simple callout-note no-icon callout-titled" title="Covariance Shrinkage &amp; GLASSO">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.9: Covariance Shrinkage &amp; GLASSO
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>in Binary case <span class="citation" data-cites="Sparseinversecovariance_Friedman2008 Structureestimationdiscrete_Loh2012"><a href="#ref-Sparseinversecovariance_Friedman2008" role="doc-biblioref">[13]</a>, <a href="#ref-Structureestimationdiscrete_Loh2012" role="doc-biblioref">[14]</a></span></p>
+<p>Semidefinite program to find (regularized) max. likelihood precision of Normal Distribution:</p>
+<p><span class="math display">\[\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
+  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1 \]</span></p>
 <ul>
-<li>Ochiai and uncentered correlation</li>
-<li>angles don’t care about length</li>
-<li>geometric mean on cond prob, actually</li>
-<li>that means pseudocounts can make sense</li>
+<li><p>minimize <span class="math inline">\(\|\cdot\|_F\)</span> (sample) covariance <span class="math inline">\(\hat{\Sigma}\in \mathbb{R}^{N\times N}\)</span> and a proposed precision <span class="math inline">\(\Theta\)</span></p></li>
+<li><p>higher (log)-determiniant is better</p></li>
+<li><p>penalize 1-norm (i.e.&nbsp;the Lasso)</p>
+<p>also, stability selection</p></li>
 </ul>
-<p>we can actually interpret ochiai/cosine as an approximate bayes update.</p>
-<p>Say we observe binary variables A and B, along with others.</p>
-<p>Now, we want a probability of conditional dependence between A and B (does information flow directly between a and b when a and b happen together?). So we want the probability ofand edge <span class="math inline">\(E_{ab}\)</span> being used, given that such an edge had the opportunity to be used. E.g. did two people have a causal interraction to make each other sick, given a time when we know they were both exposed/became sick. <span class="math display">\[P(E|O) = P(O|E)P(E)/P(O)\]</span></p>
-<p>The denominator is hard, because while we can estimate the frequency of each node as the occurrences/opportunities (i.e.&nbsp;events/exposure), so, <span class="math inline">\(n_i/N\)</span>, we can’t use that for an exposure for “number of times an edge between A,B could have been used”. If we multiply <span class="math inline">\(N(a)N(b)\)</span>, then we have the number of <em>ways</em> a or b could be related over all chances, but this won’t be a fraction of the number of samples, and could possible be much bigger. So dividing the number of times both <em>did</em> happen together by that number won’t get us a probability. So instead, we fib a bit.</p>
-<p>The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around “areas” and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exactly what geometric means are for:</p>
-<p>Then, a point estimate for the probability of an edge occurring is its actual co-occurrence <span class="math inline">\(n_{a,b}/N\)</span>. It’s the ratio of these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities</p>
-</section>
-<section id="hyperbolic-projection" class="level3">
-<h3 class="anchored" data-anchor-id="hyperbolic-projection">Hyperbolic Projection</h3>
-<ul>
-<li>reweights by degree in original BP</li>
-<li>mention other ways</li>
-</ul>
-</section>
-<section id="transformations-of-counts" class="level3">
-<h3 class="anchored" data-anchor-id="transformations-of-counts">Transformations of Counts</h3>
-<p>Come from contingency tables, like CS.</p>
-<ul>
-<li>odds-ratio</li>
-<li>Yule’s Q,Y</li>
-<li>Mutual Info</li>
-</ul>
-</section>
-</section>
-<section id="resource-and-information-flow" class="level2">
-<h2 class="anchored" data-anchor-id="resource-and-information-flow">Resource and Information Flow</h2>
-<p>Backboning</p>
-<p>Intuition that the most important edges are on geodesics for many paths</p>
-<section id="resource-projection" class="level3">
-<h3 class="anchored" data-anchor-id="resource-projection">Resource Projection</h3>
-</section>
-<section id="doubly-stochastic-and-eot" class="level3">
-<h3 class="anchored" data-anchor-id="doubly-stochastic-and-eot">Doubly-stochastic and eOT</h3>
-</section>
-<section id="hss" class="level3">
-<h3 class="anchored" data-anchor-id="hss">HSS</h3>
-</section>
-</section>
-<section id="inverse-problems-pgm-structure" class="level2">
-<h2 class="anchored" data-anchor-id="inverse-problems-pgm-structure">Inverse Problems &amp; PGM Structure</h2>
-<section id="chow-liu" class="level3">
-<h3 class="anchored" data-anchor-id="chow-liu">Chow Liu</h3>
-<p>Global Tree structure from MI</p>
-</section>
-<section id="shrinkage-glasso" class="level3">
-<h3 class="anchored" data-anchor-id="shrinkage-glasso">Shrinkage &amp; GLASSO</h3>
-</section>
-<section id="stability-selection" class="level3">
-<h3 class="anchored" data-anchor-id="stability-selection">stability selection</h3>
-<blockquote class="blockquote">
-<p>Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve</p>
-</blockquote>
-</section>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Structureestimationdiscrete_Loh2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">P. Loh and M. J. Wainwright, <span>“Structure estimation for discrete graphical models: Generalized covariance matrices and their inverses,”</span> in <em>Advances in neural information processing systems</em>, Curran Associates, Inc., 2012. doi: <a href="https://doi.org/10.1214/13-aos1162">10.1214/13-aos1162</a>.</div>
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-Sparseinversecovariance_Friedman2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">J. Friedman, T. Hastie, and R. Tibshirani, <span>“Sparse inverse covariance estimation with the graphical lasso,”</span> <em>Biostatistics</em>, vol. 9, no. 3, pp. 432–441, Jul. 2008, doi: <a href="https://doi.org/10.1093/biostatistics/kxm045">10.1093/biostatistics/kxm045</a>.</div>
+</div></div><div id="tip-degseq" class="callout callout-style-simple callout-note no-icon callout-titled" title="Degree Sequence Ensembles">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.10: Degree Sequence Ensembles
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="backbonebipartiteprojections_Neal2014 Comparingalternativesfixed_Neal2021"><a href="#ref-backbonebipartiteprojections_Neal2014" role="doc-biblioref">[15]</a>, <a href="#ref-Comparingalternativesfixed_Neal2021" role="doc-biblioref">[16]</a></span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-Comparingalternativesfixed_Neal2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">Z. P. Neal, R. Domagalski, and B. Sagan, <span>“Comparing alternatives to the fixed degree sequence model for extracting the backbone of bipartite projections,”</span> <em>Sci Rep</em>, vol. 11, no. 1, p. 23929, Dec. 2021, doi: <a href="https://doi.org/10.1038/s41598-021-03238-3">10.1038/s41598-021-03238-3</a>.</div>
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-backbonebipartiteprojections_Neal2014" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">Z. Neal, <span>“The backbone of bipartite projections: Inferring relationships from co-authorship, co-sponsorship, co-attendance and other co-behaviors,”</span> <em>Social Networks</em>, vol. 39, pp. 84–97, Oct. 2014, doi: <a href="https://doi.org/10.1016/j.socnet.2014.06.001">10.1016/j.socnet.2014.06.001</a>.</div>
+</div></div><div id="tip-sbm" class="callout callout-style-simple callout-note no-icon callout-titled" title="(Inverse) Stochastic Block Model">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note&nbsp;4.11: (Inverse) Stochastic Block Model
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="ReconstructingNetworksUnknown_Peixoto2018 NetworkReconstructionCommunity_Peixoto2019"><a href="#ref-ReconstructingNetworksUnknown_Peixoto2018" role="doc-biblioref">[17]</a>, <a href="#ref-NetworkReconstructionCommunity_Peixoto2019" role="doc-biblioref">[18]</a></span></p>
+</div>
+</div>
+<div class="no-row-height column-margin column-container"><div id="ref-NetworkReconstructionCommunity_Peixoto2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">T. P. Peixoto, <span>“Network reconstruction and community detection from dynamics,”</span> <em>Phys. Rev. Lett.</em>, vol. 123, no. 12, p. 128301, Sep. 2019, doi: <a href="https://doi.org/10.1103/PhysRevLett.123.128301">10.1103/PhysRevLett.123.128301</a>.</div>
+</div></div><div class="no-row-height column-margin column-container"><div id="ref-ReconstructingNetworksUnknown_Peixoto2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">T. P. Peixoto, <span>“Reconstructing networks with unknown and heterogeneous errors,”</span> <em>Phys. Rev. X</em>, vol. 8, no. 4, p. 041011, Oct. 2018, doi: <a href="https://doi.org/10.1103/PhysRevX.8.041011">10.1103/PhysRevX.8.041011</a>.</div>
+</div></div></section>
 </section>
 <section id="a-path-forward" class="level2">
 <h2 class="anchored" data-anchor-id="a-path-forward">A Path Forward</h2>
 <section id="tracing-information-loss-paths" class="level3">
 <h3 class="anchored" data-anchor-id="tracing-information-loss-paths">Tracing Information Loss Paths</h3>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/adjoint-cheatsheet.png" class="img-fluid figure-img"></p>
-<figcaption>Relating Graphs and Hypergraph/bipartite structures as adjoint operators</figcaption>
+<!-- ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png) -->
+<p>Table of Existing Approaches</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-tbl-roads">
+<div class="cell" data-execution_count="17">
+<div id="tbl-roads" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-roads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4.1: Organizing recovery methods by representation space and level
+</figcaption>
+<div aria-describedby="tbl-roads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="tbl-roads-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-roads-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+<div aria-describedby="tbl-roads-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="1-03-recovery-road_files/figure-html/..-codefigs-graphs-tbl-roads-output-1.svg" id="tbl-roads-1" class="img-fluid figure-img" data-ref-parent="tbl-roads">
+</div>
 </figure>
 </div>
-<p>Table of Existing Approaches</p>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
 <ul>
 <li>Observation-level loss (starting with the inner product or kernel)</li>
 <li>Non-generative model loss (no projection of data into model space)</li>
@@ -384,6 +587,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="something-new">Something New</h3>
 <p>Sorting algorithms… <em>none address all three!</em></p>
 <p>i.e.&nbsp;MOTIVATES FOREST PURSUIT</p>
+
 
 
 </section>
