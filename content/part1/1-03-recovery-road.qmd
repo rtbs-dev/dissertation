@@ -1,90 +1,206 @@
 # Roads to Network Recovery {#sec-lit-review}
 
+Here we give a brief overview of the key approaches to backboning and dependency reovery for networks through binary activations.
+This is by far an incomplete overview, though other existing approaches are likely to fall within the provided outline due to its generality. 
+Finally, we assess patterns in the assumptions made by the presented algorithms, and motivate a new one to fill a gap perceived in the network recovery space.
+
 ## Organizing Recovery Methods
 
-i.e. Network Recovery as an Inverse Problem, and what information is had at each point. 
+All recovery methods will require assumptions in addition to data to accomplish their task.
+As discussed in @WhyHowWhen_Torres2021, there are fundamental difference in dependency capability between the network and hypergraphic/bipartite representations of complex systems.
+Necessarily, some information will be lost in translation between the two forms.
+
+As a (hopefully) helpful way to organize the various _kinds_ of assumptions that are taking bipartite observations to simple graphs, we present an organization of common modeling assupmtions into three loosely-defined groups: 
+
+- Local Structure & Additivity
+- Information Flow & Resource Constraints
+- Global Structure Models
+
+In truth, this classification should be viewed as more of a sliding scale, with approaches falling somewhere within.
+Some approaches make very few assumptions about the shape a resulting network "should" take, but do so by making strong assumptions about how individual observations relate to a desired quantity, and especially how those observations are able to be combined to result in an "answer", however that looks. 
+Others instead provide clear normative constraints on the overall network topology, or emission mechanism, but this allows for flexibility in how data is individually handled.
+
+This idea could be thought of as similar to pooling in bayesian inference.
+Do individuals all have fundamentally separate distributions, so that global behavior (and by extension, uncertainty) is an aggregate phenomena?
+Or do individuals inherit parameters from a global distribution shared by all, and anything outside that structural assumption must be "noise"?
+In between the extremes, some other assumption as to how the global and local scales mitigate information between them is required, i.e. _partial pooling_.
+In this domain, what we often see are attempts to perform noise corrections through the way information is thought to travel between nodes, generally. 
+
+For each, we provide examples to illustrate modeling patterns and highlight common practice, though for a deeper assessment of the broad space of backboning and edge prediction in general a reader may see the overview in @atlasaspiringnetwork_Coscia2021.
+
+### Local Structure & Additivity Assumptions
+
+These are, together, typically called "association" measures. 
+While they are sometimes presented as functions of the entire dataset, they nearly always find a basis in the inner-product operation, and have definitions in terms of _contractions_ along the data/observation dimension.
+By relying on the (Euclidean) inner product, even with various re-weighting or normalization schemes, an analyst is making strong assumptions about their ability to reliably take measurements from linear combinations of observed activation vectors.
+
+Essentially, if a measure relies on marginal counts or summation over the data axis, then the main assumptions are at the _local_ level, about whether what we are adding together estimates our target correctly.
+The most basic would be to count co-occurrences, and consequently the co-occurrence probability $p_{11}=P(A,B)$.
+However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance.
+This idea leads to "cosine similarity" 
+
+:::{#tip-cs .callout-note title="Ochiai Coefficient (Cosine)[@Measuresecologicalassociation_Janson1981]"}
+Effectively an uncentered correlation, but for binary observations the "cosine similarity" is also called the _Ochiai Coefficient_ between two sets $A,B$, where binary "1" stands for an element belonging to the set.
+In our use case, it is measured as 
+$$
+\frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
+$$  
+:::
+This interpretation of cosine similarity as the geometric mean of conditional probabilities is particularly useful when trying to approximate interaction rates.
+The geometric mean as a pooling operator is conserved through Bayesian updates [@ProbabilityAggregationMethods_Allard2012], so the use of a prior with co-occurrences as base counts is possible for additive smoothing.
+To do this, the goemetric mean of marginal counts acts as a "psedovariable" for exposure somewhere between A and B.
+Empirically, this is a powerful approximation with good performance characteristics, for relatively little effort.  
 
 
-- Observing Nodes vs Edges
-- Embeddings and Inner Products
-- Preprocessing
+<!-- Say we observe binary variables A and B, along with others. --> 
+
+<!-- Now, we want a probability of conditional dependence between A and B (does information flow directly between a and b when a and b happen together?). So we want the probability ofand edge $E_{ab}$ being used, given that such an edge had the opportunity to be used. E.g. did two people have a causal interraction to make each other sick, given a time when we know they were both exposed/became sick. --> 
+<!-- $$P(E|O) = P(O|E)P(E)/P(O)$$ -->
+
+<!-- The denominator is hard, because while we can estimate the frequency of each node as the occurrences/opportunities (i.e. events/exposure), so, $n_i/N$, we can't use that for an exposure for "number of times an edge between A,B could have been used". -->
+<!-- If we multiply $N(a)N(b)$, then we have the number of _ways_ a or b could be related over all chances, but this won't be a fraction of the number of samples, and could possible be much bigger. -->
+<!-- So dividing the number of times both _did_ happen together by that number won't get us a probability. -->
+<!-- So instead, we fib a bit. --> 
+
+<!-- The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exactly what geometric means are for: --> 
 
 
-## Counting, Projection, and Co-Occurrence
-Basic Co-occurrence, and friends.
-Gram is uncentered covariance. 
+<!-- Then, a point estimate for the probability of an edge occurring is its actual co-occurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities -->
 
-All estimate some kind of rate
+:::{#tip-or .callout-note title="Odds Ratios"}
 
-### Cosine Similarity {#sec-ochiai}
+Along with others derived from it, the Odds ratio is based on the ratio of conditional probabilities, and takes the form $$\text{OR}=\frac{p_{11}p_{00}}{p_{01}p_{10}}$$
+Yule's Q and Y [@MethodsMeasuringAssociation_Yule1912] are mobius transforms of the (inverse) $\text{OR}$ and $\sqrt{\text{OR}}$, respectively, that map association values to $[-1,1]$.
+$$Q = \frac{\text{OR}-1}{\text{OR}+1}\quad Y=\frac{\sqrt{\text{OR}}-1}{\sqrt{\text{OR}}+1}$$
+:::
+ 
+Odds ratio is important to logistic regression, where the coefficients are usually the log-odds ratios of occurrence vs. not ($\log{\text{OR}}$).   
+Yule's Y, also called the "coefficient of colligation", tends to scale with association strength in an intuitive way, so that proximity to 1 or -1 paints a more useful picture than the odds-ratio alone. 
 
-- Ochiai and uncentered correlation
-- angles don't care about length
-- geometric mean on cond prob, actually
-- that means pseudocounts can make sense
+Another association measure, based in information theory, asks "how much can I learn about one variable by observing another?"
+
+:::{#tip-mi .callout-note title="Mutual information"}
+An estimate for the mutual information (i.e. between the sample distributions) can be derived from the marginals, as above, though it is more compactly represented as a pairwise sum over the domains of each distribution being compared:
+$$
+\text{MI}(A,B)\approx \sum_{i,j\in[0,1]} p_{ij} \log \left( \frac{p_{ij}}{p_{i\bullet}p_{\bullet j}} \right) 
+$$
+:::
+
+It is non-negative, with 0 occurring when A and B are independent. 
+There are many other information-theoretic measures related to MI, but we specifically bring this up as it will be the basis for the Chow Liu method, later on. 
+
+Sometimes, especially in social networks, we might want to avoid overcounting relationships with very well-connected nodes.
+This was brought up with respect to the normalized Laplacian before, but we could also perform a normalization on the underlying bipartite adjacencies.  
+
+:::{#tip-hyp .callout-note title="Hyperbolic Projection"}
+Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs. rarer ones.[@Scientificcollaborationnetworks._Newman2001]
+$$ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}$$
+This reweights each observation by its degree in the original biartite graph.  
+:::
+
+So far this is the first measure that re-weights observations _before_ contraction, so that it depends on having the individual observations available (rather than only the gram matrix).
+In this case, each observation's entries are all equally re-weighted by the number of activations in it (each nodes "activation fraction" in that observation).  
 
 
-we can actually interpret ochiai/cosine as an approximate bayes update. 
+### Resource and Information Flow
 
-Say we observe binary variables A and B, along with others. 
+These methods are somewhere between local and global constraint scales.
+This is accomplished by imagining nodes as having some amount of a resource (like information or energy) and correcting for observed noise in edge activation by reinforcing the _geodesics_ that most likely transmitted that resource. 
 
-Now, we want a probability of conditional dependence between A and B (does information flow directly between a and b when a and b happen together?). So we want the probability ofand edge $E_{ab}$ being used, given that such an edge had the opportunity to be used. E.g. did two people have a causal interraction to make each other sick, given a time when we know they were both exposed/became sick. 
-$$P(E|O) = P(O|E)P(E)/P(O)$$
+First, closely related to hyperbolic re-weighting, we can imagine the bipartite connections as evenly dividing each nodes' resources, before reallocating them to the nodes they touch, in turn.
+For instance, we might say each author splits their time among all of the papers they are on, and in turn every co-author "receives" an evenly divided proportion of everyone's time they are co-authoring with.   
 
-The denominator is hard, because while we can estimate the frequency of each node as the occurrences/opportunities (i.e. events/exposure), so, $n_i/N$, we can't use that for an exposure for "number of times an edge between A,B could have been used".
-If we multiply $N(a)N(b)$, then we have the number of _ways_ a or b could be related over all chances, but this won't be a fraction of the number of samples, and could possible be much bigger.
-So dividing the number of times both _did_ happen together by that number won't get us a probability.
-So instead, we fib a bit. 
+:::{#tip-rp .callout-note title="Resource Allocation"}
+Goes one step further than hyperbolic projection, by viewing each node as having some "amount" of a resource to spend, which gets re-allocated by observational unit. [@Bipartitenetworkprojection_Zhou2007]
+$$ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X $$
+:::
 
-The number of chances (out of all samples) that a pair had to happen together is somewhere between the chances each had separately. We make a pseudo-variable that uses this fact, but averaging the rates. but we are dealing with probabilities, which are based around "areas" and their ratios. So we want one count, such that watching it with a copy of itself has the same exposure as watching A and B separately. This is exactly what geometric means are for: 
+Interestingly, we could see this as a two-step random-walk normalization of the bipartite adjacency matrix
+$$
+\begin{pmatrix}
+0_{n,n} & X^T \\
+X & 0_{m,m}
+\end{pmatrix}
+$$
+First the row-normalized, then the column-normalized.
+This matrix is asymmetric, so a symmetric edge strength estimate is often retrieved by mean, max, or min reduction operations.
+
+Rather than stop after two iterations, continuing to enforce unit marginals to convergence is known as the Sinkhorn-Knopp algorithm, which converges to a doubly-stochastic matrix (both marginal directions sum to 1). 
+
+:::{#tip-ot .callout-note title="Doubly Stochastic"}
+If $A\in \mathbb{S}^{n\times n}$ is positive, then there exists $d_1,d_2$ such that $$W=\text{diag}(d_1)A\text{diag}(d_2)$$ is doubly-stochastic, and $W(u,v)$ is the _optimal transport plan_ between $u$ and $v$ with regularized Euclidean distance between them on a graph.[@RobustInferenceManifold_Landa2023;@Sinkhorndistanceslightspeed_Cuturi2013]
+
+The doubly-stochastic filter removes edges from $W$ until just before the graph would become disconnected.
+:::
+
+As the name implies, the optimal transport plan reflects the minimum cost to move some amount of resource from one node to another.
+By focusing on best-case cost, we enforce a kind of "principle of least action" to bias recovery toward edges along these geodesics.
+
+A more direct way to do this, perhaps, is to find the shortest paths from every node to each other node, and aggregate them. 
+
+:::{#tip-hss .callout-note title="High-Salience Skeleton"}
+Count the number of shortest-path trees an edge participates in, out of all the shortest-path-tres (one for every node).
+$$ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) $$
+where $\mathcal{T}_{\text{sp}}(n)$ is the shortest-path tree rooted at $n$ 
+[@Robustclassificationsalient_Grady2012]Intuition that the most important edges are on geodesics for many paths
+blah
+:::
+
+Unfortunately, HSS is forced to scale with the number of nodes, and must calculate the entire spanning tree for each one.  
+
+### Global Structural Assumptions
+
+Often times these constraints are as simple as "the underlying dependency graph must belong to a family $\mathcal{C}$" of graphs.
+Observations are thought of as emissions from a set of node distributions, where edges are representations of dependency relationship between them. 
+To provide a foundation to formalize this notion, one framework is that of Markov Random Fields, which are undirected generalizations of bayes nets [CITE?] that use edges to encode _conditional dependence_ between node distributions. 
+
+ One of the original structures for MRFs that we could recover from observed data was a _tree_.
+
+:::{#tip-chowliu .callout-note title="Chow-Liu Spanning Tree"}
+Enforces tree structure globally.
+Approximates a joint probability
+$$
+P\left(\bigcap_{i=1}^n v_i\right) \approx P' = \prod_{e\in T} P(u_n(e)|v_n(e)) \quad T\in \mathcal{T}
+$$
+where $\mathcal{T}$ is the set of spanning trees for the nodes.
+The Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence $\text{KL}(P \| P')$ by finding the minimum spanning tree over pairwise mutual information weights.[@Approximatingdiscreteprobability_Chow1968]
+:::
+
+Recent work has made it possible to enforce spanning tree structure while efficiently performing monte-carlo-style bayesian inference, which estimates a distribution over spanning trees that explain observed behavior, and by extension the likelihood each edge is in one of these trees. [@BayesianSpanningTree_Duan2021]
+
+:::{#tip-glasso .callout-note title="Covariance Shrinkage & GLASSO"}
+ in Binary case [@Sparseinversecovariance_Friedman2008;@Structureestimationdiscrete_Loh2012]
+
+Semidefinite program to find (regularized) max. likelihood precision of Normal Distribution: 
 
 
-Then, a point estimate for the probability of an edge occurring is its actual co-occurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities
+$$\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
+  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1 $$
 
-### Hyperbolic Projection
+- minimize $\|\cdot\|_F$ (sample) covariance $\hat{\Sigma}\in \mathbb{R}^{N\times N}$ and a proposed precision $\Theta$
+- higher (log)-determiniant is better
+- penalize 1-norm (i.e. the Lasso)
 
-- reweights by degree in original BP
-- mention other ways 
+  also, stability selection 
+:::
 
-### Transformations of Counts
+:::{#tip-degseq .callout-note title="Degree Sequence Ensembles"}
+[@backbonebipartiteprojections_Neal2014;@Comparingalternativesfixed_Neal2021]
+:::
 
-Come from contingency tables, like CS.
-
-- odds-ratio
-- Yule's Q,Y
-- Mutual Info
-
-## Resource and Information Flow
-
-Backboning
-
-Intuition that the most important edges are on geodesics for many paths
-
-### Resource Projection
-
-### Doubly-stochastic and eOT
-
-### HSS
-
-## Inverse Problems & PGM Structure
-
-### Chow Liu
-Global Tree structure from MI
-
-### Shrinkage & GLASSO
-
-### stability selection 
-
-> Takeaway: a way to organize existing algorithms, AND highlight unique set of problems we set out to solve
-
+:::{#tip-sbm .callout-note title="(Inverse) Stochastic Block Model"}
+[@ReconstructingNetworksUnknown_Peixoto2018;@NetworkReconstructionCommunity_Peixoto2019]
+:::
 
 ## A Path Forward
 
 ### Tracing Information Loss Paths
 
-![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png)
+<!-- ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png) -->
 
 Table of Existing Approaches  
+
+{{< embed ../codefigs/graphs.qmd#tbl-roads >}}
 
 - Observation-level loss (starting with the inner product or kernel)
 - Non-generative model loss (no projection of data into model space)

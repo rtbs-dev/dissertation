@@ -1,4 +1,4 @@
-# Metrology as matrices
+# Metrology with matrices
 
 
 
@@ -124,7 +124,21 @@ Conditional probabilities $P(A|B)=\frac{P(A\cap B)}{P(B)}$ measure how often A o
 Once again, we can estimate the base probabilities $P(A)$ and $P(B)$ with methods like @eq-beta-binomial for each marginal sums $X(\cdot,A)$ or $X(\cdot,B)$, but the joint and conditional probabilities can instead be estimated using matrix multiplication using the Gram matrix, discussed below.
 It encodes pair-wise co-occurrence counts, such that $G(i,i'):\mathbb{Z}^{n\times n}$ has the co-occurrence count for node $i$ with $i'$.
 
-The co-occurrence probability $P(A\cap B)$ for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes.
+For binary data, we typically create association meatures from values on a $2\times2$ contingency table, with counts and marginals.
+A shorthand notation for these values is: 
+
+$$
+\begin{array}{c|cc|c}
+      & B=1         & B=0         & \sum_B \\
+\hline 
+A=1   & p_{11}      & p_{10}      & p_{1\bullet} \\
+A=0   & p_{01}      & p_{00}      & p_{0\bullet} \\
+\hline 
+\sum_A   & p_{\bullet 1} & p_{\bullet 0} & p_\bullet \\
+\end{array}
+$$ {#eq-contingency}
+
+The co-occurrence probability $p_{11}=P(A\cap B)$ for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes.
 First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability).
 In fact, without direct observation of edges, we are not able to estimate their count, _or_ their exposure, which can be a source of systemic error from _epistemic uncertainty_.
 We don't know when edges are used, directly, and we also don't have a reliable way to estimate the opportunities each edge had to activate (their exposure), either.

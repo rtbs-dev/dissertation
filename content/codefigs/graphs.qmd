@@ -86,6 +86,7 @@ tex_kws = dict(
     preamble=r"""
     \usepackage[otfmath]{XCharter}
     \usepackage{tikz-network}
+    \usepackage{booktabs}
     \usetikzlibrary{positioning, matrix,calc}
     \SetCoordinates[xAngle=0, yAngle=70, yLength=0.5]
 
@@ -394,6 +395,46 @@ fig
 ```
 
 ```{python}
+#| label: tbl-roads
+#| tbl-cap: Organizing recovery methods by representation space and level
+
+tab = r"""
+\centering
+\renewcommand{\arraystretch}{1.5}
+\newcommand*{\tabtab}{ \hspace{4mm}}
+\begin{tabular}{l c c |c}
+\toprule
+\textit{observations in... }& \textbf{Data} space? & \textbf{Model} space? & \textbf{Bipartite}?\\
+\midrule
+\textit{assumptions for...}&                      &                       \\
+\cline{1-1}
+\multicolumn{2}{l}{\textbf{Local Structure}}       &      \\
+ \tabtab Ochiai Coeff. & & $\bullet$  &\\
+ \tabtab Hyperbolic Proj. & & $\bullet$ & $\bullet$\\
+ \tabtab Mutual Info. & & $\bullet$  & \\
+\multicolumn{2}{l}{\textbf{Information Flow}}   &    \\
+ \tabtab Resource Allocation & & $\bullet$  & $\bullet$ \\
+ \tabtab Doubly Stochastic & ? & $\bullet$ &  \\
+ \tabtab High-Salience Skeleton & $\bullet$ &  \\
+\multicolumn{2}{l}{\textbf{Global Structure}}     &    \\
+ \tabtab Chow Liu & $\bullet$ &  \\
+ \tabtab MRF/GLASSO & $\bullet$ & &  \\
+ \tabtab Deg. Sequence & & $\bullet$ & $\bullet$ \\
+ \tabtab S.B.M. & $\bullet$ & & $\bullet$ \\
+
+\bottomrule
+\end{tabular}
+"""
+
+textab = TexFragment(
+    tab,
+    **tex_kws
+).run_latex(tex_program=tex)
+textab
+```
+
+
+```{python}
 #| label: fig-stack-bow
 #| fig-cap: Edge Measurements with Group Gambit (BoW) assumption
 
@@ -420,6 +461,9 @@ fig
 ```
 
 ```{python}
+#| label: fig-inject-plan
+#| fig-cap: Dissemination plan as rooted RST on augmented graph
+
 with open('inject-plan.tex') as f: 
     fig = TexFragment(
         f.read(),
@@ -442,3 +486,59 @@ with open('sum-outer.tex') as f:
 fig
 ```
 
+```{python}
+import daft
+
+# Instantiate the PGM.
+pgm = daft.PGM()
+
+# Hierarchical parameters.
+pgm.add_node("alpha", r"$\alpha$", 0.5, 2, fixed=True)
+pgm.add_node("beta", r"$\beta$", 1.5, 2)
+
+# Latent variable.
+pgm.add_node("w", r"$w_n$", 1, 1)
+
+# Data.
+pgm.add_node("x", r"$x_n$", 2, 1, observed=True)
+
+# Add in the edges.
+pgm.add_edge("alpha", "beta")
+pgm.add_edge("beta", "w")
+pgm.add_edge("w", "x")
+pgm.add_edge("beta", "x")
+
+# And a plate.
+pgm.add_plate([0.5, 0.5, 2, 1], label=r"$n = 1, \cdots, N$", shift=-0.1)
+
+# Render and save.
+pgm.render()
+```
+
+```{python}
+def plot_smoothed_lda():
+    """from http://christianherta.de/lehre/dataScience/bayesian_networks/topic-models.slides.php"""
+    pgm = daft.PGM([6.3, 4.05], origin=[-1., -0.3], aspect=1.)
+    pgm.add_node(daft.Node("alpha", r"$\alpha$", 0.5, 1., fixed=True))
+    pgm.add_node(daft.Node("theta", r"$\theta$", 1.5, 1))
+    pgm.add_node(daft.Node("z", r"z", 2.5, 1))
+    pgm.add_node(daft.Node("w", r"w", 3.5, 1, observed=True))
+    
+    pgm.add_node(daft.Node("beta", r"$\beta$", 2.5, 2.2, fixed=True))
+    pgm.add_node(daft.Node("phi", r"$\phi$", 3.5, 2.2))
+    
+    # Add in the edges.
+    pgm.add_edge("alpha", "theta")
+    pgm.add_edge("theta", "z")
+    pgm.add_edge("z", "w")
+    pgm.add_edge("beta", "phi")
+    pgm.add_edge("phi", "w")
+   
+    # And plates.
+    pgm.add_plate(daft.Plate([3., 1.8, .9, .9], label=r"$K$", shift=-0.1))
+    pgm.add_plate(daft.Plate([1., .2, 3., 1.4], label=r"$n = 1, \ldots, N$", shift=-0.1))
+    pgm.add_plate(daft.Plate([2., .5, 1.9, 1.], label=r"$m = 1, \ldots, M_n$", shift=-0.1))
+    pgm.render()
+
+plot_smoothed_lda()
+```

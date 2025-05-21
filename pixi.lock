@@ -154,6 +154,7 @@ environments:
       - pypi: git+https://github.com/VHRanger/CSRGraph.git#91ff2f323d0672efa19d42540e814804b3ecda01
       - pypi: https://files.pythonhosted.org/packages/e7/05/c19819d5e3d95294a6f5947fb9b9629efb316b96de511b418c53d245aae6/cycler-0.12.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/08/7c/f1af5b44f581df05009ecc9b15395532fc18c7aa7292b5e98501af25c2db/cyclopts-2.9.9-py3-none-any.whl
+      - pypi: https://files.pythonhosted.org/packages/6a/10/8177be1c256b10b5a7b22efad96d74568ab4f4cdac22056e742f5284a409/daft_pgm-0.1.4-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/10/53/0a0cb5d79dd9f7039169f8bf94a144ad3efa52cc519940b3b7dde23bcb89/debugpy-1.8.14-cp312-cp312-manylinux_2_5_x86_64.manylinux1_x86_64.manylinux_2_17_x86_64.manylinux2014_x86_64.whl
       - pypi: https://files.pythonhosted.org/packages/4e/8c/f3147f5c4b73e7550fe5f9352eaa956ae838d5c51eb58e7a25b9f3e2643b/decorator-5.2.1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/47/ef/4cb333825d10317a36a1154341ba37e6e9c087bac99c1990ef07ffdb376f/dictdiffer-0.9.0-py2.py3-none-any.whl
@@ -968,6 +969,18 @@ packages:
   - tomli>=2.0.0 ; python_full_version < '3.11' and extra == 'toml'
   - typing-extensions>=4.8.0 ; python_full_version >= '3.8' and python_full_version < '4.0'
   requires_python: '>=3.8'
+- pypi: https://files.pythonhosted.org/packages/6a/10/8177be1c256b10b5a7b22efad96d74568ab4f4cdac22056e742f5284a409/daft_pgm-0.1.4-py3-none-any.whl
+  name: daft-pgm
+  version: 0.1.4
+  sha256: 3fc02c05762dfada26727b2fa6ae3c0b6d96fc2f960c761a5fa8eb775ca3691d
+  requires_dist:
+  - matplotlib
+  - numpy
+  - pytest ; extra == 'test'
+  - myst-nb ; extra == 'docs'
+  - sphinx ; extra == 'docs'
+  - jupytext ; extra == 'docs'
+  requires_python: '>=3.9'
 - conda: https://conda.anaconda.org/conda-forge/linux-64/dbus-1.13.6-h5008d03_3.tar.bz2
   sha256: 8f5f995699a2d9dbdd62c61385bfeeb57c82a681a7c8c5313c395aa0ccab68a5
   md5: ecfff944ba3960ecb334b9a2663d708d
@@ -1039,7 +1052,7 @@ packages:
 - pypi: .
   name: dissertation
   version: 0.1.0
-  sha256: 4df65632f1079c2aa04c90e223063344d20d602df086a5bbf6e6b4050e8b6ac7
+  sha256: d3feccb1c23bfdaefd223d68881976c346eee6b914d17c62818103d7ce27a9ce
   requires_dist:
   - jupyter-tikz>=0.5.6,<0.6
   - network2tikz>=0.1.8,<0.2
@@ -1049,6 +1062,7 @@ packages:
   - affinis @ git+https://github.com/rtbs-dev/affinis
   - tabulate>=0.9.0,<0.10
   - great-tables>=0.17.0,<0.18
+  - daft-pgm>=0.1.4,<0.2
   requires_python: '>=3.11'
   editable: true
 - pypi: https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl

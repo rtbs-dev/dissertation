@@ -1,52 +1,85 @@
-# LFA: Latent Forest Allocation  
+# Modifications & Extensions  
 
-## LFA as Factorization 
+## Forest Pursuit Interaction Probability {#sec-fpi}
 
-### Dictionary Learning
+Without using stability selection[@StabilitySelection_Meinshausen2010], GLASSO is not directly estimating the "support" of the edge matrix, but the strength of each edge.
+to do similar with FP, we could directly estimate the frequency of edge occurrence using $R(i,e)$ marginal averages, rather than conditioning on co-occurrence.
+Simply multiplying each FP edge probability by the co-occurrence probability of each node-node pair gives this as well, which we call FPi: the direct "interaction probability" for each pair of nodes. 
 
-### Interaction Degree, not Binary
-- "plan" from avrachenkov
+### Simulation Study Revisited
+
+By doing this simple re-weighting, FPi actually beats GLASSO's median APS for the dataset, but at the cost of MCC and F-M scores (which both drop to between FP and GLASSO), as @fig-fpi demonstrates.
+Similarly, the individual breakdown by graph kind in @tbl-fpi shows a similar pattern, with FPi coming close to GLASSO for scale-free networks, but exceeding it for trees and matching for block graphs.
+Still, the difference is small enough, and at such a significant penaly to MCC and F-M scores over a variety of thresholds, that it is hard to recommend the FPi re-weighting unless rate-based edge analysis is desired, e.g. if Poisson or Exponential occurrence models are desired. 
+
+::: {layout-ncol=2}
+
+{{< embed ../codefigs/results.qmd#tbl-fpi >}}
+
+{{< embed ../codefigs/results.qmd#fig-fpi >}}
+:::
+
+### Simulation Case Study
+
+To illustrate what is going on, we have selected two specific experiments as a case study, in @fig-pr-curves
+In the first, `BL-N030S01`, a 30-node block graph with 53 random walk samples, has FP performing worse than GLASSO and Ochiai, in terms of APS (which is reported in the legends).
+We see that FP shows high precision, which drops off significantly to increase recall at all.
+Only a few edges had high probability (which is usually desirable for sparse approximation), and some of the true edges were missed this way.
+However, FPi rescaling makes rarer edges fall off earlier in the thresholding, letting the recall rise by dropping rare edges, rather than simply the low-confidence ones. 
+
+In the second, `SC-N300S01` is a 300-node scale-free network with 281 walks.
+Both FP and FPi show significantly better recovery capability, since enough walks have visited a variety of nodes to give FP better edge coverage.
+In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS for 300 nodes fewer than that many walks. 
+
+![P-R curves for two experiments](../images/PR.svg){#fig-pr-curves}
 
 
 ## Generative Model Specification {#sec-lfa-like}
+
+Symmetry of marked directed and undirected trees (symmetry in $Q$)[@MatrixForestTheorem_Chebotarev2006]
+{{< embed ../codefigs/graphs.qmd#fig-inject-plan >}}
 
 ![Explanation of the Random Spanning Forest generative model for binary activation observations](../images/random-spanning-forests.png)
 - hierarchical model
 - marginalize over the root node. 
 
+##  Expected Forest Maximization 
 
-## Bayesian Estimation by Gibbs Sampling {#sec-lfa-gibbs} 
+### Factorization & Dictionary Learning
 
-### Uniform Random Spanning Trees
-- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
-- Tree Likelihoods, other facts (edge expectations)
 
-### Approximate Forest Samples
-- comparison with LDA
-- Simplifying Assumptions (conditional prob IS prob for this)
 
-  I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 for RSF instead of RSTs
-
-## Expected Forest Maximization {#sec-lfa-efm}
 
 ### Alternating Directions
 - estimate laplacian to get $Q_i$ as shortest path distance
 
-### degree normalization
-sym laplacian before forest kernel
 
-### algorithm overview
+### EFM Simulation Study
 
-## Simulation Study
-
-### Score Improvement
+score improvement
 {{< embed ../codefigs/results.qmd#fig-efm-mcc  >}}
 
-### Odds of Individual Edge Improvement 
+Odds of Individual Edge Improvement 
 {{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
 
-### Runtime Cost
+Runtime Cost
 
 {{< embed ../codefigs/results.qmd#fig-efm-runtime >}}
 
 {{< embed ../codefigs/results.qmd#fig-efm-partials-runtime >}}
+
+## Discussion
+
+### Bayesian Estimation by Gibbs Sampling {#sec-lfa-gibbs} 
+
+Uniform Random Spanning Trees
+
+- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
+- Tree Likelihoods, other facts (edge expectations)
+
+ Approximate Forest Samples
+
+- comparison with LDA
+- Simplifying Assumptions (conditional prob IS prob for this)
+
+  I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 for RSF instead of RSTs

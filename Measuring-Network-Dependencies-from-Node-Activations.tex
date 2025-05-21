@@ -114,6 +114,22 @@
 \titleformat{\section}{\normalfont\large}{\thesection}{1em}{}
 \titleformat{\subsection}{\normalfont\normalsize}{\thesubsection}{1em}{}
 \makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[skins,breakable]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
 \@ifpackageloaded{bookmark}{}{\usepackage{bookmark}}
 \makeatother
 \makeatletter
@@ -166,6 +182,8 @@
 \makeatletter
 \@ifpackageloaded{caption}{}{\usepackage{caption}}
 \makeatother
+\newcounter{quartocallouttipno}
+\newcommand{\quartocallouttip}[1]{\refstepcounter{quartocallouttipno}\label{#1}}
 
 \usepackage[style=ieee,backend=biber,sorting=ydnt,isbn=true]{biblatex}
 \addbibresource{resource/pubs.bib}
@@ -595,7 +613,7 @@ gradient-based machine learning toolkits.
 
 \part{A Practitioner's Guide to Network Recovery}
 
-\chapter{Metrology as matrices}\label{metrology-as-matrices}
+\chapter{Metrology with matrices}\label{metrology-with-matrices}
 
 Where metrology is concerned, the actual unit of observation and how it
 is encoded for us is critical to how analysts may proceed with
@@ -817,10 +835,25 @@ pair-wise co-occurrence counts, such that
 \(G(i,i'):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
 \(i\) with \(i'\).
 
-The co-occurrence probability \(P(A\cap B)\) for each pair can also be
-approximated with the beta-binomial scheme mentioned above, but care
-must be taken not to confuse this with the edge strength connecting two
-nodes. First, nodes that rarely activate (low node probability) may
+For binary data, we typically create association meatures from values on
+a \(2\times2\) contingency table, with counts and marginals. A shorthand
+notation for these values is:
+
+\begin{equation}\phantomsection\label{eq-contingency}{
+\begin{array}{c|cc|c}
+      & B=1         & B=0         & \sum_B \\
+\hline 
+A=1   & p_{11}      & p_{10}      & p_{1\bullet} \\
+A=0   & p_{01}      & p_{00}      & p_{0\bullet} \\
+\hline 
+\sum_A   & p_{\bullet 1} & p_{\bullet 0} & p_\bullet \\
+\end{array}
+}\end{equation}
+
+The co-occurrence probability \(p_{11}=P(A\cap B)\) for each pair can
+also be approximated with the beta-binomial scheme mentioned above, but
+care must be taken not to confuse this with the edge strength connecting
+two nodes. First, nodes that rarely activate (low node probability) may
 nonetheless reliably connect to others when they do occur (high edge
 probability). In fact, without direct observation of edges, we are not
 able to estimate their count, \emph{or} their exposure, which can be a
@@ -1374,147 +1407,386 @@ Dependence}\label{combining-occurrence-dependence}
 
 \chapter{Roads to Network Recovery}\label{sec-lit-review}
 
+Here we give a brief overview of the key approaches to backboning and
+dependency reovery for networks through binary activations. This is by
+far an incomplete overview, though other existing approaches are likely
+to fall within the provided outline due to its generality. Finally, we
+assess patterns in the assumptions made by the presented algorithms, and
+motivate a new one to fill a gap perceived in the network recovery
+space.
+
 \section{Organizing Recovery Methods}\label{organizing-recovery-methods}
 
-i.e.~Network Recovery as an Inverse Problem, and what information is had
-at each point.
+All recovery methods will require assumptions in addition to data to
+accomplish their task. As discussed in \textcite{WhyHowWhen_Torres2021},
+there are fundamental difference in dependency capability between the
+network and hypergraphic/bipartite representations of complex systems.
+Necessarily, some information will be lost in translation between the
+two forms.
+
+As a (hopefully) helpful way to organize the various \emph{kinds} of
+assumptions that are taking bipartite observations to simple graphs, we
+present an organization of common modeling assupmtions into three
+loosely-defined groups:
 
 \begin{itemize}
 \tightlist
 \item
-  Observing Nodes vs Edges
+  Local Structure \& Additivity
 \item
-  Embeddings and Inner Products
+  Information Flow \& Resource Constraints
 \item
-  Preprocessing
+  Global Structure Models
 \end{itemize}
 
-\section{Counting, Projection, and
-Co-Occurrence}\label{counting-projection-and-co-occurrence}
+In truth, this classification should be viewed as more of a sliding
+scale, with approaches falling somewhere within. Some approaches make
+very few assumptions about the shape a resulting network ``should''
+take, but do so by making strong assumptions about how individual
+observations relate to a desired quantity, and especially how those
+observations are able to be combined to result in an ``answer'', however
+that looks. Others instead provide clear normative constraints on the
+overall network topology, or emission mechanism, but this allows for
+flexibility in how data is individually handled.
 
-Basic Co-occurrence, and friends. Gram is uncentered covariance.
+This idea could be thought of as similar to pooling in bayesian
+inference. Do individuals all have fundamentally separate distributions,
+so that global behavior (and by extension, uncertainty) is an aggregate
+phenomena? Or do individuals inherit parameters from a global
+distribution shared by all, and anything outside that structural
+assumption must be ``noise''? In between the extremes, some other
+assumption as to how the global and local scales mitigate information
+between them is required, i.e.~\emph{partial pooling}. In this domain,
+what we often see are attempts to perform noise corrections through the
+way information is thought to travel between nodes, generally.
 
-All estimate some kind of rate
+For each, we provide examples to illustrate modeling patterns and
+highlight common practice, though for a deeper assessment of the broad
+space of backboning and edge prediction in general a reader may see the
+overview in \textcite{atlasaspiringnetwork_Coscia2021}.
 
-\subsection{Cosine Similarity}\label{sec-ochiai}
+\subsection{Local Structure \& Additivity
+Assumptions}\label{local-structure-additivity-assumptions}
 
-\begin{itemize}
-\tightlist
-\item
-  Ochiai and uncentered correlation
-\item
-  angles don't care about length
-\item
-  geometric mean on cond prob, actually
-\item
-  that means pseudocounts can make sense
-\end{itemize}
+These are, together, typically called ``association'' measures. While
+they are sometimes presented as functions of the entire dataset, they
+nearly always find a basis in the inner-product operation, and have
+definitions in terms of \emph{contractions} along the data/observation
+dimension. By relying on the (Euclidean) inner product, even with
+various re-weighting or normalization schemes, an analyst is making
+strong assumptions about their ability to reliably take measurements
+from linear combinations of observed activation vectors.
 
-we can actually interpret ochiai/cosine as an approximate bayes update.
+Essentially, if a measure relies on marginal counts or summation over
+the data axis, then the main assumptions are at the \emph{local} level,
+about whether what we are adding together estimates our target
+correctly. The most basic would be to count co-occurrences, and
+consequently the co-occurrence probability \(p_{11}=P(A,B)\). However,
+for very rare co-occurrences, we need to correct for rate-imbalance of
+the nodes in much the same way correlation normalizes covariance. This
+idea leads to ``cosine similarity''
 
-Say we observe binary variables A and B, along with others.
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
 
-Now, we want a probability of conditional dependence between A and B
-(does information flow directly between a and b when a and b happen
-together?). So we want the probability ofand edge \(E_{ab}\) being used,
-given that such an edge had the opportunity to be used. E.g. did two
-people have a causal interraction to make each other sick, given a time
-when we know they were both exposed/became sick.
-\[P(E|O) = P(O|E)P(E)/P(O)\]
+\quartocallouttip{tip-cs} 
 
-The denominator is hard, because while we can estimate the frequency of
-each node as the occurrences/opportunities (i.e.~events/exposure), so,
-\(n_i/N\), we can't use that for an exposure for ``number of times an
-edge between A,B could have been used''. If we multiply \(N(a)N(b)\),
-then we have the number of \emph{ways} a or b could be related over all
-chances, but this won't be a fraction of the number of samples, and
-could possible be much bigger. So dividing the number of times both
-\emph{did} happen together by that number won't get us a probability. So
-instead, we fib a bit.
+\vspace{-3mm}\textbf{Tip \ref*{tip-cs}: Ochiai Coefficient
+(Cosine){[}@Measuresecologicalassociation\_Janson1981{]}}\vspace{3mm}
 
-The number of chances (out of all samples) that a pair had to happen
-together is somewhere between the chances each had separately. We make a
-pseudo-variable that uses this fact, but averaging the rates. but we are
-dealing with probabilities, which are based around ``areas'' and their
-ratios. So we want one count, such that watching it with a copy of
-itself has the same exposure as watching A and B separately. This is
-exactly what geometric means are for:
+Effectively an uncentered correlation, but for binary observations the
+``cosine similarity'' is also called the \emph{Ochiai Coefficient}
+between two sets \(A,B\), where binary ``1'' stands for an element
+belonging to the set. In our use case, it is measured as \[
+\frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
+\]
 
-Then, a point estimate for the probability of an edge occurring is its
-actual co-occurrence \(n_{a,b}/N\). It's the ratio of these that give us
-the Ochiai as a probability: divided by the estimate for the
-co-occurrence opportunities
+\end{tcolorbox}
 
-\subsection{Hyperbolic Projection}\label{hyperbolic-projection}
+This interpretation of cosine similarity as the geometric mean of
+conditional probabilities is particularly useful when trying to
+approximate interaction rates. The geometric mean as a pooling operator
+is conserved through Bayesian updates
+\autocite{ProbabilityAggregationMethods_Allard2012}, so the use of a
+prior with co-occurrences as base counts is possible for additive
+smoothing. To do this, the goemetric mean of marginal counts acts as a
+``psedovariable'' for exposure somewhere between A and B. Empirically,
+this is a powerful approximation with good performance characteristics,
+for relatively little effort.
 
-\begin{itemize}
-\tightlist
-\item
-  reweights by degree in original BP
-\item
-  mention other ways
-\end{itemize}
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
 
-\subsection{Transformations of Counts}\label{transformations-of-counts}
+\quartocallouttip{tip-or} 
 
-Come from contingency tables, like CS.
+\vspace{-3mm}\textbf{Tip \ref*{tip-or}: Odds Ratios}\vspace{3mm}
 
-\begin{itemize}
-\tightlist
-\item
-  odds-ratio
-\item
-  Yule's Q,Y
-\item
-  Mutual Info
-\end{itemize}
+Along with others derived from it, the Odds ratio is based on the ratio
+of conditional probabilities, and takes the form
+\[\text{OR}=\frac{p_{11}p_{00}}{p_{01}p_{10}}\] Yule's Q and Y
+\autocite{MethodsMeasuringAssociation_Yule1912} are mobius transforms of
+the (inverse) \(\text{OR}\) and \(\sqrt{\text{OR}}\), respectively, that
+map association values to \([-1,1]\).
+\[Q = \frac{\text{OR}-1}{\text{OR}+1}\quad Y=\frac{\sqrt{\text{OR}}-1}{\sqrt{\text{OR}}+1}\]
 
-\section{Resource and Information
+\end{tcolorbox}
+
+Odds ratio is important to logistic regression, where the coefficients
+are usually the log-odds ratios of occurrence vs.~not
+(\(\log{\text{OR}}\)).\\
+Yule's Y, also called the ``coefficient of colligation'', tends to scale
+with association strength in an intuitive way, so that proximity to 1 or
+-1 paints a more useful picture than the odds-ratio alone.
+
+Another association measure, based in information theory, asks ``how
+much can I learn about one variable by observing another?''
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-mi} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-mi}: Mutual information}\vspace{3mm}
+
+An estimate for the mutual information (i.e.~between the sample
+distributions) can be derived from the marginals, as above, though it is
+more compactly represented as a pairwise sum over the domains of each
+distribution being compared: \[
+\text{MI}(A,B)\approx \sum_{i,j\in[0,1]} p_{ij} \log \left( \frac{p_{ij}}{p_{i\bullet}p_{\bullet j}} \right) 
+\]
+
+\end{tcolorbox}
+
+It is non-negative, with 0 occurring when A and B are independent. There
+are many other information-theoretic measures related to MI, but we
+specifically bring this up as it will be the basis for the Chow Liu
+method, later on.
+
+Sometimes, especially in social networks, we might want to avoid
+overcounting relationships with very well-connected nodes. This was
+brought up with respect to the normalized Laplacian before, but we could
+also perform a normalization on the underlying bipartite adjacencies.
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-hyp} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-hyp}: Hyperbolic Projection}\vspace{3mm}
+
+Attempts to account for the overcounting of co-occurrences on frequently
+occurring nodes, vs.~rarer
+ones.\autocite{Scientificcollaborationnetworks._Newman2001}
+\[ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}\]
+This reweights each observation by its degree in the original biartite
+graph.
+
+\end{tcolorbox}
+
+So far this is the first measure that re-weights observations
+\emph{before} contraction, so that it depends on having the individual
+observations available (rather than only the gram matrix). In this case,
+each observation's entries are all equally re-weighted by the number of
+activations in it (each nodes ``activation fraction'' in that
+observation).
+
+\subsection{Resource and Information
 Flow}\label{resource-and-information-flow}
 
-Backboning
+These methods are somewhere between local and global constraint scales.
+This is accomplished by imagining nodes as having some amount of a
+resource (like information or energy) and correcting for observed noise
+in edge activation by reinforcing the \emph{geodesics} that most likely
+transmitted that resource.
 
-Intuition that the most important edges are on geodesics for many paths
+First, closely related to hyperbolic re-weighting, we can imagine the
+bipartite connections as evenly dividing each nodes' resources, before
+reallocating them to the nodes they touch, in turn. For instance, we
+might say each author splits their time among all of the papers they are
+on, and in turn every co-author ``receives'' an evenly divided
+proportion of everyone's time they are co-authoring with.
 
-\subsection{Resource Projection}\label{resource-projection}
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
 
-\subsection{Doubly-stochastic and eOT}\label{doubly-stochastic-and-eot}
+\quartocallouttip{tip-rp} 
 
-\subsection{HSS}\label{hss}
+\vspace{-3mm}\textbf{Tip \ref*{tip-rp}: Resource Allocation}\vspace{3mm}
 
-\section{Inverse Problems \& PGM
-Structure}\label{inverse-problems-pgm-structure}
+Goes one step further than hyperbolic projection, by viewing each node
+as having some ``amount'' of a resource to spend, which gets
+re-allocated by observational unit.
+\autocite{Bipartitenetworkprojection_Zhou2007}
+\[ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X \]
 
-\subsection{Chow Liu}\label{chow-liu}
+\end{tcolorbox}
 
-Global Tree structure from MI
+Interestingly, we could see this as a two-step random-walk normalization
+of the bipartite adjacency matrix \[
+\begin{pmatrix}
+0_{n,n} & X^T \\
+X & 0_{m,m}
+\end{pmatrix}
+\] First the row-normalized, then the column-normalized. This matrix is
+asymmetric, so a symmetric edge strength estimate is often retrieved by
+mean, max, or min reduction operations.
 
-\subsection{Shrinkage \& GLASSO}\label{shrinkage-glasso}
+Rather than stop after two iterations, continuing to enforce unit
+marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
+converges to a doubly-stochastic matrix (both marginal directions sum to
+1).
 
-\subsection{stability selection}\label{stability-selection}
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
 
-\begin{quote}
-Takeaway: a way to organize existing algorithms, AND highlight unique
-set of problems we set out to solve
-\end{quote}
+\quartocallouttip{tip-ot} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-ot}: Doubly Stochastic}\vspace{3mm}
+
+If \(A\in \mathbb{S}^{n\times n}\) is positive, then there exists
+\(d_1,d_2\) such that \[W=\text{diag}(d_1)A\text{diag}(d_2)\] is
+doubly-stochastic, and \(W(u,v)\) is the \emph{optimal transport plan}
+between \(u\) and \(v\) with regularized Euclidean distance between them
+on a
+graph.\autocite{RobustInferenceManifold_Landa2023,Sinkhorndistanceslightspeed_Cuturi2013}
+
+The doubly-stochastic filter removes edges from \(W\) until just before
+the graph would become disconnected.
+
+\end{tcolorbox}
+
+As the name implies, the optimal transport plan reflects the minimum
+cost to move some amount of resource from one node to another. By
+focusing on best-case cost, we enforce a kind of ``principle of least
+action'' to bias recovery toward edges along these geodesics.
+
+A more direct way to do this, perhaps, is to find the shortest paths
+from every node to each other node, and aggregate them.
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-hss} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-hss}: High-Salience Skeleton}\vspace{3mm}
+
+Count the number of shortest-path trees an edge participates in, out of
+all the shortest-path-tres (one for every node).
+\[ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) \] where
+\(\mathcal{T}_{\text{sp}}(n)\) is the shortest-path tree rooted at \(n\)
+\autocite{Robustclassificationsalient_Grady2012}Intuition that the most
+important edges are on geodesics for many paths blah
+
+\end{tcolorbox}
+
+Unfortunately, HSS is forced to scale with the number of nodes, and must
+calculate the entire spanning tree for each one.
+
+\subsection{Global Structural
+Assumptions}\label{global-structural-assumptions}
+
+Often times these constraints are as simple as ``the underlying
+dependency graph must belong to a family \(\mathcal{C}\)'' of graphs.
+Observations are thought of as emissions from a set of node
+distributions, where edges are representations of dependency
+relationship between them. To provide a foundation to formalize this
+notion, one framework is that of Markov Random Fields, which are
+undirected generalizations of bayes nets {[}CITE?{]} that use edges to
+encode \emph{conditional dependence} between node distributions.
+
+One of the original structures for MRFs that we could recover from
+observed data was a \emph{tree}.
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-chowliu} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-chowliu}: Chow-Liu Spanning Tree}\vspace{3mm}
+
+Enforces tree structure globally. Approximates a joint probability \[
+P\left(\bigcap_{i=1}^n v_i\right) \approx P' = \prod_{e\in T} P(u_n(e)|v_n(e)) \quad T\in \mathcal{T}
+\] where \(\mathcal{T}\) is the set of spanning trees for the nodes. The
+Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence
+\(\text{KL}(P \| P')\) by finding the minimum spanning tree over
+pairwise mutual information
+weights.\autocite{Approximatingdiscreteprobability_Chow1968}
+
+\end{tcolorbox}
+
+Recent work has made it possible to enforce spanning tree structure
+while efficiently performing monte-carlo-style bayesian inference, which
+estimates a distribution over spanning trees that explain observed
+behavior, and by extension the likelihood each edge is in one of these
+trees. \autocite{BayesianSpanningTree_Duan2021}
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-glasso} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-glasso}: Covariance Shrinkage \& GLASSO}\vspace{3mm}
+
+in Binary case
+\autocite{Sparseinversecovariance_Friedman2008,Structureestimationdiscrete_Loh2012}
+
+Semidefinite program to find (regularized) max. likelihood precision of
+Normal Distribution:
+
+\[\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
+  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1 \]
+
+\begin{itemize}
+\item
+  minimize \(\|\cdot\|_F\) (sample) covariance
+  \(\hat{\Sigma}\in \mathbb{R}^{N\times N}\) and a proposed precision
+  \(\Theta\)
+\item
+  higher (log)-determiniant is better
+\item
+  penalize 1-norm (i.e.~the Lasso)
+
+  also, stability selection
+\end{itemize}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-degseq} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-degseq}: Degree Sequence Ensembles}\vspace{3mm}
+
+\autocite{backbonebipartiteprojections_Neal2014,Comparingalternativesfixed_Neal2021}
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colback=white, left=2mm, arc=.35mm, colframe=quarto-callout-note-color-frame, breakable, toprule=.15mm, rightrule=.15mm, bottomrule=.15mm, leftrule=.75mm]
+
+\quartocallouttip{tip-sbm} 
+
+\vspace{-3mm}\textbf{Tip \ref*{tip-sbm}: (Inverse) Stochastic Block Model}\vspace{3mm}
+
+\autocite{ReconstructingNetworksUnknown_Peixoto2018,NetworkReconstructionCommunity_Peixoto2019}
+
+\end{tcolorbox}
 
 \section{A Path Forward}\label{a-path-forward}
 
 \subsection{Tracing Information Loss
 Paths}\label{tracing-information-loss-paths}
 
-\begin{figure}[H]
+Table of Existing Approaches
 
-{\centering \pandocbounded{\includegraphics[keepaspectratio]{content/part1/../images/adjoint-cheatsheet.png}}
+\begin{table}
+
+\caption{\label{tbl-roads}Organizing recovery methods by representation
+space and level}
+
+\centering{
+
+\subcaption{\label{tbl-roads-1}}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-03-recovery-road_files/figure-latex/..-codefigs-graphs-tbl-roads-output-1.pdf}}
 
 }
 
-\caption{Relating Graphs and Hypergraph/bipartite structures as adjoint
-operators}
+}
 
-\end{figure}%
-
-Table of Existing Approaches
+\end{table}%
 
 \begin{itemize}
 \tightlist
@@ -2260,13 +2532,12 @@ nodes, represented as the design matrix
 Gram matrix (or re-scaling of it) is precomputed, for the non-streaming
 case.
 
-Based on the discussion in Section~\ref{sec-ochiai} we will use the
-cosine similarity as a degree-corrected co-occurrence measure, with
-node-node distances estimated as
-\(d_K=-\log{\text{Ochiai}(j,j')}\).\footnote{ Note that any kernel could
-  be used, given other justification, though anectdotal evidence has the
-  negative-log-Ochiai distance performing marginally better than MI
-  distance or Yule's \(Q\).}
+Based on the discussion in Tip~\ref{tip-cs} we will use the cosine
+similarity as a degree-corrected co-occurrence measure, with node-node
+distances estimated as \(d_K=-\log{\text{Ochiai}(j,j')}\).\footnote{
+  Note that any kernel could be used, given other justification, though
+  anecdotal evidence has the negative-log-Ochiai distance performing
+  marginally better than MI distance or Yule's \(Q\).}
 
 For each observation, the provided distances serve to approximate the
 metric closure of the underlying subgraph induced by \(\mathbf{x}\).
@@ -2453,7 +2724,7 @@ network \textbf{\(n\)-nodes} & 10,30,100,300 \\
 random \textbf{walks} & 1 sample
 \(m\sim\text{NegBinomial}(2,n^{-1})+10\) \\
 random walk \textbf{jumps} & 1 sample
-\(n_sim\text{Geometric}(n^{-1})+5\) \\
+\(n_\sim\text{Geometric}(n^{-1})+5\) \\
 random walk \textbf{root} & 1 sample
 \(n_0 \sim \text{Multinomial}(\textbf{n}^{-1},1)\) \\
 random \textbf{seed} & 1, 2, \ldots{} , 30 \\
@@ -2791,7 +3062,9 @@ GLASSO scaling in significantly superlinear time---almost \(O(n^2)\).
 This is usually the limiting factor for analyst use of such an algorithm
 in network analysis more generally.
 
-\subsection{Interaction Probability}\label{sec-fpi}
+\chapter{Modifications \& Extensions}\label{modifications-extensions}
+
+\section{Forest Pursuit Interaction Probability}\label{sec-fpi}
 
 Without using stability
 selection\autocite{StabilitySelection_Meinshausen2010}, GLASSO is not
@@ -2802,6 +3075,9 @@ than conditioning on co-occurrence. Simply multiplying each FP edge
 probability by the co-occurrence probability of each node-node pair
 gives this as well, which we call FPi: the direct ``interaction
 probability'' for each pair of nodes.
+
+\subsection{Simulation Study
+Revisited}\label{simulation-study-revisited}
 
 By doing this simple re-weighting, FPi actually beats GLASSO's median
 APS for the dataset, but at the cost of MCC and F-M scores (which both
@@ -2856,7 +3132,7 @@ MCC & 0.78 & 0.65 & 0.49 \\
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
 
 }
 
@@ -2867,6 +3143,8 @@ MCC & 0.78 & 0.65 & 0.49 \\
 \end{minipage}%
 
 \end{figure}%
+
+\subsection{Simulation Case Study}\label{simulation-case-study}
 
 To illustrate what is going on, we have selected two specific
 experiments as a case study, in Figure~\ref{fig-pr-curves} In the first,
@@ -2898,54 +3176,32 @@ of FP's impressive 0.88 APS for 300 nodes fewer than that many walks.
 
 \end{figure}%
 
-\chapter{LFA: Latent Forest
-Allocation}\label{lfa-latent-forest-allocation}
-
-\section{LFA as Factorization}\label{lfa-as-factorization}
-
-\subsection{Dictionary Learning}\label{dictionary-learning}
-
-\subsection{Interaction Degree, not
-Binary}\label{interaction-degree-not-binary}
-
-\begin{itemize}
-\tightlist
-\item
-  ``plan'' from avrachenkov
-\end{itemize}
-
 \section{Generative Model Specification}\label{sec-lfa-like}
+
+Symmetry of marked directed and undirected trees (symmetry in
+\(Q\))\autocite{MatrixForestTheorem_Chebotarev2006}
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-graphs-fig-inject-plan-output-1.pdf}}
+
+}
+
+\caption{\label{fig-inject-plan}Dissemination plan as rooted RST on
+augmented graph}
+
+\end{figure}%
 
 \pandocbounded{\includegraphics[keepaspectratio]{content/part2/../images/random-spanning-forests.png}}
 - hierarchical model - marginalize over the root node.
 
-\section{Bayesian Estimation by Gibbs Sampling}\label{sec-lfa-gibbs}
+\section{Expected Forest
+Maximization}\label{expected-forest-maximization}
 
-\subsection{Uniform Random Spanning
-Trees}\label{uniform-random-spanning-trees}
-
-\begin{itemize}
-\tightlist
-\item
-  Methods for sampling i.e.~wilson's and Duan's (other? Energy paper?)
-\item
-  Tree Likelihoods, other facts (edge expectations)
-\end{itemize}
-
-\subsection{Approximate Forest
-Samples}\label{approximate-forest-samples}
-
-\begin{itemize}
-\item
-  comparison with LDA
-\item
-  Simplifying Assumptions (conditional prob IS prob for this)
-
-  I.e. the unwritten paper, modifying technique by
-  \textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
-\end{itemize}
-
-\section{Expected Forest Maximization}\label{sec-lfa-efm}
+\subsection{Factorization \& Dictionary
+Learning}\label{factorization-dictionary-learning}
 
 \subsection{Alternating Directions}\label{alternating-directions}
 
@@ -2955,15 +3211,9 @@ Samples}\label{approximate-forest-samples}
   estimate laplacian to get \(Q_i\) as shortest path distance
 \end{itemize}
 
-\subsection{degree normalization}\label{degree-normalization}
+\subsection{EFM Simulation Study}\label{efm-simulation-study}
 
-sym laplacian before forest kernel
-
-\subsection{algorithm overview}\label{algorithm-overview}
-
-\section{Simulation Study}\label{simulation-study}
-
-\subsection{Score Improvement}\label{score-improvement}
+score improvement
 
 \begin{figure}
 
@@ -2977,8 +3227,7 @@ sym laplacian before forest kernel
 
 \end{figure}%
 
-\subsection{Odds of Individual Edge
-Improvement}\label{odds-of-individual-edge-improvement}
+Odds of Individual Edge Improvement
 
 \begin{figure}
 
@@ -2993,7 +3242,7 @@ vs.~(Ground Truth)}
 
 \end{figure}%
 
-\subsection{Runtime Cost}\label{runtime-cost}
+Runtime Cost
 
 \begin{figure}
 
@@ -3020,6 +3269,32 @@ GLASSO)}
 on computation time)}
 
 \end{figure}%
+
+\section{Discussion}\label{discussion}
+
+\subsection{Bayesian Estimation by Gibbs Sampling}\label{sec-lfa-gibbs}
+
+Uniform Random Spanning Trees
+
+\begin{itemize}
+\tightlist
+\item
+  Methods for sampling i.e.~wilson's and Duan's (other? Energy paper?)
+\item
+  Tree Likelihoods, other facts (edge expectations)
+\end{itemize}
+
+Approximate Forest Samples
+
+\begin{itemize}
+\item
+  comparison with LDA
+\item
+  Simplifying Assumptions (conditional prob IS prob for this)
+
+  I.e. the unwritten paper, modifying technique by
+  \textcite{BayesianSpanningTree_Duan2021} for RSF instead of RSTs
+\end{itemize}
 
 \part{Applications \& Extentions}
 

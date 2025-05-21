@@ -1,30 +1,41 @@
-\begin{tikzpicture}[scale=2,multilayer=3d]
-\SetLayerDistance{0.5mm}
-\Plane[width=4.5,height=4,grid=5mm,NoFill]  
+\begin{tikzpicture}[scale=1.2]
+% \SetLayerDistance{0.5mm}
+% \Plane[width=4.5,height=4,grid=5mm,NoFill]  
 
-\begin{Layer}[layer=2]
+% \begin{Layer}[layer=2]
   % \node at (1,1)[above left]{source};
-\end{Layer}  
+% \end{Layer}  
 
-\Plane[width=2,height=2,layer=2,NoBorder,NoFill=true]
+% \Plane[width=2,height=2,layer=2,NoBorder,NoFill=true]
 
-\Vertices[size=0.3,RGB]{resources/vertices_.csv}
 
-\Vertex[size=0.3,layer=2, x=2,y=2, IdAsLabel]{R}
 
-\Edge[opacity=0.8,color=red,Direct=true](R)(g)
-\Edge[opacity=0.2,Direct=true](R)(a)
-\Edge[opacity=0.2,Direct=true](R)(b)
-\Edge[opacity=0.2,Direct=true](R)(c)
-\Edge[opacity=0.2,Direct=true](R)(d)
-\Edge[opacity=0.2,Direct=true](R)(e)
-\Edge[opacity=0.2,Direct=true](R)(f)
-\Edge[opacity=0.2,Direct=true](R)(h)
-\Edge[opacity=0.2,Direct=true](R)(i)
-\Edge[opacity=0.2,Direct=true](R)(j)
+\begin{scope}[local bounding box=scope1]
+\Vertices[size=0.5,RGB]{resources/vertices_.csv}
+\end{scope}
+
+
+\begin{scope}[local bounding box=scope2,shift={(scope1.east)},xshift=0 ]
+
+% \Vertices[size=0.4, RGB]{resources/vertices_.csv}
+    % \Edges{resources/edges.csv}
+\Vertex[size=0.5,layer=1, x=0,y=0, IdAsLabel]{R}
+\node[ellipse,draw=red,densely dashed,fit=(d)] {};
+% \Path[opacity=0.8,color=red,direct=true]()    
+\Edge[lw=1,color=red,Direct=true](e)(h)
+\Edge[lw=1,color=red,Direct=true](h)(d)
+\Edge[lw=1,color=red,Direct=true](R)(e)
+\Edge[lw=1,Direct=true](R)(a)
+\Edge[lw=1,Direct=true](a)(f)
+\Edge[lw=1,Direct=true](j)(b)
+\Edge[lw=1,Direct=true](R)(g)
+\Edge[lw=1,Direct=true](g)(c)
+\Edge[lw=1,Direct=true](a)(f)
+\Edge[lw=1,Direct=true](j)(i)
+\Edge[lw=1,Direct=true](R)(j)
 % \Edges{resources/edges.csv}
-\Edge[color=red,Direct=true](g)(c)
-\Edge[color=red,Direct=true](g)(h)
-\Edge[color=red,Direct=true](g)(e)
-
+% \Edge[color=red,Direct=true](g)(c)
+% \Edge[color=red,Direct=true](g)(h)
+% \Edge[color=red,Direct=true](g)(e)
+\end{scope}
 \end{tikzpicture}

@@ -40,6 +40,8 @@ book:
     collapse-level: 1
 bibliography: resource/pubs.bib  
 csl: resource/ieee.csl
+callout-appearance: simple
+callout-icon: false
 filters:
   - pseudocode
 #   - diagram
@@ -68,7 +70,7 @@ format:
     linkcolor: maroon
     # fontsize: 0.9rem
     linestretch: 1.35
-    max-width: 750px
+    max-width: 80rem
     page-layout: full
     toc-location: right
     toc-title: "Contents"
@@ -79,6 +81,6 @@ format:
     notebook-links: inline
     grid:
       sidebar-width: 300px
-      body-width: 800px
-      margin-width: 300px
+      body-width: 900px
+      margin-width: 400px
       gutter-width: 1.5rem
