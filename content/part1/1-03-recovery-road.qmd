@@ -39,8 +39,8 @@ The most basic would be to count co-occurrences, and consequently the co-occurre
 However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance.
 This idea leads to "cosine similarity" 
 
-:::{#tip-cs .callout-note title="Ochiai Coefficient (Cosine)[@Measuresecologicalassociation_Janson1981]"}
-Effectively an uncentered correlation, but for binary observations the "cosine similarity" is also called the _Ochiai Coefficient_ between two sets $A,B$, where binary "1" stands for an element belonging to the set.
+:::{#nte-cs .callout-note title="Ochiai Coefficient (Cosine)"}
+Effectively an uncentered correlation, but for binary observations the "cosine similarity" is also called the _Ochiai Coefficient_ between two sets $A,B$, where binary "1" stands for an element belonging to the set.[@Measuresecologicalassociation_Janson1981]
 In our use case, it is measured as 
 $$
 \frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
@@ -67,7 +67,7 @@ Empirically, this is a powerful approximation with good performance characterist
 
 <!-- Then, a point estimate for the probability of an edge occurring is its actual co-occurrence $n_{a,b}/N$. It's the ratio of  these that give us the Ochiai as a probability: divided by the estimate for the co-occurrence opportunities -->
 
-:::{#tip-or .callout-note title="Odds Ratios"}
+:::{#nte-or .callout-note title="Odds Ratios"}
 
 Along with others derived from it, the Odds ratio is based on the ratio of conditional probabilities, and takes the form $$\text{OR}=\frac{p_{11}p_{00}}{p_{01}p_{10}}$$
 Yule's Q and Y [@MethodsMeasuringAssociation_Yule1912] are mobius transforms of the (inverse) $\text{OR}$ and $\sqrt{\text{OR}}$, respectively, that map association values to $[-1,1]$.
@@ -79,8 +79,8 @@ Yule's Y, also called the "coefficient of colligation", tends to scale with asso
 
 Another association measure, based in information theory, asks "how much can I learn about one variable by observing another?"
 
-:::{#tip-mi .callout-note title="Mutual information"}
-An estimate for the mutual information (i.e. between the sample distributions) can be derived from the marginals, as above, though it is more compactly represented as a pairwise sum over the domains of each distribution being compared:
+:::{#nte-mi .callout-note title="Mutual information"}
+An estimate for the mutual information (i.e. between the sample distributions) can be derived from the marginals, as above, though it is more compactly represented as a pairwise sum over the domains of each distribution being compared[CITE?]:
 $$
 \text{MI}(A,B)\approx \sum_{i,j\in[0,1]} p_{ij} \log \left( \frac{p_{ij}}{p_{i\bullet}p_{\bullet j}} \right) 
 $$
@@ -92,7 +92,7 @@ There are many other information-theoretic measures related to MI, but we specif
 Sometimes, especially in social networks, we might want to avoid overcounting relationships with very well-connected nodes.
 This was brought up with respect to the normalized Laplacian before, but we could also perform a normalization on the underlying bipartite adjacencies.  
 
-:::{#tip-hyp .callout-note title="Hyperbolic Projection"}
+:::{#nte-hyp .callout-note title="Hyperbolic Projection"}
 Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs. rarer ones.[@Scientificcollaborationnetworks._Newman2001]
 $$ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}$$
 This reweights each observation by its degree in the original biartite graph.  
@@ -110,27 +110,21 @@ This is accomplished by imagining nodes as having some amount of a resource (lik
 First, closely related to hyperbolic re-weighting, we can imagine the bipartite connections as evenly dividing each nodes' resources, before reallocating them to the nodes they touch, in turn.
 For instance, we might say each author splits their time among all of the papers they are on, and in turn every co-author "receives" an evenly divided proportion of everyone's time they are co-authoring with.   
 
-:::{#tip-rp .callout-note title="Resource Allocation"}
+:::{#nte-rp .callout-note title="Resource Allocation"}
 Goes one step further than hyperbolic projection, by viewing each node as having some "amount" of a resource to spend, which gets re-allocated by observational unit. [@Bipartitenetworkprojection_Zhou2007]
 $$ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X $$
 :::
 
 Interestingly, we could see this as a two-step random-walk normalization of the bipartite adjacency matrix
-$$
-\begin{pmatrix}
-0_{n,n} & X^T \\
-X & 0_{m,m}
-\end{pmatrix}
-$$
-First the row-normalized, then the column-normalized.
-This matrix is asymmetric, so a symmetric edge strength estimate is often retrieved by mean, max, or min reduction operations.
+First $X$ is row-normalized, then column-normalized.
+The final matrix is asymmetric, so a symmetric edge strength estimate is often retrieved by mean, max, or min reduction operations.
 
 Rather than stop after two iterations, continuing to enforce unit marginals to convergence is known as the Sinkhorn-Knopp algorithm, which converges to a doubly-stochastic matrix (both marginal directions sum to 1). 
 
-:::{#tip-ot .callout-note title="Doubly Stochastic"}
+:::{#nte-ot .callout-note title="Doubly Stochastic"}
 If $A\in \mathbb{S}^{n\times n}$ is positive, then there exists $d_1,d_2$ such that $$W=\text{diag}(d_1)A\text{diag}(d_2)$$ is doubly-stochastic, and $W(u,v)$ is the _optimal transport plan_ between $u$ and $v$ with regularized Euclidean distance between them on a graph.[@RobustInferenceManifold_Landa2023;@Sinkhorndistanceslightspeed_Cuturi2013]
 
-The doubly-stochastic filter removes edges from $W$ until just before the graph would become disconnected.
+The doubly-stochastic filter [@twostagealgorithm_Slater2009] removes edges from $W$ until just before the graph would become disconnected.
 :::
 
 As the name implies, the optimal transport plan reflects the minimum cost to move some amount of resource from one node to another.
@@ -138,12 +132,11 @@ By focusing on best-case cost, we enforce a kind of "principle of least action" 
 
 A more direct way to do this, perhaps, is to find the shortest paths from every node to each other node, and aggregate them. 
 
-:::{#tip-hss .callout-note title="High-Salience Skeleton"}
-Count the number of shortest-path trees an edge participates in, out of all the shortest-path-tres (one for every node).
+:::{#nte-hss .callout-note title="High-Salience Skeleton"}
+Count the number of shortest-path trees an edge participates in, out of all the shortest-path-trees (one for every node).
 $$ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) $$
 where $\mathcal{T}_{\text{sp}}(n)$ is the shortest-path tree rooted at $n$ 
-[@Robustclassificationsalient_Grady2012]Intuition that the most important edges are on geodesics for many paths
-blah
+[@Robustclassificationsalient_Grady2012]
 :::
 
 Unfortunately, HSS is forced to scale with the number of nodes, and must calculate the entire spanning tree for each one.  
@@ -156,7 +149,7 @@ To provide a foundation to formalize this notion, one framework is that of Marko
 
  One of the original structures for MRFs that we could recover from observed data was a _tree_.
 
-:::{#tip-chowliu .callout-note title="Chow-Liu Spanning Tree"}
+:::{#nte-chowliu .callout-note title="Chow-Liu Spanning Tree"}
 Enforces tree structure globally.
 Approximates a joint probability
 $$
@@ -168,48 +161,89 @@ The Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence $\text{KL}(P \|
 
 Recent work has made it possible to enforce spanning tree structure while efficiently performing monte-carlo-style bayesian inference, which estimates a distribution over spanning trees that explain observed behavior, and by extension the likelihood each edge is in one of these trees. [@BayesianSpanningTree_Duan2021]
 
-:::{#tip-glasso .callout-note title="Covariance Shrinkage & GLASSO"}
- in Binary case [@Sparseinversecovariance_Friedman2008;@Structureestimationdiscrete_Loh2012]
+If instead we imagine our MRF as being made up of individual Gaussian emissions, then the overall network will be a multivariate gaussian with pairwise dependencies along the edges.
+In fact, as a consequence of the Hammersley–Clifford theorem, the conditionally independent variables are _precisely_ the set of zero entries in the the precision (inverse-covariance) matrix $\Theta$ of the multivariate model. 
+Exploiting this fact leads to a semidifinite program to minimize the frobenius-norm of $\Theta$ with the sample covariance $\| \hat{\Sigma}\Theta \|_F$^[
+  Since the sample covariance will not give an unbiased estimate for precision, these problems often require significant regularization.
+  This class of problems is called "covariance shrinkage", though we more specifically care about _precision shrinkage_ as illustrated in @nte-glasso.
+]
 
-Semidefinite program to find (regularized) max. likelihood precision of Normal Distribution: 
+:::{#nte-glasso .callout-note title="GLASSO"}
 
+Semidefinite program to find (regularized) maximum likelihood precision of graph-structured multivariate Normal distribution using $\ell_1$ ("LASSO") penalty [@Sparseinversecovariance_Friedman2008]
 
-$$\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
-  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1 $$
+$$
+\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
+  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1
+$$ {#eq-glasso}
 
-- minimize $\|\cdot\|_F$ (sample) covariance $\hat{\Sigma}\in \mathbb{R}^{N\times N}$ and a proposed precision $\Theta$
-- higher (log)-determiniant is better
-- penalize 1-norm (i.e. the Lasso)
-
-  also, stability selection 
+In the binary case @eq-glasso is still guaranteed to find the structure of the generating MRF, but _only for graphs with singleton separators_, as shown in @Structureestimationdiscrete_Loh2012.
 :::
 
-:::{#tip-degseq .callout-note title="Degree Sequence Ensembles"}
-[@backbonebipartiteprojections_Neal2014;@Comparingalternativesfixed_Neal2021]
-:::
+The "singleton separator" condition means that only MRFs structured like trees or block graphs will have graph-structured precision matrices returned by the GLASSO program. 
+In effect (for the purpose of recovery from binary node activations) using GLASSO assumes either multivariate gaussian structure, or at the very least that all clique-separator sets are single-node.
+In practice, GLASSO is used for more than just this, but with theoretical miss-specification we must rely more on empirical validation^[something that this work attempts to begin addressing through standard reference datasets like MENDR, more on which is discussed in @sec-FP-experiments] 
 
-:::{#tip-sbm .callout-note title="(Inverse) Stochastic Block Model"}
-[@ReconstructingNetworksUnknown_Peixoto2018;@NetworkReconstructionCommunity_Peixoto2019]
-:::
+There are many other models in this class, which provide strong global assumptions to make inference tractable.
+Not all look like structural assumptions on the graph structure itself, like _Degree Sequence Models_. [@backbonebipartiteprojections_Neal2014;@Comparingalternativesfixed_Neal2021]
+They assume that the fundamental property of these datasets is their bipartite node degree distributions, leading to a generative model that can sample bipartite adjacency matrices with similar observation/node degree distributrions^[In that literature the "observation" partition's nodes are typically called "artifacts" instead. ]
+
+Still others assume that the graphical structure can be described as generated by _Stochastic Block Models_, a meta-network of communities and their inter-community connection probabilities.
+They don't constrain the graph class itself, but instead prescribe a generative process for graph creation (through community blocks). 
+These have very nice properties for bayesian inference of structure, and can be modularly combined or nested for varying levels of specificity and hierarchical structure, sometimes with incredible computational efficiency. [@ReconstructingNetworksUnknown_Peixoto2018;@NetworkReconstructionCommunity_Peixoto2019]
+
 
 ## A Path Forward
 
-### Tracing Information Loss Paths
+In addition to the categories above, there is a second "axis" that practitioners should keep in mind when selecting their recovery algorithm of choice.
+Each of the above listed techniques can be mostly separated into two categories, based on whether hypergraphic/bipartite observations are assumed to be in _data space_, or in _model space_.
+
+
+### Observation space assumptions
+Recall from @sec-lin-ops: an operator takes our model parameters and maps them to data space.
+The implication for inverse problems is a need to _remove the effect_ of the operator, because we cannot directly observe phenomena in a way compatible with our model (e.g. which might model underlying causal effects).
+
+This is a core point of view in @Statisticalinferencelinks_Peel2022, where those authors describe nearly all of network analysis as _inferring hidden structure_:
+
+> "Here we argue that the most appropriate stance to take is to frame network analysis as a problem of inference, where the actual network abstraction is hidden from view, and needs to be reconstructed given indirect data."
+>
+> Peel et al., [@Statisticalinferencelinks_Peel2022]
+
+We note that this isn't strictly true, _assuming_ that the "network" is intended to represent something measured by the direct observation.
+For instance, if a network is intended to represent a discretization of distances (such as a k-nearest neighbors approximation) for computational efficiency.
+The co-occurrence measures can be thought of as estimators of node-node distances, especially with appropriate smoothing to remove zero-valued distances from undersampling. ^[
+  See @sec-steiner for an elaboration of this connection via the "forest kernel". 
+]
+In otherwords, if an analyst wishes to discretize distances as incidences in a complex network, they are effectively using "high-pass" filter to remove low-similarity entries, which is an effective way to assess community structure---exactly like clustering for continuous data.^[
+  Or, at a slight risk of reductionism, drawing a world atlas with two colors for "above and below sea-level": useful simplification for rapid assessment of shapes. 
+]
+In fact, for an example of this exact network-as-discretization idea being used for state-of-the-art clustering performance, see HDBSCAN in @HybridApproachHierarchical_Malzer2020. 
+
+The most important is for algorithm creators to transparently describe their technique's data-space assumption: are observations already in _model space_, perhaps with with alleatoric noise to be removed?
+Or are they in _data space_ and require solving some form of inverse problem to recover a model specification?
+As stated in the same paper:
+
+> Surprisingly, the development of theory and domain-specific applications often occur in isolation, risking an effective disconnect between theoretical and methodological advances and the way network science is employed in practice.
+>
+> Peel et al. [@Statisticalinferencelinks_Peel2022]
+
+This is a community and technology transfer problem, which standardization and community toolkit support can hopefully work toward fixing.
+
+
+### Filling the local+data "gap"
+
+With this in mind, we show in @tbl-roads an overview of the covered approaches, and whether the method presumes operation on observations in the same space as the _model_, or if some inverse problem is needed. 
+  
+{{< embed ../codefigs/graphs.qmd#tbl-roads >}}
+
+To add to the point, the last column in @tbl-roads shows whether the full bipartite representation is even needed to perform the technique, or if it is possible with the gram matrix or marginal values alone.^[note that any of these could make use of the bipartite "design matrix", e.g. to estimate the edge support with _stability selection_[@StabilitySelection_Meinshausen2010] by subsampling it multiple times and repeating the algorithm accordingly. 
+]
+
+
 
 <!-- ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png) -->
 
-Table of Existing Approaches  
+In the next sections, we focus on filling a gap for models that only make local assumptions and preserve additivity, but _assumes that data is not represented directly in the network model-space_. 
+Much like the role that nonparametric estimators like KDE/Nadarya-Watson play in regression, or Kaplan-Meier estimators in survival analysis,[CITE?] additive models that only make assumptions about local structure can provide critical insight into data and its structure, and push analysts to make regular "sanity checks" when results or assumptions conflict.
 
-{{< embed ../codefigs/graphs.qmd#tbl-roads >}}
-
-- Observation-level loss (starting with the inner product or kernel)
-- Non-generative model loss (no projection of data into model space)
-- no uncertainty quantification 
-
-### Something New
-
-Sorting algorithms... _none address all three!_
-
-
-i.e. MOTIVATES FOREST PURSUIT
 

@@ -40,7 +40,7 @@ book:
     collapse-level: 1
 bibliography: resource/pubs.bib  
 csl: resource/ieee.csl
-callout-appearance: simple
+callout-appearance: minimal
 callout-icon: false
 filters:
   - pseudocode

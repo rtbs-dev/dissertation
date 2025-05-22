@@ -9,7 +9,7 @@ We outline how random-walks are related to these diffusive  models of graph trav
 Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model.
 This leads to a generative model for binary activation data as rooted random spanning forests on the underlying dependency graph.
 
-## The Gambit of the Inner Product 
+## The Gambit of the Inner Product{#sec-clique-bias} 
 
 As we saw repeatedly in @sec-lit-review, networks are regularly assumed to arise from co-occurrences, whether directly as counts or weighted in some way.
 This assumption can be a significant a source of bias in the measurement of edges.
@@ -194,7 +194,7 @@ $$
 \pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\ 
 E \sim \text{Bernoulli}(\pi_e), e \in E
 \end{gathered}
-$$ 
+$${#eq-empirical-model} 
 
 This does not yet specify a likelihood for $\mathcal{C}_i$, because we have not included a mechanism for the down-selection to each $\mathbf{x}_i$.
 This will be addressed more completely for the special case of $\mathcal{C}=\mathcal{F}$, the set of spanning forests on a graph, in @sec-lfa-like.

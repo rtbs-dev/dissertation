@@ -1,4 +1,4 @@
-# Incidence through vector representation
+# Vector representations of incidence
 
 To provide a sufficiently rigorous foundation for network recovery from binary occurrence, we will need a rigorous way to represent networks and occurrences that lends itself to building structured ways both connect to each other.
 We build on the incidence structure and matrix product formalism from the previous chapter, introducing various ways to build graphs as incidence structures that have direct representations as matrices.
@@ -194,14 +194,27 @@ In addition, it allows for repeated measurements of edges over the same set of n
  Then, a new node id increases $n$, followed by reassignment of the edge IDs with $e_n(u,v)$.
 ]
 
-## Generalized node occurrence vectors 
+## Node activation, bipartite graphs, and hypergraphs 
 
-TODO
+What if an incidence structure allows for more than 2 incidences for the "line" set?
+In our binary design matrix, we might consider each observation its own "line", such that it is incidence to all the activated nodes.
+This is no longer a graph of edges and nodes, but rather a more general object. 
 
-![Hyperedge Relation Observational Model](../images/hypergraph-observations.png)
+<!-- ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png) -->
 
-### Hyperedges as vectors of node occurrence
+Every incidence structure can be seen as an incidence matrix, which additionally can be thought of as a _bipartite_ graph.
+In this sense, the incidence matrix is thought of as a bi-adjacency matrix, which is a subset of a larger adjacency having two off-diagonal non-zero blocks 
 
+$$
+A_{BP} = 
+\begin{pmatrix}
+0_{n,n} & X^T \\
+X & 0_{m,m}
+\end{pmatrix}
+$$
+
+The graph having this adjacency structure has two sets of nodes that do not intraconnect (ergo, "bipartite").
+The resulting structure for our toy example is shown next to the incidence matrix in fig @fig-incidence-struct. 
 
 ::::{#fig-incidence-struct layout="[[1,1]]"}
 
@@ -223,6 +236,8 @@ $$
 \end{array}
 $$
 
+: $X$ as a (bipartite) incidence matrix. 
+
 :::
 
 {{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
@@ -230,17 +245,40 @@ $$
 ::::
 
 
-### Inner product on Hyperedges
-Roundabout way of describing binary/occurrence data.
-Inner product is co-occurrences.
+When the set of lines is a family of subsets of points, incidences on points and lines form a _hypergraph_.
+Hypergraphs are usually thought of as graphs where edges can connect more than two nodes, which again can be made into an incidence structure in the same way our graphs are.
+This isomorphism lets many of the familiar ideas on graphs (e.g. walks, paths, laplacians, etc.) be reformulated in terms of hypergraphs.
+For a more in-depth elaboration on algebraic graph theory on graphs, see @orientedhypergraphicapproach_Reff2012.
 
-Leads to correlation/covariance, etc. 
+
+### Inner product on Hyperedges
+
+Rather than go into similar detail about hypergraphs, we want to focus on the implication of performing inner product calculations with vectors of the hypergraph.
+$\mathbf{x}_i^T\mathbf{x}_{i'}$ will not necessarily result in a binary value, but a sum over all shared nodes in each edge.
+As mentioned previously, the Gram matrix for $X$ will count co-occurrences in the off-diagonals, with marginal counts on the diagonal.
+This means that the relation between edge-vector entries and node-activations is not so straight forward: each entry has a "magnitude", so forcing a binary edge activation from the adjacency or laplacian forms (using @eq-sq-id) will necessarily lose information.
+This information loss is one of the key precautions practitioners are advised to consider in @WhyHowWhen_Torres2021, since transformation between any of the representations for complex systems will change the information encoded by them.
 
 
 ### Combining Occurrence & Dependence
 
-- soft cosine
-- kernels on graphs (incl. coscia euclidean)
-- Linear operator incidences
-- Retrieving one from the other is hard. 
+As an aside, there are several ways that known graph structures can be exploited to regularize distance or association measures for hypergraphic data.
+Graphs of dependency information can provide useful kernels _on the graph_.^[
+ Note that a "kernel on a graph" works by defining distances between weighted vectors of nodes.
+ A "graph kernel," on the other hand, describes a kernel that defines distances _between different graphs_.
+ ]
+For an in-depth analysis of common kernels on graphs, including the now-famous PageRank, Heat, and Commute-time kernels, see @SimilaritiesgraphsKernels_Avrachenkov2019.
+In @GeneralizedEuclideanmeasure_Coscia2020 the "commute time" kernel is said to generate a "generalized euclidean distance", and using an adjacency matrix kernel before normalization by marginals gives what is known as "soft cosine" measures, which incorporate prior knowledge e.g. for semantic similarities between words. 
+
+Importantly, each of these methods assume that a network structure is already available.
+What can often happen in practice, however, is the use of a filtered/thresholded version of the hypergraphic Gram matrix _as the network_, because no a priori network is available.
+This runs the risk of over-estimating the proximity of nodes in similar regions of node-space, reinforcing local correlations at the expense of long-distance path estimates.
+A more formalized analysis of this problem, which we term "clique bias," can be found in @sec-clique-bias.
+
+As covered in the introduction, finding the underlying dependency network from the hypergraphic data is the core concern of network recovery.
+Reliably recovering this structure would then allow for less biased use of these graph kernels in real-life application. 
+
+
+
+<!-- - Linear operator incidences -->
 

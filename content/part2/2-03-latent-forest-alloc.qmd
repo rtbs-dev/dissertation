@@ -33,53 +33,117 @@ In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS for 30
 
 ![P-R curves for two experiments](../images/PR.svg){#fig-pr-curves}
 
-
-## Generative Model Specification {#sec-lfa-like}
+## Generative Model {#sec-lfa-like}
 
 Symmetry of marked directed and undirected trees (symmetry in $Q$)[@MatrixForestTheorem_Chebotarev2006]
+
+### Marked Random Spanning Forest (RSFm) distribution
+
+Every spanning forest on a graph described by $Q$ can be thought of as an equivalent spanning tree over a graph augmented with an extra "source" node, which is connected to every other node with a weight $\tfrac{1}{\beta}$. 
+Sampling random spanning trees on the augmented graph is equivalent to random spanning forests on the original.[@Semisupervisedlearning_Avrachenkov2017]
+We can use this fact to create a distribution for node activation sets based on _co-occurrence on a rooted tree_.
+
+A "rooted tree" is a tree with a marked node.
+In @fig-inject-plan we see this illustrated, where a randomly sampled tree on the graph augmented with R leads to many subtrees in the original graph.
+Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to  record $x_1$ back in @fig-obs-set. 
+
 {{< embed ../codefigs/graphs.qmd#fig-inject-plan >}}
 
-![Explanation of the Random Spanning Forest generative model for binary activation observations](../images/random-spanning-forests.png)
-- hierarchical model
-- marginalize over the root node. 
+Note that the marked node does not necessarily need to be the one that the source "injected" to, since the observed activations set is equivalent for any of (d,h,e) being marked.
+This is an important symmetry when we will not know which node "actually" started each cascade, during inference.  
+It means that the node activation set and the graph structure are conditionally independent, given a sampled spanning tree on the augmented graph.
+Sampling efficiently from a spanning tree distribution is a well studied problem, and we can use that efficiency in combination with a node-marking (categorical) distribtion to formulate an overall distribution for node activation.
+
+Therefore, RSFm distribution models the probability of emitting node $j$ in the $i$-th observation as the probability of occurring in the same tree as a marked "root" node $\phi_{ij}$, given a graph of $z_E$ edges and a source "distance" parameter $\beta$.
+$$
+P(x_{ij}|\beta, z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+$$
+
+Incredibly, the probabilities for $P(|z_E)$ and $P(x|T,\phi)$ all have closed form representations.
+The spanning tree distribution discussed elsewhere[@BayesianSpanningTree_Duan2021;@EfficientComputationExpectations_Zmigrod2021] can be used to motivate a spanning forest distribution, which is based on the sum of weight of edges in a graph $W(G)=\sum_E{z_E}$ 
+
+
+$$\begin{aligned}
+P(F|G) & = \prod_{e_{uv}\in F} P(e_{uv}|G)\\
+P(e_{uv}|G) 
+	& = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
+	& = 1 - \frac{|W(G/e)|}{|W(G)|}  = 1 - \frac{|W-b_{uv}^Tb_{uv}|}{|W|}\\
+	& = 1 - \frac{|W|(1-b_{uv}^TQb_{uv})}{|W|}\\
+	& = Q_{uu} + Q_{vv} - 2Q_{uv} \\
+  & = d_Q(u,v)
+\end{aligned}$$
+
+To sample from this distribution, we generate random spanning trees on $G_{+R}$, and use the marked node $\phi_ij$$ to return all the nodes it is connected to in the induced spanning forest.
+
+### Model Specification {#sec-lfa-gibbs}
+
+To do inference, however, we may use the forest kernel $Q$ and sum over the observed nodes.
+$$
+\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot d_Q)_{j,j'}
+$$ 
+
+This still has the problem of needing an estimate for $Q$ _based on the graph_ described by the edges $z_E$.
+The overall model that fills out the gaps left in @eq-empirical-model has the form:
+
+$$
+\begin{aligned}
+\pi_{e\in E} &\sim \operatorname{Beta}_E(\alpha, 1-\alpha)     \\
+z_{e\in E} &\sim \operatorname{Bernoulli}_E(\pi_e)             \\
+\phi_{i\in I, j\in J} &\sim \operatorname{Categorical}_I(\theta) \\
+x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
+\end{aligned}
+$$ 
+
+<!-- ![Explanation of the RSFm distribution for binary activation observations](../images/random-spanning-forests.png) -->
+
+The conditional independence mentioned previously could lend itself to a Gibbs-sampling scheme.
+Each observation is a marked node and a spanning forest, which can equivalently be described as the spanning tree distribution over the activated nodes, as we can marginalize out the equal marked-node probability $\phi$. 
+Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the _Bayesian Spanning Tree_ distribution from @BayesianSpanningTree_Duan2021.
+Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated.
+This is very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[CITE], and others.   
+
+However, another possibility is to approach the problem as jointly estimating $B$ and $R$ in an alternating manner
+This idea leads to a simple Expectation Maximization scheme, where we alternate embedding the node activations as edge activations with combining these to better estimate the available edges. 
+
 
 ##  Expected Forest Maximization 
 
 ### Factorization & Dictionary Learning
-
-
+Sparse approximation + aggregation, repeat. 
+[TODO]
 
 
 ### Alternating Directions
 - estimate laplacian to get $Q_i$ as shortest path distance
 
+[TODO]
+[LOOPED VERSION OF ALG.1 ]
+
 
 ### EFM Simulation Study
 
-score improvement
+One-shot Forest Pursuit appears to perform quite well, so it's useful to quantify the expected gain in performance by repeating it an unknown number of times.
+There are no generic guarantees for EM convergence, though anecdotally the number of iterations was limited in our experiments to under a thousand, and that limit was never hit while using a covergence parameter of $\epsilon=1\mathrm{e}-5$. 
+
+The distribution of E[MCC] score change vs. FP is shown in @fig-efm-mcc.  
+
 {{< embed ../codefigs/results.qmd#fig-efm-mcc  >}}
 
-Odds of Individual Edge Improvement 
+While useful, it's not clear whether individual edges are more likely to be "true" edges, _given_ a bigger change in EFM score.
+To test this, a logistic regression was performed for every experiment in MENDR against the true edge values, using the change in scores on those edges between FP and EFM as training data.
+To avoid overfitting, a significant amount of regularization was applied, chosen using 5-fold crossvalidation.
+The coefficients for all experiments are shown as a histogram in @fig-efm-logits.
+
 {{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
 
-Runtime Cost
+The graph kind did not make a significant difference to EFM improvement, but overall log-odds improvement is very low.Still, the value is positive accross the entire dataset, so EFM does have a very small-but-nonzero impact on improving edge prediction.  
+
+The runtime graphs can also be updated, with EFM shown in @fig-efm-runtime and @fig-efm-partials-runtime against FP and Glasso.
+EFM still ran significantly faster than GLASSO in this region.
+However, the scaling with network size is no longer constant-time, especially since convergence used above is the max-abs error, which requires that _every node_ reach a minimum level of convergence and might take much longer, overall. 
 
 {{< embed ../codefigs/results.qmd#fig-efm-runtime >}}
 
 {{< embed ../codefigs/results.qmd#fig-efm-partials-runtime >}}
 
-## Discussion
 
-### Bayesian Estimation by Gibbs Sampling {#sec-lfa-gibbs} 
-
-Uniform Random Spanning Trees
-
-- Methods for sampling i.e. wilson's and Duan's (other? Energy paper?)
-- Tree Likelihoods, other facts (edge expectations)
-
- Approximate Forest Samples
-
-- comparison with LDA
-- Simplifying Assumptions (conditional prob IS prob for this)
-
-  I.e. the unwritten paper, modifying technique by @BayesianSpanningTree_Duan2021 for RSF instead of RSTs
