@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Incidence through vector representation – Measuring Network Dependencies from Node Activations</title>
+<title>Vector representations of incidence – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -132,7 +132,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence through vector representation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Vector representations of incidence</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -187,7 +187,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Incidence through vector representation</span></a>
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Vector representations of incidence</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -265,9 +265,8 @@ window.Quarto = {
   <li><a href="#inner-products-on-b" id="toc-inner-products-on-b" class="nav-link" data-scroll-target="#inner-products-on-b">Inner products on <span class="math inline">\(B\)</span></a></li>
   <li><a href="#edge-metrology-edge-vectors" id="toc-edge-metrology-edge-vectors" class="nav-link" data-scroll-target="#edge-metrology-edge-vectors">Edge Metrology, Edge Vectors</a></li>
   </ul></li>
-  <li><a href="#generalized-node-occurrence-vectors" id="toc-generalized-node-occurrence-vectors" class="nav-link" data-scroll-target="#generalized-node-occurrence-vectors">Generalized node occurrence vectors</a>
+  <li><a href="#node-activation-bipartite-graphs-and-hypergraphs" id="toc-node-activation-bipartite-graphs-and-hypergraphs" class="nav-link" data-scroll-target="#node-activation-bipartite-graphs-and-hypergraphs">Node activation, bipartite graphs, and hypergraphs</a>
   <ul class="collapse">
-  <li><a href="#hyperedges-as-vectors-of-node-occurrence" id="toc-hyperedges-as-vectors-of-node-occurrence" class="nav-link" data-scroll-target="#hyperedges-as-vectors-of-node-occurrence">Hyperedges as vectors of node occurrence</a></li>
   <li><a href="#inner-product-on-hyperedges" id="toc-inner-product-on-hyperedges" class="nav-link" data-scroll-target="#inner-product-on-hyperedges">Inner product on Hyperedges</a></li>
   <li><a href="#combining-occurrence-dependence" id="toc-combining-occurrence-dependence" class="nav-link" data-scroll-target="#combining-occurrence-dependence">Combining Occurrence &amp; Dependence</a></li>
   </ul></li>
@@ -277,9 +276,9 @@ window.Quarto = {
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Incidence through vector representation</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part1/1-01-matrix-meas.html">A Practitioner’s Guide to Network Recovery</a></li><li class="breadcrumb-item"><a href="../../content/part1/1-02-graph-obs.html"><span class="chapter-title">Vector representations of incidence</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-title">Incidence through vector representation</span></h1>
+<h1 class="title"><span class="chapter-title">Vector representations of incidence</span></h1>
 </div>
 
 
@@ -302,8 +301,6 @@ G=(V,E) \quad \textrm{s.t.} \quad E\subseteq V \times V
 \]</span></p>
 <div class="no-row-height column-margin column-container"><div id="ref-MathematicalfoundationsGraphBLAS_Kepner2016" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">J. Kepner <em>et al.</em>, <span>“Mathematical foundations of the <span>GraphBLAS</span>,”</span> in <em>2016 <span>IEEE</span> high performance extreme computing conference (<span> HPEC</span>)</em>, Sep. 2016, pp. 1–9. doi: <a href="https://doi.org/10.1109/HPEC.2016.7761646">10.1109/HPEC.2016.7761646</a>.</div>
-</div><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
 </div><div id="fn1"><p><sup>1</sup>&nbsp; The <em>indicator function</em> <span class="math inline">\(\mathbf{1}_A(x)\)</span> is 1 for values of <span class="math inline">\(x\)</span> in the set <span class="math inline">\(A\)</span>, and 0 otherwise.</p></div></div><p>In incidence geometry terms, this would be similar to making two duplicate sets of the same nodes, and defining a graph as the set of incidences between nodes. The <em>adjacency matrix</em> <span class="math inline">\(A\)</span> of <span class="math inline">\(G\)</span>, degree matrix <span class="math inline">\(D\)</span>, and graph/discrete Laplacian <span class="math inline">\(L\)</span> are then defined as:<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> <span class="math display">\[
 \begin{aligned}
 A(u,v) &amp; =\mathbf{1}_E((u,v)) \quad &amp;A : V\times V\rightarrow \mathbb{B} \\
@@ -404,17 +401,19 @@ n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
 \tag{3.9}\]</span></span> This representation formalizes what practitioners call “edgelists” into a data structure that can unambiguously distinguish directed, undirected, and weighted graphs. In addition, it allows for repeated measurements of edges over the same set of nodes, while flexibly growing when new nodes arrive.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp; <a href="#eq-edge-vectors" class="quarto-xref">Equation&nbsp;<span>3.9</span></a> uses an averaging operation to accomplish the contraction, but any reduction over the two nodes shared by an edge would accomplish the same, especially since we rarely see separate values for edge weight per-node, the way incidences can.</p></div><div id="fn10"><p><sup>10</sup>&nbsp; For instance, say observations are stored as sparse entries via <span class="math inline">\(R\)</span>, and a new node arrives. First, the participating nodes can be recovered in a vectorized manner through <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>. Then, a new node id increases <span class="math inline">\(n\)</span>, followed by reassignment of the edge IDs with <span class="math inline">\(e_n(u,v)\)</span>.</p></div></div></section>
 </section>
-<section id="generalized-node-occurrence-vectors" class="level2">
-<h2 class="anchored" data-anchor-id="generalized-node-occurrence-vectors">Generalized node occurrence vectors</h2>
-<p>TODO</p>
-<div class="quarto-figure quarto-figure-center">
-<figure class="figure">
-<p><img src="../images/hypergraph-observations.png" class="img-fluid figure-img"></p>
-<figcaption>Hyperedge Relation Observational Model</figcaption>
-</figure>
-</div>
-<section id="hyperedges-as-vectors-of-node-occurrence" class="level3">
-<h3 class="anchored" data-anchor-id="hyperedges-as-vectors-of-node-occurrence">Hyperedges as vectors of node occurrence</h3>
+<section id="node-activation-bipartite-graphs-and-hypergraphs" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="node-activation-bipartite-graphs-and-hypergraphs">Node activation, bipartite graphs, and hypergraphs</h2>
+<p>What if an incidence structure allows for more than 2 incidences for the “line” set? In our binary design matrix, we might consider each observation its own “line”, such that it is incidence to all the activated nodes. This is no longer a graph of edges and nodes, but rather a more general object.</p>
+<!-- ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png) -->
+<p>Every incidence structure can be seen as an incidence matrix, which additionally can be thought of as a <em>bipartite</em> graph. In this sense, the incidence matrix is thought of as a bi-adjacency matrix, which is a subset of a larger adjacency having two off-diagonal non-zero blocks</p>
+<p><span class="math display">\[
+A_{BP} =
+\begin{pmatrix}
+0_{n,n} &amp; X^T \\
+X &amp; 0_{m,m}
+\end{pmatrix}
+\]</span></p>
+<p>The graph having this adjacency structure has two sets of nodes that do not intraconnect (ergo, “bipartite”). The resulting structure for our toy example is shown next to the incidence matrix in fig <a href="#fig-incidence-struct" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>.</p>
 <div id="fig-incidence-struct" class="quarto-layout-panel">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-incidence-struct-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
@@ -441,13 +440,13 @@ n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
 \]</span></p>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-biadj-mat-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a)
+(a) : <span class="math inline">\(X\)</span> as a (bipartite) incidence matrix.
 </figcaption>
 </figure>
 </div>
 </div>
 <div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-bipartite" data-ref-parent="fig-incidence-struct" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="cell-fig-bipartite" class="cell quarto-layout-cell-subref" data-execution_count="13" data-ref-parent="fig-incidence-struct">
+<div id="cell-fig-bipartite" class="cell quarto-layout-cell-subref" data-execution_count="14" data-ref-parent="fig-incidence-struct">
 <div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-incidence-struct">
 <div id="fig-bipartite" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
@@ -469,20 +468,25 @@ Figure&nbsp;3.1
 </figcaption>
 </figure>
 </div>
-</section>
-<section id="inner-product-on-hyperedges" class="level3">
+<p>When the set of lines is a family of subsets of points, incidences on points and lines form a <em>hypergraph</em>. Hypergraphs are usually thought of as graphs where edges can connect more than two nodes, which again can be made into an incidence structure in the same way our graphs are. This isomorphism lets many of the familiar ideas on graphs (e.g.&nbsp;walks, paths, laplacians, etc.) be reformulated in terms of hypergraphs. For a more in-depth elaboration on algebraic graph theory on graphs, see <span class="citation" data-cites="orientedhypergraphicapproach_Reff2012"><a href="#ref-orientedhypergraphicapproach_Reff2012" role="doc-biblioref">[4]</a></span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-orientedhypergraphicapproach_Reff2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">N. Reff and L. J. Rusnak, <span>“An oriented hypergraphic approach to algebraic graph theory,”</span> <em>Linear Algebra and its Applications</em>, vol. 437, no. 9, pp. 2262–2270, Nov. 2012, doi: <a href="https://doi.org/10.1016/j.laa.2012.06.011">10.1016/j.laa.2012.06.011</a>.</div>
+</div></div><section id="inner-product-on-hyperedges" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="inner-product-on-hyperedges">Inner product on Hyperedges</h3>
-<p>Roundabout way of describing binary/occurrence data. Inner product is co-occurrences.</p>
-<p>Leads to correlation/covariance, etc.</p>
-</section>
-<section id="combining-occurrence-dependence" class="level3">
+<p>Rather than go into similar detail about hypergraphs, we want to focus on the implication of performing inner product calculations with vectors of the hypergraph. <span class="math inline">\(\mathbf{x}_i^T\mathbf{x}_{i'}\)</span> will not necessarily result in a binary value, but a sum over all shared nodes in each edge. As mentioned previously, the Gram matrix for <span class="math inline">\(X\)</span> will count co-occurrences in the off-diagonals, with marginal counts on the diagonal. This means that the relation between edge-vector entries and node-activations is not so straight forward: each entry has a “magnitude”, so forcing a binary edge activation from the adjacency or laplacian forms (using <a href="#eq-sq-id" class="quarto-xref">Equation&nbsp;<span>3.6</span></a>) will necessarily lose information. This information loss is one of the key precautions practitioners are advised to consider in <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[2]</a></span>, since transformation between any of the representations for complex systems will change the information encoded by them.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div></div></section>
+<section id="combining-occurrence-dependence" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="combining-occurrence-dependence">Combining Occurrence &amp; Dependence</h3>
-<ul>
-<li>soft cosine</li>
-<li>kernels on graphs (incl.&nbsp;coscia euclidean)</li>
-<li>Linear operator incidences</li>
-<li>Retrieving one from the other is hard.</li>
-</ul>
+<p>As an aside, there are several ways that known graph structures can be exploited to regularize distance or association measures for hypergraphic data. Graphs of dependency information can provide useful kernels <em>on the graph</em>.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> For an in-depth analysis of common kernels on graphs, including the now-famous PageRank, Heat, and Commute-time kernels, see <span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[5]</a></span>. In <span class="citation" data-cites="GeneralizedEuclideanmeasure_Coscia2020"><a href="#ref-GeneralizedEuclideanmeasure_Coscia2020" role="doc-biblioref">[6]</a></span> the “commute time” kernel is said to generate a “generalized euclidean distance”, and using an adjacency matrix kernel before normalization by marginals gives what is known as “soft cosine” measures, which incorporate prior knowledge e.g.&nbsp;for semantic similarities between words.</p>
+<div class="no-row-height column-margin column-container"><div id="fn11"><p><sup>11</sup>&nbsp; Note that a “kernel on a graph” works by defining distances between weighted vectors of nodes. A “graph kernel,” on the other hand, describes a kernel that defines distances <em>between different graphs</em>. </p></div><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and D. Rubanov, <span>“Similarities on graphs: Kernels versus proximity measures,”</span> <em>European Journal of Combinatorics</em>, vol. 80, pp. 47–56, Aug. 2019, doi: <a href="https://doi.org/10.1016/j.ejc.2018.02.002">10.1016/j.ejc.2018.02.002</a>.</div>
+</div><div id="ref-GeneralizedEuclideanmeasure_Coscia2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. Coscia, <span>“Generalized euclidean measure to estimate network distances,”</span> in <em>Proceedings of the international AAAI conference on web and social media</em>, Association for the Advancement of Artificial Intelligence (AAAI), 2020, pp. 119–129. doi: <a href="https://doi.org/10.1609/icwsm.v14i1.7284">10.1609/icwsm.v14i1.7284</a>.</div>
+</div></div><p>Importantly, each of these methods assume that a network structure is already available. What can often happen in practice, however, is the use of a filtered/thresholded version of the hypergraphic Gram matrix <em>as the network</em>, because no a priori network is available. This runs the risk of over-estimating the proximity of nodes in similar regions of node-space, reinforcing local correlations at the expense of long-distance path estimates. A more formalized analysis of this problem, which we term “clique bias,” can be found in <a href="../part2/2-01-rand-sf.html#sec-clique-bias" class="quarto-xref"><span>The Gambit of the Inner Product</span></a>.</p>
+<p>As covered in the introduction, finding the underlying dependency network from the hypergraphic data is the core concern of network recovery. Reliably recovering this structure would then allow for less biased use of these graph kernels in real-life application.</p>
+<!-- - Linear operator incidences -->
 
 
 

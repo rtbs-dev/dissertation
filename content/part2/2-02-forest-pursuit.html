@@ -190,7 +190,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Incidence through vector representation</span></a>
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vector representations of incidence</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -271,7 +271,7 @@ window.Quarto = {
   <li><a href="#sparse-approximation" id="toc-sparse-approximation" class="nav-link" data-scroll-target="#sparse-approximation">Sparse Approximation</a>
   <ul class="collapse">
   <li><a href="#problem-specification" id="toc-problem-specification" class="nav-link" data-scroll-target="#problem-specification">Problem Specification</a></li>
-  <li><a href="#max.-spanning-steiner-trees" id="toc-max.-spanning-steiner-trees" class="nav-link" data-scroll-target="#max.-spanning-steiner-trees">Max. Spanning (Steiner) Trees</a></li>
+  <li><a href="#sec-steiner" id="toc-sec-steiner" class="nav-link" data-scroll-target="#sec-steiner">Max. Spanning (Steiner) Trees</a></li>
   </ul></li>
   <li><a href="#sec-FP" id="toc-sec-FP" class="nav-link" data-scroll-target="#sec-FP">Forest Pursuit</a>
   <ul class="collapse">
@@ -344,7 +344,7 @@ Q_{\beta} = (I+\beta L)^{-1}
 <section id="spreading-dependencies-as-trees" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="spreading-dependencies-as-trees">Spreading Dependencies as Trees</h3>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-tree">
-<div id="cell-fig-stack-tree" class="cell" data-execution_count="19">
+<div id="cell-fig-stack-tree" class="cell" data-execution_count="20">
 <div class="cell-output cell-output-display">
 <div id="fig-stack-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -399,8 +399,8 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 </div></div><div id="ref-EmpiricalBayesianStrategy_Wipf2007" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[15] </div><div class="csl-right-inline">D. P. Wipf and B. D. Rao, <span>“An empirical bayesian strategy for solving the simultaneous sparse approximation problem,”</span> <em>IEEE Transactions on Signal Processing</em>, vol. 55, no. 7, pp. 3704–3716, Jul. 2007, doi: <a href="https://doi.org/10.1109/tsp.2007.894265">10.1109/tsp.2007.894265</a>.</div>
 </div></div></section>
-<section id="max.-spanning-steiner-trees" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="max.-spanning-steiner-trees">Max. Spanning (Steiner) Trees</h3>
+<section id="sec-steiner" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-steiner">Max. Spanning (Steiner) Trees</h3>
 <p>The point estimate <span class="math inline">\(\hat{\mathbf{r}}\)</span> is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.<span class="citation" data-cites="EfficientComputationExpectations_Zmigrod2021"><a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[16]</a></span> If we allow the use of all observations <span class="math inline">\(X\)</span> to find an empirical prior for <span class="math inline">\(\mathbf{r}\)</span>, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate. One algorithm for finding a maximum spanning tree is Prim’s[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e.&nbsp;non-zero entry in our vector) one-by-one. In this way, we effectively <em>do</em> perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).</p>
 <div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[16] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
@@ -421,14 +421,14 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 <section id="algorithm-summary" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="algorithm-summary">Algorithm Summary</h3>
 <p>Once again, we assume <span class="math inline">\(m\)</span> observations of activations over <span class="math inline">\(n\)</span> nodes, represented as the design matrix <span class="math inline">\(X:I\times J \rightarrow \mathbb{B}\)</span>. Like GLASSO, we assume that a Gram matrix (or re-scaling of it) is precomputed, for the non-streaming case.</p>
-<p>Based on the discussion in <a href="../part1/1-03-recovery-road.html#tip-cs" class="quarto-xref">Tip&nbsp;<span>4.1</span></a> we will use the cosine similarity as a degree-corrected co-occurrence measure, with node-node distances estimated as <span class="math inline">\(d_K=-\log{\text{Ochiai}(j,j')}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>Based on the discussion in <a href="../part1/1-03-recovery-road.html#nte-cs" class="quarto-xref">Note&nbsp;<span>4.1</span></a> we will use the cosine similarity as a degree-corrected co-occurrence measure, with node-node distances estimated as <span class="math inline">\(d_K=-\log{\text{Ochiai}(j,j')}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp; Note that any kernel could be used, given other justification, though anecdotal evidence has the negative-log-Ochiai distance performing marginally better than MI distance or Yule’s <span class="math inline">\(Q\)</span>.</p></div><div id="ref-fastalgorithmSteiner_Kou1981" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[18] </div><div class="csl-right-inline">L. Kou, G. Markowsky, and L. Berman, <span>“A fast algorithm for steiner trees,”</span> <em>Acta Informatica</em>, vol. 15, no. 2, pp. 141–145, 1981, doi: <a href="https://doi.org/10.1007/bf00288961">10.1007/bf00288961</a>.</div>
 </div></div><p>For each observation, the provided distances serve to approximate the metric closure of the underlying subgraph induced by <span class="math inline">\(\mathbf{x}\)</span>. This is passed to an algorithm for finding the minimum spanning tree. Given a metric closure, the MST in turn would be an approximation of the desired Steiner tree within <span class="math inline">\(2-\tfrac{2}{\|\mathbf{x}\|_0}\)</span> of optimal.<span class="citation" data-cites="fastalgorithmSteiner_Kou1981"><a href="#ref-fastalgorithmSteiner_Kou1981" role="doc-biblioref">[18]</a></span> For <span class="math inline">\(\|\mathbf{x}\|_0 \ll n\)</span>, this error bound will often be close to 1, and approaching 2 as the expected number of activations-per-observation grows.</p>
 <p>After the point estimates for <span class="math inline">\(\mathbf{r}\)</span> have been calculated as trees, we can use the desire-path beta-binomial model (<a href="2-01-rand-sf.html#eq-desirepath-binom" class="quarto-xref">Equation&nbsp;<span>5.4</span></a>) to calculate the overall empirical Bayes estimate for <span class="math inline">\(\hat{G}\)</span>. As a prior for <span class="math inline">\(\alpha\)</span>, instead of a Jeffrey’s or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity. In other words, we assume that <span class="math inline">\(n\)</span> nodes only need about <span class="math inline">\(n-1\)</span> edges to be fully connected, which implies a prior expected sparsity of <span id="eq-min-connect"><span class="math display">\[
 \alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}
 \tag{6.5}\]</span></span> which we can use as a sparsity-promoting initial value for <span class="math inline">\(\text{Beta}(\alpha^*,1-\alpha^*)\)</span>.</p>
-<div id="alg-fp" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-indent-size="1.2em" data-caption-prefix="Algorithm" data-line-number-punc=":" data-line-number="true" data-comment-delimiter="//" data-no-end="false">
+<div id="alg-fp" class="pseudocode-container quarto-float" data-pseudocode-number="1" data-line-number="true" data-caption-prefix="Algorithm" data-no-end="false" data-comment-delimiter="//" data-line-number-punc=":" data-indent-size="1.2em">
 <div class="pseudocode">
 \begin{algorithm} \caption{Forest Pursuit} \begin{algorithmic} \Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0&lt;\alpha&lt;1$ \Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$ \Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$} \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$} \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \Procedure{ForestPursuit}{$X, d_K$} \State $R(\cdot,\cdot) \gets 0$ \For{$i\gets 1, m$}\Comment{\textit{each observation}} \State $\mathbf{x}_i \gets X(i,\cdot)$ \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} \EndFor \State \textbf{return} $R$ \EndProcedure \Procedure{PursueTree}{$\mathbf{x}, d$} \Comment{\textit{Approximate Steiner Tree}} \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$ \Comment{\textit{activated nodes}} \State $T \gets$\Call{MST}{$d[V,V]$} \Comment{\textit{e.g. Prim's Algorithm}} \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$ \State $\mathbf{r} \gets e_n(\mathbf{u,v})$ \Comment{\textit{unroll tree adjacency}} \State \textbf{return} $\mathbf{r}$ \EndProcedure \Procedure{DesirePathBeta}{$X,R, \alpha$} \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$ \State $\sigma \gets \sum_{i=1}^m X(i,j)$ \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$ \Comment{\textit{co-occurrence counts}} \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$ \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -463,38 +463,38 @@ Table&nbsp;6.1: Experiment Settings (MENDR Dataset)
 <div aria-describedby="tbl-mendr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 75%">
+<col style="width: 40%">
+<col style="width: 60%">
 </colgroup>
 <thead>
 <tr class="header">
-<th>parameters</th>
+<th style="text-align: left;">parameters</th>
 <th style="text-align: center;">values</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>random graph <strong>kind</strong></td>
+<td style="text-align: left;">random graph <strong>kind</strong></td>
 <td style="text-align: center;">Tree, Block, BA<span class="math inline">\((m\in\{1,2\}\)</span>)</td>
 </tr>
 <tr class="even">
-<td>network <strong><span class="math inline">\(n\)</span>-nodes</strong></td>
+<td style="text-align: left;">network <strong><span class="math inline">\(n\)</span>-nodes</strong></td>
 <td style="text-align: center;">10,30,100,300</td>
 </tr>
 <tr class="odd">
-<td>random <strong>walks</strong></td>
-<td style="text-align: center;">1 sample <span class="math inline">\(m\sim\text{NegBinomial}(2,n^{-1})+10\)</span></td>
+<td style="text-align: left;">random <strong>walks</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10\)</span></td>
 </tr>
 <tr class="even">
-<td>random walk <strong>jumps</strong></td>
-<td style="text-align: center;">1 sample <span class="math inline">\(n_\sim\text{Geometric}(n^{-1})+5\)</span></td>
+<td style="text-align: left;">random walk <strong>jumps</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(j\sim\text{Geometric}(\tfrac{1}{n})+5\)</span></td>
 </tr>
 <tr class="odd">
-<td>random walk <strong>root</strong></td>
-<td style="text-align: center;">1 sample <span class="math inline">\(n_0 \sim \text{Multinomial}(\textbf{n}^{-1},1)\)</span></td>
+<td style="text-align: left;">random walk <strong>root</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(n_0 \sim \text{Multinomial}(\textbf{n},1)\)</span></td>
 </tr>
 <tr class="even">
-<td>random <strong>seed</strong></td>
+<td style="text-align: left;">random <strong>seed</strong></td>
 <td style="text-align: center;">1, 2, … , 30</td>
 </tr>
 </tbody>

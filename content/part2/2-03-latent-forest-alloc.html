@@ -190,7 +190,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Incidence through vector representation</span></a>
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vector representations of incidence</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -267,16 +267,16 @@ window.Quarto = {
   <li><a href="#simulation-study-revisited" id="toc-simulation-study-revisited" class="nav-link" data-scroll-target="#simulation-study-revisited">Simulation Study Revisited</a></li>
   <li><a href="#simulation-case-study" id="toc-simulation-case-study" class="nav-link" data-scroll-target="#simulation-case-study">Simulation Case Study</a></li>
   </ul></li>
-  <li><a href="#sec-lfa-like" id="toc-sec-lfa-like" class="nav-link" data-scroll-target="#sec-lfa-like">Generative Model Specification</a></li>
+  <li><a href="#sec-lfa-like" id="toc-sec-lfa-like" class="nav-link" data-scroll-target="#sec-lfa-like">Generative Model</a>
+  <ul class="collapse">
+  <li><a href="#marked-random-spanning-forest-rsfm-distribution" id="toc-marked-random-spanning-forest-rsfm-distribution" class="nav-link" data-scroll-target="#marked-random-spanning-forest-rsfm-distribution">Marked Random Spanning Forest (RSFm) distribution</a></li>
+  <li><a href="#sec-lfa-gibbs" id="toc-sec-lfa-gibbs" class="nav-link" data-scroll-target="#sec-lfa-gibbs">Model Specification</a></li>
+  </ul></li>
   <li><a href="#expected-forest-maximization" id="toc-expected-forest-maximization" class="nav-link" data-scroll-target="#expected-forest-maximization">Expected Forest Maximization</a>
   <ul class="collapse">
   <li><a href="#factorization-dictionary-learning" id="toc-factorization-dictionary-learning" class="nav-link" data-scroll-target="#factorization-dictionary-learning">Factorization &amp; Dictionary Learning</a></li>
   <li><a href="#alternating-directions" id="toc-alternating-directions" class="nav-link" data-scroll-target="#alternating-directions">Alternating Directions</a></li>
   <li><a href="#efm-simulation-study" id="toc-efm-simulation-study" class="nav-link" data-scroll-target="#efm-simulation-study">EFM Simulation Study</a></li>
-  </ul></li>
-  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a>
-  <ul class="collapse">
-  <li><a href="#sec-lfa-gibbs" id="toc-sec-lfa-gibbs" class="nav-link" data-scroll-target="#sec-lfa-gibbs">Bayesian Estimation by Gibbs Sampling</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -495,12 +495,18 @@ Figure&nbsp;7.2: P-R curves for two experiments
 </section>
 </section>
 <section id="sec-lfa-like" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="sec-lfa-like">Generative Model Specification</h2>
+<h2 class="anchored" data-anchor-id="sec-lfa-like">Generative Model</h2>
 <p>Symmetry of marked directed and undirected trees (symmetry in <span class="math inline">\(Q\)</span>)<span class="citation" data-cites="MatrixForestTheorem_Chebotarev2006"><a href="#ref-MatrixForestTheorem_Chebotarev2006" role="doc-biblioref">[2]</a></span></p>
 <div class="no-row-height column-margin column-container"><div id="ref-MatrixForestTheorem_Chebotarev2006" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">P. Chebotarev and E. Shamis, <span>“The matrix-forest theorem and measuring relations in small social groups,”</span> <span>arXiv</span>, <span>arXiv</span>:math/0602070, Feb. 2006. doi: <a href="https://doi.org/10.48550/arXiv.math/0602070">10.48550/arXiv.math/0602070</a>.</div>
-</div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-inject-plan">
-<div id="cell-fig-inject-plan" class="cell" data-execution_count="20">
+</div></div><section id="marked-random-spanning-forest-rsfm-distribution" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="marked-random-spanning-forest-rsfm-distribution">Marked Random Spanning Forest (RSFm) distribution</h3>
+<p>Every spanning forest on a graph described by <span class="math inline">\(Q\)</span> can be thought of as an equivalent spanning tree over a graph augmented with an extra “source” node, which is connected to every other node with a weight <span class="math inline">\(\tfrac{1}{\beta}\)</span>. Sampling random spanning trees on the augmented graph is equivalent to random spanning forests on the original.<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[3]</a></span> We can use this fact to create a distribution for node activation sets based on <em>co-occurrence on a rooted tree</em>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
+</div></div><p>A “rooted tree” is a tree with a marked node. In <a href="#fig-inject-plan" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> we see this illustrated, where a randomly sampled tree on the graph augmented with R leads to many subtrees in the original graph. Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to record <span class="math inline">\(x_1\)</span> back in <a href="2-01-rand-sf.html#fig-obs-set" class="quarto-xref">Figure&nbsp;<span>5.2 (a)</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-inject-plan">
+<div id="cell-fig-inject-plan" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div id="fig-inject-plan" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -515,22 +521,63 @@ Figure&nbsp;7.3: Dissemination plan as rooted RST on augmented graph
 </div>
 </div>
 </div>
-<p><img src="../images/random-spanning-forests.png" class="img-fluid" alt="Explanation of the Random Spanning Forest generative model for binary activation observations"> - hierarchical model - marginalize over the root node.</p>
+<p>Note that the marked node does not necessarily need to be the one that the source “injected” to, since the observed activations set is equivalent for any of (d,h,e) being marked. This is an important symmetry when we will not know which node “actually” started each cascade, during inference.<br>
+It means that the node activation set and the graph structure are conditionally independent, given a sampled spanning tree on the augmented graph. Sampling efficiently from a spanning tree distribution is a well studied problem, and we can use that efficiency in combination with a node-marking (categorical) distribtion to formulate an overall distribution for node activation.</p>
+<p>Therefore, RSFm distribution models the probability of emitting node <span class="math inline">\(j\)</span> in the <span class="math inline">\(i\)</span>-th observation as the probability of occurring in the same tree as a marked “root” node <span class="math inline">\(\phi_{ij}\)</span>, given a graph of <span class="math inline">\(z_E\)</span> edges and a source “distance” parameter <span class="math inline">\(\beta\)</span>. <span class="math display">\[
+P(x_{ij}|\beta, z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+\]</span></p>
+<p>Incredibly, the probabilities for <span class="math inline">\(P(|z_E)\)</span> and <span class="math inline">\(P(x|T,\phi)\)</span> all have closed form representations. The spanning tree distribution discussed elsewhere<span class="citation" data-cites="BayesianSpanningTree_Duan2021 EfficientComputationExpectations_Zmigrod2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[4]</a>, <a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[5]</a></span> can be used to motivate a spanning forest distribution, which is based on the sum of weight of edges in a graph <span class="math inline">\(W(G)=\sum_E{z_E}\)</span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
+</div></div><p><span class="math display">\[\begin{aligned}
+P(F|G) &amp; = \prod_{e_{uv}\in F} P(e_{uv}|G)\\
+P(e_{uv}|G)
+    &amp; = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
+    &amp; = 1 - \frac{|W(G/e)|}{|W(G)|}  = 1 - \frac{|W-b_{uv}^Tb_{uv}|}{|W|}\\
+    &amp; = 1 - \frac{|W|(1-b_{uv}^TQb_{uv})}{|W|}\\
+    &amp; = Q_{uu} + Q_{vv} - 2Q_{uv} \\
+  &amp; = d_Q(u,v)
+\end{aligned}\]</span></p>
+<p>To sample from this distribution, we generate random spanning trees on <span class="math inline">\(G_{+R}\)</span>, and use the marked node <span class="math inline">\(\phi_ij\)</span>$ to return all the nodes it is connected to in the induced spanning forest.</p>
+</section>
+<section id="sec-lfa-gibbs" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-lfa-gibbs">Model Specification</h3>
+<p>To do inference, however, we may use the forest kernel <span class="math inline">\(Q\)</span> and sum over the observed nodes. <span class="math display">\[
+\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot d_Q)_{j,j'}
+\]</span></p>
+<p>This still has the problem of needing an estimate for <span class="math inline">\(Q\)</span> <em>based on the graph</em> described by the edges <span class="math inline">\(z_E\)</span>. The overall model that fills out the gaps left in <a href="2-01-rand-sf.html#eq-empirical-model" class="quarto-xref">Equation&nbsp;<span>5.5</span></a> has the form:</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pi_{e\in E} &amp;\sim \operatorname{Beta}_E(\alpha, 1-\alpha)     \\
+z_{e\in E} &amp;\sim \operatorname{Bernoulli}_E(\pi_e)             \\
+\phi_{i\in I, j\in J} &amp;\sim \operatorname{Categorical}_I(\theta) \\
+x_{i\in I,j\in J} &amp;\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
+\end{aligned}
+\]</span></p>
+<!-- ![Explanation of the RSFm distribution for binary activation observations](../images/random-spanning-forests.png) -->
+<p>The conditional independence mentioned previously could lend itself to a Gibbs-sampling scheme. Each observation is a marked node and a spanning forest, which can equivalently be described as the spanning tree distribution over the activated nodes, as we can marginalize out the equal marked-node probability <span class="math inline">\(\phi\)</span>. Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the <em>Bayesian Spanning Tree</em> distribution from <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[4]</a></span>. Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated. This is very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[CITE], and others.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-BayesianSpanningTree_Duan2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
+</div></div><p>However, another possibility is to approach the problem as jointly estimating <span class="math inline">\(B\)</span> and <span class="math inline">\(R\)</span> in an alternating manner This idea leads to a simple Expectation Maximization scheme, where we alternate embedding the node activations as edge activations with combining these to better estimate the available edges.</p>
+</section>
 </section>
 <section id="expected-forest-maximization" class="level2">
 <h2 class="anchored" data-anchor-id="expected-forest-maximization">Expected Forest Maximization</h2>
 <section id="factorization-dictionary-learning" class="level3">
 <h3 class="anchored" data-anchor-id="factorization-dictionary-learning">Factorization &amp; Dictionary Learning</h3>
+<p>Sparse approximation + aggregation, repeat. [TODO]</p>
 </section>
 <section id="alternating-directions" class="level3">
 <h3 class="anchored" data-anchor-id="alternating-directions">Alternating Directions</h3>
 <ul>
 <li>estimate laplacian to get <span class="math inline">\(Q_i\)</span> as shortest path distance</li>
 </ul>
+<p>[TODO] [LOOPED VERSION OF ALG.1 ]</p>
 </section>
 <section id="efm-simulation-study" class="level3">
 <h3 class="anchored" data-anchor-id="efm-simulation-study">EFM Simulation Study</h3>
-<p>score improvement</p>
+<p>One-shot Forest Pursuit appears to perform quite well, so it’s useful to quantify the expected gain in performance by repeating it an unknown number of times. There are no generic guarantees for EM convergence, though anecdotally the number of iterations was limited in our experiments to under a thousand, and that limit was never hit while using a covergence parameter of <span class="math inline">\(\epsilon=1\mathrm{e}-5\)</span>.</p>
+<p>The distribution of E[MCC] score change vs.&nbsp;FP is shown in <a href="#fig-efm-mcc" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-mcc">
 <div id="cell-fig-efm-mcc" class="cell" data-execution_count="34">
 <div class="cell-output cell-output-display">
@@ -547,7 +594,7 @@ Figure&nbsp;7.4: Change in Expected MCC (EFM vs FP)
 </div>
 </div>
 </div>
-<p>Odds of Individual Edge Improvement</p>
+<p>While useful, it’s not clear whether individual edges are more likely to be “true” edges, <em>given</em> a bigger change in EFM score. To test this, a logistic regression was performed for every experiment in MENDR against the true edge values, using the change in scores on those edges between FP and EFM as training data. To avoid overfitting, a significant amount of regularization was applied, chosen using 5-fold crossvalidation. The coefficients for all experiments are shown as a histogram in <a href="#fig-efm-logits" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-logits">
 <div id="cell-fig-efm-logits" class="cell" data-execution_count="35">
 <div class="cell-output cell-output-display">
@@ -564,7 +611,8 @@ Figure&nbsp;7.5: Logistic Regression Coef. (EFM - FP) vs.&nbsp;(Ground Truth)
 </div>
 </div>
 </div>
-<p>Runtime Cost</p>
+<p>The graph kind did not make a significant difference to EFM improvement, but overall log-odds improvement is very low.Still, the value is positive accross the entire dataset, so EFM does have a very small-but-nonzero impact on improving edge prediction.</p>
+<p>The runtime graphs can also be updated, with EFM shown in <a href="#fig-efm-runtime" class="quarto-xref">Figure&nbsp;<span>7.6</span></a> and <a href="#fig-efm-partials-runtime" class="quarto-xref">Figure&nbsp;<span>7.7</span></a> against FP and Glasso. EFM still ran significantly faster than GLASSO in this region. However, the scaling with network size is no longer constant-time, especially since convergence used above is the max-abs error, which requires that <em>every node</em> reach a minimum level of convergence and might take much longer, overall.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-runtime">
 <div id="cell-fig-efm-runtime" class="cell" data-execution_count="37">
 <div class="cell-output cell-output-display">
@@ -597,28 +645,9 @@ Figure&nbsp;7.7: Partial Residuals (regression on computation time)
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="discussion" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
-<section id="sec-lfa-gibbs" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="sec-lfa-gibbs">Bayesian Estimation by Gibbs Sampling</h3>
-<p>Uniform Random Spanning Trees</p>
-<ul>
-<li>Methods for sampling i.e.&nbsp;wilson’s and Duan’s (other? Energy paper?)</li>
-<li>Tree Likelihoods, other facts (edge expectations)</li>
-</ul>
-<p>Approximate Forest Samples</p>
-<ul>
-<li><p>comparison with LDA</p></li>
-<li><p>Simplifying Assumptions (conditional prob IS prob for this)</p>
-<p>I.e. the unwritten paper, modifying technique by <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[3]</a></span> for RSF instead of RSTs</p></li>
-</ul>
 
 
-<div class="no-row-height column-margin column-container"><div id="ref-BayesianSpanningTree_Duan2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
-</div></div>
+
 </section>
 </section>
 
