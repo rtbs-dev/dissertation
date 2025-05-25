@@ -274,7 +274,7 @@ div.csl-indent {
 <div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. Girvan and M. E. J. Newman, <span>“Community structure in social and biological networks,”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 99, no. 12, pp. 7821–7826, Jun. 2002, doi: <a href="https://doi.org/10.1073/pnas.122653799">10.1073/pnas.122653799</a>.</div>
 </div></div><p>Note, however, that we could have just as easily taken note of the instigating student for each interaction (i.e.&nbsp;which student initiated conversation, or invited the other to socialize, etc.). If that relational asymmetry is available, our “edges” are now <em>directed</em>, and we might be able to ask questions about the rates that certain students are asked vs.&nbsp;do the asking, and what that implies about group cohesion. Additionally, the time span is assumed to be “for the duration of observation” (did the students <em>ever</em> interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split. This is now a “dynamic” graph; or, if we only measure relative to the time of separation, at the very least a “weighted” one.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-karate-club">
-<div id="cell-fig-karate-club" class="cell" data-execution_count="8">
+<div id="cell-fig-karate-club" class="cell" data-execution_count="7">
 <div class="cell-output cell-output-display">
 <div id="fig-karate-club" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -296,7 +296,7 @@ Figure&nbsp;1.1: Zachary’s Karate Club, with ambiguously extant edge 78 highli
 <p>While the karate club graph has unquantified edge uncertainty derived from ambiguous edge measurements, we are fortunate that we <em>have edge measurements</em>. Regardless of how the data was collected, it is de facto reported as a list of pairs. In many cases, we simply do not have such luxury. Instead, our edges are only measured <em>indirectly</em>, and instead we are left with lists of node co-ocurrences. Networks connecting movies as being “similar” might be derived from data that lists sets of movies watched by each user; networks of disease spread pathways might be implied from patient infection records; famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together.</p>
 <p>Such networks are derived from what we will call <em>node activation</em> data, i.e., records of what entities happened “together”, whether contemporaneously, or in some other context or artifact.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-obs-set">
-<div id="cell-fig-obs-set" class="cell" data-execution_count="11">
+<div id="cell-fig-obs-set" class="cell" data-execution_count="10">
 <div class="cell-output cell-output-display">
 <div id="fig-obs-set" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -315,7 +315,7 @@ Figure&nbsp;1.2
 <div class="no-row-height column-margin column-container"><div id="ref-Scientificcollaborationnetworks._Newman2001" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,”</span> <em>Physical Review E</em>, vol. 64, no. 1, p. 016132, Jun. 2001, doi: <a href="https://doi.org/10.1103/physreve.64.016132">10.1103/physreve.64.016132</a>.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-collab">
-<div id="cell-fig-collab" class="cell" data-execution_count="16">
+<div id="cell-fig-collab" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
 <div id="fig-collab" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -337,7 +337,7 @@ Figure&nbsp;1.3
 </ul>
 <p>and so on. Each time two colleagues had an opportunity to work together <em>and it was seized upon</em> we might conclude that evidence of their relationship strengthed. With data like this, we could be more confident in claiming our collaboration network can serve as “ground truth,” as far as empirically confirmed collaborations go. However, even if the underlying “activations” are identical, our new, directly measured graph looks very different.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-colleague">
-<div id="cell-fig-colleague" class="cell" data-execution_count="10">
+<div id="cell-fig-colleague" class="cell" data-execution_count="9">
 <div class="cell-output cell-output-display">
 <div id="fig-colleague" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -354,7 +354,7 @@ Figure&nbsp;1.4: graph of mutual collaboration relationships i.e.&nbsp;the “gr
 </div>
 <p>Fundamentally, the network in <a href="#fig-colleague" class="quarto-xref">Figure&nbsp;<span>1.4</span></a> shows which relationships the authors <em>depend</em> on to accomplish their publishing activity. When causal relations between nodes are being modeled as edges, we call such a graph a <em>dependency network</em>. We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is <em>how do we recover dependency networks from node activations?</em> Additionally, what goes wrong when we use co-occurence/activation data to estimate the dependency network, especially when we wish to use it for metrics like centrality, shortest path distances, and community belonging?</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-recover">
-<div id="cell-fig-recover" class="cell" data-execution_count="17">
+<div id="cell-fig-recover" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div id="fig-recover" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -43,6 +63,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -74,10 +97,39 @@ ul.task-list li input[type="checkbox"] {
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating slimcontent">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -223,7 +275,7 @@ ul.task-list li input[type="checkbox"] {
 </nav>
     </div>
 <!-- main -->
-<main class="content column-body" id="quarto-document-content">
+<main class="content page-columns page-full column-body" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a></li></ol></nav>
 <div class="quarto-title">
@@ -244,47 +296,67 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="network-science-collaboration-network" class="level2">
+<p>A more realistic test of <em>Forest Pursuit’s</em> behavior is in unsupervised, qualitative analysis of complex systems and networks. In this chapter we will recreate two well-known bipartite datasets from network science, and compare several network recreation methods on them. As we have discussed previously<span class="citation" data-cites="PerceivedAssortativitySocial_Fisher2017"><a href="#ref-PerceivedAssortativitySocial_Fisher2017" role="doc-biblioref">[1]</a></span>, there is some interest in quantifying network assortativity for social networks, and whether the positive assortativity effect is a methodological artifact. Assuming an analyst is interested in social network <em>dependencies</em>—like which nodes are directly <em>influencing</em> which others—we provide a glimpse at how correcting for clique bias with <em>Forest Pursuit</em> (FP) affects assortativity.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-PerceivedAssortativitySocial_Fisher2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. N. Fisher, M. J. Silk, and D. W. Franks, <span>“The perceived assortativity of social networks: Methodological problems and solutions,”</span> in <em>Trends in social network analysis</em>, Springer International Publishing, 2017, pp. 1–19. doi: <a href="https://doi.org/10.1007/978-3-319-53420-6_1">10.1007/978-3-319-53420-6_1</a>.</div>
+</div></div><p>In the second case study, we also investigate how centrality measures can be adversely affected when clique-bias is not accounted for, especially when appearance in cliques is known to be rare for certain node types.</p>
+<section id="network-science-collaboration-network" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="network-science-collaboration-network">Network Science Collaboration Network</h2>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-cooc">
+<p>Following in the steps of <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>, we recreate a network from co-authorships in works cited by two literature review papers, <span class="citation" data-cites="StructureFunctionComplex_Newman2003"><a href="#ref-StructureFunctionComplex_Newman2003" role="doc-biblioref">[3]</a></span> and [CITE]. The list of all cited papers was reconstructed via web-of-science queries, and these were used to construct author “activation” observations.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> A baseline co-authorship network was initially constructed using the largest connected component, and a modularity-maximizing community detection algorithm was used to highlight community structure. This baseline network can be seen in <a href="#fig-netsci-cooc" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>, where (to keep with the treatment in <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>) we have added a quotient network of the communities themselves.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-StructureFunctionComplex_Newman2003" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">M. E. J. Newman, <span>“The structure and function of complex networks,”</span> <em>SIAM Review</em>, vol. 45, no. 2, pp. 167–256, Jan. 2003, doi: <a href="https://doi.org/10.1137/s003614450342480">10.1137/s003614450342480</a>.</div>
+</div><div id="fn1"><p><sup>1</sup>&nbsp; An additional paper (<span class="citation" data-cites="Coherentnoisescale_Sneppen1997"><a href="#ref-Coherentnoisescale_Sneppen1997" role="doc-biblioref">[4]</a></span>) was added to ensure the the largest connected component contained necessary communities that were originally missing compared to <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>.</p><div id="ref-Coherentnoisescale_Sneppen1997" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">K. Sneppen and M. E. J. Newman, <span>“Coherent noise, scale invariance and intermittency in large systems,”</span> <em>Physica D: Nonlinear Phenomena</em>, vol. 110, no. 3–4, pp. 209–222, Dec. 1997, doi: <a href="https://doi.org/10.1016/s0167-2789(97)00128-0">10.1016/s0167-2789(97)00128-0</a>.</div>
+</div><div id="ref-Findingevaluatingcommunity_Newman2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">M. E. J. Newman and M. Girvan, <span>“Finding and evaluating community structure in networks,”</span> <em>Physical Review E</em>, vol. 69, no. 2, p. 026113, Feb. 2004, doi: <a href="https://doi.org/10.1103/physreve.69.026113">10.1103/physreve.69.026113</a>.</div>
+</div></div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-cooc">
 <div id="cell-fig-netsci-cooc" class="cell" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-netsci-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-cooc-output-1.svg" class="img-fluid figure-img">
+<a href="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-cooc-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.1: 134 Network scientists connected by co-authorship"><img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-cooc-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.1: 134 Network scientists from [NEWMAN;BOCCALETTI;SNEPPEN], connected by co-authorship
+Figure&nbsp;8.1: 134 Network scientists connected by co-authorship
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>The detected assortativity <span class="math inline">\(r=0.059\)</span> is small, but positive. As expected, each community tends to have a dominant “clique”, since many members of these groups tend to mutually author papers together (simultaneously).</p>
+<p>However, if we are after a “social network” that describes social influence of individuals w.r.t. others, then we are hoping to recover collaborative <em>dependency relationships</em>.</p>
+<ul>
+<li>Who is causing who to join papers?</li>
+<li>Who are the central “collaborators” that influence the paper writing of many others?</li>
+</ul>
+<p>With some background knowledge of how university labs tend to work (with students, post-docs, advisors, colleagues, etc.), we might not believe that every member of a community has significant influence on the writing of every other member. So, to estimate a dependency network of collaboration relationships, we could turn to a Chow-Liu tree, which is shown in <a href="#fig-netsci-tree" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-tree">
 <div id="cell-fig-netsci-tree" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-netsci-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-tree-output-1.svg" class="img-fluid figure-img">
+<a href="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-tree-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.2: Chow-Liu tree of NetSci collaborator dependency relationships"><img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-tree-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;8.2: Max. likelihood tree dependency structure to explain co-authorships
+Figure&nbsp;8.2: Chow-Liu tree of NetSci collaborator dependency relationships
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </div>
+<p>This dependency is much more sparse, and indeed the assortativity coefficient has dropped to <span class="math inline">\(r=-0.251\)</span>. In academic writing, we might even expect a lowered assortativity, since students that may not go on to be prolific in their original field would still seek out prolific advisors, initially. Unfortunately, enforcing a tree structure has some negative side effects. Overlaying the original community structure from <a href="#fig-netsci-cooc" class="quarto-xref">Figure&nbsp;<span>8.1</span></a> onto the tree and calculating a quotient graph shows that the community structure is impacted by the change. Many of the communities are “unrolled” into long chains of authors, since trees cannot allow small loops or cycles. This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems.</p>
+<p>With <em>Forest Pursuit</em>, we can attempt to correct for “clique bias” in the measurement of dependency relationships, while allowing for flexibility in the global network structure. The FP recovered collaborator graph is shown in <a href="#fig-netsci-fp" class="quarto-xref">Figure&nbsp;<span>8.3</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-fp">
 <div id="cell-fig-netsci-fp" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-netsci-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-fp-output-1.svg" class="img-fluid figure-img">
+<a href="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-fp-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relationships"><img src="3-06-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-fp-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relationships
@@ -294,6 +366,10 @@ Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relat
 </div>
 </div>
 </div>
+<p>The communities from the co-occurrence network are entirely preserved, with a nearly identical community structure in the graph quotient compared to the co-occurrence graph. But now we see an assortativity that is close to zero, but negative at <span class="math inline">\(r=-0.069\)</span>. This brings the assortativity more in line with the World Wide Web networks, or even close to results for random preferential attachment networks that are zero in the limit<span class="citation" data-cites="AssortativeMixingNetworks_Newman2002"><a href="#ref-AssortativeMixingNetworks_Newman2002" role="doc-biblioref">[5]</a></span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-AssortativeMixingNetworks_Newman2002" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Assortative mixing in networks,”</span> <em>Physical Review Letters</em>, vol. 89, no. 20, p. 208701, Oct. 2002, doi: <a href="https://doi.org/10.1103/physrevlett.89.208701">10.1103/physrevlett.89.208701</a>.</div>
+</div></div><p>Relative to the tree network, there are not so many long chains, as many authors have been allowed to “loop-back” and have relationships with nearby colleagues, reducing the distance between communities in the process. Still, like the trees, FP tends to reduce the degree of each node, which is summarized in <a href="#fig-netsci-degree" class="quarto-xref">Figure&nbsp;<span>8.4</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-degree">
 <div id="cell-fig-netsci-degree" class="cell" data-execution_count="15">
 <div class="cell-output cell-output-display">
@@ -310,6 +386,7 @@ Figure&nbsp;8.4
 </div>
 </div>
 </div>
+<p>In this case, it might be reasonable to assume that any given author has 2-3 influential relationships shown, especially considering students and post-docs are likely to constitute a good number of nodes. Only rare individuals would have upwards of 10 influential relationships, not a full quarter of them. Recall that this is a social network derived from literature review paper citations, not exhaustive inventories of each author’s work. We propose that the FP degree distribution follows more closely to what we might expect, given nodes we have sampled.</p>
 </section>
 <section id="les-miserables-character-network" class="level2">
 <h2 class="anchored" data-anchor-id="les-miserables-character-network">Les Miserables Character Network</h2>
@@ -368,8 +445,10 @@ Figure&nbsp;8.7
 </div>
 
 
+
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -834,6 +913,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     })(document);
     </script>
   
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
