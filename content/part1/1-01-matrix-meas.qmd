@@ -238,16 +238,12 @@ While the amount of movement over time depends on how "close" in this spring net
 Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence.
 If we hold all but two masses still, and moving one doesn't move the other, then we know they are conditionally independent: no spring connects them!
 
+{{< embed ../codefigs/graphs.qmd#fig-springs >}}
+
 This idea gets formalized as probabilistic graphical models, which are networks that define "incidence" between two variables as conditional dependence.
 Letting the random variables in the column-space of $X$ be $A,B$ and the remaining columns be $C=X(\cdot,J\setminus \{A,B\})$, then
 $$
 P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak{I}
 $${#eq-cond-indep}
 for a set of incidences $\mathfrak{I}$ defining a PGM that was sampled as $X$.  
-
-
-
-[SPRING GRAPHIC?]
-
-### Conclusion
 

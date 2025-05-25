@@ -87,7 +87,8 @@ tex_kws = dict(
     \usepackage[otfmath]{XCharter}
     \usepackage{tikz-network}
     \usepackage{booktabs}
-    \usetikzlibrary{positioning, matrix,calc}
+    \usetikzlibrary{positioning, matrix,calc,decorations.pathmorphing,patterns}
+    
     \SetCoordinates[xAngle=0, yAngle=70, yLength=0.5]
 
     """,
@@ -433,7 +434,6 @@ textab = TexFragment(
 textab
 ```
 
-
 ```{python}
 #| label: fig-stack-bow
 #| fig-cap: Edge Measurements with Group Gambit (BoW) assumption
@@ -542,3 +542,18 @@ def plot_smoothed_lda():
 
 plot_smoothed_lda()
 ```
+
+```{python}
+#| label: fig-springs
+#| fig-cap: CAPTION ME
+
+
+with open('spring-net.tex') as f: 
+    fig = TexFragment(
+        f.read(),
+        # implicit_tikzpicture=True,
+        **tex_kws,
+    ).run_latex(tex_program=tex)
+fig
+```
+

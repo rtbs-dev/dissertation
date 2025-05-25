@@ -1,12 +1,62 @@
 # Qualitative Application of Relationship Recovery
 
+A more realistic test of _Forest Pursuit's_ behavior is in unsupervised, qualitative analysis of complex systems and networks.
+In this chapter we will recreate two well-known bipartite datasets from network science, and compare several network recreation methods on them.
+As we have discussed previously[@PerceivedAssortativitySocial_Fisher2017], there is some interest in quantifying network assortativity for social networks, and whether the positive assortativity effect is a methodological artifact.
+Assuming an analyst is interested in social network _dependencies_---like which nodes are directly _influencing_ which others---we provide a glimpse at how correcting for clique bias with _Forest Pursuit_ (FP) affects assortativity. 
+
+In the second case study, we also investigate how centrality measures can be adversely affected when clique-bias is not accounted for, especially when appearance in cliques is known to be rare for certain node types. 
+
+
 ## Network Science Collaboration Network
 
+Following in the steps of @Findingevaluatingcommunity_Newman2004, we recreate a network from co-authorships in works cited by two literature review papers, @StructureFunctionComplex_Newman2003 and [CITE].
+The list of all cited papers was reconstructed via web-of-science queries, and these were used to construct author "activation" observations.^[
+  An additional paper (@Coherentnoisescale_Sneppen1997) was added to ensure the the largest connected component contained necessary communities that were originally missing compared to @Findingevaluatingcommunity_Newman2004.
+]
+A baseline co-authorship network was initially constructed using the largest connected component, and a modularity-maximizing community detection algorithm was used to highlight community structure.
+This baseline network can be seen in @fig-netsci-cooc, where (to keep with the treatment in @Findingevaluatingcommunity_Newman2004) we have added a quotient network of the communities themselves.
+
 {{< embed ../codefigs/qualitative.qmd#fig-netsci-cooc >}}
+
+The detected assortativity $r=0.059$ is small, but positive.
+As expected, each community tends to have a dominant "clique", since many members of these groups tend to mutually author papers together (simultaneously). 
+
+However, if we are after a "social network" that describes social influence of individuals w.r.t. others, then we are hoping to recover collaborative _dependency relationships_.
+
+- Who is causing who to join papers?
+- Who are the central "collaborators" that influence the paper writing of many others?
+
+With some background knowledge of how university labs tend to work (with students, post-docs, advisors, colleagues, etc.), we might not believe that every member of a community has significant influence on the writing of every other member. 
+So, to estimate a dependency network of collaboration relationships, we could turn to a Chow-Liu tree, which is shown in @fig-netsci-tree.
+
 {{< embed ../codefigs/qualitative.qmd#fig-netsci-tree >}}
+
+This dependency is much more sparse, and indeed the assortativity coefficient has dropped to $r=-0.251$.
+In academic writing, we might even expect a lowered assortativity, since students that may not go on to be prolific in their original field would still seek out prolific advisors, initially.
+Unfortunately, enforcing a tree structure has some negative side effects. 
+Overlaying the original community structure from @fig-netsci-cooc onto the tree and calculating a quotient graph shows that the community structure is impacted by the change.
+Many of the communities are "unrolled" into long chains of authors, since trees cannot allow small loops or cycles. 
+This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems. 
+
+With _Forest Pursuit_, we can attempt to correct for "clique bias" in the measurement of dependency relationships, while allowing for flexibility in the global network structure.
+The FP recovered collaborator graph is shown in @fig-netsci-fp.  
+
 {{< embed ../codefigs/qualitative.qmd#fig-netsci-fp >}}
 
+The communities from the co-occurrence network are entirely preserved, with a nearly identical community structure in the graph quotient compared to the co-occurrence graph.
+But now we see an assortativity that is close to zero, but negative at $r=-0.069$.
+This brings the assortativity more in line with the World Wide Web networks, or even close to results for random preferential attachment networks that are zero in the limit[@AssortativeMixingNetworks_Newman2002].
+
+Relative to the tree network, there are not so many long chains, as many authors have been allowed to "loop-back" and have relationships with nearby colleagues, reducing the distance between communities in the process.
+Still, like the trees, FP tends to reduce the degree of each node, which is summarized in @fig-netsci-degree. 
+
 {{< embed ../codefigs/qualitative.qmd#fig-netsci-degree >}}
+
+In this case, it might be reasonable to assume that any given author has 2-3 influential relationships shown, especially considering students and post-docs are likely to constitute a good number of nodes.
+Only rare individuals would have upwards of 10 influential relationships, not a full quarter of them. 
+Recall that this is a social network derived from literature review paper citations, not exhaustive inventories of each author's work.
+We propose that the FP degree distribution follows more closely to what we might expect, given nodes we have sampled. 
 
 ## Les Miserables Character Network
 

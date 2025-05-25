@@ -1,5 +1,6 @@
 ---
 title: Source for Case Studies
+lightbox: auto
 execute:
   cache: true
 jupyter:
@@ -51,7 +52,7 @@ nxlabel_kws={
     "font_color": "0.3",
     "font_family":"Bitstream Charter",
     "font_weight":'bold',
-    "font_size": 6,
+    "font_size": 8,
 }
 
 nxdraw_kws = {
@@ -213,11 +214,15 @@ def draw_graph_communities(G, pos, colors, ax=None):
         # print(t)
         t.set_backgroundcolor(colors[t.get_text()])
     sns.despine(left=True, bottom=True)
+    return ax
 ```
 
 ```{python}
 #| label: fig-netsci-cooc
-#| fig-cap: 134 Network scientists from [NEWMAN;BOCCALETTI;SNEPPEN], connected by co-authorship
+#| fig-cap: 134 Network scientists connected by co-authorship
+#| lightbox:
+#|   group: netsci
+#|   desc-position: right
 
 A_cooc = Xdf.T@Xdf - np.diag(Xdf.sum())
 G = nx.from_pandas_adjacency(A_cooc>0)
@@ -226,12 +231,6 @@ subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
 s_subs=pd.Series(list(subset), dtype=authortype)
 # G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
 # list(nx.neighbors(G, 'newman, m.'))
-for k,subs in enumerate(sorted(nx.connected_components(G), key=len, reverse=True)): 
-    if 'newman, m.' in subs: 
-        print('newman',k)
-# 'barabási, a.' in subset
-    if 'sneppen, k.' in subs:
-        print('sneppen',k)
 
 pos_cos = nx.kamada_kawai_layout(G)
 G = G.subgraph(subset)
@@ -239,8 +238,9 @@ G = G.subgraph(subset)
 commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
+plt.figure(figsize=(12,10))
 
-draw_graph_communities(G,pos_cos,colors)
+ax = draw_graph_communities(G,pos_cos,colors)
 
         
 # print(len(subset))
@@ -248,11 +248,25 @@ plt.title(
     'Network Scientist Co-Occurrence Graph '
     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
 );
+insax = ax.inset_axes([0,0,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
 #| label: fig-netsci-tree
-#| fig-cap: Max. likelihood tree dependency structure to explain co-authorships
+#| fig-cap: Chow-Liu tree of NetSci collaborator dependency relationships
+#| lightbox:
+#|   group: netsci
+#|   desc-position: right
 
 G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns))
 pos_tree = nx.kamada_kawai_layout(G, pos=pos_cos)
@@ -260,7 +274,9 @@ G = G.subgraph(subset)
 
 # nx.draw_networkx(G, pos=pos_tree, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
-draw_graph_communities(G, pos_tree, colors)
+plt.figure(figsize=(12,10))
+
+ax = draw_graph_communities(G, pos_tree, colors)
 nx.connected.is_connected(G)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
 plt.title(
@@ -268,11 +284,25 @@ plt.title(
     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
+insax = ax.inset_axes([0,0,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
 #| label: fig-netsci-fp
 #| fig-cap: Forest Pursuit estimate of NetSci collaborator dependency relationships
+#| lightbox:
+#|   group: netsci
+#|   desc-position: right
 
 evd_L_pursuit = _sq(asc.forest_pursuit_edge(X)[s_subs.cat.codes].T[s_subs.cat.codes])
 A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
@@ -281,14 +311,26 @@ G = nx.from_pandas_adjacency(A_fp>0.01)
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=Xdf.columns, columns=Xdf.columns))
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
-plt.figure(figsize=(10,8))
+plt.figure(figsize=(12,10))
 
-draw_graph_communities(G,pos,colors)
+ax = draw_graph_communities(G,pos,colors)
 plt.title(
     'Network Scientist Collaboration Network Estimate '
     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
+
+insax = ax.inset_axes([0,0,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
@@ -427,11 +469,22 @@ commun = list(list(i) for i in nx.community.greedy_modularity_communities(G, wei
 
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
-plt.figure(figsize=(10,6))
-draw_graph_communities(G,pos_cos,colors)
+plt.figure(figsize=(12,10))
+ax = draw_graph_communities(G,pos_cos,colors)
 cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
 # plt.figure(figsize=(3,4))
 # sns.barplot(cent, orient='h')
+insax = ax.inset_axes([0.7,0.8,0.3,0.2])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=.1*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
@@ -456,9 +509,21 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>=np.percentile(evd_L
 
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
-plt.figure(figsize=(10,6))
-draw_graph_communities(G, pos, colors)
+plt.figure(figsize=(12,10))
+ax = draw_graph_communities(G, pos, colors)
 centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
+
+insax = ax.inset_axes([0.7,0.8,0.3,0.2])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=.5*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 _TODO_: rank changes for different kinds of centrality? 
@@ -627,7 +692,6 @@ animals.columns.sort_values() == roll_df.columns.sort_values()
 ```
 
 ```{python}
-
 plt.figure(figsize=(3, 2))
 sns.histplot(_sq(asc.ochiai(all_X, pseudocts=0.5)), stat='density', label='all co-occurrences', bins=20)
 sns.histplot(_sq(asc.ochiai(roll_X, pseudocts=0.5)), stat='density', label='10 in-memory', bins=20)
@@ -699,8 +763,9 @@ pos_cos = nx.spring_layout(G, seed=2, iterations=1000, k=.5)
 commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
+plt.figure(figsize=(12,10))
 
-draw_graph_communities(G,pos_cos,colors)
+ax = draw_graph_communities(G,pos_cos,colors)
 
 plt.title(
     'Verbal Fluency Animals (DS-filtered) Co-Occurrence Graph '
@@ -708,6 +773,17 @@ plt.title(
     fr'($\psi$ = {connective_efficiency(e_cooc):.2f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
+insax = ax.inset_axes([0,0.6,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
@@ -719,7 +795,9 @@ pos_tree = nx.kamada_kawai_layout(G, pos=pos_cos)
 
 # nx.draw_networkx(G, pos=pos_tree, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
-draw_graph_communities(G, pos_tree, colors)
+plt.figure(figsize=(12,10))
+
+ax = draw_graph_communities(G, pos_tree, colors)
 nx.connected.is_connected(G)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
 plt.title(
@@ -728,6 +806,17 @@ plt.title(
     fr'($\psi$ = {connective_efficiency(e_tree):.2f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
+insax = ax.inset_axes([0,0.0,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
@@ -754,12 +843,25 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.connected.is_connected(G)
-draw_graph_communities(G,pos,colors)
+plt.figure(figsize=(12,10))
+
+ax = draw_graph_communities(G,pos,colors)
 plt.title(
     'Verbal Fluency Animal Dependencies (GLASSO) Network '
     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
     fr'($\psi$ = {connective_efficiency(e_gl):.2f})'
 );
+insax = ax.inset_axes([0,0,0.2,0.2])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 ```{python}
@@ -781,8 +883,9 @@ G = nx.from_pandas_adjacency(pd.DataFrame(
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 # pos = nx.spring_layout(G)
+plt.figure(figsize=(12,10))
 
-draw_graph_communities(G,pos,colors)
+ax = draw_graph_communities(G,pos,colors)
 plt.title(
     'Verbal Fluency Animal Dependencies (FP) Network Estimate '
     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -791,6 +894,17 @@ plt.title(
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
 # nx.is_connected(G)
+insax = ax.inset_axes([0,0.6,0.3,0.3])
+
+QG = nx.quotient_graph(G,commun, relabel=True)
+qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+nx.draw_networkx(
+    QG, pos=qpos, node_color=pal, 
+    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+    edge_color='grey', with_labels=False,
+    ax=insax,
+)
 ```
 
 TODO: edge type annotation? 
@@ -806,7 +920,10 @@ TODO: edge type annotation?
 #| label: fig-fluency-preservation
 #| fig-cap: |
 #| 
+#| 
+#| 
 #|   Differences in structural preservation with increased thresholding. 
+#| 
 #|   When only retaining the top 2% of edge strengths, blah
 #| fig-subcap:
 #|   - co-occurrence methods will retain local communities at the cost of global structure
@@ -871,9 +988,14 @@ Xest=(E_obs@(np.abs(B))).toarray()
 #| label: fig-fluency-preprocess
 #| fig-cap: |
 #| 
+#| 
+#| 
 #|   Differences in structural preservation with increased thresholding. 
+#| 
 #|   Retaining the top 2% of edges, co-occurrence retains local communities 
+#| 
 #|   at the cost of global structure.
+#| 
 #|   We might prefer to drop low-certainty/rare nodes from a preserved central structure.
 #| fig-subcap:
 #|   - Islands of local structure remain (doubly-stochastic)
@@ -918,7 +1040,6 @@ plt.title(
 # plt.plot(np.linspace(0,1),np.gradient(percentileofscore(evd_L_pursuit, np.linspace(0,1))))
 # np.percentile(evd_L_pursuit, 96)
 ```
-
 
 ```{python}
 # roll_df.query('spider==1 & whale==1').sum().sort_values(ascending=False).head(10)
