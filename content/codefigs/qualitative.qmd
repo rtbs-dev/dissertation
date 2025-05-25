@@ -220,9 +220,7 @@ def draw_graph_communities(G, pos, colors, ax=None):
 ```{python}
 #| label: fig-netsci-cooc
 #| fig-cap: 134 Network scientists connected by co-authorship
-#| lightbox:
-#|   group: netsci
-#|   desc-position: right
+#| lightbox: {desc-position: right, group: netsci}
 
 A_cooc = Xdf.T@Xdf - np.diag(Xdf.sum())
 G = nx.from_pandas_adjacency(A_cooc>0)
@@ -264,9 +262,7 @@ nx.draw_networkx(
 ```{python}
 #| label: fig-netsci-tree
 #| fig-cap: Chow-Liu tree of NetSci collaborator dependency relationships
-#| lightbox:
-#|   group: netsci
-#|   desc-position: right
+#| lightbox: {desc-position: right, group: netsci}
 
 G = nx.from_pandas_adjacency(pd.DataFrame(asc.chow_liu(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns))
 pos_tree = nx.kamada_kawai_layout(G, pos=pos_cos)
@@ -300,9 +296,7 @@ nx.draw_networkx(
 ```{python}
 #| label: fig-netsci-fp
 #| fig-cap: Forest Pursuit estimate of NetSci collaborator dependency relationships
-#| lightbox:
-#|   group: netsci
-#|   desc-position: right
+#| lightbox: {desc-position: right, group: netsci}
 
 evd_L_pursuit = _sq(asc.forest_pursuit_edge(X)[s_subs.cat.codes].T[s_subs.cat.codes])
 A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
@@ -418,7 +412,12 @@ clust.labels_
 ## Les Miserables Network
 
 ```{python}
-chars = pd.read_csv(datadir/'lesmis'/'jean-nodes.csv',dtype={'id':'category'}).set_index('id')
+chars = pd.read_csv(
+    datadir/'lesmis'/'jean-nodes.csv',dtype={'id':'category'}
+).set_index('id').assign(
+    name=lambda df: df['name'].str.replace('\\','')
+)
+
 chartype = chars.index.dtype
 JeanTidy = (
     pd.read_json(
@@ -456,7 +455,8 @@ JeanTidy
 
 ```{python}
 #| label: fig-lesmis-cooc
-
+#| fig-cap: Les Miserables character co-occurrence network
+#| lightbox: {desc-position: right, group: lesmis}
 # plt.figure(figsize=(20,20))
 
 G = nx.from_pandas_adjacency((JeanDF.T@JeanDF - np.diag(JeanDF.sum())))
@@ -485,6 +485,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+# plt.title(
+#     'Les Misérables Character Dependency Network '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
 ```
 
 ```{python}
@@ -498,6 +503,8 @@ nx.draw_networkx(
 
 ```{python}
 #| label: fig-lesmis-fp
+#| fig-cap: Les Miserables character dependency network (Forest Pursuit)
+#| lightbox: {desc-position: right, group: lesmis}
 
 evd_L_pursuit = _sq(asc.expected_forest_maximization(JeanDF.values))
 # ~min_connected_filter(evd_L_pursuit).mask
@@ -524,6 +531,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+# plt.title(
+#     'Les Misérables Character Dependency Network '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
 ```
 
 _TODO_: rank changes for different kinds of centrality? 
@@ -610,7 +622,7 @@ for c in [
     'Cosette',
     'Fantine',
     'Madamoiselle Gillenormand',
-    'Madame Th\'enardier',
+    "Madame Th'enardier",
     'Marguerite',
     'Anzelma',
 ]:
@@ -623,6 +635,10 @@ bumpsplot(
 )#['rank'].unstack())
 sns.despine(left=True)
 plt.gca().get_yaxis().set_visible(False)
+```
+
+```{python}
+lw
 ```
 
 ## Semantic Fluency (SNAFU)
@@ -692,12 +708,29 @@ animals.columns.sort_values() == roll_df.columns.sort_values()
 ```
 
 ```{python}
-plt.figure(figsize=(3, 2))
-sns.histplot(_sq(asc.ochiai(all_X, pseudocts=0.5)), stat='density', label='all co-occurrences', bins=20)
-sns.histplot(_sq(asc.ochiai(roll_X, pseudocts=0.5)), stat='density', label='10 in-memory', bins=20)
-plt.legend()
-plt.title('Item Similarities with/without Working Memory')
-plt.xlabel('Cosine Sim. (Ochiai Coeff.)');
+#| label: fig-fluency-workingmemory
+#| fig-cap: Effects of rolling-window activations on observation data
+
+# roll_df.query('spider==1 & whale==1').sum().sort_values(ascending=False).head(10)
+# sns.histplot(all_X.sum(axis=1))
+
+f = mpl.figure.Figure(figsize=(9,3))
+s1,s2,s3 = f.subplots(1, 3, sharey=False)
+sns.histplot(all_X.mean(axis=0), ax=s1, stat='density', label='complete list')
+sns.histplot(roll_X.mean(axis=0), ax=s1, stat='density', label='working memory (10)')
+s1.legend()
+s1.set(xlabel='animal frequency')
+
+sns.histplot(all_X.sum(axis=1), ax=s2, stat='probability', discrete=True)
+sns.histplot(roll_X.sum(axis=1), ax=s2, stat='probability', discrete=True)
+
+s2.set(xlabel='#animals/observation')
+# s1.set_yscale('log')
+sns.histplot(_sq(asc.ochiai(all_X, pseudocts=0.5)), stat='density', label='all co-occurrences', bins=20,ax=s3)
+sns.histplot(_sq(asc.ochiai(roll_X, pseudocts=0.5)), stat='density', label='10 in-memory', bins=20,ax=s3)
+s3.set_xlabel('cosine sim. (Ochiai coeff.)');
+f.tight_layout(pad=2.)
+f
 ```
 
 ```{python}
@@ -787,6 +820,11 @@ nx.draw_networkx(
 ```
 
 ```{python}
+centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centCS.head(15)
+```
+
+```{python}
 #| label: fig-fluency-tree
 e_tree = _sq(asc.chow_liu(X, pseudocts=0.5)>0)
 G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_tree), index=roll_df.columns, columns=roll_df.columns))
@@ -865,6 +903,11 @@ nx.draw_networkx(
 ```
 
 ```{python}
+centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centGL.head(15)
+```
+
+```{python}
 #| label: fig-fluency-fpmin
 #| fig-cap: Comparison of backboning/dependency recovery methods tested vs. Forest Pursuit
 
@@ -907,6 +950,12 @@ nx.draw_networkx(
 )
 ```
 
+```{python}
+nx.eigenvector_centrality_numpy(G)
+centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centFP.head(15)
+```
+
 TODO: edge type annotation? 
 - co-located
 - taxonomic
@@ -922,7 +971,13 @@ TODO: edge type annotation?
 #| 
 #| 
 #| 
+#| 
+#| 
+#| 
+#| 
 #|   Differences in structural preservation with increased thresholding. 
+#| 
+#| 
 #| 
 #|   When only retaining the top 2% of edge strengths, blah
 #| fig-subcap:
@@ -990,11 +1045,21 @@ Xest=(E_obs@(np.abs(B))).toarray()
 #| 
 #| 
 #| 
+#| 
+#| 
+#| 
+#| 
 #|   Differences in structural preservation with increased thresholding. 
+#| 
+#| 
 #| 
 #|   Retaining the top 2% of edges, co-occurrence retains local communities 
 #| 
+#| 
+#| 
 #|   at the cost of global structure.
+#| 
+#| 
 #| 
 #|   We might prefer to drop low-certainty/rare nodes from a preserved central structure.
 #| fig-subcap:
@@ -1039,23 +1104,4 @@ plt.title(
 ```{python}
 # plt.plot(np.linspace(0,1),np.gradient(percentileofscore(evd_L_pursuit, np.linspace(0,1))))
 # np.percentile(evd_L_pursuit, 96)
-```
-
-```{python}
-# roll_df.query('spider==1 & whale==1').sum().sort_values(ascending=False).head(10)
-# sns.histplot(all_X.sum(axis=1))
-
-f = mpl.figure.Figure(figsize=(6,2))
-s1,s2 = f.subplots(1, 2)
-sns.histplot(all_X.mean(axis=0), ax=s1, stat='density')
-sns.histplot(roll_X.mean(axis=0), ax=s1, stat='density')
-
-s1.set(xlabel='#lists/animal')
-
-sns.histplot(all_X.sum(axis=1), ax=s2)
-# sns.histplot(roll_X.sum(axis=1), ax=s2)
-
-s2.set(xlabel='#animals/list')
-# s1.set_yscale('log')
-f
 ```
