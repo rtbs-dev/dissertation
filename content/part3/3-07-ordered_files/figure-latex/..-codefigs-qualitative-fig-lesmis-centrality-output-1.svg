@@ -6,7 +6,7 @@
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
     <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
-    <dc:date>2025-05-25T00:43:54.091990</dc:date>
+    <dc:date>2025-05-25T12:20:31.015210</dc:date>
     <dc:format>image/svg+xml</dc:format>
     <dc:creator>
      <cc:Agent>
@@ -41,12 +41,12 @@ z
     <g id="xtick_1">
      <g id="line2d_1">
       <defs>
-       <path id="mabc1ec6b5f" d="M 0 0 
+       <path id="m70febac175" d="M 0 0 
 L 0 4.8 
 " style="stroke: #262626"/>
       </defs>
       <g>
-       <use xlink:href="#mabc1ec6b5f" x="197.56164" y="339.84" style="fill: #262626; stroke: #262626"/>
+       <use xlink:href="#m70febac175" x="197.56164" y="339.84" style="fill: #262626; stroke: #262626"/>
       </g>
      </g>
      <g id="text_1">
@@ -170,7 +170,7 @@ z
     <g id="xtick_2">
      <g id="line2d_2">
       <g>
-       <use xlink:href="#mabc1ec6b5f" x="289.793045" y="339.84" style="fill: #262626; stroke: #262626"/>
+       <use xlink:href="#m70febac175" x="289.793045" y="339.84" style="fill: #262626; stroke: #262626"/>
       </g>
      </g>
      <g id="text_2">
@@ -271,7 +271,7 @@ L 280.074037 223.929712
 L 283.445938 223.92 
 L 299.016186 223.92 
 L 299.016186 223.92 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_4">
     <path d="M 197.56164 180.72 
@@ -303,7 +303,7 @@ L 280.074037 252.710288
 L 283.445938 252.72 
 L 299.016186 252.72 
 L 299.016186 252.72 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_5">
     <path d="M 197.56164 123.12 
@@ -340,7 +340,7 @@ L 279.478996 281.417148
 L 280.669079 281.52 
 L 299.016186 281.52 
 L 299.016186 281.52 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_6">
     <path d="M 197.56164 108.72 
@@ -377,7 +377,7 @@ L 279.478996 267.017148
 L 280.669079 267.12 
 L 299.016186 267.12 
 L 299.016186 267.12 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_7">
     <path d="M 197.56164 238.32 
@@ -414,7 +414,7 @@ L 279.478996 94.413502
 L 280.669079 94.32 
 L 299.016186 94.32 
 L 299.016186 94.32 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_8">
     <path d="M 197.56164 79.92 
@@ -446,7 +446,7 @@ L 280.074037 151.910288
 L 283.445938 151.92 
 L 299.016186 151.92 
 L 299.016186 151.92 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_9">
     <path d="M 197.56164 94.32 
@@ -470,7 +470,7 @@ L 279.181475 123.089791
 L 282.553376 123.12 
 L 299.016186 123.12 
 L 299.016186 123.12 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_10">
     <path d="M 197.56164 223.92 
@@ -504,7 +504,7 @@ L 280.371558 137.52187
 L 288.305442 137.52 
 L 299.016186 137.52 
 L 299.016186 137.52 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_11">
     <path d="M 197.56164 281.52 
@@ -541,7 +541,7 @@ L 279.974864 108.753534
 L 281.363293 108.72 
 L 299.016186 108.72 
 L 299.016186 108.72 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #8da0cb; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #8da0cb; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_12">
     <path d="M 197.56164 137.52 
@@ -580,7 +580,7 @@ L 280.074037 324.694749
 L 281.56164 324.72 
 L 299.016186 324.72 
 L 299.016186 324.72 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_13">
     <path d="M 197.56164 51.12 
@@ -604,7 +604,7 @@ L 279.181475 79.889791
 L 282.553376 79.92 
 L 299.016186 79.92 
 L 299.016186 79.92 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_14">
     <path d="M 197.56164 36.72 
@@ -628,7 +628,7 @@ L 279.181475 65.489791
 L 282.553376 65.52 
 L 299.016186 65.52 
 L 299.016186 65.52 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_15">
     <path d="M 197.56164 209.52 
@@ -661,13 +661,13 @@ L 279.280649 310.22875
 L 280.768252 310.32 
 L 299.016186 310.32 
 L 299.016186 310.32 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_16">
     <path d="M 197.56164 22.32 
 L 299.016186 22.32 
 L 299.016186 22.32 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_17">
     <path d="M 197.56164 166.32 
@@ -702,7 +702,7 @@ L 279.578169 295.85039
 L 280.867426 295.92 
 L 299.016186 295.92 
 L 299.016186 295.92 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_18">
     <path d="M 197.56164 252.72 
@@ -736,7 +736,7 @@ L 280.371558 166.32187
 L 288.305442 166.32 
 L 299.016186 166.32 
 L 299.016186 166.32 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_19">
     <path d="M 197.56164 310.32 
@@ -771,7 +771,7 @@ L 279.578169 180.78961
 L 280.867426 180.72 
 L 299.016186 180.72 
 L 299.016186 180.72 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_20">
     <path d="M 197.56164 324.72 
@@ -806,7 +806,7 @@ L 279.181475 209.640837
 L 280.569905 209.52 
 L 299.016186 209.52 
 L 299.016186 209.52 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #8da0cb; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #8da0cb; stroke-opacity: 0.5; stroke-width: 4; stroke-linecap: round"/>
    </g>
    <g id="line2d_21">
     <path d="M 197.56164 65.52 
@@ -830,7 +830,7 @@ L 279.181475 36.750209
 L 282.553376 36.72 
 L 299.016186 36.72 
 L 299.016186 36.72 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_22">
     <path d="M 197.56164 267.12 
@@ -862,7 +862,7 @@ L 280.074037 195.129712
 L 283.445938 195.12 
 L 299.016186 195.12 
 L 299.016186 195.12 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_23">
     <path d="M 197.56164 151.92 
@@ -896,7 +896,7 @@ L 280.371558 238.31813
 L 288.305442 238.32 
 L 299.016186 238.32 
 L 299.016186 238.32 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #fc8d62; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="line2d_24">
     <path d="M 197.56164 195.12 
@@ -933,7 +933,7 @@ L 279.478996 51.213502
 L 280.669079 51.12 
 L 299.016186 51.12 
 L 299.016186 51.12 
-" clip-path="url(#p67459b7c23)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
+" clip-path="url(#p6d7560ff86)" style="fill: none; stroke: #66c2a5; stroke-opacity: 0.5; stroke-linecap: round"/>
    </g>
    <g id="patch_3">
     <path d="M 192.488913 339.84 
@@ -2470,8 +2470,8 @@ z
     </g>
    </g>
    <g id="text_33">
-    <!-- Madame Th\'enardier (20) -->
-    <g style="fill: #66c2a5" transform="translate(69.4065 255.216) scale(0.096 -0.096)">
+    <!-- Madame Th'enardier (20) -->
+    <g style="fill: #66c2a5" transform="translate(74.1195 255.216) scale(0.096 -0.096)">
      <defs>
       <path id="CharterBT-Bold-4d" d="M 160 0 
 L 1613 0 
@@ -2557,13 +2557,6 @@ L 3795 4294
 L 102 4294 
 z
 " transform="scale(0.015625)"/>
-      <path id="CharterBT-Bold-5c" d="M -45 4294 
-L 2630 -595 
-L 3110 -595 
-L 435 4294 
-L -45 4294 
-z
-" transform="scale(0.015625)"/>
       <path id="CharterBT-Bold-27" d="M 499 2675 
 L 621 2675 
 L 851 4109 
@@ -2584,25 +2577,24 @@ z
      <use xlink:href="#CharterBT-Bold-20" transform="translate(398.299942 0)"/>
      <use xlink:href="#CharterBT-Bold-54" transform="translate(427.399933 0)"/>
      <use xlink:href="#CharterBT-Bold-68" transform="translate(487.699921 0)"/>
-     <use xlink:href="#CharterBT-Bold-5c" transform="translate(547.399918 0)"/>
-     <use xlink:href="#CharterBT-Bold-27" transform="translate(596.499908 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(613.999893 0)"/>
-     <use xlink:href="#CharterBT-Bold-6e" transform="translate(666.399887 0)"/>
-     <use xlink:href="#CharterBT-Bold-61" transform="translate(726.899872 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(781.299866 0)"/>
-     <use xlink:href="#CharterBT-Bold-64" transform="translate(823.399857 0)"/>
-     <use xlink:href="#CharterBT-Bold-69" transform="translate(882.999847 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(913.499832 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(965.899826 0)"/>
-     <use xlink:href="#CharterBT-Bold-20" transform="translate(1007.999817 0)"/>
-     <use xlink:href="#CharterBT-Bold-28" transform="translate(1037.099808 0)"/>
-     <use xlink:href="#CharterBT-Bold-32" transform="translate(1079.899796 0)"/>
-     <use xlink:href="#CharterBT-Bold-30" transform="translate(1137.999786 0)"/>
-     <use xlink:href="#CharterBT-Bold-29" transform="translate(1196.099777 0)"/>
+     <use xlink:href="#CharterBT-Bold-27" transform="translate(547.399918 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(564.899902 0)"/>
+     <use xlink:href="#CharterBT-Bold-6e" transform="translate(617.299896 0)"/>
+     <use xlink:href="#CharterBT-Bold-61" transform="translate(677.799881 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(732.199875 0)"/>
+     <use xlink:href="#CharterBT-Bold-64" transform="translate(774.299866 0)"/>
+     <use xlink:href="#CharterBT-Bold-69" transform="translate(833.899857 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(864.399841 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(916.799835 0)"/>
+     <use xlink:href="#CharterBT-Bold-20" transform="translate(958.899826 0)"/>
+     <use xlink:href="#CharterBT-Bold-28" transform="translate(987.999817 0)"/>
+     <use xlink:href="#CharterBT-Bold-32" transform="translate(1030.799805 0)"/>
+     <use xlink:href="#CharterBT-Bold-30" transform="translate(1088.899796 0)"/>
+     <use xlink:href="#CharterBT-Bold-29" transform="translate(1146.999786 0)"/>
     </g>
    </g>
    <g id="text_34">
-    <!-- (11) Madame Th\'enardier -->
+    <!-- (11) Madame Th'enardier -->
     <g style="fill: #66c2a5" transform="translate(308.239326 168.816) scale(0.096 -0.096)">
      <use xlink:href="#CharterBT-Bold-28"/>
      <use xlink:href="#CharterBT-Bold-31" transform="translate(42.799988 0)"/>
@@ -2618,16 +2610,15 @@ z
      <use xlink:href="#CharterBT-Bold-20" transform="translate(629.19989 0)"/>
      <use xlink:href="#CharterBT-Bold-54" transform="translate(658.299881 0)"/>
      <use xlink:href="#CharterBT-Bold-68" transform="translate(718.599869 0)"/>
-     <use xlink:href="#CharterBT-Bold-5c" transform="translate(778.299866 0)"/>
-     <use xlink:href="#CharterBT-Bold-27" transform="translate(827.399857 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(844.899841 0)"/>
-     <use xlink:href="#CharterBT-Bold-6e" transform="translate(897.299835 0)"/>
-     <use xlink:href="#CharterBT-Bold-61" transform="translate(957.79982 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(1012.199814 0)"/>
-     <use xlink:href="#CharterBT-Bold-64" transform="translate(1054.299805 0)"/>
-     <use xlink:href="#CharterBT-Bold-69" transform="translate(1113.899796 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(1144.39978 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(1196.799774 0)"/>
+     <use xlink:href="#CharterBT-Bold-27" transform="translate(778.299866 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(795.79985 0)"/>
+     <use xlink:href="#CharterBT-Bold-6e" transform="translate(848.199844 0)"/>
+     <use xlink:href="#CharterBT-Bold-61" transform="translate(908.699829 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(963.099823 0)"/>
+     <use xlink:href="#CharterBT-Bold-64" transform="translate(1005.199814 0)"/>
+     <use xlink:href="#CharterBT-Bold-69" transform="translate(1064.799805 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(1095.299789 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(1147.699783 0)"/>
     </g>
    </g>
    <g id="text_35">
@@ -2942,29 +2933,28 @@ z
     </g>
    </g>
    <g id="text_45">
-    <!-- Th\'enardier (13) -->
-    <g style="fill: #66c2a5" transform="translate(110.4375 197.616) scale(0.096 -0.096)">
+    <!-- Th'enardier (13) -->
+    <g style="fill: #66c2a5" transform="translate(115.1505 197.616) scale(0.096 -0.096)">
      <use xlink:href="#CharterBT-Bold-54"/>
      <use xlink:href="#CharterBT-Bold-68" transform="translate(60.299988 0)"/>
-     <use xlink:href="#CharterBT-Bold-5c" transform="translate(119.999985 0)"/>
-     <use xlink:href="#CharterBT-Bold-27" transform="translate(169.099976 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(186.59996 0)"/>
-     <use xlink:href="#CharterBT-Bold-6e" transform="translate(238.999954 0)"/>
-     <use xlink:href="#CharterBT-Bold-61" transform="translate(299.499939 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(353.899933 0)"/>
-     <use xlink:href="#CharterBT-Bold-64" transform="translate(395.999924 0)"/>
-     <use xlink:href="#CharterBT-Bold-69" transform="translate(455.599915 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(486.099899 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(538.499893 0)"/>
-     <use xlink:href="#CharterBT-Bold-20" transform="translate(580.599884 0)"/>
-     <use xlink:href="#CharterBT-Bold-28" transform="translate(609.699875 0)"/>
-     <use xlink:href="#CharterBT-Bold-31" transform="translate(652.499863 0)"/>
-     <use xlink:href="#CharterBT-Bold-33" transform="translate(710.599854 0)"/>
-     <use xlink:href="#CharterBT-Bold-29" transform="translate(768.699844 0)"/>
+     <use xlink:href="#CharterBT-Bold-27" transform="translate(119.999985 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(137.499969 0)"/>
+     <use xlink:href="#CharterBT-Bold-6e" transform="translate(189.899963 0)"/>
+     <use xlink:href="#CharterBT-Bold-61" transform="translate(250.399948 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(304.799942 0)"/>
+     <use xlink:href="#CharterBT-Bold-64" transform="translate(346.899933 0)"/>
+     <use xlink:href="#CharterBT-Bold-69" transform="translate(406.499924 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(436.999908 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(489.399902 0)"/>
+     <use xlink:href="#CharterBT-Bold-20" transform="translate(531.499893 0)"/>
+     <use xlink:href="#CharterBT-Bold-28" transform="translate(560.599884 0)"/>
+     <use xlink:href="#CharterBT-Bold-31" transform="translate(603.399872 0)"/>
+     <use xlink:href="#CharterBT-Bold-33" transform="translate(661.499863 0)"/>
+     <use xlink:href="#CharterBT-Bold-29" transform="translate(719.599854 0)"/>
     </g>
    </g>
    <g id="text_46">
-    <!-- (3) Th\'enardier -->
+    <!-- (3) Th'enardier -->
     <g style="fill: #66c2a5" transform="translate(308.239326 53.616) scale(0.096 -0.096)">
      <use xlink:href="#CharterBT-Bold-28"/>
      <use xlink:href="#CharterBT-Bold-33" transform="translate(42.799988 0)"/>
@@ -2972,22 +2962,21 @@ z
      <use xlink:href="#CharterBT-Bold-20" transform="translate(143.699966 0)"/>
      <use xlink:href="#CharterBT-Bold-54" transform="translate(172.799957 0)"/>
      <use xlink:href="#CharterBT-Bold-68" transform="translate(233.099945 0)"/>
-     <use xlink:href="#CharterBT-Bold-5c" transform="translate(292.799942 0)"/>
-     <use xlink:href="#CharterBT-Bold-27" transform="translate(341.899933 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(359.399918 0)"/>
-     <use xlink:href="#CharterBT-Bold-6e" transform="translate(411.799911 0)"/>
-     <use xlink:href="#CharterBT-Bold-61" transform="translate(472.299896 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(526.69989 0)"/>
-     <use xlink:href="#CharterBT-Bold-64" transform="translate(568.799881 0)"/>
-     <use xlink:href="#CharterBT-Bold-69" transform="translate(628.399872 0)"/>
-     <use xlink:href="#CharterBT-Bold-65" transform="translate(658.899857 0)"/>
-     <use xlink:href="#CharterBT-Bold-72" transform="translate(711.29985 0)"/>
+     <use xlink:href="#CharterBT-Bold-27" transform="translate(292.799942 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(310.299927 0)"/>
+     <use xlink:href="#CharterBT-Bold-6e" transform="translate(362.699921 0)"/>
+     <use xlink:href="#CharterBT-Bold-61" transform="translate(423.199905 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(477.599899 0)"/>
+     <use xlink:href="#CharterBT-Bold-64" transform="translate(519.69989 0)"/>
+     <use xlink:href="#CharterBT-Bold-69" transform="translate(579.299881 0)"/>
+     <use xlink:href="#CharterBT-Bold-65" transform="translate(609.799866 0)"/>
+     <use xlink:href="#CharterBT-Bold-72" transform="translate(662.19986 0)"/>
     </g>
    </g>
   </g>
  </g>
  <defs>
-  <clipPath id="p67459b7c23">
+  <clipPath id="p6d7560ff86">
    <rect x="192.488913" y="7.2" width="111.6" height="332.64"/>
   </clipPath>
  </defs>
