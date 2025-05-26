@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Recovery from Partial Orders – Measuring Network Dependencies from Node Activations</title>
+<title>Recovery from Working Memory &amp; Partial Orders – Measuring Network Dependencies from Node Activations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -63,6 +63,9 @@ div.csl-indent {
 <link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -94,6 +97,35 @@ div.csl-indent {
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -106,7 +138,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-ordered.html"><span class="chapter-title">Recovery from Partial Orders</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-ordered.html"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -213,7 +245,7 @@ div.csl-indent {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-07-ordered.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Recovery from Partial Orders</span></a>
+  <a href="../../content/part3/3-07-ordered.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -233,7 +265,11 @@ div.csl-indent {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#technical-language-processing" id="toc-technical-language-processing" class="nav-link active" data-scroll-target="#technical-language-processing">Technical Language Processing</a></li>
+  <li><a href="#technical-language-processing-with-invite" id="toc-technical-language-processing-with-invite" class="nav-link active" data-scroll-target="#technical-language-processing-with-invite">Technical Language Processing with INVITE</a>
+  <ul class="collapse">
+  <li><a href="#optimizing-absorbing-state-probabilities" id="toc-optimizing-absorbing-state-probabilities" class="nav-link" data-scroll-target="#optimizing-absorbing-state-probabilities">Optimizing absorbing-state probabilities</a></li>
+  <li><a href="#application" id="toc-application" class="nav-link" data-scroll-target="#application">Application</a></li>
+  </ul></li>
   <li><a href="#verbal-fluency-animal-network" id="toc-verbal-fluency-animal-network" class="nav-link" data-scroll-target="#verbal-fluency-animal-network">Verbal Fluency Animal Network</a>
   <ul class="collapse">
   <li><a href="#edge-connective-effiency-and-diversity" id="toc-edge-connective-effiency-and-diversity" class="nav-link" data-scroll-target="#edge-connective-effiency-and-diversity">Edge Connective Effiency and Diversity</a></li>
@@ -246,9 +282,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content page-columns page-full column-body" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-ordered.html"><span class="chapter-title">Recovery from Partial Orders</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-06-qualitative.html">Applications &amp; Extentions</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-ordered.html"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ordered" class="quarto-section-identifier"><span class="chapter-title">Recovery from Partial Orders</span></span></h1>
+<h1 class="title"><span id="sec-ordered" class="quarto-section-identifier"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></span></h1>
 </div>
 
 
@@ -265,18 +301,130 @@ div.csl-indent {
 </header>
 
 
-<p>Like before, but with the added twist of <em>knowing</em> our nodes were activated with a particular partial order.</p>
-<section id="technical-language-processing" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="technical-language-processing">Technical Language Processing</h2>
-<div class="page-columns page-full"><p><em>insert from <span class="citation" data-cites="OrganizingTaggedKnowledge_Sexton2020 UsingSemanticFluency_Sexton2019"><a href="#ref-OrganizingTaggedKnowledge_Sexton2020" role="doc-biblioref">[1]</a>, <a href="#ref-UsingSemanticFluency_Sexton2019" role="doc-biblioref">[2]</a></span></em></p><div class="no-row-height column-margin column-container"><div id="ref-OrganizingTaggedKnowledge_Sexton2020" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,”</span> <em>Journal of Mechanical Design</em>, vol. 142, no. 3, Jan. 2020, doi: <a href="https://doi.org/10.1115/1.4045686">10.1115/1.4045686</a>.</div>
+<p>This whole time we have assumed that the ordering of nodes was unknown, or at the very least unreliable. However, there are frequently cases, especially in text processing applications, where we have some sense of an ordering on activations. By <em>partial order</em> on a set (a “poset”), we mean that all elements are either comparable as greater (before) or less (after), or incomparable. The set of posets is therefore precisely isomorphic to the set of <em>directed acyclic graphs</em>, based on reachability.</p>
+<p>Our original example with authors might be thought of as a poset: (i) precedes/asks (f) and (j), (j) precedes/asks (b), but (b) and (f) are incomparable. We don’t know if (i) asked (f) before or after (j) asked (b).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp; Interestingly, in the case where the node activations <em>are</em> given a total order (in the form of <em>timestamps</em>), <span class="citation" data-cites="Inferringnetworksdiffusion_GomezRodriguez2012"><a href="#ref-Inferringnetworksdiffusion_GomezRodriguez2012" role="doc-biblioref">[1]</a></span> derive an algorithm called <em>NetInf</em>. It utilizes sums over minimum spanning trees that satisfy time constraints, similar to a special case of Forest Pursuit where all activations have a total ordering.</p><div id="ref-Inferringnetworksdiffusion_GomezRodriguez2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. Gomez-Rodriguez, J. Leskovec, and A. Krause, <span>“Inferring networks of diffusion and influence,”</span> <em>ACM Transactions on Knowledge Discovery from Data (TKDD)</em>, vol. 5, no. 4, pp. 1–37, 2012, doi: <a href="https://doi.org/10.1145/2086737.2086741">10.1145/2086737.2086741</a>.</div>
+</div></div><div id="fn2"><p><sup>2</sup>&nbsp;though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!</p></div><div id="ref-ForagingSemanticFields_Hills2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">T. T. Hills, P. M. Todd, and M. N. Jones, <span>“Foraging in semantic fields: How we search through memory,”</span> <em>Topics in Cognitive Science</em>, vol. 7, no. 3, pp. 513–534, Jun. 2015, doi: <a href="https://doi.org/10.1111/tops.12151">10.1111/tops.12151</a>.</div>
+</div><div id="ref-Dynamicsearchworking_Hills2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">T. T. Hills and T. Pachur, <span>“Dynamic search and working memory in social recall.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, vol. 38, no. 1, pp. 218–228, 2012, doi: <a href="https://doi.org/10.1037/a0025161">10.1037/a0025161</a>.</div>
+</div></div><p>Sadly our co-authorship example does not often include the (partial) order of author additions,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> but other common network recovery problems do have an inherent order to them. A very common need is to recover concept association networks, whether from lists of tags or directly from a corpus of written language. What’s needed is an assumption on how the observed partial order of concepts is generated. <span class="citation" data-cites="ForagingSemanticFields_Hills2015"><a href="#ref-ForagingSemanticFields_Hills2015" role="doc-biblioref">[2]</a></span> proposes a “foraging” mechanism, so that concepts get sequentially recalled from “semantic patches” of nearby concepts in memory. The partial order comes from our ability to maintain more than one concept in working memory, so that the next concept can be “foraged” from any of the other recently recalled ones<span class="citation" data-cites="magicalnumberseven_Miller1956 Dynamicsearchworking_Hills2012"><a href="#ref-magicalnumberseven_Miller1956" role="doc-biblioref">[3]</a>, <a href="#ref-Dynamicsearchworking_Hills2012" role="doc-biblioref">[4]</a></span>.</p>
+<p>In this section, we briefly cover a method for network inference by <span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[5]</a></span> that utilizes partial order information from ordered lists of concepts, called INVITE. We use it to demonstrate improvement over bag-of-words and markov assumptions for downstream technical language processing <span class="citation" data-cites="Technicallanguageprocessing_Brundage2021"><a href="#ref-Technicallanguageprocessing_Brundage2021" role="doc-biblioref">[6]</a></span> tasks, as originally demonstrated in <span class="citation" data-cites="UsingSemanticFluency_Sexton2019 OrganizingTaggedKnowledge_Sexton2020"><a href="#ref-UsingSemanticFluency_Sexton2019" role="doc-biblioref">[7]</a>, and <a href="#ref-OrganizingTaggedKnowledge_Sexton2020" role="doc-biblioref">[8]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-Technicallanguageprocessing_Brundage2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. P. Brundage, R. Sexton, M. Hodkiewicz, A. Dima, and S. Lukens, <span>“Technical language processing: Unlocking maintenance knowledge,”</span> <em>Manufacturing Letters</em>, vol. 27, pp. 42–46, Jan. 2021, doi: <a href="https://doi.org/10.1016/j.mfglet.2020.11.001">10.1016/j.mfglet.2020.11.001</a>.</div>
 </div><div id="ref-UsingSemanticFluency_Sexton2019" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,”</span> in <em>Volume 2A: 45th design automation conference</em>, American Society of Mechanical Engineers, Aug. 2019. doi: <a href="https://doi.org/10.1115/detc2019-98429">10.1115/detc2019-98429</a>.</div>
-</div></div></div>
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,”</span> in <em>Volume 2A: 45th design automation conference</em>, American Society of Mechanical Engineers, Aug. 2019. doi: <a href="https://doi.org/10.1115/detc2019-98429">10.1115/detc2019-98429</a>.</div>
+</div><div id="ref-OrganizingTaggedKnowledge_Sexton2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,”</span> <em>Journal of Mechanical Design</em>, vol. 142, no. 3, Jan. 2020, doi: <a href="https://doi.org/10.1115/1.4045686">10.1115/1.4045686</a>.</div>
+</div><div id="ref-Estimatingsemanticnetworks_Zemla2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">J. C. Zemla and J. L. Austerweil, <span>“Estimating semantic networks of groups and individuals from fluency data,”</span> <em>Computational brain &amp; behavior</em>, vol. 1, pp. 36–58, 2018, doi: <a href="https://doi.org/10.31234/osf.io/kg45r">10.31234/osf.io/kg45r</a>.</div>
+</div></div><p>Finally, we show that using <em>Forest Pursuit</em> for partially ordered data can still be quite useful for network backboning, and for a fraction of the computational cost. We investigate a network recovery task from verbal/semantic fluency data <span class="citation" data-cites="Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a></span>, which involves recovery of a network of animal relationships from memory and recall experiments. Even without directly using partial order information, proper data preparation along with previously-discussed (un-ordered) recovery methods can lead to significantly improved network backboning and analysis capability</p>
+<section id="technical-language-processing-with-invite" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="technical-language-processing-with-invite">Technical Language Processing with INVITE</h2>
+<p>Maintenance work orders are often represented as categorized data, though increasingly quantitative use of a technician’s descriptions is being pursued by maintenance management operations <span class="citation" data-cites="BenchmarkingKeywordExtraction_Sexton2018 CategorizationErrorsData_Sexton2019"><a href="#ref-BenchmarkingKeywordExtraction_Sexton2018" role="doc-biblioref">[10]</a>, <a href="#ref-CategorizationErrorsData_Sexton2019" role="doc-biblioref">[11]</a></span>. Tags are another way to flexibly structure this otherwise “unstructured” data, which <span class="citation" data-cites="tble-mwo"><a href="#ref-tble-mwo" role="doc-biblioref"><strong>tble-mwo?</strong></a></span> shows in comparison to more traditional categorization.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-BenchmarkingKeywordExtraction_Sexton2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">R. Sexton, M. Hodkiewicz, M. P. Brundage, and T. Smoker, <span>“Benchmarking for keyword extraction methodologies in maintenance work orders,”</span> <em>Annual Conference of the <span>PHM</span> Society</em>, vol. 10, no. 1, Sep. 2018, doi: <a href="https://doi.org/10.36001/phmconf.2018.v10i1.541">10.36001/phmconf.2018.v10i1.541</a>.</div>
+</div><div id="ref-CategorizationErrorsData_Sexton2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">R. Sexton, M. Hodkiewicz, and M. P. Brundage, <span>“Categorization errors for data entry in maintenance work-orders,”</span> <em>Annual Conference of the <span>PHM</span> Society</em>, vol. 11, no. 1, Sep. 2019, doi: <a href="https://doi.org/10.36001/phmconf.2019.v11i1.790">10.36001/phmconf.2019.v11i1.790</a>.</div>
+</div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-tbl-mwo">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="27">
+<div id="tbl-mwo" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-editable="true" data-execution_count="27">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mwo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;9.1: Maintenance Work Order as categorized vs.&nbsp;tagged data
+</figcaption>
+<div aria-describedby="tbl-mwo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="tbl-mwo-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-mwo-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+<div aria-describedby="tbl-mwo-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-graphs-tbl-mwo-output-1.svg" id="tbl-mwo-1" class="img-fluid figure-img" data-ref-parent="tbl-mwo">
+</div>
+</figure>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Whether entered directly or generated from text by keyword extraction, the tags will tend to have ordering information readily available. A traditional way to model this kind of text is through either bag-of-words (the co-occurrence node activation data already discussed) or as a sequence of order-n markov model emissions. Unlike the clique bias from before, assuming markov jumps for each observation leads to a different kind of bias, with higher precision but reduced recall as shown in <a href="#fig-stack-markov" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-markov">
+<div id="cell-fig-stack-markov" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="26">
+<div class="cell-output cell-output-display">
+<div id="fig-stack-markov" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stack-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-ordered_files/figure-html/..-codefigs-graphs-fig-stack-markov-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stack-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Partial-order edge measurements with Markov assumption
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Without knowing the underlying dependency relationships, it’s difficult to estimate which edges were used by a random-walker, since subsequent visits in memory to a “tag” are not being reported once a technician first adds it. <span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[5]</a></span> call this an “Initial-visit-emitting” random walk, or INVITE for short. To more accurately recover the network, they suggest maximizing the absorption probability for each step of a partial order, individually, knowing which nodes have already been activated.</p>
+<div class="no-row-height column-margin column-container"></div><section id="optimizing-absorbing-state-probabilities" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="optimizing-absorbing-state-probabilities">Optimizing absorbing-state probabilities</h3>
+<p>Say the set of components or concepts that have a corresponding tag in our system is denoted by the node-set <span class="math inline">\(N\)</span>. A user-given set of <span class="math inline">\(T\)</span>&nbsp;<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> for a specific record can be denoted as a Random Walk (RW) trajectory <span class="math inline">\(\mathbf{t}=\{t_1, t_2, t_3, \cdots t_{T}\}\)</span>, where <span class="math inline">\(T\leq N\)</span>. This limit on the size of <span class="math inline">\(T\)</span> assumes tags are a set of unique entries. Any transitions between previously visited tags in <span class="math inline">\(\mathbf{t}\)</span> will not be directly observed, making the transitions observed in <span class="math inline">\(\mathbf{t}\)</span> strictly non-Markov, and allowing for a <em>potentially infinite</em> number of possible paths to arrive at the next tag <em>through previously visited ones</em>. Instead of directly computing over this intractable model for generating <span class="math inline">\(\mathbf{t}\)</span>, the key insight from the original INVITE paper&nbsp;<span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[5]</a></span> comes from partitioning <span class="math inline">\(\mathbf{t}\)</span> into <span class="math inline">\(T-1\)</span> Markov chains with absorbing states. Previously visited tags are “transient” states, and unseen tags are “absorbing”. It is then possible to calculate the absorption probability into the <span class="math inline">\(k\)</span> transition (<span class="math inline">\(t_k \rightarrow t_{k+1}\)</span>) using the <em>fundamental matrix</em> of each partition. If the partitions at this jump consist of <span class="math inline">\(q\)</span> transient states with transition matrix among themselves <span class="math inline">\(\mathbf{Q}^{(k)}_{q\times q}\)</span>, and <span class="math inline">\(r\)</span> absorbing states with transitions into them from <span class="math inline">\(q\)</span> as <span class="math inline">\(\mathbf{R}^{(k)}_{q\times r}\)</span>, the Markov transition matrix <span class="math inline">\(\mathbf{M}^{(k)}_{n\times n}\)</span> has the form <span id="eq-trans-matrix"><span class="math display">\[
+\mathbf{M}^{(k)} =
+    \begin{pmatrix}
+        \mathbf{Q}^{(k)}  &amp; \mathbf{R}^{(k)} \\
+        \mathbf{0}        &amp; \mathbf{I}
+    \end{pmatrix}
+\tag{9.1}\]</span></span></p>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;While some sources use “tagging” as a proxy for a set of strictly un-ordered labels (as in multi-label classification), we preserve the mechanism by which the tags were generated in the first place, i.e., in a <em>specific</em> order.</p></div><div id="ref-Humanmemorysearch_Jun2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">K.-S. Jun, J. Zhu, T. T. Rogers, Z. Yang, <em>et al.</em>, <span>“Human memory search as initial-visit emitting random walk,”</span> <em>Advances in neural information processing systems</em>, vol. 28, no. 20, pp. 2389–2393, 2015, doi: <a href="https://doi.org/10.1016/j.physleta.2019.04.060">10.1016/j.physleta.2019.04.060</a>.</div>
+</div><div id="ref-RandomWalksElectric_Doyle2000" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">P. G. Doyle and J. L. Snell, <span>“Random walks and electric networks.”</span> arXiv, 2000. doi: <a href="https://doi.org/10.48550/ARXIV.MATH/0001057">10.48550/ARXIV.MATH/0001057</a>.</div>
+</div></div><p>Here <span class="math inline">\(\mathbf{0}\)</span>, <span class="math inline">\(\mathbf{I}\)</span> represent lack of transition between/from absorbing states. It follows from <span class="citation" data-cites="RandomWalksElectric_Doyle2000"><a href="#ref-RandomWalksElectric_Doyle2000" role="doc-biblioref">[12]</a></span> that the probability <span class="math inline">\(P\)</span> of a chain starting at <span class="math inline">\(t_k\)</span> being absorbed into state <span class="math inline">\(k+1\)</span>, is given as <span id="eq-absorb"><span class="math display">\[
+\begin{gathered}
+    P\left(t_{k+1} \middle| t_{1:k},\mathbf{M}\right) =
+        \left.\mathbf{N}^{(k)}R^{(k)}\right|_{q,1}\\
+\mathbf{N} = \left( \mathbf{I}-\mathbf{Q} \right) ^{-1}
+\end{gathered}
+\tag{9.2}\]</span></span></p>
+<p>The probability of being absorbed at <span class="math inline">\(k+1\)</span> conditioned on jumps <span class="math inline">\(1:k\)</span> is thus equivalent to the probability of observing the <span class="math inline">\(k+1\)</span> INVITE tag. If we approximate an a priori distribution of tag probabilities to initialize our chain as <span class="math inline">\(t_1\sim\text{Cat}(n,\theta)\)</span> (which could be empirically derived or simulated), then the likelihood of our observed tag chain <span class="math inline">\(\mathbf{t}\)</span>, given a transition matrix, is: <span class="math display">\[
+\mathcal{L}\left(\mathbf{t}| \theta, \mathbf{M}\right) =
+        \theta(t_1)\prod_{k=1}^{T-1} P\left(t_{k+1}\,\middle|\ t_{1:k},\mathbf{M}\right)
+\]</span></p>
+<p>Finally, if we observe a set of tag lists <span class="math inline">\(\mathbf{C} = \left\{ \mathbf{t}_1, \mathbf{t}_2, \cdots, \mathbf{t}_{c} \right\}\)</span>, and assume <span class="math inline">\(\theta\)</span> can be estimated independently of <span class="math inline">\(\mathbf{M}\)</span>, then we can frame the problem of structure mining on observed INVITE data as a minimization of negative log-likelihood. A point estimate for our association network given <span class="math inline">\(\mathbf{M}\)</span> can found as: <span class="math display">\[
+    \mathbf{M}^* \leftarrow \operatorname*{argmin}_{\mathbf{M}} \quad
+    \sum_{i=1}^{C}
+    \sum_{k=1}^{T_i-1}
+        -\log \mathcal{L} \left(t^{(i)}_{k+1} \middle| t^{(i)}_{1:k},\mathbf{M}\right)
+\]</span></p>
 </section>
-<section id="verbal-fluency-animal-network" class="level2">
+<section id="application" class="level3">
+<h3 class="anchored" data-anchor-id="application">Application</h3>
+<ul>
+<li>look, <a href="#eq-trans-matrix" class="quarto-xref">Equation&nbsp;<span>9.1</span></a>, <a href="#eq-absorb" class="quarto-xref">Equation&nbsp;<span>9.2</span></a> is the same as forest matrix.</li>
+<li>in og work, calculated for tag datasets.</li>
+</ul>
+<div id="fig-excavate-tern" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-excavate-tern-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-excavate-tern-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: Semisupervised MWO Classification with Network Label Propagation
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="verbal-fluency-animal-network" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="verbal-fluency-animal-network">Verbal Fluency Animal Network</h2>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-workingmemory">
+<p><span class="citation" data-cites="magicalnumberseven_Miller1956"><a href="#ref-magicalnumberseven_Miller1956" role="doc-biblioref">[3]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-magicalnumberseven_Miller1956" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">G. A. Miller, <span>“The magical number seven, plus or minus two: Some limits on our capacity for processing information.”</span> <em>Psychological Review</em>, vol. 63, no. 2, pp. 81–97, Mar. 1956, doi: <a href="https://doi.org/10.1037/h0043158">10.1037/h0043158</a>.</div>
+</div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-workingmemory">
 <div id="cell-fig-fluency-workingmemory" class="cell" data-execution_count="33">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-workingmemory" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -285,7 +433,7 @@ div.csl-indent {
 <img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-workingmemory-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-workingmemory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: Effects of rolling-window activations on observation data
+Figure&nbsp;9.3: Effects of rolling-window activations on observation data
 </figcaption>
 </figure>
 </div>
@@ -295,15 +443,15 @@ Figure&nbsp;9.1: Effects of rolling-window activations on observation data
 <section id="edge-connective-effiency-and-diversity" class="level3">
 <h3 class="anchored" data-anchor-id="edge-connective-effiency-and-diversity">Edge Connective Effiency and Diversity</h3>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-dsmin">
-<div id="cell-fig-fluency-dsmin" class="cell" data-execution_count="36">
+<div id="cell-fig-fluency-dsmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-dsmin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" id="fig-fluency-dsmin" class="img-fluid figure-img">
+<a href="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.4: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)"><img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.2
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.4: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
 </figcaption>
 </figure>
 </div>
@@ -311,15 +459,15 @@ Figure&nbsp;9.2
 </div>
 </div>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-tree">
-<div id="cell-fig-fluency-tree" class="cell" data-execution_count="38">
+<div id="cell-fig-fluency-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" id="fig-fluency-tree" class="img-fluid figure-img">
+<a href="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.5: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)"><img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.3
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.5: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
 </figcaption>
 </figure>
 </div>
@@ -327,15 +475,15 @@ Figure&nbsp;9.3
 </div>
 </div>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-glassomin">
-<div id="cell-fig-fluency-glassomin" class="cell" data-execution_count="39">
+<div id="cell-fig-fluency-glassomin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="39">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-glassomin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" id="fig-fluency-glassomin" class="img-fluid figure-img">
+<a href="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (GLASSO)"><img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.4
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (GLASSO)
 </figcaption>
 </figure>
 </div>
@@ -343,15 +491,15 @@ Figure&nbsp;9.4
 </div>
 </div>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-fpmin">
-<div id="cell-fig-fluency-fpmin" class="cell" data-execution_count="41">
+<div id="cell-fig-fluency-fpmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-fpmin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="img-fluid figure-img">
+<a href="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)"><img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.5: Comparison of backboning/dependency recovery methods tested vs.&nbsp;Forest Pursuit
+Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
 </figcaption>
 </figure>
 </div>
@@ -362,9 +510,8 @@ Figure&nbsp;9.5: Comparison of backboning/dependency recovery methods tested vs.
 <section id="thresholded-structure-preservation" class="level3">
 <h3 class="anchored" data-anchor-id="thresholded-structure-preservation">Thresholded Structure Preservation</h3>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preservation">
-<div class="cell" data-execution_count="43">
-<p>Differences in structural preservation with increased thresholding.</p>
-<div id="fig-fluency-preservation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="43">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="43">
+<div id="fig-fluency-preservation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-editable="true" data-execution_count="43">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -374,7 +521,7 @@ Figure&nbsp;9.5: Comparison of backboning/dependency recovery methods tested vs.
 <img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preservation-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preservation">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preservation-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) co-occurrence methods will retain local communities at the cost of global structure
+(a) co-occurrence retains local communities at the cost of global structure
 </figcaption>
 </figure>
 </div>
@@ -386,14 +533,14 @@ Figure&nbsp;9.5: Comparison of backboning/dependency recovery methods tested vs.
 <img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preservation-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preservation">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preservation-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) dependency network drops rarer nodes from the preserved central structure at higher uncetainty cutoffs
+(b) clique-bias correction preserves central structure by disconnecting rare nodes
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.6: When only retaining the top 2% of edge strengths, blah
+Figure&nbsp;9.8: Differences in structural preservation with over-thresholding.
 </figcaption>
 </figure>
 </div>
@@ -404,11 +551,8 @@ Figure&nbsp;9.6: When only retaining the top 2% of edge strengths, blah
 <section id="sec-fp-preprocess" class="level3">
 <h3 class="anchored" data-anchor-id="sec-fp-preprocess">Forest Pursuit as Preprocessing</h3>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preprocess">
-<div class="cell" data-execution_count="45">
-<p>Differences in structural preservation with increased thresholding.</p>
-<p>Retaining the top 2% of edges, co-occurrence retains local communities</p>
-<p>at the cost of global structure.</p>
-<div id="fig-fluency-preprocess" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="45">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="45">
+<div id="fig-fluency-preprocess" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-editable="true" data-execution_count="45">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -418,7 +562,7 @@ Figure&nbsp;9.6: When only retaining the top 2% of edge strengths, blah
 <img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preprocess-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preprocess">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preprocess-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(a) Islands of local structure remain (doubly-stochastic)
+(a) Doubly Stochastic filter with FP (node degree) preprocessing
 </figcaption>
 </figure>
 </div>
@@ -430,14 +574,14 @@ Figure&nbsp;9.6: When only retaining the top 2% of edge strengths, blah
 <img src="3-07-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-preprocess-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-fluency-preprocess">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-fluency-preprocess-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-(b) Intact global structure with isolates
+(b) GLASSO Precision estimate with FP (node-degree) preprocessing
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.7: We might prefer to drop low-certainty/rare nodes from a preserved central structure.
+Figure&nbsp;9.9: Forest Pursuit preprocessing for Doubly-Stochastic and GLASSO recovered networks
 </figcaption>
 </figure>
 </div>
@@ -448,6 +592,7 @@ Figure&nbsp;9.7: We might prefer to drop low-certainty/rare nodes from a preserv
 
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -912,6 +1057,38 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     })(document);
     </script>
   
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 

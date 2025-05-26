@@ -245,7 +245,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-07-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Partial Orders</span></a>
+  <a href="../../content/part3/3-07-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -308,7 +308,7 @@ window.Quarto = {
 </div></div><div id="ref-Findingcommunitystructure_Clauset2004" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[5] </div><div class="csl-right-inline">A. Clauset, M. E. J. Newman, and C. Moore, <span>“Finding community structure in very large networks,”</span> <em>Physical Review E</em>, vol. 70, no. 6, p. 066111, Dec. 2004, doi: <a href="https://doi.org/10.1103/physreve.70.066111">10.1103/physreve.70.066111</a>.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-cooc">
-<div id="cell-fig-netsci-cooc" class="cell" data-execution_count="11">
+<div id="cell-fig-netsci-cooc" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -412,7 +412,7 @@ Figure&nbsp;8.5: Les Miserables character co-occurrence network
 <p>We should also ask <em>what we want</em> out of this “social” network. Another way we might think about a social network of characters is “which characters <em>influence</em> the appearance (or not) of which other characters?” By extension, “which characters are <em>significant</em>, in the sense that they dictate the appearance of more characters than others?” From a domain modeling perspective, this is like asking <em>how</em> an author is deciding which characters to include in a chapter. By not correcting for clique-bias, we are implicitly assuming that Victor Hugo would be setting out to write a chapter and immediately writes down a list of every character, independently, should appear. Instead, it’s likely that the desired appearance of certain characters in a chapter <em>leads to</em> the inclusion of others, as the plot requires.</p>
 <p>Because the inclusion of certain characters <em>leads to</em> the inclusion of others (by this model), we can reasonably model the authorial “character inclusion process” as <em>spreading</em> from character to character. With this in mind, we apply Forest Pursuit to correct for clique-bias, and show the resulting dependency network (with the original community partition) in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-fp">
-<div id="cell-fig-lesmis-fp" class="cell" data-execution_count="24">
+<div id="cell-fig-lesmis-fp" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div id="fig-lesmis-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -431,7 +431,7 @@ Figure&nbsp;8.6: Les Miserables character dependency network (Forest Pursuit)
 <p>Applying these networks, we might wish to distinguish through them which characters are “main” and which are “supporting”, though more on a gradient than in a binary/classification sense. One way to do this is through centrality measures [CITE], which estimate the “importance” of nodes in various ways. Eigenvector centrality, specifically, finds the importance of nodes relative to the importance of each node’s neighbors<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; Regularized eigenvector centrality is equivalent to PageRank centrality, <em>i.e.</em> the seminal work from [CITE], of Google fame.</p></div></div><p>The topology of a network greatly impacts the centrality measure recovered. In <a href="#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a> we show a bump-plot of the ranks of the top 15 most central nodes for both the original co-occurrence network and the FP network estimate. In the original network, centrality rewards characters appearing in mutual cliques as being central, especially the “revolutionary” group (shown in orange in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> and <a href="#fig-lesmis-cooc" class="quarto-xref">Figure&nbsp;<span>8.5</span></a>). Are these really the most important characters? Even Javert, though being an important recurring character, largely plays the role of generic law enforcement throughout, while characters like Marius play central motivating roles across several distinct social groups throughout the novel.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-centrality">
-<div id="cell-fig-lesmis-centrality" class="cell" data-execution_count="28">
+<div id="cell-fig-lesmis-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="28">
 <div class="cell-output cell-output-display">
 <div id="fig-lesmis-centrality" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -881,8 +881,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../../content/part3/3-07-ordered.html" class="pagination-link" aria-label="Recovery from Partial Orders">
-        <span class="nav-page-text"><span class="chapter-title">Recovery from Partial Orders</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../../content/part3/3-07-ordered.html" class="pagination-link" aria-label="Recovery from Working Memory &amp; Partial Orders">
+        <span class="nav-page-text"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
