@@ -1,25 +1,27 @@
-\SetCoordinates[xAngle=0, yAngle=70, yLength=0.7]
 \begin{tikzpicture}[scale=1.3,multilayer=3d]
    \input{stack-net.tex}
-   \Edge[lw=1,bend=90,Direct](c07)(c03)
-   \Edge[lw=1,bend=60,Direct](c03)(c05)  
-   \Edge[lw=1,Direct](c05)(c08)
+   \Edge[lw=1,Direct](dd)(dh)
+   \Edge[lw=1,Direct](dh)(de)
 
-   \Edge[lw=1,Direct,bend=-20](b06)(b05)
-   \Edge[lw=1,Direct](b05)(b01)
-   \Edge[lw=1,Direct,bend=-45](b01)(b08)
+   \Edge[lw=1,bend=90,Direct](cg)(cc)
+   \Edge[lw=1,bend=60,Direct](cc)(ce)  
+   \Edge[lw=1,Direct](ce)(ch)
+    
+   \Edge[lw=1,Direct,bend=-20](bf)(be)
+   \Edge[lw=1,Direct](be)(ba)
+   \Edge[lw=1,Direct,bend=-45](ba)(bh)
 
-   \Edge[lw=1,Direct](a09)(a10)
-   \Edge[lw=1,Direct,bend=-45](a10)(a06)
-   \Edge[lw=1,Direct,bend=60](a06)(a02)
+   \Edge[lw=1,Direct](ai)(aj)
+   \Edge[lw=1,Direct,bend=-45](aj)(af)
+   \Edge[lw=1,Direct,bend=60](af)(ab)
 
 
-   \Edge[color=red](07)(05)
-   \Edge[color=red](05)(08)
-   \Edge[color=red](06)(09)
-   \Edge[color=red](10)(02)
-  \Edge[color=orange,bend=15](03)(05)
-  \Edge[color=orange,bend=15](08)(01)
-  \Edge[color=orange,bend=15](06)(02)
-  \Edge[color=orange,bend=15](06)(10)
+   \Edge[color=purple](g)(e)
+   \Edge[color=purple](e)(h)
+   \Edge[color=purple](f)(i)
+   \Edge[color=purple](j)(b)
+  \Edge[color=orange,bend=15](c)(e)
+  \Edge[color=orange,bend=15](h)(a)
+  \Edge[color=orange,bend=15](f)(b)
+  \Edge[color=orange,bend=15](f)(j)
 \end{tikzpicture}

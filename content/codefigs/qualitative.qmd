@@ -220,7 +220,9 @@ def draw_graph_communities(G, pos, colors, ax=None):
 ```{python}
 #| label: fig-netsci-cooc
 #| fig-cap: 134 Network scientists connected by co-authorship
+#| editable: true
 #| lightbox: {desc-position: right, group: netsci}
+#| slideshow: {slide_type: ''}
 
 A_cooc = Xdf.T@Xdf - np.diag(Xdf.sum())
 G = nx.from_pandas_adjacency(A_cooc>0)
@@ -504,7 +506,9 @@ nx.draw_networkx(
 ```{python}
 #| label: fig-lesmis-fp
 #| fig-cap: Les Miserables character dependency network (Forest Pursuit)
+#| editable: true
 #| lightbox: {desc-position: right, group: lesmis}
+#| slideshow: {slide_type: ''}
 
 evd_L_pursuit = _sq(asc.expected_forest_maximization(JeanDF.values))
 # ~min_connected_filter(evd_L_pursuit).mask
@@ -612,6 +616,8 @@ def bumpsplot(dataframe, color_dict=defaultdict(lambda: "k"),
 
 ```{python}
 #| label: fig-lesmis-centrality
+#| editable: true
+#| slideshow: {slide_type: ''}
 
 
 plt.figure(figsize=(2,6))
@@ -673,6 +679,8 @@ animals
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 from numpy.lib.stride_tricks import as_strided, sliding_window_view
 def arr_cooc(x, n=2):
     return sliding_window_view(x,min(n, x.shape[0]))
@@ -746,6 +754,8 @@ f
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 def connective_efficiency(e):
     n = n_nodes_from_edges(e)
     emin = n-1
@@ -766,6 +776,12 @@ roll_X.sum(axis=1)-1
 
 ```{python}
 #| label: fig-fluency-dsmin
+#| fig-cap: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
+#| lightbox:
+#|   group: fluency
+#| editable: true
+#| slideshow: {slide_type: ''}
+
 # A_cooc = roll_df.T@roll_df - np.diag(roll_df.sum())
 evd_cooc = _sq(sinkhorn(asc.coocur_prob(X)))
 # evd_cooc = hyp_proj(roll_X)
@@ -820,12 +836,20 @@ nx.draw_networkx(
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centCS.head(15)
 ```
 
 ```{python}
 #| label: fig-fluency-tree
+#| fig-cap: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
+#| lightbox:
+#|   group: fluency
+#| editable: true
+#| slideshow: {slide_type: ''}
+
 e_tree = _sq(asc.chow_liu(X, pseudocts=0.5)>0)
 G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_tree), index=roll_df.columns, columns=roll_df.columns))
 pos_tree = nx.kamada_kawai_layout(G, pos=pos_cos)
@@ -859,6 +883,12 @@ nx.draw_networkx(
 
 ```{python}
 #| label: fig-fluency-glassomin
+#| fig-cap: Verbal Fluency (animals) Dependency Network (GLASSO)
+#| lightbox:
+#|   group: fluency
+#| editable: true
+#| slideshow: {slide_type: ''}
+
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
 from affinis.associations import coocur_prob
 # graphical_lasso()
@@ -909,7 +939,11 @@ centGL.head(15)
 
 ```{python}
 #| label: fig-fluency-fpmin
-#| fig-cap: Comparison of backboning/dependency recovery methods tested vs. Forest Pursuit
+#| fig-cap: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
+#| lightbox:
+#|   group: fluency
+#| editable: true
+#| slideshow: {slide_type: ''}
 
 evd_L_pursuit = _sq(asc.forest_pursuit_edge(X))#[s_subs.cat.codes].T[s_subs.cat.codes])
 # A_fp = pd.DataFrame(_sq(evd_L_pursuit), index=s_subs, columns=s_subs)
@@ -951,6 +985,8 @@ nx.draw_networkx(
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 nx.eigenvector_centrality_numpy(G)
 centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centFP.head(15)
@@ -967,22 +1003,12 @@ TODO: edge type annotation?
 
 ```{python}
 #| label: fig-fluency-preservation
-#| fig-cap: |
-#| 
-#| 
-#| 
-#| 
-#| 
-#| 
-#| 
-#|   Differences in structural preservation with increased thresholding. 
-#| 
-#| 
-#| 
-#|   When only retaining the top 2% of edge strengths, blah
+#| fig-cap: Differences in structural preservation with over-thresholding.
 #| fig-subcap:
-#|   - co-occurrence methods will retain local communities at the cost of global structure
-#|   - dependency network drops rarer nodes from the preserved central structure at higher uncetainty cutoffs
+#|   - co-occurrence retains local communities at the cost of global structure
+#|   - clique-bias correction preserves central structure by disconnecting rare nodes
+#| editable: true
+#| slideshow: {slide_type: ''}
 
 
 plt.figure(figsize=(10,6))
@@ -1041,30 +1067,12 @@ Xest=(E_obs@(np.abs(B))).toarray()
 
 ```{python}
 #| label: fig-fluency-preprocess
-#| fig-cap: |
-#| 
-#| 
-#| 
-#| 
-#| 
-#| 
-#| 
-#|   Differences in structural preservation with increased thresholding. 
-#| 
-#| 
-#| 
-#|   Retaining the top 2% of edges, co-occurrence retains local communities 
-#| 
-#| 
-#| 
-#|   at the cost of global structure.
-#| 
-#| 
-#| 
-#|   We might prefer to drop low-certainty/rare nodes from a preserved central structure.
+#| fig-cap: Forest Pursuit preprocessing for Doubly-Stochastic and GLASSO recovered networks
 #| fig-subcap:
-#|   - Islands of local structure remain (doubly-stochastic)
-#|   - Intact global structure with isolates
+#|   - Doubly Stochastic filter with FP (node degree) preprocessing
+#|   - GLASSO Precision estimate with FP (node-degree) preprocessing
+#| editable: true
+#| slideshow: {slide_type: ''}
 
 
 
@@ -1083,7 +1091,7 @@ plt.title(
 plt.figure(figsize=(10,6))
 glasso = (np.abs(
     _sq(
-        GraphicalLassoCV(assume_centered=True)
+        GraphicalLasso(assume_centered=True)
         # .fit(ochiai(X))
         .fit(Xest)
         .get_precision()
