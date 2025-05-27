@@ -21,7 +21,7 @@ Still, the difference is small enough, and at such a significant penaly to MCC a
 
 ### Simulation Case Study
 
-To illustrate what is going on, we have selected two specific experiments as a case study, in @fig-pr-curves
+To illustrate what is going on, we have selected two specific experiments as a case study, in @fig-pr-curves.
 In the first, `BL-N030S01`, a 30-node block graph with 53 random walk samples, has FP performing worse than GLASSO and Ochiai, in terms of APS (which is reported in the legends).
 We see that FP shows high precision, which drops off significantly to increase recall at all.
 Only a few edges had high probability (which is usually desirable for sparse approximation), and some of the true edges were missed this way.
@@ -52,34 +52,42 @@ Marking one node (d) at random selects the tree that contains (d,h,e), which cor
 Note that the marked node does not necessarily need to be the one that the source "injected" to, since the observed activations set is equivalent for any of (d,h,e) being marked.
 This is an important symmetry when we will not know which node "actually" started each cascade, during inference.  
 It means that the node activation set and the graph structure are conditionally independent, given a sampled spanning tree on the augmented graph.
-Sampling efficiently from a spanning tree distribution is a well studied problem, and we can use that efficiency in combination with a node-marking (categorical) distribtion to formulate an overall distribution for node activation.
+Sampling efficiently from a spanning tree distribution is a well studied problem, and we can use that efficiency in combination with a node-marking (categorical) distribution to formulate an overall distribution for node activation.
 
 Therefore, RSFm distribution models the probability of emitting node $j$ in the $i$-th observation as the probability of occurring in the same tree as a marked "root" node $\phi_{ij}$, given a graph of $z_E$ edges and a source "distance" parameter $\beta$.
+Since the graph is assumed to be independent of the trees sampled on it, we can use the law of total (conditional) probability:  
 $$
-P(x_{ij}|\beta, z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
 $$
 
-Incredibly, the probabilities for $P(|z_E)$ and $P(x|T,\phi)$ all have closed form representations.
-The spanning tree distribution discussed elsewhere[@BayesianSpanningTree_Duan2021;@EfficientComputationExpectations_Zmigrod2021] can be used to motivate a spanning forest distribution, which is based on the sum of weight of edges in a graph $W(G)=\sum_E{z_E}$ 
-
-
+Incredibly, the probabilities for $P(T|z_E)$ and $P(x|T,\phi)$ all have closed form representations.
+The spanning tree distribution discussed elsewhere[@BayesianSpanningTree_Duan2021;@EfficientComputationExpectations_Zmigrod2021] can be used to motivate a spanning forest distribution, which is based on the Laplacian of the augmented graph $L^+$.^[Here, $L^+(G)$ and $L^+(G/e)$ represent the Laplacian of $G_{+R}$ and $G_{+R}$ without edge $e$, respectively.]
+This means that the probability of a spanning tree in the augmented graph is proportional to the probability of a forest in the original, or, $P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)$.
+  
+Using this equivalence to apply Kirchoff's matrix tree theorem, since we can calculate the probability of an edge being in a forest as the negation of the probability of a forest _without that edge_:
 $$\begin{aligned}
-P(F|G) & = \prod_{e_{uv}\in F} P(e_{uv}|G)\\
-P(e_{uv}|G) 
-	& = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
-	& = 1 - \frac{|W(G/e)|}{|W(G)|}  = 1 - \frac{|W-b_{uv}^Tb_{uv}|}{|W|}\\
-	& = 1 - \frac{|W|(1-b_{uv}^TQb_{uv})}{|W|}\\
+P(F|z_E) & = \prod_{e_{uv}\in F} \sum_{F\in \mathcal{F}}{P(e_{uv}|F)P(F)}\\ %P(e_{uv}|z_E)\\
+%P(e_{uv}|z_E) 	& = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
+	& = 1 - \frac{|L^+(G/e)|}{|L^+(G)|}  = 1 - \frac{|L^+-b_{uv}^Tb_{uv}|}{|L^+|}\\
+	& = 1 - \frac{|L^+|(1-b_{uv}^TQb_{uv})}{|L^+|}\\
 	& = Q_{uu} + Q_{vv} - 2Q_{uv} \\
   & = d_Q(u,v)
 \end{aligned}$$
 
-To sample from this distribution, we generate random spanning trees on $G_{+R}$, and use the marked node $\phi_ij$$ to return all the nodes it is connected to in the induced spanning forest.
+This is all you need to sample from this distribution:
+
+- Generate random spanning trees on $G_{+R}$, according to $P(F|z_E)$.
+- Uniformly sample a marked node $\phi$.
+- Activate all nodes connected to $\phi$ in the induced spanning forest.
+
 
 ### Model Specification {#sec-lfa-gibbs}
 
-To do inference, however, we may use the forest kernel $Q$ and sum over the observed nodes.
+To do inference, however, we may again use the forest kernel $Q$ and sum over the observed nodes to determine the likelihood of an observation $P(x_{ij}|z_E,\phi_{ij})$, which is just the probability of a node occurring on the same subtree as the marked node.
+As previously discussed, this is just $Q(j,\phi)$!
+Let's marginalize over the uniformly distributed $\phi$, for an overall likelihood of $\mathbf{x}_i$  
 $$
-\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot d_Q)_{j,j'}
+\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot Q)_{j,j'}
 $$ 
 
 This still has the problem of needing an estimate for $Q$ _based on the graph_ described by the edges $z_E$.

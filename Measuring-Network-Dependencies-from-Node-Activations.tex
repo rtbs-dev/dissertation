@@ -396,7 +396,7 @@ to the time of separation, at the very least a ``weighted'' one.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-karate-club-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-karate-club-output-1.pdf}}
 
 }
 
@@ -436,11 +436,11 @@ contemporaneously, or in some other context or artifact.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-obs-set-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-obs-set-output-1.pdf}}
 
 }
 
-\caption{\label{fig-obs-set}}
+\caption{\label{fig-obs-set}Observations as activation sets}
 
 \end{figure}%
 
@@ -460,27 +460,47 @@ means more ``connected''.
 
 \begin{figure}
 
+\begin{minipage}{0.50\linewidth}
+
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-collab-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-collab-output-1.pdf}}
 
 }
 
-\caption{\label{fig-collab}}
+\subcaption{\label{fig-collab}Network based solely on co-authorship
+observations}
+
+\end{minipage}%
+%
+\begin{minipage}{0.50\linewidth}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-colleague-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-colleague}graph of mutual collaboration
+relationships i.e.~the ``ground truth'' social network}
+
+\end{minipage}%
+
+\caption{\label{fig-toy}Co-authorship vs.~collaborator network}
 
 \end{figure}%
 
-Thus our social collaboration network is borne out of indirect
-measurements: author connection is implied through ``occasions when
-co-authorship occurred''. However, authors of papers may recall times
-that others were added, not by their choice, but by someone else already
-involved. In fact, the final author list of most papers is reasonably a
-result of individuals choosing to invite others, not a unanimous,
-simultaneous decision by all members. Let's imagine we wished to study
-the social network of collaboration more directly: if we had the luxury
-of being in situ as, say, a sociologist performing an academic
-ethnography, we might have been more strict with our definition of
-``connection''. If the goal is a meaningful social network reflecting
+Thus our social collaboration network in Figure~\ref{fig-collab} is
+borne out of indirect measurements: author connection is implied through
+``occasions when co-authorship occurred''. However, authors of papers
+may recall times that others were added, not by their choice, but by
+someone else already involved. In fact, the final author list of most
+papers is reasonably a result of individuals choosing to invite others,
+not a unanimous, simultaneous decision by all members. Let's imagine we
+wished to study the social network of collaboration more directly: if we
+had the luxury of being in situ as, say, a sociologist performing an
+academic ethnography, we might have been more strict with our definition
+of ``connection''. If the goal is a meaningful social network reflecting
 the strength of interraction between colleages, perhaps the we prefer
 our edges represent ``mutual willingness to collaborate''. Edge
 ``measurement'', then, could involve records of events that show
@@ -504,19 +524,6 @@ far as empirically confirmed collaborations go. However, even if the
 underlying ``activations'' are identical, our new, directly measured
 graph looks very different.
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-colleague-output-1.pdf}}
-
-}
-
-\caption{\label{fig-colleague}graph of mutual collaboration
-relationships i.e.~the ``ground truth'' social network}
-
-\end{figure}%
-
 Fundamentally, the network in Figure~\ref{fig-colleague} shows which
 relationships the authors \emph{depend} on to accomplish their
 publishing activity. When causal relations between nodes are being
@@ -533,7 +540,7 @@ centrality, shortest path distances, and community belonging?
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/0-intro_files/figure-latex/codefigs-graphs-fig-recover-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-recover-output-1.pdf}}
 
 }
 
@@ -1033,7 +1040,8 @@ no spring connects them!
 
 }
 
-\caption{\label{fig-springs}CAPTION ME}
+\caption{\label{fig-springs}Spring system as a network of conditional
+dependencies}
 
 \end{figure}%
 
@@ -1546,7 +1554,7 @@ for very rare co-occurrences, we need to correct for rate-imbalance of
 the nodes in much the same way correlation normalizes covariance. This
 idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1573,7 +1581,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-or} 
 
@@ -1599,7 +1607,7 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1624,7 +1632,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1662,7 +1670,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1687,7 +1695,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1714,7 +1722,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1746,7 +1754,7 @@ encode \emph{conditional dependence} between node distributions.
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -1782,7 +1790,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, left=2mm, leftrule=.75mm, breakable, arc=.35mm, rightrule=.15mm, bottomrule=.15mm, toprule=.15mm, opacityback=0, colback=white]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -2041,7 +2049,7 @@ each observation that two nodes were activated together.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-outerprod-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-outerprod-output-1.pdf}}
 
 }
 
@@ -2070,11 +2078,11 @@ Figure~\ref{fig-stacked-graphs}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-obs-set-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-obs-set-output-1.pdf}}
 
 }
 
-\subcaption{\label{fig-obs-set}}
+\subcaption{\label{fig-obs-set}Observations as activation sets}
 
 \end{minipage}%
 %
@@ -2082,7 +2090,7 @@ Figure~\ref{fig-stacked-graphs}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-01-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-bow-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-bow-output-1.pdf}}
 
 }
 
@@ -2473,7 +2481,7 @@ Trees}\label{spreading-dependencies-as-trees}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
 
 }
 
@@ -3030,7 +3038,7 @@ at APS is discussed in Section~\ref{sec-fpi}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-overall-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-overall-output-1.pdf}}
 
 }
 
@@ -3050,7 +3058,7 @@ consistently explained with the same set of incidences.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-compare-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-compare-output-1.pdf}}
 
 }
 
@@ -3071,7 +3079,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-1.pdf}}
 
 }
 
@@ -3079,7 +3087,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-2.pdf}}
 
 }
 
@@ -3087,7 +3095,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-3.pdf}}
 
 }
 
@@ -3119,7 +3127,7 @@ after controlling for the others.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-1.pdf}}
 
 }
 
@@ -3162,7 +3170,7 @@ dominance of network size for its runtime.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-runtime-output-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-runtime-output-1.png}}
 
 }
 
@@ -3183,7 +3191,7 @@ log-log plot is \(\gamma\).
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-02-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-1.pdf}}
 
 }
 
@@ -3280,7 +3288,7 @@ MCC & 0.78 & 0.65 & 0.49 \\
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
 
 }
 
@@ -3295,16 +3303,16 @@ MCC & 0.78 & 0.65 & 0.49 \\
 \subsection{Simulation Case Study}\label{simulation-case-study}
 
 To illustrate what is going on, we have selected two specific
-experiments as a case study, in Figure~\ref{fig-pr-curves} In the first,
-\texttt{BL-N030S01}, a 30-node block graph with 53 random walk samples,
-has FP performing worse than GLASSO and Ochiai, in terms of APS (which
-is reported in the legends). We see that FP shows high precision, which
-drops off significantly to increase recall at all. Only a few edges had
-high probability (which is usually desirable for sparse approximation),
-and some of the true edges were missed this way. However, FPi rescaling
-makes rarer edges fall off earlier in the thresholding, letting the
-recall rise by dropping rare edges, rather than simply the
-low-confidence ones.
+experiments as a case study, in Figure~\ref{fig-pr-curves}. In the
+first, \texttt{BL-N030S01}, a 30-node block graph with 53 random walk
+samples, has FP performing worse than GLASSO and Ochiai, in terms of APS
+(which is reported in the legends). We see that FP shows high precision,
+which drops off significantly to increase recall at all. Only a few
+edges had high probability (which is usually desirable for sparse
+approximation), and some of the true edges were missed this way.
+However, FPi rescaling makes rarer edges fall off earlier in the
+thresholding, letting the recall rise by dropping rare edges, rather
+than simply the low-confidence ones.
 
 In the second, \texttt{SC-N300S01} is a 300-node scale-free network with
 281 walks. Both FP and FPi show significantly better recovery
@@ -3352,7 +3360,7 @@ Figure~\ref{fig-obs-set}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-graphs-fig-inject-plan-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-graphs-fig-inject-plan-output-1.pdf}}
 
 }
 
@@ -3370,42 +3378,68 @@ It means that the node activation set and the graph structure are
 conditionally independent, given a sampled spanning tree on the
 augmented graph. Sampling efficiently from a spanning tree distribution
 is a well studied problem, and we can use that efficiency in combination
-with a node-marking (categorical) distribtion to formulate an overall
+with a node-marking (categorical) distribution to formulate an overall
 distribution for node activation.
 
 Therefore, RSFm distribution models the probability of emitting node
 \(j\) in the \(i\)-th observation as the probability of occurring in the
 same tree as a marked ``root'' node \(\phi_{ij}\), given a graph of
-\(z_E\) edges and a source ``distance'' parameter \(\beta\). \[
-P(x_{ij}|\beta, z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+\(z_E\) edges and a source ``distance'' parameter \(\beta\). Since the
+graph is assumed to be independent of the trees sampled on it, we can
+use the law of total (conditional) probability:\\
+\[
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
 \]
 
-Incredibly, the probabilities for \(P(|z_E)\) and \(P(x|T,\phi)\) all
+Incredibly, the probabilities for \(P(T|z_E)\) and \(P(x|T,\phi)\) all
 have closed form representations. The spanning tree distribution
 discussed
 elsewhere\autocite{BayesianSpanningTree_Duan2021,EfficientComputationExpectations_Zmigrod2021}
 can be used to motivate a spanning forest distribution, which is based
-on the sum of weight of edges in a graph \(W(G)=\sum_E{z_E}\)
+on the Laplacian of the augmented graph \(L^+\).\footnote{Here,
+  \(L^+(G)\) and \(L^+(G/e)\) represent the Laplacian of \(G_{+R}\) and
+  \(G_{+R}\) without edge \(e\), respectively.} This means that the
+probability of a spanning tree in the augmented graph is proportional to
+the probability of a forest in the original, or,
+\(P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)\).
 
+Using this equivalence to apply Kirchoff's matrix tree theorem, since we
+can calculate the probability of an edge being in a forest as the
+negation of the probability of a forest \emph{without that edge}:
 \[\begin{aligned}
-P(F|G) & = \prod_{e_{uv}\in F} P(e_{uv}|G)\\
-P(e_{uv}|G) 
-    & = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
-    & = 1 - \frac{|W(G/e)|}{|W(G)|}  = 1 - \frac{|W-b_{uv}^Tb_{uv}|}{|W|}\\
-    & = 1 - \frac{|W|(1-b_{uv}^TQb_{uv})}{|W|}\\
+P(F|z_E) & = \prod_{e_{uv}\in F} \sum_{F\in \mathcal{F}}{P(e_{uv}|F)P(F)}\\ %P(e_{uv}|z_E)\\
+%P(e_{uv}|z_E)  & = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
+    & = 1 - \frac{|L^+(G/e)|}{|L^+(G)|}  = 1 - \frac{|L^+-b_{uv}^Tb_{uv}|}{|L^+|}\\
+    & = 1 - \frac{|L^+|(1-b_{uv}^TQb_{uv})}{|L^+|}\\
     & = Q_{uu} + Q_{vv} - 2Q_{uv} \\
   & = d_Q(u,v)
 \end{aligned}\]
 
-To sample from this distribution, we generate random spanning trees on
-\(G_{+R}\), and use the marked node \(\phi_ij\)\$ to return all the
-nodes it is connected to in the induced spanning forest.
+This is all you need to sample from this distribution:
+
+\begin{itemize}
+\tightlist
+\item
+  Generate random spanning trees on \(G_{+R}\), according to
+  \(P(F|z_E)\).
+\item
+  Uniformly sample a marked node \(\phi\).
+\item
+  Activate all nodes connected to \(\phi\) in the induced spanning
+  forest.
+\end{itemize}
 
 \subsection{Model Specification}\label{sec-lfa-gibbs}
 
-To do inference, however, we may use the forest kernel \(Q\) and sum
-over the observed nodes. \[
-\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot d_Q)_{j,j'}
+To do inference, however, we may again use the forest kernel \(Q\) and
+sum over the observed nodes to determine the likelihood of an
+observation \(P(x_{ij}|z_E,\phi_{ij})\), which is just the probability
+of a node occurring on the same subtree as the marked node. As
+previously discussed, this is just \(Q(j,\phi)\)! Let's marginalize over
+the uniformly distributed \(\phi\), for an overall likelihood of
+\(\mathbf{x}_i\)\\
+\[
+\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot Q)_{j,j'}
 \]
 
 This still has the problem of needing an estimate for \(Q\) \emph{based
@@ -3474,7 +3508,7 @@ Figure~\ref{fig-efm-mcc}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-mcc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-mcc-output-1.pdf}}
 
 }
 
@@ -3495,7 +3529,7 @@ histogram in Figure~\ref{fig-efm-logits}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-logits-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-logits-output-1.pdf}}
 
 }
 
@@ -3521,7 +3555,7 @@ convergence and might take much longer, overall.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-runtime-output-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-runtime-output-1.png}}
 
 }
 
@@ -3534,7 +3568,7 @@ GLASSO)}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-03-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-partials-runtime-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-partials-runtime-output-1.pdf}}
 
 }
 
@@ -3543,7 +3577,7 @@ on computation time)}
 
 \end{figure}%
 
-\part{Applications \& Extentions}
+\part{Applications \& Case Studies}
 
 \chapter{Qualitative Application of Relationship
 Recovery}\label{qualitative-application-of-relationship-recovery}
@@ -3595,7 +3629,7 @@ quotient network of the communities themselves.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-cooc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-cooc-output-1.pdf}}
 
 }
 
@@ -3633,7 +3667,7 @@ shown in Figure~\ref{fig-netsci-tree}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
 
 }
 
@@ -3665,7 +3699,7 @@ collaborator graph is shown in Figure~\ref{fig-netsci-fp}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-fp-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-fp-output-1.pdf}}
 
 }
 
@@ -3692,11 +3726,12 @@ node, which is summarized in Figure~\ref{fig-netsci-degree}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-degree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-degree-output-1.pdf}}
 
 }
 
-\caption{\label{fig-netsci-degree}}
+\caption{\label{fig-netsci-degree}Degree distributions of FP vs
+co-occurrence social networks}
 
 \end{figure}%
 
@@ -3737,7 +3772,7 @@ quotient graphs.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-cooc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-cooc-output-1.pdf}}
 
 }
 
@@ -3777,7 +3812,7 @@ the original community partition) in Figure~\ref{fig-lesmis-fp}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-fp-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-fp-output-1.pdf}}
 
 }
 
@@ -3818,11 +3853,12 @@ novel.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-06-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-centrality-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-centrality-output-1.pdf}}
 
 }
 
-\caption{\label{fig-lesmis-centrality}}
+\caption{\label{fig-lesmis-centrality}Changes in character centrality
+ranking for FP vs co-occurrence}
 
 \end{figure}%
 
@@ -3925,7 +3961,7 @@ data}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-graphs-tbl-mwo-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-tbl-mwo-output-1.pdf}}
 
 }
 
@@ -3946,7 +3982,7 @@ shown in Figure~\ref{fig-stack-markov}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-graphs-fig-stack-markov-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-fig-stack-markov-output-1.pdf}}
 
 }
 
@@ -4258,7 +4294,7 @@ effects of this preprocessing on marginal distributions.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-workingmemory-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-workingmemory-output-1.pdf}}
 
 }
 
@@ -4313,7 +4349,7 @@ mammals, small outdoor mammals, etc.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
 
 }
 
@@ -4350,7 +4386,7 @@ relationships.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
 
 }
 
@@ -4372,7 +4408,7 @@ the dataset.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
 
 }
 
@@ -4398,7 +4434,7 @@ connective efficiency to reach that threshold is a staggering
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
 
 }
 
@@ -4454,11 +4490,12 @@ rank across the top 15 animals for the DS, GLASSO, and FP networks.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-animal-centrality-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-animal-centrality-output-1.pdf}}
 
 }
 
-\caption{\label{fig-animal-centrality}}
+\caption{\label{fig-animal-centrality}Changes in animal centrality
+ranking for FP vs co-occurrence,GLASSO}
 
 \end{figure}%
 
@@ -4498,7 +4535,7 @@ islands of animal communities.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
 
 }
 
@@ -4507,7 +4544,7 @@ local communities at the cost of global structure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
 
 }
 
@@ -4555,7 +4592,7 @@ connective efficiency under FP preprocessing.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
 
 }
 
@@ -4564,7 +4601,7 @@ with FP (node degree) preprocessing}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
 
 }
 
@@ -4593,15 +4630,58 @@ FP Preprocessing, with further empirical and theoretical validation,
 might prove to be a powerful tool for practitioners to flexibly backbone
 and analyse their networks with a variety of new techniques.
 
+\bookmarksetup{startatroot}
+
 \chapter{Conclusion \& Future Work}\label{conclusion-future-work}
 
-\section{Limitations of Desire Path Densities}\label{sec-issues}
+We showed\ldots{}
 
 \section{Modifications and Extensions to Forest
 Pursuit}\label{sec-future-fp}
 
+\subsection{Multi-source Spreading}\label{multi-source-spreading}
+
+include the root, independent bernoulli injections.
+
+\subsection{Hidden Node Discovery}\label{hidden-node-discovery}
+
+Adding steiner nodes to improve hyperbolicity of metric
+\autocite{TreeIam_Sonthalia2020}
+
+\subsection{MCMC and Gibbs Sampling}\label{mcmc-and-gibbs-sampling}
+
 \section{Generalizing Inner Products on
 Incidences}\label{sec-future-hyperbolic}
+
+\subsection{special orthogonal group}\label{special-orthogonal-group}
+
+the ``root'' node affects a time-like dimension
+
+\subsection{\texorpdfstring{\(\mathcal{H}_2\) embedding and beltrami
+voronoi}{\textbackslash mathcal\{H\}\_2 embedding and beltrami voronoi}}\label{mathcalh_2-embedding-and-beltrami-voronoi}
+
+hyperbolic version of \autocite{SemiDiscreteNormalizing_Chen2022}
+
+\section{Potential Applications and Case
+Studies}\label{potential-applications-and-case-studies}
+
+\subsection{Topology-Dependent Graph
+Application}\label{topology-dependent-graph-application}
+
+\begin{itemize}
+\tightlist
+\item
+  reinventory of assortativity estimates for spreading process graphs
+\item
+  re-examine semantic network diagnoses for Alzheimers/Schizophrenia
+\end{itemize}
+
+\subsection{Human-in-the-loop for Exploratory Relational
+Analysis}\label{human-in-the-loop-for-exploratory-relational-analysis}
+
+Update \autocite{CollaborativeCreationCommunal_Heymann2006}, especially
+for doing grounded coding
+\autocite{codingmanualqualitative_Saldana2021}.
 
 
 \singlespacing

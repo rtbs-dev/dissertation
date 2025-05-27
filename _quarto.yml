@@ -11,7 +11,7 @@ book:
       My abstract for this dissertation.
   chapters:
     - index.qmd
-    - content/0-intro.qmd
+    - content/00-intro.qmd
     # - part: 1-00-structures-spaces.qmd
     - part: "A Practitioner's Guide to Network Recovery"
       chapters:
@@ -21,14 +21,15 @@ book:
         # - 1-03-inverse.qmd
     - part: Nonparametric Network Recovery With Random Spanning Forests # 2-00-recovery.qmd # "Recovery from Bipartite Occurence Records"
       chapters:
-        - content/part2/2-01-rand-sf.qmd
-        - content/part2/2-02-forest-pursuit.qmd
-        - content/part2/2-03-latent-forest-alloc.qmd
-    - part: Applications & Extentions # 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
+        - content/part2/2-04-rand-sf.qmd
+        - content/part2/2-05-forest-pursuit.qmd
+        - content/part2/2-06-latent-forest-alloc.qmd
+    - part: Applications & Case Studies # 3-00-application-future.qmd #"Recovery from Sequentially Ordered Jumps"
       chapters: 
-        - content/part3/3-06-qualitative.qmd
-        - content/part3/3-07-ordered.qmd
-        - content/part3/3-08-conclusion.qmd
+        - content/part3/3-07-qualitative.qmd
+        - content/part3/3-08-ordered.qmd
+        # - content/part3/3-08-conclusion.qmd
+    - content/09-conclusion.qmd
     # - part: "conclusion"
       # chapters:
         # - 

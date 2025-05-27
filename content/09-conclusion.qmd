@@ -1,0 +1,40 @@
+# Conclusion & Future Work 
+
+
+We showed...
+
+<!-- ## Limitations of _Forest Pursuit_ {#sec-issues} -->
+
+<!-- ## Future Work -->
+
+## Modifications and Extensions to Forest Pursuit{#sec-future-fp}
+
+
+### Multi-source Spreading
+include the root, independent bernoulli injections. 
+
+### Hidden Node Discovery
+Adding steiner nodes to improve hyperbolicity of metric [@TreeIam_Sonthalia2020]
+
+### MCMC and Gibbs Sampling
+
+## Generalizing Inner Products on Incidences {#sec-future-hyperbolic}
+
+### special orthogonal group
+the "root" node affects a time-like dimension
+
+### $\mathcal{H}_2$ embedding and beltrami voronoi
+hyperbolic version of [@SemiDiscreteNormalizing_Chen2022]
+
+## Potential Applications and Case Studies
+
+
+### Topology-Dependent Graph Application
+
+- reinventory of assortativity estimates for spreading process graphs
+- re-examine semantic network diagnoses for Alzheimers/Schizophrenia
+
+
+### Human-in-the-loop for Exploratory Relational Analysis
+
+Update [@CollaborativeCreationCommunal_Heymann2006], especially for doing grounded coding [@codingmanualqualitative_Saldana2021].

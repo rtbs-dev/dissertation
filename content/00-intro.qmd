@@ -43,9 +43,15 @@ But analysts are typically seeking the collaboration network connecting authors 
 Networks of relationships in this situation are not directly observed, but which _if recovered_ could provide estimates for community structure, importances of individual authors (e.g. as controlling flow of information), and the "distances" that separate authors from each other, in their respective domains. [@Scientificcollaborationnetworks._Newman2001]
 Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social "acquaintance", where more papers shared means more "connected".  
 
+:::{#fig-toy layout="[1,1]"}
 {{< embed codefigs/graphs.qmd#fig-collab  >}}
- 
-Thus our social collaboration network is borne out of indirect measurements: author connection is implied through "occasions when co-authorship occurred".
+
+{{< embed codefigs/graphs.qmd#fig-colleague >}}
+
+Co-authorship vs. collaborator network
+:::
+
+Thus our social collaboration network in @fig-collab is borne out of indirect measurements: author connection is implied through "occasions when co-authorship occurred".
 However, authors of papers may recall times that others were added, not by their choice, but by someone else already involved.
 In fact, the final author list of most papers is reasonably a result of individuals choosing to invite others, not a unanimous, simultaneous decision by all members. 
 Let's imagine we wished to study the social network of collaboration more directly: if we had the luxury of being in situ as, say, a sociologist performing an academic ethnography, we might have been more strict with our definition of "connection". 
@@ -60,7 +66,6 @@ Each time two colleagues had an opportunity to work together _and it was seized 
 With data like this, we could be more confident in claiming our collaboration network can serve as "ground truth," as far as empirically confirmed collaborations go.
 However, even if the underlying "activations" are identical, our new, directly measured graph looks very different.  
 
-{{< embed codefigs/graphs.qmd#fig-colleague >}}
 
 Fundamentally, the network in [@fig-colleague] shows which relationships the authors _depend_ on to accomplish their publishing activity.
 When causal relations between nodes are being modeled as edges, we call such a graph a _dependency network_.

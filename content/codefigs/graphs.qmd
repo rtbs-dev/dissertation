@@ -210,8 +210,10 @@ fig_colleague
 
 ```{python}
 #| label: fig-obs-set
+#| fig-cap: Observations as activation sets
 #| editable: true
 #| slideshow: {slide_type: ''}
+
 with open('obs-set.tex') as f: 
     # print(f.read())
     fig =TexFragment(
@@ -342,6 +344,8 @@ plt.axis('off');
 
 ```{python}
 #| label: fig-collab
+#| fig-cap: Network based solely on co-authorship observations
+
 plot(
     Bproj, 'collab.tex',  
     # layout=node_attr_map(Bproj,'pos'),
@@ -563,7 +567,7 @@ plot_smoothed_lda()
 
 ```{python}
 #| label: fig-springs
-#| fig-cap: CAPTION ME
+#| fig-cap: Spring system as a network of conditional dependencies
 
 
 with open('spring-net.tex') as f: 
@@ -617,4 +621,3 @@ texmwo = TexFragment(
 ).run_latex(tex_program=tex)
 texmwo
 ```
-
