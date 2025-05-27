@@ -29,7 +29,7 @@ Even without directly using partial order information, proper data preparation a
 ## Technical Language Processing with INVITE
 
 Maintenance work orders are often represented as categorized data, though increasingly quantitative use of a technician's descriptions is being pursued by maintenance management operations [@BenchmarkingKeywordExtraction_Sexton2018;@CategorizationErrorsData_Sexton2019].
-Tags are another way to flexibly structure this otherwise "unstructured" data, which @tble-mwo shows in comparison to more traditional categorization.
+Tags are another way to flexibly structure this otherwise "unstructured" data, which @tbl-mwo shows in comparison to more traditional categorization.
 
 {{< embed ../codefigs/graphs.qmd#tbl-mwo >}}
 
@@ -61,8 +61,7 @@ $$
     \end{pmatrix}
 $${#eq-trans-matrix}
 
-Here $\mathbf{0}$, $\mathbf{I}$ represent lack of
-transition between/from absorbing states.
+Here $\mathbf{0}$, $\mathbf{I}$ represent lack of transition between/from absorbing states.
 It follows from [@RandomWalksElectric_Doyle2000] that the probability $P$ of a chain starting at $t_k$ being absorbed into state $k+1$, is given as
 $$
 \begin{gathered}
@@ -88,35 +87,123 @@ $$
         -\log \mathcal{L} \left(t^{(i)}_{k+1} \middle| t^{(i)}_{1:k},\mathbf{M}\right)
 $$
 
+This (deeply nested) likelihood can now be optimized using standard solvers, and our reference implementation uses stochastic gradient descent via PyTorch [@AutomaticdifferentiationPyTorch_Paszke2017].^[
+  The n-gram markov transition models (MC1,MC2) trained for comparison vs INVITE were trained using `pomegranate`[@Pomegranatefastflexible_Schreiber2018].
+]
+
 [^1]: While some sources use "tagging" as a proxy for a set of strictly
     un-ordered labels (as in multi-label classification), we preserve
     the mechanism by which the tags were generated in the first place,
     i.e., in a *specific* order.
 
-### Application
+### Application: Mining Excavator MWOs
 
-- look, @eq-trans-matrix, @eq-absorb is the same as forest matrix.
-- in og work, calculated for tag datasets. 
+To assess the applicability of the INVITE-based similarity measure to real-world scenarios, we apply our model to tags annotated for a mining dataset pertaining to 8 similarly-sized excavators at various sites across Australia [@Whyautonomousassets_Hodkiewicz2017; @Cleaninghistoricalmaintenance_Hodkiewicz2016].
 
-:::{#fig-excavate-tern}
-![](../images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg)
+The tags were created by a subject-matter expert spending 1 hour of time in the annotation assistance tool `nestor` [@NestorToolNatural_Sexton2019], using a methodology outlined in a previous benchmarking study for that annotation method [@BenchmarkingKeywordExtraction_Sexton2018].
 
-Semisupervised MWO Classification with Network Label Propagation
+That work compared the ability of tags to estimate survival curves and mean time-to-failure, when compared with a custom-designed keyword extraction tool based on classifying the maintenance issues by subsystem.
+While certain sets of tags were able to predict time-to-failure with high accuracy for certain subsystems, a key problem identified in that work is knowing a priori which tags best indicate when a subsystem is failing? 
+
+> _Which tags best represent a given subsystem?_
+
+Some tags are sufficient (albeit unnecessary) conditions to indicate a subsystem.
+That the "hydraulic" tag indicates a _Hydraulic System_ MWO is obvious, but so might a "valve" tag---"hydraulic" is implied but not present.
+Consequently, we can treat the problem of assigning tags to represent a subsystem as a semi-supervised multi-class classification problem in the style of @Semisupervisedlearning_Avrachenkov2017.
+Like in that work, we need to know a selection tag$\rightarrow$subsystem assignments, as well as network of weighted tag-tag edges. 
+
+Then, if we can compare the semi-supervised tag classifications to a ground-truth classification by a human annotator (which are available for the excavator dataset thanks to @sharedreliabilitydatabase_Ho2015), we can assess the ability of each network to capture the human annotator's internal/cognitive tag relationship structure.
+
+> _Which network assigns tags to subsystems most like a domain expert?_
+
+### Results
+
+To test the ability of the similarity measures to accomplish this, the top three most common subsystems in the data were used as classes, namely, Hydraulic System, Engine, and Bucket.
+The tags "hydraulic", "engine", and "bucket" were assigned to those subsystems as known labels, respectively.
+Tags were filtered to only include ones of high-importance and sufficient information: only work orders containing at least 3 unique tags, and only tags that occurred at least 10 unique times within the those work orders, were included for this analysis ($C=263$ MWOs, $N=40$ tags).
+Then the number of occurrences for every tag can be compared across subsystems, giving each tag a ground-truth multinomial (categorical) probability distribution for occurring within each subsystem.
+We determine ground-truth classification labels as subsystems that account for $\geq60\%$ of each tag's occurrences.
+Tags more balanced than that are considered "unknown subsystem".
+
+
+To perform semi-supervised classification on the recovered relationship graphs, we use a label-spreading algorithm described in [@Learninglocalglobal_Zhou2004], which itself was inspired by spreading activation networks in experimental psychology [@architecturecognition_Anderson2013 @Observationphasetransitions_Shrager1987]. The result of this algorithm is tags having a score for each class, with the classification being the maximally scored class for that tag. These class assignments can then be compared to the ground-truth labels, which we have done by weighted macro-averaging of the $F_1$-score (see @fig-excavate-f1kl).
+
+
+:::{#fig-excavate-results}
+
+![](../images/F1_KL_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-f1kl}
+
+![](../images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-ternary}
+
+Semisupervised MWO Tag Classification with Network Label Propagation
 :::
 
-## Verbal Fluency Animal Network
+The classification of the INVITE-based similarity measure far outperforms the other measures as a preprocessor for label-spreading, when measured by average $F_1$-score.
+However, since these "classifications" are actually thresholded multinomial distributions (with some tags regularly occurring across multiple subsystems), how do we know if an underlying structure has actually been recovered, rather than simply a black-box classifier that happens to perform well at this setting?
 
-[@magicalnumberseven_Miller1956]
+To begin answering this question, we might ask whether the relative scores returned by label-spreading are similar to the original multinomial distributions themselves, rather than the overall classification.
+To find out, we use softmax normalization
+[^2]
+to transform each tag's scores into a "predicted multinomial\", before finally calculating the Kullback-Leibler divergence (KLD) between the true and predicted multinomials for every tag.
+The total KLD, summed over all tags, is also shown in @fig-excavate-ternary, along with positions of each tag's multinomial as projected onto the 2-simplex for the true and $F_1$-optimal predicted distributions.
+Once again, the INVITE performs much better at this task, over a wide range of $\sigma$ (lower is better).
 
+A reason for the performance disparity can be seen in the simplex projections: recovered topology via INVITE-similarity does a much better job of separating the three classes, while not letting any single tag overcompensate by dominating a subsystem's area.
+Even the "unknown" tags are correctly placed roughly between Bucket and Hydraulic System regions, reflecting the true topology of the system.
+
+[^2]: For visualization, a temperature parameter was added to softmax, and this was optimized for minimum KLD via Brent's method [@algorithmguaranteedconvergence_Brent1971] for each similarity measure independently to provide an equal footing for comparison.
+
+
+## Forest Pursuit Animal Network
+
+For our last case study, we return to Forest Pursuit as a useful tool for analysis even when that might mean ignoring partial ordering information. 
+Note that @eq-absorb is effectively the same as a ($\beta=1$) forest matrix if the transition matrix was replaced by a (sub-)graph laplacian.
+Intuitively, the INVITE loss function is summing up over absorption (log-)probabilities at each new node activation: i.e. each step of a tree's creation.
+Because the probability of a sampled tree is precisely proportional to the product of its edge weights, then weighing a tree by its absorption probabilities and running INVITE should have a mathematically similar effect as the FP estimate.
+The similarity would be exact whenever the tree that set of nodes traveled along _was_ the mode of the tree distribution: the MST.
+
+In other words, whenever the random walks _did_ use the minimum distance to reach each node, the two methods should be equivalent.
+While this isn't happening much individually, the effect of _many_ random walks will average out to this MST, precisely because _it is the tree distribution mode_ from which we assume node activations sample under RSFm. 
+
+To illustrate FP's efficacy in network estimation despite ignoring partial order information, we turn to a classic network recovery problem in this space: _semantic networks from fluency data_[@newdissimilaritymeasure_Prescott2006;@Estimatingsemanticnetworks_Zemla2018].
+
+### Domain-aware preprocessing
+Verbal (semantic) fluency tests involve asking participants to list as many items belonging to a prompted category in their available time.
+For instance, an "animals" prompt could lead to an answer like "dog, cat, lion, tiger, bear, wolf...", etc. 
+Like before, the general idea is that recall of each item derives from a random walk in a cognitive "memory space", with emissions (usually) only when a new animal is encountered.
+A participant might have backtracked internally to _dog_ from bear and jumped to wolf, for example.
+
+Using a high-dimensional multilabel embedding space is possible, with one-column-per-animal, but the lists tend to be quite long and give networks with "hairball" tendencies.
+However, if our intention is to find _dependencies_ between animals for a large number of participants, we might reasonably limit the co-occurrence to only a nearby subset of each list.
+Effectively, we can limit the set of possible co-occurring animals based on our domain knowledge, namely, the limits of working memory.
+Conservatively, with a well-cited work claiming 7 $\pm$ 2 semantic units at a time in working memory[@magicalnumberseven_Miller1956], we can limit the set of possible dependencies for a given item to the 5 items on either side.
+The 5 previous might have originated a jump to the current term, and the 5 after might be subsequent targets, for a _rolling window_ of 10 terms at-a-time.^[
+  This is precisely the logic that leads to the use of Skip-Gram and Continuous-Bag-of-Words transformations of text to weakly supervise word2vec and GloVe models[@GloveGlobalvectors_Pennington2014;@Efficientestimationword_Mikolov2013]. 
+]
+
+For our case study, we use lists of animals submitted by participants as described in [@semanticorganizationanimal_Goni2011;@Estimatingsemanticnetworks_Zemla2018]. We limit the animals under consideration to those that occurred in more than 30 lists for a good sample size, as well as lists with at least two animals.
+This resulted in 100 animals over 293 fluency lists. 
+However, we ignore this filtering when creating the 10-animal rolling windows, to avoid inclusion of unrelated animals into prematurely filtered windows.
+After re-applying the filter, 100 animals appear across 8020 working-memory windows. 
+@fig-fluency-workingmemory shows the effects of this preprocessing on marginal distributions.
 
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-workingmemory >}}
 
+Doing this preprocessing (for rolling-windows of 10) shifts relative animal frequencies downward (since there are many more "observations" from the rolling window), while also shifting the number of animals-per-observation to be strictly less than 10.
+As desired, the pairwise cosine similarity of all vectors $\mathbf{x}'_{j'},
+\mathbf{x}'_{j}$ is significantly reduced.
+While many participants might cover similar animals _overall_, we want to investigate animal dependencies locally, and we don't expect individuals to always recall animals in the same memory "area" the whole time. 
+
 ### Edge Connective Effiency and Diversity
+
+@fig-fluency-dsmin looks very similar to the network recovered to make Fig. 4 in [@semanticorganizationanimal_Goni2011] 
 
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-dsmin >}}
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-tree >}}
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-glassomin >}}
 {{< embed ../codefigs/qualitative.qmd#fig-fluency-fpmin >}}
+
+{{< embed ../codefigs/qualitative.qmd#fig-animal-centrality >}}
 
 ### Thresholded Structure Preservation 
 

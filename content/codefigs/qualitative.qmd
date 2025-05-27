@@ -550,6 +550,8 @@ sns.barplot(centFP.head(10), orient='h')
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 from itertools import chain
 commun_map=dict(chain.from_iterable(d.items() for d in [{char:n for char in i} for n,i in enumerate(commun)]))
 cent_df = pd.concat([
@@ -665,17 +667,34 @@ df
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 animals = (df
 
  .query('category=="animals"')#[['idlist','item']]
  .assign(animals=1.)['animals']
  .pipe(lambda df: df[~df.index.duplicated(keep='first')])
  .unstack().fillna(0.)#.drop_levels(0)
- .pipe(lambda df: df.loc[:,df.sum()>30])
+ # .pipe(lambda df: df.loc[:,df.sum()>0])
 )
 
-all_X = animals.values
 animals
+```
+
+```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
+animal_occ = (df
+ .query('category=="animals"')
+ .item.astype('category')
+)
+animals_list = iter_filter(animals, rowmin=2, colmin=30).sum().sort_values(ascending=False)
+animals_list = animals_list.reset_index()['item'].astype(animal_occ.dtype)
+all_X = animals[animals_list].values
+
+# animal_occ
+animals_list.head(10)#.cat.codes
+# animal_occ
 ```
 
 ```{python}
@@ -685,24 +704,22 @@ from numpy.lib.stride_tricks import as_strided, sliding_window_view
 def arr_cooc(x, n=2):
     return sliding_window_view(x,min(n, x.shape[0]))
 
-animal_occ = (df
- .query('category=="animals"')
- .item.astype('category')
-)
+
 dummies = np.eye(animal_occ.dtype.categories.shape[0])
 roll_X=np.vstack([
     dummies[arr_cooc(g[1].values, n=10),:].max(axis=1) 
     for g in animal_occ.cat.codes.groupby(level=0)
 ])#[:,]
 roll_X = roll_X[
-    :,animal_occ[
-        animal_occ.isin(animals.columns.tolist())
-    ].cat.codes.unique()
+    # :,animal_occ[
+    #     animal_occ.isin(animals.columns.tolist())
+    # ].cat.codes.unique()
+    :,animals_list.cat.codes.tolist()
 ]
 # roll_X.shape
 # roll_X = roll_df.values
 roll_X = roll_X[roll_X.sum(axis=1)>0]
-roll_df = pd.DataFrame(data=roll_X, columns=animals.columns)
+roll_df = pd.DataFrame(data=roll_X, columns=animals_list.values)
 roll_df = iter_filter(roll_df, rowmin=2, colmin=2)
 roll_X = roll_df.values
 
@@ -711,37 +728,42 @@ roll_df.shape#, roll_X.shape
 
 # X = all_X
 X = roll_df.values
-animals.columns.sort_values() == roll_df.columns.sort_values()
+# animals.columns.sort_values() == roll_df.columns.sort_values()
+roll_df.sum().sort_values()
 # roll_X
 ```
 
 ```{python}
 #| label: fig-fluency-workingmemory
 #| fig-cap: Effects of rolling-window activations on observation data
+#| editable: true
+#| slideshow: {slide_type: ''}
 
 # roll_df.query('spider==1 & whale==1').sum().sort_values(ascending=False).head(10)
 # sns.histplot(all_X.sum(axis=1))
 
 f = mpl.figure.Figure(figsize=(9,3))
-s1,s2,s3 = f.subplots(1, 3, sharey=False)
-sns.histplot(all_X.mean(axis=0), ax=s1, stat='density', label='complete list')
-sns.histplot(roll_X.mean(axis=0), ax=s1, stat='density', label='working memory (10)')
-s1.legend()
-s1.set(xlabel='animal frequency')
+s1,s2,s3 = f.subplots(1, 3, sharey=True)
+sns.histplot(all_X.mean(axis=0), ax=s1, stat='density', label='complete list', log_scale=True)
+sns.histplot(roll_X.mean(axis=0), ax=s1, stat='density', label='working memory (10)', log_scale=True)
+s1.set(xlabel='animal frequency', yscale='log')
 
-sns.histplot(all_X.sum(axis=1), ax=s2, stat='probability', discrete=True)
-sns.histplot(roll_X.sum(axis=1), ax=s2, stat='probability', discrete=True)
+sns.histplot(all_X.sum(axis=1), ax=s2, stat='density', log_scale=True)
+sns.histplot(roll_X.sum(axis=1), ax=s2, stat='density', log_scale=True, bins=10)
 
-s2.set(xlabel='#animals/observation')
+s2.set(xlabel='#animals/observation', yscale='log')
 # s1.set_yscale('log')
 sns.histplot(_sq(asc.ochiai(all_X, pseudocts=0.5)), stat='density', label='all co-occurrences', bins=20,ax=s3)
 sns.histplot(_sq(asc.ochiai(roll_X, pseudocts=0.5)), stat='density', label='10 in-memory', bins=20,ax=s3)
-s3.set_xlabel('cosine sim. (Ochiai coeff.)');
+s3.set(xlabel='cosine sim. (Ochiai coeff.)',yscale='log');
+s3.legend()
 f.tight_layout(pad=2.)
 f
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 # min_connect_filter(_sq(sinkhorn(asc.coocur_prob(X)))).sum(),np.ma.masked_less_equal(_sq(sinkhorn(asc.coocur_prob(X))), 0.02376).sum()
 # _sq(~np.ma.masked_less_equal(_sq(sinkhorn(asc.coocur_prob(X))), 0.02376).mask)
 
@@ -777,9 +799,8 @@ roll_X.sum(axis=1)-1
 ```{python}
 #| label: fig-fluency-dsmin
 #| fig-cap: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
-#| lightbox:
-#|   group: fluency
 #| editable: true
+#| lightbox: {group: fluency}
 #| slideshow: {slide_type: ''}
 
 # A_cooc = roll_df.T@roll_df - np.diag(roll_df.sum())
@@ -805,7 +826,7 @@ s_subs=pd.Series(list(subset), dtype=authortype)
 # list(nx.neighbors(G, 'newman, m.'))
 # print(len(subset))
 
-# pos_cos = nx.kamada_kawai_layout(G)
+pos_cos = nx.kamada_kawai_layout(G)
 pos_cos = nx.spring_layout(G, seed=2, iterations=1000, k=.5)
 # G = G.subgraph(subset)
 
@@ -822,7 +843,7 @@ plt.title(
     fr'($\psi$ = {connective_efficiency(e_cooc):.2f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
-insax = ax.inset_axes([0,0.6,0.3,0.3])
+insax = ax.inset_axes([0.6,0.6,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -845,9 +866,8 @@ centCS.head(15)
 ```{python}
 #| label: fig-fluency-tree
 #| fig-cap: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
-#| lightbox:
-#|   group: fluency
 #| editable: true
+#| lightbox: {group: fluency}
 #| slideshow: {slide_type: ''}
 
 e_tree = _sq(asc.chow_liu(X, pseudocts=0.5)>0)
@@ -868,7 +888,7 @@ plt.title(
     fr'($\psi$ = {connective_efficiency(e_tree):.2f})'
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
-insax = ax.inset_axes([0,0.0,0.3,0.3])
+insax = ax.inset_axes([0.65,0.,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -884,9 +904,8 @@ nx.draw_networkx(
 ```{python}
 #| label: fig-fluency-glassomin
 #| fig-cap: Verbal Fluency (animals) Dependency Network (GLASSO)
-#| lightbox:
-#|   group: fluency
 #| editable: true
+#| lightbox: {group: fluency}
 #| slideshow: {slide_type: ''}
 
 from sklearn.covariance import GraphicalLasso, GraphicalLassoCV
@@ -906,7 +925,7 @@ glasso = (-(
 )))
 
 
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso).mask), index=animals.columns, columns=animals.columns))
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso).mask), index=animals_list.values, columns=animals_list.values))
 # pos_cos = nx.kamada_kawai_layout(G, dist = pd.DataFrame(-np.log(ochiai(X)), columns=animals.columns, index=animals.columns).to_dict())
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos, node_color='w')
@@ -919,7 +938,7 @@ plt.title(
     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
     fr'($\psi$ = {connective_efficiency(e_gl):.2f})'
 );
-insax = ax.inset_axes([0,0,0.2,0.2])
+insax = ax.inset_axes([0,0,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -933,6 +952,8 @@ nx.draw_networkx(
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centGL.head(15)
 ```
@@ -940,9 +961,8 @@ centGL.head(15)
 ```{python}
 #| label: fig-fluency-fpmin
 #| fig-cap: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
-#| lightbox:
-#|   group: fluency
 #| editable: true
+#| lightbox: {group: fluency}
 #| slideshow: {slide_type: ''}
 
 evd_L_pursuit = _sq(asc.forest_pursuit_edge(X))#[s_subs.cat.codes].T[s_subs.cat.codes])
@@ -959,7 +979,7 @@ G = nx.from_pandas_adjacency(pd.DataFrame(
 
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
-# pos = nx.spring_layout(G)
+# pos = nx.spring_layout(G, pos=pos_cos, seed=2, iterations=1000, k=.5)
 plt.figure(figsize=(12,10))
 
 ax = draw_graph_communities(G,pos,colors)
@@ -971,7 +991,7 @@ plt.title(
     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
 );
 # nx.is_connected(G)
-insax = ax.inset_axes([0,0.6,0.3,0.3])
+insax = ax.inset_axes([0.,0.65,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -1000,6 +1020,64 @@ TODO: edge type annotation?
 - similar ecological niche/role
 - conservation/public awareness
 - further investigation required!
+
+```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
+commun_map=dict(chain.from_iterable(d.items() for d in [{char:n for char in i} for n,i in enumerate(commun)]))
+cent_df = pd.concat([
+    centCS.rename('centrality').to_frame().rename_axis('animal').reset_index().assign(graph='DS'),
+    centFP.rename('centrality').to_frame().rename_axis('animal').reset_index().assign(graph='FP'),
+    centGL.rename('centrality').to_frame().rename_axis('animal').reset_index().assign(graph='GL')    
+]).assign(
+    group=lambda df: df['animal'].map(commun_map).astype('category'),
+    rank = lambda df: df.groupby('graph')['centrality'].rank(ascending=False).astype(int)
+)#.set_index(['character','graph'])['centrality'].unstack()
+cent_df = cent_df.loc[
+    cent_df.groupby('animal')['rank'].transform('min')<=15
+].set_index(['animal','graph'])['centrality'].unstack()
+
+#.reset_index()
+# pd.DataFrame(dict(zip(range(len(commun)),commun)))
+#.groups
+# df.rank(
+# cent_df.head()
+# colors
+cent_df.shape
+```
+
+```{python}
+#| label: fig-animal-centrality
+#| editable: true
+#| slideshow: {slide_type: ''}
+
+
+plt.figure(figsize=(4,6))
+
+lw = defaultdict(lambda: 1)
+for c in [
+    # 'elephant',
+    'cat',
+    'lion',
+    'chicken',
+    'cow',
+    'goat',
+    'sheep',
+    'deer',
+    # 'hyena',
+    # 'ox',
+]:
+    lw[c] = 4
+bumpsplot(
+    cent_df[['DS','GL','FP']],
+    color_dict=colors,
+    labels=cent_df.index,
+    topn=25,
+    linewidth_dict=lw,
+)
+sns.despine(left=True)
+plt.gca().get_yaxis().set_visible(False)
+```
 
 ```{python}
 #| label: fig-fluency-preservation
@@ -1052,6 +1130,8 @@ plt.show()
 ### Using FP as Preprocessing
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 from affinis.utils import sparse_adj_to_incidence, _norm_diag
 from affinis.associations import _spanning_forests_obs_bootstrap
 E_obs = _spanning_forests_obs_bootstrap(X)
@@ -1077,7 +1157,7 @@ Xest=(E_obs@(np.abs(B))).toarray()
 
 
 Gest = ~min_connected_filter(_sq(sinkhorn(coocur_prob(Xest)))).mask
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(Gest), index=animals.columns, columns=animals.columns))
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(Gest), index=animals_list.values, columns=animals_list.values))
 #
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure(figsize=(10,6))
@@ -1098,7 +1178,7 @@ glasso = (np.abs(
 )))
 
 # Gest = min_connected_filter(_sq(glasso))
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(glasso).mask), index=animals.columns, columns=animals.columns))
+G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(glasso).mask), index=animals_list.values, columns=animals_list.values))
 #
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 draw_graph_communities(G,pos, colors)
@@ -1110,6 +1190,10 @@ plt.title(
 ```
 
 ```{python}
+#| editable: true
+#| slideshow: {slide_type: ''}
 # plt.plot(np.linspace(0,1),np.gradient(percentileofscore(evd_L_pursuit, np.linspace(0,1))))
 # np.percentile(evd_L_pursuit, 96)
 ```
+
+
