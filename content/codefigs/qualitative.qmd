@@ -693,7 +693,7 @@ animals_list = animals_list.reset_index()['item'].astype(animal_occ.dtype)
 all_X = animals[animals_list].values
 
 # animal_occ
-animals_list.head(10)#.cat.codes
+all_X.shape,animals_list.head(10)#.cat.codes
 # animal_occ
 ```
 
@@ -729,7 +729,7 @@ roll_df.shape#, roll_X.shape
 # X = all_X
 X = roll_df.values
 # animals.columns.sort_values() == roll_df.columns.sort_values()
-roll_df.sum().sort_values()
+X.shape,roll_df.sum().sort_values()
 # roll_X
 ```
 
@@ -791,9 +791,9 @@ def hyp_proj(X):
     return _sq(((X.T*w_hyp)@X)) 
 
 
-connective_efficiency(evd_L_pursuit>0.9)
+plt.plot(np.linspace(0.01,0.99),[connective_efficiency(evd_L_pursuit>i) for i in np.linspace(0.01,0.99)])
 # hyp_proj(roll_X)
-roll_X.sum(axis=1)-1
+# roll_X.sum(axis=1)-1
 ```
 
 ```{python}

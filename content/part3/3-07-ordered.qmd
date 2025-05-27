@@ -262,10 +262,14 @@ Replicating @fig-lesmis-centrality for these graphs, @fig-animal-centrality show
 {{< embed ../codefigs/qualitative.qmd#fig-animal-centrality >}}
 
 The DS centrality finds the most densely connected clique and gives all of its members incredibly high values.
-Meanwhile, the none of the top 5 most common animals (_dog,cat,lion,tiger,bear_) have high centrality _at all_.
+Meanwhile, the none of the top 5 most common animals (_dog,cat,lion,tiger,bear_)[^dog] have high centrality _at all_.
 Both GLASSO and DS have farm animals (_chicken,goat,cow_) as the most important, despite the idea that goat likely could be reached from e.g. _cow_ quite often.
 FP adds more variety, giving hub-animals from different communities high centrality scores, each of which could lead to a variety of different paths.
 While subjective, the ranks from FP appear to be a more holistic inventory of "lynchpin" animals, which provide nearby coverage for a large amount of others. 
+
+[^dog]: Interestingly, _dog_ never appears in centrality measures, and _none_ of the networks connect dog to any other animal than _cat_.
+  Meanwhile, _wolf_ is associated more with _fox_, _coyote_, _dingo_, etc., which are notably all predators of farm animals.  
+  With the primary community structures being what they are (context/location-based), it seems that humans tend to put dogs in a category all their own. 
 
 ### Thresholded Structure Preservation 
 
