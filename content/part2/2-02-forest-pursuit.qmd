@@ -86,7 +86,7 @@ If we assume that each edge vector is in $\mathbb{B}^{\omega}$, so that the inte
  
 Representing a vector as sparse combination of a known set of vectors (also known as "atoms") is called _sparse approximation_.
 
-### Problem Specification
+### Problem Specification{#sec-fp-problem}
 
 Sparse approximation of a vector $\mathbf{x}$ as a representation $\mathbf{r}$ using a dictionary of atoms (columns of $D$) is specified more concretely as [@EfficientimplementationK_Rubinstein2008]: 
 $$\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-D\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq N $${#eq-sparse-approx}
