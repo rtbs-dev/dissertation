@@ -308,7 +308,7 @@ window.Quarto = {
 </div></div><div id="ref-Findingcommunitystructure_Clauset2004" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[5] </div><div class="csl-right-inline">A. Clauset, M. E. J. Newman, and C. Moore, <span>“Finding community structure in very large networks,”</span> <em>Physical Review E</em>, vol. 70, no. 6, p. 066111, Dec. 2004, doi: <a href="https://doi.org/10.1103/physreve.70.066111">10.1103/physreve.70.066111</a>.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-cooc">
-<div id="cell-fig-netsci-cooc" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="11">
+<div id="cell-fig-netsci-cooc" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -331,7 +331,7 @@ Figure&nbsp;8.1: 134 Network scientists connected by co-authorship
 </ul>
 <p>With some background knowledge of how university labs tend to work (with students, post-docs, advisors, colleagues, etc.), we might not believe that every member of a community has significant influence on the writing of every other member. So, to estimate a dependency network of collaboration relationships, we could turn to a Chow-Liu tree, which is shown in <a href="#fig-netsci-tree" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-tree">
-<div id="cell-fig-netsci-tree" class="cell" data-execution_count="12">
+<div id="cell-fig-netsci-tree" class="cell" data-execution_count="13">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -349,7 +349,7 @@ Figure&nbsp;8.2: Chow-Liu tree of NetSci collaborator dependency relationships
 <p>This dependency is much more sparse, and indeed the assortativity coefficient has dropped to <span class="math inline">\(r=-0.251\)</span>. In academic writing, we might even expect a lowered assortativity, since students that may not go on to be prolific in their original field would still seek out prolific advisors, initially. Unfortunately, enforcing a tree structure has some negative side effects. Overlaying the original community structure from <a href="#fig-netsci-cooc" class="quarto-xref">Figure&nbsp;<span>8.1</span></a> onto the tree and calculating a quotient graph shows that the community structure is impacted by the change. Many of the communities are “unrolled” into long chains of authors, since trees cannot allow small loops or cycles. This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems.</p>
 <p>With <em>Forest Pursuit</em>, we can attempt to correct for “clique bias” in the measurement of dependency relationships, while allowing for flexibility in the global network structure. The FP recovered collaborator graph is shown in <a href="#fig-netsci-fp" class="quarto-xref">Figure&nbsp;<span>8.3</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-fp">
-<div id="cell-fig-netsci-fp" class="cell" data-execution_count="13">
+<div id="cell-fig-netsci-fp" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -369,7 +369,7 @@ Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relat
 <div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Assortative mixing in networks,”</span> <em>Physical Review Letters</em>, vol. 89, no. 20, p. 208701, Oct. 2002, doi: <a href="https://doi.org/10.1103/physrevlett.89.208701">10.1103/physrevlett.89.208701</a>.</div>
 </div></div><p>Relative to the tree network, there are not so many long chains, as many authors have been allowed to “loop-back” and have relationships with nearby colleagues, reducing the path distance between communities in the process. Still, like the trees, FP tends to reduce the degree of each node, which is summarized in <a href="#fig-netsci-degree" class="quarto-xref">Figure&nbsp;<span>8.4</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-degree">
-<div id="cell-fig-netsci-degree" class="cell" data-execution_count="15">
+<div id="cell-fig-netsci-degree" class="cell" data-execution_count="16">
 <div class="cell-output cell-output-display">
 <div id="fig-netsci-degree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -393,7 +393,7 @@ Only rare individuals would have upwards of 10 influential relationships, with a
 <div class="no-row-height column-margin column-container"><div id="ref-StanfordGraphBaseplatform_Knuth1993" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">D. E. Knuth, <em>The stanford GraphBase: A platform for combinatorial computing</em>, vol. 1. AcM Press New York, 1993.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-cooc">
-<div id="cell-fig-lesmis-cooc" class="cell" data-execution_count="21">
+<div id="cell-fig-lesmis-cooc" class="cell" data-execution_count="22">
 <div class="cell-output cell-output-display">
 <div id="fig-lesmis-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -412,7 +412,7 @@ Figure&nbsp;8.5: Les Miserables character co-occurrence network
 <p>We should also ask <em>what we want</em> out of this “social” network. Another way we might think about a social network of characters is “which characters <em>influence</em> the appearance (or not) of which other characters?” By extension, “which characters are <em>significant</em>, in the sense that they dictate the appearance of more characters than others?” From a domain modeling perspective, this is like asking <em>how</em> an author is deciding which characters to include in a chapter. By not correcting for clique-bias, we are implicitly assuming that Victor Hugo would be setting out to write a chapter and immediately writes down a list of every character, independently, should appear. Instead, it’s likely that the desired appearance of certain characters in a chapter <em>leads to</em> the inclusion of others, as the plot requires.</p>
 <p>Because the inclusion of certain characters <em>leads to</em> the inclusion of others (by this model), we can reasonably model the authorial “character inclusion process” as <em>spreading</em> from character to character. With this in mind, we apply Forest Pursuit to correct for clique-bias, and show the resulting dependency network (with the original community partition) in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-fp">
-<div id="cell-fig-lesmis-fp" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="24">
+<div id="cell-fig-lesmis-fp" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="25">
 <div class="cell-output cell-output-display">
 <div id="fig-lesmis-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -431,7 +431,7 @@ Figure&nbsp;8.6: Les Miserables character dependency network (Forest Pursuit)
 <p>Applying these networks, we might wish to distinguish through them which characters are “main” and which are “supporting”, though more on a gradient than in a binary/classification sense. One way to do this is through centrality measures [CITE], which estimate the “importance” of nodes in various ways. Eigenvector centrality, specifically, finds the importance of nodes relative to the importance of each node’s neighbors<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; Regularized eigenvector centrality is equivalent to PageRank centrality, <em>i.e.</em> the seminal work from [CITE], of Google fame.</p></div></div><p>The topology of a network greatly impacts the centrality measure recovered. In <a href="#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a> we show a bump-plot of the ranks of the top 15 most central nodes for both the original co-occurrence network and the FP network estimate. In the original network, centrality rewards characters appearing in mutual cliques as being central, especially the “revolutionary” group (shown in orange in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> and <a href="#fig-lesmis-cooc" class="quarto-xref">Figure&nbsp;<span>8.5</span></a>). Are these really the most important characters? Even Javert, though being an important recurring character, largely plays the role of generic law enforcement throughout, while characters like Marius play central motivating roles across several distinct social groups throughout the novel.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-centrality">
-<div id="cell-fig-lesmis-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="28">
+<div id="cell-fig-lesmis-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="29">
 <div class="cell-output cell-output-display">
 <div id="fig-lesmis-centrality" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
