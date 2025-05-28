@@ -1,5 +1,13 @@
 # Modifications & Extensions  
 
+_Forest Pursuit_ is a flexible base for adding or modifying behavior as needed.
+In this chapter we demonstrate two ways to extend it, along with a probabilistic model to serve as a foundation for future extensions.
+First, we address the perceived shortcoming of FP compared to GLASSO in terms of APS score, showing that a simple modification to the way FP weights edge probability recovers the same performance as GLASSO (at the cost of other scores).
+Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model.
+This leads to a generative model for binary activation data as rooted random spanning forests on the underlying dependency graph.
+Finally, we use this model to continue where FP left off by alternating between estimation of $R$ an $B$, in a method we call_Expected Forest Maximization_(EFM).
+EFM shows small but consistent improvement in performance over FP, at the cost of computation (and unknown convergence) time. 
+
 ## Forest Pursuit Interaction Probability {#sec-fpi}
 
 Without using stability selection[@StabilitySelection_Meinshausen2010], GLASSO is not directly estimating the "support" of the edge matrix, but the strength of each edge.
@@ -61,36 +69,55 @@ P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T
 $$
 
 Incredibly, the probabilities for $P(T|z_E)$ and $P(x|T,\phi)$ all have closed form representations.
-The spanning tree distribution discussed elsewhere[@BayesianSpanningTree_Duan2021;@EfficientComputationExpectations_Zmigrod2021] can be used to motivate a spanning forest distribution, which is based on the Laplacian of the augmented graph $L^+$.^[Here, $L^+(G)$ and $L^+(G/e)$ represent the Laplacian of $G_{+R}$ and $G_{+R}$ without edge $e$, respectively.]
+The spanning tree distribution discussed elsewhere[@BayesianSpanningTree_Duan2021;@EfficientComputationExpectations_Zmigrod2021] can be used to motivate a spanning forest distribution, which is based on the Laplacian of the augmented graph $L_+$.^[Here, $L_+(G)$ and $L_+(G/e)$ represent the Laplacian of $G_{+R}$ and $G_{+R}$ without edge $e$, respectively.]
 This means that the probability of a spanning tree in the augmented graph is proportional to the probability of a forest in the original, or, $P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)$.
-  
-Using this equivalence to apply Kirchoff's matrix tree theorem, since we can calculate the probability of an edge being in a forest as the negation of the probability of a forest _without that edge_:
-$$\begin{aligned}
-P(F|z_E) & = \prod_{e_{uv}\in F} \sum_{F\in \mathcal{F}}{P(e_{uv}|F)P(F)}\\ %P(e_{uv}|z_E)\\
-%P(e_{uv}|z_E) 	& = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
-	& = 1 - \frac{|L^+(G/e)|}{|L^+(G)|}  = 1 - \frac{|L^+-b_{uv}^Tb_{uv}|}{|L^+|}\\
-	& = 1 - \frac{|L^+|(1-b_{uv}^TQb_{uv})}{|L^+|}\\
-	& = Q_{uu} + Q_{vv} - 2Q_{uv} \\
-  & = d_Q(u,v)
-\end{aligned}$$
 
-This is all you need to sample from this distribution:
+$$
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
+$$
+
+Using this equivalence on Kirchoff's matrix tree theorem gives the Chebotarev-Shamis Forest Theorem[@MatrixForestTheorem_Chebotarev2006] for the partition function over spanning forests $Z_\mathcal{F}$, which gives a closed form for @eq-subgraph-prob over all spanning forests (not just spanning trees on a subgraph).
+If $\mu(F)$ is a measure on forests, e.g. the product of weights of edges, then: 
+
+$$
+\begin{gathered}
+P(F|z_E) = \frac{1}{Z_\mathcal{F}} \mu(F)\\
+Z_\mathcal{F} = \det{(I+\beta L)}
+\end{gathered}
+$$
+
+ <!-- since we can calculate the probability of an edge being in a forest as the negation of the probability of a forest _without that edge_: -->
+<!-- $$\begin{aligned} -->
+<!-- P(F|z_E) & = \prod_{e_{uv}\in F} \sum_{F\in \mathcal{F}}{P(e_{uv}|F)P(F)}\\ %P(e_{uv}|z_E)\\ -->
+<!-- %P(e_{uv}|z_E) 	& = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\ -->
+	<!-- & = 1 - \frac{|L_+(G/e)|}{|L_+(G)|}  = 1 - \frac{|L_+-b_{uv}^Tb_{uv}|}{|L_+|}\\ -->
+	<!-- & = 1 - \frac{|L_+|(1-b_{uv}^TQb_{uv})}{|L_+|}\\ -->
+	<!-- & = Q_{uu} + Q_{vv} - 2Q_{uv} \\ -->
+  <!-- & = d_Q(u,v) -->
+<!-- \end{aligned}$$ -->
+
+<!-- $d_Q$ allows us to sample from this distribution: -->
+
+There are a variety of techniques already cited for sampling from this distribution, because of the connection with spanning trees on an augmented graph.
+This means we can sample from RSFm with only one modification from normal spanning tree distributions: 
 
 - Generate random spanning trees on $G_{+R}$, according to $P(F|z_E)$.
 - Uniformly sample a marked node $\phi$.
 - Activate all nodes connected to $\phi$ in the induced spanning forest.
 
+To do inference, however, we may again use the forest kernel $Q$, which gives us probabilities for node co-occurrence on trees in a spanning forest.
+We only need to combine entries of Q for the observed nodes to determine the likelihood of an observation.
+$\sum_\mathcal{F} P(x_{ij}|F,\phi_{ij})$ would be the probability of a node occurring (or not) on the same subtree as the marked node, and as previously discussed, this is just $Q(u\in V_i,\phi)$ for each node that is activated, and $1-Q(v\notin V_i,\phi)$, for each that is not.
+Note that this assumes we marginalize over a uniformly distributed $\phi$.
+
 
 ### Model Specification {#sec-lfa-gibbs}
 
-To do inference, however, we may again use the forest kernel $Q$ and sum over the observed nodes to determine the likelihood of an observation $P(x_{ij}|z_E,\phi_{ij})$, which is just the probability of a node occurring on the same subtree as the marked node.
-As previously discussed, this is just $Q(j,\phi)$!
-Let's marginalize over the uniformly distributed $\phi$, for an overall likelihood of $\mathbf{x}_i$  
-$$
-\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot Q)_{j,j'}
-$$ 
+<!-- for an overall probability of activated nodes $V_i$ -->  
+<!-- $$ -->
+<!-- \sum_P(V_i|) = \sum_{i\in I} \prod_{u\in V_i} ((\mathbf{x}_i\mathbf{x}_i^T)\odot Q)_{j,j'} -->
+<!-- $$ --> 
 
-This still has the problem of needing an estimate for $Q$ _based on the graph_ described by the edges $z_E$.
 The overall model that fills out the gaps left in @eq-empirical-model has the form:
 
 $$
@@ -104,28 +131,77 @@ $$
 
 <!-- ![Explanation of the RSFm distribution for binary activation observations](../images/random-spanning-forests.png) -->
 
-The conditional independence mentioned previously could lend itself to a Gibbs-sampling scheme.
-Each observation is a marked node and a spanning forest, which can equivalently be described as the spanning tree distribution over the activated nodes, as we can marginalize out the equal marked-node probability $\phi$. 
-Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the _Bayesian Spanning Tree_ distribution from @BayesianSpanningTree_Duan2021.
-Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated.
-This is very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[CITE], and others.   
+The above still has the problem of needing an estimate for $Q=(I+\beta L_z)$ based on the graph described by the active edges in $z$.
+It could be done with a monte-carlo sampler, though the nested likelihood may prove difficult. 
 
-However, another possibility is to approach the problem as jointly estimating $B$ and $R$ in an alternating manner
-This idea leads to a simple Expectation Maximization scheme, where we alternate embedding the node activations as edge activations with combining these to better estimate the available edges. 
+The conditional independence mentioned previously could lend itself to a collapsed Gibbs-sampling scheme.
+Each observation is a marked node and a sampled random spanning forest, which can equivalently be described as a sampled spanning tree over the activated nodes, like originally discussed in @eq-subgraph-prob.
+This works because we can marginalize out the equal marked-node probability $\phi$ if we assume a uniform probability of selection for each node, and because we can jointly use the desire-path model to derive an estimate for z_E from the _internal_ edge samples of RSFm. 
+
+Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the _Bayesian Spanning Tree_ distribution from @BayesianSpanningTree_Duan2021.
+Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated, and sampling can continue.
+This would be very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[CITE], but with edges selected from a spanning forest distribution instead of "topics" from a multinomial.
+Derivations and implementation of such a scheme is left for future work.    
 
 
 ##  Expected Forest Maximization 
 
+Another possibility is to approach the problem as a kind of matrix factorization, jointly estimating $B$ and $R$ in an alternating manner.
+Where _Forest Pursuit_ was an empirical Bayes estimate for $R$, alternating from there between $B$ and $R$ leads to a simple Expectation Maximization scheme:
+
+> _Alternate embedding the node activations as edge activations and combining these under a desire path model to estimate the graph structure._ 
+
 ### Factorization & Dictionary Learning
-Sparse approximation + aggregation, repeat. 
-[TODO]
+Jointly finding a sparse representation of data using a linear combination of basis vectors (called a "dictionary"), _and_ finding an optimal dictionary with which to do the embedding, is called "sparse dictionary learning".
+One of the original proposed methods to solve this was the Method of Optimal Directions (MOD)[@Methodoptimaldirections_Engan1999], which uses a sparse "pursuit"-like method to find the representation vectors, and then uses that representation to find $\hat{B}\gets XR^+$.^[
+	$R^+$ is the pseudo-inverse of $R$.  
+]
+However, our desire path estimation for independent (arcsine) Bernoulli edges gives an efficient workaround to needing the pseudo-inverse.
+Based on our interpretation of the forest kernel, counting co-occurrences on trees is equivalent to estimating the inverse of the regularized graph laplacian, anyway.
+Each Forest Pursuit estimate can yield a new distance $d_Q(u,v)$, which can be used as a regularized shortest-path distance for small enough $\beta$.
+Then, new steiner tree estimates will approximate the modes of each spanning tree distribution, which can be used for a new desire-path estimate of the edges, and so-on.
 
+Probabilistically, we are finding the expectation over spanning forests (collapsing over uniform $\phi$) in the form of calculating $Q$, and then maximizing the likelihood of each observation through _Forest Pursuit_.
+The proposed algorithm _Expected Forest Maximization_ is outlined in @alg-efm.  
 
-### Alternating Directions
-- estimate laplacian to get $Q_i$ as shortest path distance
+```pseudocode
+#| label: alg-efm
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+#| pdf-placement: "htb!"
+#| pdf-line-number: true
 
-[TODO]
-[LOOPED VERSION OF ALG.1 ]
+\begin{algorithm}
+\caption{Expected Forest Maximization (EFM)}
+\begin{algorithmic}
+\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
+\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
+\Procedure{EFM}{$X, d_K, \alpha, \beta, \epsilon$}
+  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+	\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
+	\While {$\|\hat{\alpha}-\alpha\|_{\infty}>\epsilon$}
+		\State $\alpha_m \gets \hat{\alpha}_m$
+		\State $Q \gets (I+\beta L_{\text{sym}}(\alpha_m))^{-1}$
+		\State $d_K \gets d_Q$
+ 	 	\State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+		\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha_m$}
+	\EndWhile
+  \State \textbf{return} $\hat{\alpha}_m$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```
+
+In practice, we limit iterations to less than 100, though that limit is not reached in our testing.
+We use a small $\beta=10^{-3}$ to approximate shortest path distances, and we can do so _within_ the forest pursuit loop to avoid inverting large matrices.
+Instead of $d_K$, the graph structure itself (once an initial estimate is made) can be passed to _Forest Pursuit_, where each subgraph can estimate $d_{Ki}$ independently. 
+After all, shortest paths in a subgraph when we assume _no hidden nodes_ will be the same as in the global graph. 
+Note as well the use of the symmetric normalized Laplacian $L_{\text{sym}}$.
+We use this to enable the splitting of inversions like this, because the global Laplacian has higher possible degrees than the subgraph, and we do not wish to bias Steiner tree estimation by node degree.
+Not doing so leads to rapid divergence of the loss function, as all MSTs will tend toward star-graphs around the highest-degree node. 
 
 
 ### EFM Simulation Study

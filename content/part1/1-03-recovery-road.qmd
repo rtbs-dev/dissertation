@@ -1,8 +1,8 @@
 # Roads to Network Recovery {#sec-lit-review}
 
-Here we give a brief overview of the key approaches to backboning and dependency reovery for networks through binary activations.
-This is by far an incomplete overview, though other existing approaches are likely to fall within the provided outline due to its generality. 
-Finally, we assess patterns in the assumptions made by the presented algorithms, and motivate a new one to fill a gap perceived in the network recovery space.
+Here we give a brief overview of the key approaches to backboning and dependency recovery for networks through binary activations.
+We organize the literature into categories based on the kinds of constraints that have been applied to make the network reconstruction "inverse problem" tractable: local structure, information-flow/resource constraints, or global structure.
+Finally, we assess patterns in the assumptions made by the presented algorithms, and motivate the need for a new approach to fill a perceived gap in the network recovery space.
 
 ## Organizing Recovery Methods
 

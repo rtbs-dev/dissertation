@@ -1,8 +1,11 @@
-# Approximate Recovery in Near-linear Time 
+# Approximate Recovery in Near-linear Time by _Forest Pursuit_
 
 In this chapter, we build on the notion of "Desire Path" estimation of a dependency network from node activations --- sampling from a class of subgraphs constrained to active nodes, then merging them.
 We present _Forest Pursuit_ (FP), a method that is scalable, trivially parallelizes, and offline-capable, while also outperforming commonly used algorithms across a battery of standardized tests and metrics. 
 The key application for using FP is in domains where node activation can be reasonably modeled as arising due to _random walks_---or similar spreading process---on an underlying dependency graph. 
+
+Because we wish to model our node activations as being _caused_ by other nodes (that they depend on), we draw a connection to a class of models for _spreading_, or, _diffusive processes_.
+We outline how random-walks are related to these diffusive  models of graph traversal, enabled by an investigation of the graph's "regularized laplacian" from @Semisupervisedlearning_Avrachenkov2017.
 
 First, we build an intuition for the use of trees as an unbiased estimator for desire path estimation when spreading processes are at work on the latent network.
 Then, the groundwork for FP is laid by combining sparse approximation through _matching pursuit_ with a loss function modeled after the Chow Liu representation for joint probability distributions.

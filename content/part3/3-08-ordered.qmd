@@ -156,7 +156,7 @@ Even the "unknown" tags are correctly placed roughly between Bucket and Hydrauli
 ## Forest Pursuit Animal Network
 
 For our last case study, we return to Forest Pursuit as a useful tool for analysis even when that might mean ignoring partial ordering information. 
-Note that @eq-absorb is effectively the same as a ($\beta=1$) forest matrix if the transition matrix was replaced by a (sub-)graph laplacian.
+Note that @eq-absorb is effectively the same as a ($\beta=1$) forest matrix if the transition (normalized adjacency) matrix was replaced by a (sub-)graph laplacian.
 Intuitively, the INVITE loss function is summing up over absorption (log-)probabilities at each new node activation: i.e. each step of a tree's creation.
 Because the probability of a sampled tree is precisely proportional to the product of its edge weights, then weighing a tree by its absorption probabilities and running INVITE should have a mathematically similar effect as the FP estimate.
 The similarity would be exact whenever the tree that set of nodes traveled along _was_ the mode of the tree distribution: the MST.

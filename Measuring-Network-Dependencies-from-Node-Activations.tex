@@ -1476,12 +1476,13 @@ biased use of these graph kernels in real-life application.
 \chapter{Roads to Network Recovery}\label{sec-lit-review}
 
 Here we give a brief overview of the key approaches to backboning and
-dependency reovery for networks through binary activations. This is by
-far an incomplete overview, though other existing approaches are likely
-to fall within the provided outline due to its generality. Finally, we
-assess patterns in the assumptions made by the presented algorithms, and
-motivate a new one to fill a gap perceived in the network recovery
-space.
+dependency recovery for networks through binary activations. We organize
+the literature into categories based on the kinds of constraints that
+have been applied to make the network reconstruction ``inverse problem''
+tractable: local structure, information-flow/resource constraints, or
+global structure. Finally, we assess patterns in the assumptions made by
+the presented algorithms, and motivate the need for a new approach to
+fill a perceived gap in the network recovery space.
 
 \section{Organizing Recovery Methods}\label{organizing-recovery-methods}
 
@@ -1554,7 +1555,7 @@ for very rare co-occurrences, we need to correct for rate-imbalance of
 the nodes in much the same way correlation normalizes covariance. This
 idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1581,7 +1582,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-or} 
 
@@ -1607,7 +1608,7 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1632,7 +1633,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1670,7 +1671,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1695,7 +1696,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1722,7 +1723,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1754,7 +1755,7 @@ encode \emph{conditional dependence} between node distributions.
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -1790,7 +1791,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, opacityback=0, bottomrule=.15mm, breakable, left=2mm, leftrule=.75mm, arc=.35mm, rightrule=.15mm]
+\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -1963,7 +1964,8 @@ to make regular ``sanity checks'' when results or assumptions conflict.
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
-\chapter{Graph Reduce \& Desire Paths}\label{graph-reduce-desire-paths}
+\chapter{Latent Graphs with Desire
+Paths}\label{latent-graphs-with-desire-paths}
 
 Addressing gaps discussed in the previous section to reach a generative
 model for network recovery requires careful attention to the generation
@@ -1975,19 +1977,16 @@ useful ways to narrow down the generative specification.
 First, we will investigate the common assumption that pairwise
 co-occurrences can serve as proxies for measuring relatedness, and how
 this ``gambit of the group'' is, in fact, a strong bias toward dense,
-clique-filled recovered networks. Because we wish to model our node
-activations as being \emph{caused} by other nodes (that they depend on),
-we draw a connection to a class of models for \emph{spreading}, or,
-\emph{diffusive processes}. We outline how random-walks are related to
-these diffusive models of graph traversal, enabled by an investigation
-of the graph's ``regularized laplacian'' from
-\textcite{Semisupervisedlearning_Avrachenkov2017}. Then we use the
-implicit causal dependency tree structure of each observation, together
-with the Matrix Forest Theorem
-\autocite{MatrixForestTheorem_Chebotarev2006,Countingrootedforests_Knill2013}
-to more generally define our generative node activation model. This
-leads to a generative model for binary activation data as rooted random
-spanning forests on the underlying dependency graph.
+clique-filled recovered networks. Using the relationship between matrix
+products and sums of vector outer-products, we then motivate a
+generalization of co-occurrence estimation that can be flexibly adapted
+to domain knowledge, as appropriate, and avoid undue clique bias
+altogether. Finally, we propose a simple mechanism to frame network
+reconstruction as combinations of multiple overlaid subgraphs, by
+treating edges as i.i.d. Beta-Bernoulli random variables.\\
+Inspired by the behavior of so-called ``desire paths'', we constrain the
+beta prior to ensure desired behavior, which we call the \emph{Desire
+Path Density} estimate of the global graph structure.
 
 \section{The Gambit of the Inner Product}\label{sec-clique-bias}
 
@@ -2201,24 +2200,23 @@ Assuming we can define an associated measure \(\mu_i(c)\) onfor each
 over subgraphs in the class.\footnote{ This is certainly not a trivial
   assumption, and might either be ill-defined or require techniques like
   the Gumbel trick\autocite{GradientEstimationStochastic_Paulus2020} to
-  approximate, unless the partition function \(\mathbb{Z}\) has a closed
-  form, or \(\mu\) is already a probability measure on some
-  \(\sigma\)-algebra over \(\mathcal{C}\). Closed-form \(\mathcal{Z}\)
-  values on \(\mathcal{C}\) are known for a handful of graph classes,
-  such as the space of spanning trees, \(\mathcal{C}=\mathcal{T}\).
-  However, another way this might be accomplished is through random
-  geometric graphs{[}CITE{]}, or geometric spanners like
-  Urqhart{[}CITE{]} and Relative Neighborhood {[}CITE{]} graphs on a
-  ``sprinkling'' of points that preserves their observed pairwise
-  distances.\\
+  approximate, unless the partition function \(Z\) has a closed form, or
+  \(\mu\) is already a probability measure on some \(\sigma\)-algebra
+  over \(\mathcal{C}\). Closed-form \(\mathcal{Z}\) values on
+  \(\mathcal{C}\) are known for a handful of graph classes, such as the
+  space of spanning trees, \(\mathcal{C}=\mathcal{T}\). However, another
+  way this might be accomplished is through random geometric
+  graphs{[}CITE{]}, or geometric spanners like Urqhart{[}CITE{]} and
+  Relative Neighborhood {[}CITE{]} graphs on a ``sprinkling'' of points
+  that preserves their observed pairwise distances.\\
   This is further discussed in Section~\ref{sec-future-hyperbolic}.}
 Using notation similar to distributions over spanning trees in
 \textcite{EfficientComputationExpectations_Zmigrod2021}:
 
 \begin{equation}\phantomsection\label{eq-subgraph-prob}{
 \begin{gathered}
-p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
-\mathbb{Z}_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
+p_i(c) = \frac{\mu_i(c)}{Z_i}\\
+Z_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
 \end{gathered}
 }\end{equation}
 
@@ -2359,8 +2357,9 @@ The nonparametric approach, in cases that merit the use of spanning
 trees, will be central to accurate, scalable estimation of \(B\) through
 our proposed method, Forest Pursuit.
 
-\chapter{Approximate Recovery in Near-linear
-Time}\label{approximate-recovery-in-near-linear-time}
+\chapter{\texorpdfstring{Approximate Recovery in Near-linear Time by
+\emph{Forest
+Pursuit}}{Approximate Recovery in Near-linear Time by Forest Pursuit}}\label{approximate-recovery-in-near-linear-time-by-forest-pursuit}
 
 In this chapter, we build on the notion of ``Desire Path'' estimation of
 a dependency network from node activations --- sampling from a class of
@@ -2371,6 +2370,13 @@ used algorithms across a battery of standardized tests and metrics. The
 key application for using FP is in domains where node activation can be
 reasonably modeled as arising due to \emph{random walks}---or similar
 spreading process---on an underlying dependency graph.
+
+Because we wish to model our node activations as being \emph{caused} by
+other nodes (that they depend on), we draw a connection to a class of
+models for \emph{spreading}, or, \emph{diffusive processes}. We outline
+how random-walks are related to these diffusive models of graph
+traversal, enabled by an investigation of the graph's ``regularized
+laplacian'' from \textcite{Semisupervisedlearning_Avrachenkov2017}.
 
 First, we build an intuition for the use of trees as an unbiased
 estimator for desire path estimation when spreading processes are at
@@ -3220,6 +3226,25 @@ in network analysis more generally.
 
 \chapter{Modifications \& Extensions}\label{modifications-extensions}
 
+\emph{Forest Pursuit} is a flexible base for adding or modifying
+behavior as needed. In this chapter we demonstrate two ways to extend
+it, along with a probabilistic model to serve as a foundation for future
+extensions. First, we address the perceived shortcoming of FP compared
+to GLASSO in terms of APS score, showing that a simple modification to
+the way FP weights edge probability recovers the same performance as
+GLASSO (at the cost of other scores). Then we use the implicit causal
+dependency tree structure of each observation, together with the Matrix
+Forest Theorem
+\autocite{MatrixForestTheorem_Chebotarev2006,Countingrootedforests_Knill2013}
+to more generally define our generative node activation model. This
+leads to a generative model for binary activation data as rooted random
+spanning forests on the underlying dependency graph. Finally, we use
+this model to continue where FP left off by alternating between
+estimation of \(R\) an \(B\), in a method we call\_Expected Forest
+Maximization\_(EFM). EFM shows small but consistent improvement in
+performance over FP, at the cost of computation (and unknown
+convergence) time.
+
 \section{Forest Pursuit Interaction Probability}\label{sec-fpi}
 
 Without using stability
@@ -3396,26 +3421,36 @@ have closed form representations. The spanning tree distribution
 discussed
 elsewhere\autocite{BayesianSpanningTree_Duan2021,EfficientComputationExpectations_Zmigrod2021}
 can be used to motivate a spanning forest distribution, which is based
-on the Laplacian of the augmented graph \(L^+\).\footnote{Here,
-  \(L^+(G)\) and \(L^+(G/e)\) represent the Laplacian of \(G_{+R}\) and
+on the Laplacian of the augmented graph \(L_+\).\footnote{Here,
+  \(L_+(G)\) and \(L_+(G/e)\) represent the Laplacian of \(G_{+R}\) and
   \(G_{+R}\) without edge \(e\), respectively.} This means that the
 probability of a spanning tree in the augmented graph is proportional to
 the probability of a forest in the original, or,
 \(P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)\).
 
-Using this equivalence to apply Kirchoff's matrix tree theorem, since we
-can calculate the probability of an edge being in a forest as the
-negation of the probability of a forest \emph{without that edge}:
-\[\begin{aligned}
-P(F|z_E) & = \prod_{e_{uv}\in F} \sum_{F\in \mathcal{F}}{P(e_{uv}|F)P(F)}\\ %P(e_{uv}|z_E)\\
-%P(e_{uv}|z_E)  & = \sum_{F\in \mathcal{F}^{G}}{P(e_{uv}|F)P(F)}\\
-    & = 1 - \frac{|L^+(G/e)|}{|L^+(G)|}  = 1 - \frac{|L^+-b_{uv}^Tb_{uv}|}{|L^+|}\\
-    & = 1 - \frac{|L^+|(1-b_{uv}^TQb_{uv})}{|L^+|}\\
-    & = Q_{uu} + Q_{vv} - 2Q_{uv} \\
-  & = d_Q(u,v)
-\end{aligned}\]
+\[
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
+\]
 
-This is all you need to sample from this distribution:
+Using this equivalence on Kirchoff's matrix tree theorem gives the
+Chebotarev-Shamis Forest
+Theorem\autocite{MatrixForestTheorem_Chebotarev2006} for the partition
+function over spanning forests \(Z_\mathcal{F}\), which gives a closed
+form for Equation~\ref{eq-subgraph-prob} over all spanning forests (not
+just spanning trees on a subgraph). If \(\mu(F)\) is a measure on
+forests, e.g.~the product of weights of edges, then:
+
+\[
+\begin{gathered}
+P(F|z_E) = \frac{1}{Z_\mathcal{F}} \mu(F)\\
+Z_\mathcal{F} = \det{(I+\beta L)}
+\end{gathered}
+\]
+
+There are a variety of techniques already cited for sampling from this
+distribution, because of the connection with spanning trees on an
+augmented graph. This means we can sample from RSFm with only one
+modification from normal spanning tree distributions:
 
 \begin{itemize}
 \tightlist
@@ -3429,23 +3464,21 @@ This is all you need to sample from this distribution:
   forest.
 \end{itemize}
 
+To do inference, however, we may again use the forest kernel \(Q\),
+which gives us probabilities for node co-occurrence on trees in a
+spanning forest. We only need to combine entries of Q for the observed
+nodes to determine the likelihood of an observation.
+\(\sum_\mathcal{F} P(x_{ij}|F,\phi_{ij})\) would be the probability of a
+node occurring (or not) on the same subtree as the marked node, and as
+previously discussed, this is just \(Q(u\in V_i,\phi)\) for each node
+that is activated, and \(1-Q(v\notin V_i,\phi)\), for each that is not.
+Note that this assumes we marginalize over a uniformly distributed
+\(\phi\).
+
 \subsection{Model Specification}\label{sec-lfa-gibbs}
 
-To do inference, however, we may again use the forest kernel \(Q\) and
-sum over the observed nodes to determine the likelihood of an
-observation \(P(x_{ij}|z_E,\phi_{ij})\), which is just the probability
-of a node occurring on the same subtree as the marked node. As
-previously discussed, this is just \(Q(j,\phi)\)! Let's marginalize over
-the uniformly distributed \(\phi\), for an overall likelihood of
-\(\mathbf{x}_i\)\\
-\[
-\mathcal{L}(z_E | X) = \sum_{i\in I} \frac{1}{2} \prod_{j\in J} ((\mathbf{x}_i\mathbf{x}_i^T)\odot Q)_{j,j'}
-\]
-
-This still has the problem of needing an estimate for \(Q\) \emph{based
-on the graph} described by the edges \(z_E\). The overall model that
-fills out the gaps left in Equation~\ref{eq-empirical-model} has the
-form:
+The overall model that fills out the gaps left in
+Equation~\ref{eq-empirical-model} has the form:
 
 \[
 \begin{aligned}
@@ -3456,41 +3489,111 @@ x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
 \end{aligned}
 \]
 
-The conditional independence mentioned previously could lend itself to a
-Gibbs-sampling scheme. Each observation is a marked node and a spanning
-forest, which can equivalently be described as the spanning tree
-distribution over the activated nodes, as we can marginalize out the
-equal marked-node probability \(\phi\). Beginning with the FP point
-estimate, each edge in every spanning subtree can be efficiently
-resampled according to the \emph{Bayesian Spanning Tree} distribution
-from \textcite{BayesianSpanningTree_Duan2021}. Once every edge in a tree
-has been resampled, the overall estimate for the desire path network can
-be updated. This is very similar to the way collapsed Gibbs sampling
-works for Latent Dirichlet Allocation{[}CITE{]}, and others.
+The above still has the problem of needing an estimate for
+\(Q=(I+\beta L_z)\) based on the graph described by the active edges in
+\(z\). It could be done with a monte-carlo sampler, though the nested
+likelihood may prove difficult.
 
-However, another possibility is to approach the problem as jointly
-estimating \(B\) and \(R\) in an alternating manner This idea leads to a
-simple Expectation Maximization scheme, where we alternate embedding the
-node activations as edge activations with combining these to better
-estimate the available edges.
+The conditional independence mentioned previously could lend itself to a
+collapsed Gibbs-sampling scheme. Each observation is a marked node and a
+sampled random spanning forest, which can equivalently be described as a
+sampled spanning tree over the activated nodes, like originally
+discussed in Equation~\ref{eq-subgraph-prob}. This works because we can
+marginalize out the equal marked-node probability \(\phi\) if we assume
+a uniform probability of selection for each node, and because we can
+jointly use the desire-path model to derive an estimate for z\_E from
+the \emph{internal} edge samples of RSFm.
+
+Beginning with the FP point estimate, each edge in every spanning
+subtree can be efficiently resampled according to the \emph{Bayesian
+Spanning Tree} distribution from
+\textcite{BayesianSpanningTree_Duan2021}. Once every edge in a tree has
+been resampled, the overall estimate for the desire path network can be
+updated, and sampling can continue. This would be very similar to the
+way collapsed Gibbs sampling works for Latent Dirichlet
+Allocation{[}CITE{]}, but with edges selected from a spanning forest
+distribution instead of ``topics'' from a multinomial. Derivations and
+implementation of such a scheme is left for future work.
 
 \section{Expected Forest
 Maximization}\label{expected-forest-maximization}
 
+Another possibility is to approach the problem as a kind of matrix
+factorization, jointly estimating \(B\) and \(R\) in an alternating
+manner. Where \emph{Forest Pursuit} was an empirical Bayes estimate for
+\(R\), alternating from there between \(B\) and \(R\) leads to a simple
+Expectation Maximization scheme:
+
+\begin{quote}
+\emph{Alternate embedding the node activations as edge activations and
+combining these under a desire path model to estimate the graph
+structure.}
+\end{quote}
+
 \subsection{Factorization \& Dictionary
 Learning}\label{factorization-dictionary-learning}
 
-Sparse approximation + aggregation, repeat. {[}TODO{]}
+Jointly finding a sparse representation of data using a linear
+combination of basis vectors (called a ``dictionary''), \emph{and}
+finding an optimal dictionary with which to do the embedding, is called
+``sparse dictionary learning''. One of the original proposed methods to
+solve this was the Method of Optimal Directions
+(MOD)\autocite{Methodoptimaldirections_Engan1999}, which uses a sparse
+``pursuit''-like method to find the representation vectors, and then
+uses that representation to find \(\hat{B}\gets XR^+\).\footnote{
+  \(R^+\) is the pseudo-inverse of \(R\).\\
+} However, our desire path estimation for independent (arcsine)
+Bernoulli edges gives an efficient workaround to needing the
+pseudo-inverse. Based on our interpretation of the forest kernel,
+counting co-occurrences on trees is equivalent to estimating the inverse
+of the regularized graph laplacian, anyway. Each Forest Pursuit estimate
+can yield a new distance \(d_Q(u,v)\), which can be used as a
+regularized shortest-path distance for small enough \(\beta\). Then, new
+steiner tree estimates will approximate the modes of each spanning tree
+distribution, which can be used for a new desire-path estimate of the
+edges, and so-on.
 
-\subsection{Alternating Directions}\label{alternating-directions}
+Probabilistically, we are finding the expectation over spanning forests
+(collapsing over uniform \(\phi\)) in the form of calculating \(Q\), and
+then maximizing the likelihood of each observation through \emph{Forest
+Pursuit}. The proposed algorithm \emph{Expected Forest Maximization} is
+outlined in Algorithm~\ref{alg-efm}.
 
-\begin{itemize}
-\tightlist
-\item
-  estimate laplacian to get \(Q_i\) as shortest path distance
-\end{itemize}
+\begin{algorithm}[htb!]
+\caption{Expected Forest Maximization (EFM)}
+\label{alg-efm}
+\begin{algorithmic}[1]
+\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
+\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
+\Procedure{EFM}{$X, d_K, \alpha, \beta, \epsilon$}
+  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+    \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
+    \While {$\|\hat{\alpha}-\alpha\|_{\infty}>\epsilon$}
+        \State $\alpha_m \gets \hat{\alpha}_m$
+        \State $Q \gets (I+\beta L_{\text{sym}}(\alpha_m))^{-1}$
+        \State $d_K \gets d_Q$
+        \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+        \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha_m$}
+    \EndWhile
+  \State \textbf{return} $\hat{\alpha}_m$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
 
-{[}TODO{]} {[}LOOPED VERSION OF ALG.1 {]}
+In practice, we limit iterations to less than 100, though that limit is
+not reached in our testing. We use a small \(\beta=10^{-3}\) to
+approximate shortest path distances, and we can do so \emph{within} the
+forest pursuit loop to avoid inverting large matrices. Instead of
+\(d_K\), the graph structure itself (once an initial estimate is made)
+can be passed to \emph{Forest Pursuit}, where each subgraph can estimate
+\(d_{Ki}\) independently. After all, shortest paths in a subgraph when
+we assume \emph{no hidden nodes} will be the same as in the global
+graph. Note as well the use of the symmetric normalized Laplacian
+\(L_{\text{sym}}\). We use this to enable the splitting of inversions
+like this, because the global Laplacian has higher possible degrees than
+the subgraph, and we do not wish to bias Steiner tree estimation by node
+degree. Not doing so leads to rapid divergence of the loss function, as
+all MSTs will tend toward star-graphs around the highest-degree node.
 
 \subsection{EFM Simulation Study}\label{efm-simulation-study}
 
@@ -4225,16 +4328,16 @@ Network}\label{forest-pursuit-animal-network}
 For our last case study, we return to Forest Pursuit as a useful tool
 for analysis even when that might mean ignoring partial ordering
 information. Note that Equation~\ref{eq-absorb} is effectively the same
-as a (\(\beta=1\)) forest matrix if the transition matrix was replaced
-by a (sub-)graph laplacian. Intuitively, the INVITE loss function is
-summing up over absorption (log-)probabilities at each new node
-activation: i.e.~each step of a tree's creation. Because the probability
-of a sampled tree is precisely proportional to the product of its edge
-weights, then weighing a tree by its absorption probabilities and
-running INVITE should have a mathematically similar effect as the FP
-estimate. The similarity would be exact whenever the tree that set of
-nodes traveled along \emph{was} the mode of the tree distribution: the
-MST.
+as a (\(\beta=1\)) forest matrix if the transition (normalized
+adjacency) matrix was replaced by a (sub-)graph laplacian. Intuitively,
+the INVITE loss function is summing up over absorption
+(log-)probabilities at each new node activation: i.e.~each step of a
+tree's creation. Because the probability of a sampled tree is precisely
+proportional to the product of its edge weights, then weighing a tree by
+its absorption probabilities and running INVITE should have a
+mathematically similar effect as the FP estimate. The similarity would
+be exact whenever the tree that set of nodes traveled along \emph{was}
+the mode of the tree distribution: the MST.
 
 In other words, whenever the random walks \emph{did} use the minimum
 distance to reach each node, the two methods should be equivalent. While

@@ -1,13 +1,12 @@
-# Graph Reduce & Desire Paths
+# Latent Graphs with Desire Paths
 
 Addressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations.
 While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that _causes_ activation patterns will give us useful ways to narrow down the generative specification.
 
 First, we will investigate the common assumption that pairwise co-occurrences can serve as proxies for measuring relatedness, and how this "gambit of the group" is, in fact, a strong bias toward dense, clique-filled recovered networks.
-Because we wish to model our node activations as being _caused_ by other nodes (that they depend on), we draw a connection to a class of models for _spreading_, or, _diffusive processes_.
-We outline how random-walks are related to these diffusive  models of graph traversal, enabled by an investigation of the graph's "regularized laplacian" from @Semisupervisedlearning_Avrachenkov2017.
-Then we use the implicit causal dependency tree structure of each observation, together with the Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006;@Countingrootedforests_Knill2013] to more generally define our generative node activation model.
-This leads to a generative model for binary activation data as rooted random spanning forests on the underlying dependency graph.
+Using the relationship between matrix products and sums of vector outer-products, we then motivate a generalization of co-occurrence estimation that can be flexibly adapted to domain knowledge, as appropriate, and avoid undue clique bias altogether.
+Finally, we propose a simple mechanism to frame network reconstruction as combinations of multiple overlaid subgraphs, by treating edges as i.i.d. Beta-Bernoulli random variables.   
+Inspired by the behavior of so-called "desire paths", we constrain the beta prior to ensure desired behavior, which we call the _Desire Path Density_ estimate of the global graph structure.
 
 ## The Gambit of the Inner Product{#sec-clique-bias} 
 
@@ -111,7 +110,7 @@ $${#eq-subgraph-family}^[$\mathcal{P}(A)$ is the _powerset_ of $A$, i.e. the set
 In other words, the edges that "caused" to the node activations in a given observation must _together_ belong to a graph that, in turn, belongs to our desired class, which must occur on the nodes that were activated.
 
 Assuming we can define an associated measure $\mu_i(c)$ onfor each $c\in\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
- This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $\mathbb{Z}$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
+ This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $Z$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
  Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as the space of spanning trees, $\mathcal{C}=\mathcal{T}$.
  However, another way this might be accomplished is through random geometric graphs[CITE], or geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a "sprinkling" of points that preserves their observed pairwise distances.   
  This is further discussed in @sec-future-hyperbolic.
@@ -120,8 +119,8 @@ Using notation similar to distributions over spanning trees in @EfficientComputa
 
 $$
 \begin{gathered}
-p_i(c) = \frac{\mu_i(c)}{\mathbb{Z}_i}\\
-\mathbb{Z}_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
+p_i(c) = \frac{\mu_i(c)}{Z_i}\\
+Z_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
 \end{gathered}
 $$ {#eq-subgraph-prob}
 
