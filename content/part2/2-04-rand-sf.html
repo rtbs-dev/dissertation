@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Latent Graphs with Desire Paths – Measuring Network Dependencies from Node Activations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../content/part2/2-05-forest-pursuit.html" rel="next">
+<link href="../../content/part1/1-03-recovery-road.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html"><span class="chapter-title">Latent Graphs with Desire Paths</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Measuring Network Dependencies from Node Activations</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../Measuring-Network-Dependencies-from-Node-Activations.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/00-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">A Practitioner’s Guide to Network Recovery</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology with matrices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vector representations of incidence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-03-recovery-road.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Roads to Network Recovery</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Nonparametric Network Recovery With Random Spanning Forests</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-04-rand-sf.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Latent Graphs with Desire Paths</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-05-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-06-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications &amp; Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-07-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-08-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/09-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#sec-clique-bias" id="toc-sec-clique-bias" class="nav-link active" data-scroll-target="#sec-clique-bias">The Gambit of the Inner Product</a>
+  <ul class="collapse">
+  <li><a href="#gambit-of-the-group" id="toc-gambit-of-the-group" class="nav-link" data-scroll-target="#gambit-of-the-group">Gambit of the Group</a></li>
+  <li><a href="#inner-product-projections-and-clique-bias" id="toc-inner-product-projections-and-clique-bias" class="nav-link" data-scroll-target="#inner-product-projections-and-clique-bias">Inner-Product Projections and “Clique Bias”</a></li>
+  </ul></li>
+  <li><a href="#networks-as-desire-path-density-estimates" id="toc-networks-as-desire-path-density-estimates" class="nav-link" data-scroll-target="#networks-as-desire-path-density-estimates">Networks as Desire Path Density Estimates</a>
+  <ul class="collapse">
+  <li><a href="#sec-subgraph-dists" id="toc-sec-subgraph-dists" class="nav-link" data-scroll-target="#sec-subgraph-dists">Subgraph Distributions</a></li>
+  <li><a href="#graph-unions-as-desire-paths" id="toc-graph-unions-as-desire-paths" class="nav-link" data-scroll-target="#graph-unions-as-desire-paths">Graph Unions as Desire Paths</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html"><span class="chapter-title">Latent Graphs with Desire Paths</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Latent Graphs with Desire Paths</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Addressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations. While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that <em>causes</em> activation patterns will give us useful ways to narrow down the generative specification.</p>
+<p>First, we will investigate the common assumption that pairwise co-occurrences can serve as proxies for measuring relatedness, and how this “gambit of the group” is, in fact, a strong bias toward dense, clique-filled recovered networks. Using the relationship between matrix products and sums of vector outer-products, we then motivate a generalization of co-occurrence estimation that can be flexibly adapted to domain knowledge, as appropriate, and avoid undue clique bias altogether. Finally, we propose a simple mechanism to frame network reconstruction as combinations of multiple overlaid subgraphs, by treating edges as i.i.d. Beta-Bernoulli random variables.<br>
+Inspired by the behavior of so-called “desire paths”, we constrain the beta prior to ensure desired behavior, which we call the <em>Desire Path Density</em> estimate of the global graph structure.</p>
+<section id="sec-clique-bias" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-clique-bias">The Gambit of the Inner Product</h2>
+<p>As we saw repeatedly in <a href="../part1/1-03-recovery-road.html" class="quarto-xref"><span>Roads to Network Recovery</span></a>, networks are regularly assumed to arise from co-occurrences, whether directly as counts or weighted in some way. This assumption can be a significant a source of bias in the measurement of edges. <em>Why</em> a flat count of co-occurrence leads to “hairballs” and bias for dense clusters can be related to the use of inner products on node activation vectors.</p>
+<section id="gambit-of-the-group" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="gambit-of-the-group">Gambit of the Group</h3>
+<p>It seems reasonable, when interactions are unobserved, to assume some evidence for all possible interactions is implied by co-occurrence. However, similar to the use of uniform priors in other types of inference, if we don’t have a good reason to employ a fully-connected co-occurrence prior on interaction dependencies, we are adding systematic bias to our inference. Whether co-occurrence observations can be used to infer interaction networks directly was discussed at length in <span class="citation" data-cites="Techniquesanalyzingvertebrate_Whitehead1999"><a href="#ref-Techniquesanalyzingvertebrate_Whitehead1999" role="doc-biblioref">[1]</a></span>, where Whitehead and Dufault call this the <em>gambit of the group</em>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Techniquesanalyzingvertebrate_Whitehead1999" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">H. Whitehead and S. Dufault, <span>“Techniques for analyzing vertebrate social structure using identified individuals: Review and recommendations,”</span> <em>Advances in the Study of Behavior</em>, vol. 28, no. 28, pp. 33–74, 1999.</div>
+</div></div><blockquote class="blockquote">
+<p>So, consiously or unconsciously, many ethnologists studying social organization makr what might be called the “gambit of the group”: the assume that animals which are clustered […] are interacting with one another and then use membership of the same cluster […] to define association.</p>
+</blockquote>
+<p>This work was rediscovered in the context of measuring assortativity for social networks,<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> where the author of <span class="citation" data-cites="PerceivedAssortativitySocial_Fisher2017"><a href="#ref-PerceivedAssortativitySocial_Fisher2017" role="doc-biblioref">[2]</a></span> advises that “group-based methods” can introduce sampling bias to the calculation of assortativity, namely, systematic overestimation when the sample count is low.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;Assortativity is, roughly, the correlation between node degree and the degrees of its neighbors.</p></div><div id="ref-PerceivedAssortativitySocial_Fisher2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. N. Fisher, M. J. Silk, and D. W. Franks, <span>“The perceived assortativity of social networks: Methodological problems and solutions,”</span> in <em>Trends in social network analysis</em>, Springer International Publishing, 2017, pp. 1–19. doi: <a href="https://doi.org/10.1007/978-3-319-53420-6_1">10.1007/978-3-319-53420-6_1</a>.</div>
+</div><div id="ref-Statisticalinferencelinks_Peel2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">L. Peel, T. P. Peixoto, and M. De Domenico, <span>“Statistical inference links data and theory in network science,”</span> <em>Nature Communications</em>, vol. 13, no. 1, Nov. 2022, doi: <a href="https://doi.org/10.1038/s41467-022-34267-9">10.1038/s41467-022-34267-9</a>.</div>
+</div></div><p>The general problems with failing to specify a model of what “edges” actually <em>are</em> get analyzed in more depth in <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[3]</a></span>. They include a warning not to naively use correlational measures with a threshold, since even simple 3-node systems will easily yield false positives edges. Still, it would be helpful for practitioners to have a more explicit mental model of <em>why</em> co-occurence-based models yield systematic bias,</p>
+</section>
+<section id="inner-product-projections-and-clique-bias" class="level3">
+<h3 class="anchored" data-anchor-id="inner-product-projections-and-clique-bias">Inner-Product Projections and “Clique Bias”</h3>
+<p>Underlying correlation and co-occurrence models for edge strength is a reliance on inner products between node occurrence vectors. They all use gram matrices (or centered/scaled versions of them), which were brought up in <a href="../part1/1-01-matrix-meas.html#sec-products" class="quarto-xref"><span>Distance vs.&nbsp;Incidence</span></a>. The matrix multiplication performed represents inner products between all pairs of feature vectors. For <span class="math inline">\(X(i,j)\in\mathbb{B}\)</span>, these inner products sum together the times in each observation that two nodes were activated together.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-outerprod">
+<div id="cell-fig-stack-outerprod" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div id="fig-stack-outerprod" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stack-outerprod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-04-rand-sf_files/figure-html/..-codefigs-graphs-fig-stack-outerprod-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stack-outerprod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.1: Gram matrix as sum of observation outer products
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>However, another (equivalent) way to view matrix multiplication is as a sum of outer products <span class="math display">\[
+G(j,j') = X^T X = \sum_{i=1}^m X(i,j)X(i,j')= \sum_{i=1}^m \mathbf{x}_i\mathbf{x}_i^T
+\]</span> Those outer products of binary vectors create <span class="math inline">\(m\times m\)</span> matrices that have a 1 in every <span class="math inline">\(i,j\)</span> entry where nodes <span class="math inline">\(i,j\)</span> both occurred, shown in <a href="#fig-stack-outerprod" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>. Each outer product is effectively operating as a <span class="math inline">\(D_i+A_i\)</span> with degrees normalized to 1. If the off-diagonals can be seen as adjacency matrices, they would strictly represent a clique on nodes activated in the <span class="math inline">\(i\)</span>th observation In this sense, any method that involves transforming or re-weighting a gram matrix, is implicitly believing that the <span class="math inline">\(k\)</span>th observation was a <em>complete graph</em>. This is illustrated in <a href="#fig-stacked-graphs" class="quarto-xref">Figure&nbsp;<span>5.2</span></a>.</p>
+<div id="fig-stacked-graphs" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stacked-graphs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row quarto-layout-valign-center">
+<div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-obs-set" data-ref-parent="fig-stacked-graphs" style="flex-basis: 33.3%;justify-content: flex-start;">
+<div id="cell-fig-obs-set" class="cell quarto-layout-cell-subref" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="10" data-ref-parent="fig-stacked-graphs">
+<div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-stacked-graphs">
+<div id="fig-obs-set" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-obs-set-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-04-rand-sf_files/figure-html/..-codefigs-graphs-fig-obs-set-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-stacked-graphs">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-obs-set-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Observations as activation sets
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-bow" data-ref-parent="fig-stacked-graphs" style="flex-basis: 66.7%;justify-content: flex-start;">
+<div id="cell-fig-stack-bow" class="cell quarto-layout-cell-subref" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="18" data-ref-parent="fig-stacked-graphs">
+<div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-stacked-graphs">
+<div id="fig-stack-bow" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-stack-bow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-04-rand-sf_files/figure-html/..-codefigs-graphs-fig-stack-bow-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-stacked-graphs">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-stack-bow-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Edge Measurements with Group Gambit (BoW) assumption
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stacked-graphs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5.2: Inner-product projections as sums of cliques illustrating “clique bias”.
+</figcaption>
+</figure>
+</div>
+<p>For many modeling scenarios, this paradigm allows practitioners to make a more straight-forward intuition-check: do clique observations <em>make sense</em> here? When a list of authors for a paper is finished, does that imply that all authors mutually interacted with all others directly to equally arrive at the decision to publish? This would be similar to assuming the authors might simultaneously enter the same room, look at a number of others (who all look exclusively at each other, as well), and <em>all at once</em> decide to publish together. In our introduction, we described a more likely scenario we could expect from an observer on the ground: a researcher asks a colleague or two to collaborate, who might know a couple more with relevant expertise, and so on.</p>
+</section>
+</section>
+<section id="networks-as-desire-path-density-estimates" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="networks-as-desire-path-density-estimates">Networks as Desire Path Density Estimates</h2>
+<p>Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how <em>easy</em> it is to create them from occurrence data, regardless of this “clique-bias”. The ability to map an operation onto every observation, e.g.&nbsp;in parallel, and then reduce all the observations into an aggregate edge estimate is a highly desirable algorithmic trait. This may be a reason so many projection and backboning techniques attempt two re-weight (but retain) the same basic structure, time and again.</p>
+<p>What we need is a way to maintain the ease-of-use of inner-product network creation:</p>
+<ul>
+<li>map an operation onto each observation</li>
+<li>reduce to an aggregate edge guess over all observations</li>
+</ul>
+<p>but with a more domain-appropriate operator at the observation level.</p>
+<p>Let’s start with replacements for the clique assumption. There are many non-clique classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest. Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[CITE] In any case, these assumptions provide an explicit way to describe the set of <em>possible</em> interaction graphs we believe our individual observations are sampled from.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; e.g.&nbsp;for dependencies based on perception, such as human decision making tendencies, or causes based on color names.</p></div><div id="fn3"><p><sup>3</sup>&nbsp; e.g.&nbsp;when interactions are limited to planar dependencies, like inferring ancient geographic borders.</p></div></div><section id="sec-subgraph-dists" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-subgraph-dists">Subgraph Distributions</h3>
+<p>Let’s use the notation from <a href="../part1/1-02-graph-obs.html#eq-edge-vectors" class="quarto-xref">Equation&nbsp;<span>3.9</span></a>, such that each observation of nodes <span class="math inline">\(\mathbf{x}_i\)</span> is implicitly derived from a set of activated edges <span class="math inline">\(\mathbf{r_i}\)</span>. To start, our current belief about what overall structure the whole network can take is <span class="math inline">\(G^*=(V,E,B^*)\)</span>, where <span class="math inline">\(B^*\)</span> might always return <span class="math inline">\(1\)</span> to start out (the complete graph). To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> So, each <span class="math inline">\(\mathbf{x}_i\)</span> will induce a subgraph <span class="math inline">\(g_i = G^*[V_i]\)</span>, where <span class="math inline">\(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\)</span>. Then, our domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on <span class="math inline">\(g_i\)</span>. This family <span class="math inline">\(\mathcal{C}_i\)</span> belongs to the relevant class of graphs <span class="math inline">\(\mathcal{C}\)</span>, limited to nodes <span class="math inline">\(V_i\)</span>, i.e.</p>
+<div class="no-row-height column-margin column-container"><div id="fn4"><p><sup>4</sup>&nbsp; Hidden nodes (unobserved nodes beyond the <span class="math inline">\(n\)</span>) are outside the scope of this work, though could potentially be implied for certain structures e.g.&nbsp;when the metric is known to be tree-like. <span class="citation" data-cites="TreeIam_Sonthalia2020"><a href="#ref-TreeIam_Sonthalia2020" role="doc-biblioref">[4]</a></span> use a greedy embedding that minimizes distortion to estimate the need for added <em>Steiner</em> nodes. </p><div id="ref-TreeIam_Sonthalia2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">R. Sonthalia and A. C. Gilbert, <span>“Tree! I am no tree! I am a low dimensional hyperbolic embedding,”</span> <span>arXiv</span>; arXiv, <span>arXiv</span>:2005.03847, Oct. 2020. doi: <a href="https://doi.org/10.48550/arXiv.2005.03847">10.48550/arXiv.2005.03847</a>.</div>
+</div></div><div id="fn5"><p><sup>5</sup>&nbsp;<span class="math inline">\(\mathcal{P}(A)\)</span> is the <em>powerset</em> of <span class="math inline">\(A\)</span>, i.e.&nbsp;the set of all subsets of <span class="math inline">\(A\)</span>. </p></div></div><p><span id="eq-subgraph-family"><span class="math display">\[
+\begin{gathered}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=B^*(e,v)\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\}\\
+E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
+V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
+\end{gathered}
+\tag{5.1}\]</span></span><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>In other words, the edges that “caused” to the node activations in a given observation must <em>together</em> belong to a graph that, in turn, belongs to our desired class, which must occur on the nodes that were activated.</p>
+<p>Assuming we can define an associated measure <span class="math inline">\(\mu_i(c)\)</span> onfor each <span class="math inline">\(c\in\mathcal{C}_i\)</span>, we are able to define a probability distribution over subgraphs in the class.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> Using notation similar to distributions over spanning trees in <span class="citation" data-cites="EfficientComputationExpectations_Zmigrod2021"><a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[6]</a></span>:</p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp; This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick<span class="citation" data-cites="GradientEstimationStochastic_Paulus2020"><a href="#ref-GradientEstimationStochastic_Paulus2020" role="doc-biblioref">[5]</a></span> to approximate, unless the partition function <span class="math inline">\(Z\)</span> has a closed form, or <span class="math inline">\(\mu\)</span> is already a probability measure on some <span class="math inline">\(\sigma\)</span>-algebra over <span class="math inline">\(\mathcal{C}\)</span>. Closed-form <span class="math inline">\(\mathcal{Z}\)</span> values on <span class="math inline">\(\mathcal{C}\)</span> are known for a handful of graph classes, such as the space of spanning trees, <span class="math inline">\(\mathcal{C}=\mathcal{T}\)</span>. However, another way this might be accomplished is through random geometric graphs[CITE], or geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a “sprinkling” of points that preserves their observed pairwise distances.<br>
+This is further discussed in <a href="../09-conclusion.html#sec-future-hyperbolic" class="quarto-xref"><span>Generalizing Inner Products on Incidences</span></a>.</p><div id="ref-GradientEstimationStochastic_Paulus2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">M. B. Paulus, D. Choi, D. Tarlow, A. Krause, and C. J. Maddison, <span>“Gradient estimation with stochastic softmax tricks.”</span> arXiv, 2020. doi: <a href="https://doi.org/10.48550/ARXIV.2006.08063">10.48550/ARXIV.2006.08063</a>.</div>
+</div></div><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
+</div></div><p><span id="eq-subgraph-prob"><span class="math display">\[
+\begin{gathered}
+p_i(c) = \frac{\mu_i(c)}{Z_i}\\
+Z_i = \sum_{c\in\mathcal{C}_i} \mu_i(c)
+\end{gathered}
+\tag{5.2}\]</span></span></p>
+<p>This can be represented using the vectorization in <a href="../part1/1-02-graph-obs.html#eq-edge-vectors" class="quarto-xref">Equation&nbsp;<span>3.9</span></a>, due to the one-to-one correspondence established, so that, with a slight abuse of notation treating <span class="math inline">\(\mathcal{C}_i\)</span> as the parameter of distribution <span class="math inline">\(p_i\)</span>: <span id="eq-edgevec-prob"><span class="math display">\[
+\mathbf{r}_{i}(e)|\mathbf{x_i} \sim p_i(\mathcal{C},E,V)
+\tag{5.3}\]</span></span></p>
+<p>So we may not have an exact vector, but we have established a way to specify a family of edge vectors that could be responsible. With <span class="math inline">\(p_i(c)\)</span>, we also have a mechanism to sample them when a partition function is available (or able to be approximated).</p>
+<p>With these mechanics in place, we see the choice of a clique (implied by the inner product) is a trivial application of <a href="#eq-edgevec-prob" class="quarto-xref">Equation&nbsp;<span>5.3</span></a>, since that is equivalent to selecting the class of cliques on <span class="math inline">\(V_i\)</span> nodes. This has only one element (<span class="math inline">\(\|\mathcal{C}_{\text{clique}}\|=1\)</span>), there is only 1 possible selection, with probability <span class="math inline">\(p_i(K^{V_i})=1\)</span>.</p>
+<!-- Once an analyst has provided epistemic justification for a _class of graphs_ to model -->
+<!-- We propose that the computationally-efficient inner-product networks can still be used, but could be made far more effective by counting edge observation counts with something more appropriate than cliques. -->
+</section>
+<section id="graph-unions-as-desire-paths" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="graph-unions-as-desire-paths">Graph Unions as Desire Paths</h3>
+<p>With a distribution over subgraphs each observation, we are potentially able to sambple from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution. Assuming this is true, we may now sample or approximate a matrix <span class="math inline">\(R(i,e):I\times E \rightarrow \mathbb{B}\)</span>.<br>
+Methods for doing this efficiently in certain cases are the focus of <a href="2-05-forest-pursuit.html#sec-FP" class="quarto-xref"><span>Forest Pursuit</span></a> and <a href="2-06-latent-forest-alloc.html#sec-lfa-gibbs" class="quarto-xref"><span>Model Specification</span></a>. However, once <span class="math inline">\(R(i,e)\)</span> is estimated, a reasonable mechanism for estimating the support of the set of edges is to use <span class="math inline">\(\frac{\text{count}}{\text{exposure}}\)</span>, but with a few needed modifications.</p>
+<p>First, while the nodes counts in <span class="math inline">\(\sum_i B(i,\cdot)\)</span> are by assumption <em>not</em> independent, or even pairwise independent, the <em>edge traversal</em> counts <span class="math inline">\(\sum_i R(i,\cdot)\)</span> could more reasonably be considered so. A model certainly could be constructed where edge existence depends on other edges existing (or not). But nothing is inherently self-inconsistent with a model that assumes the traversability of individual edges will be independent of one another.</p>
+<p>let P(e) be the probability that an edge is traversed (in any observation), and P(u,v) the probability that nodes <span class="math inline">\(u,v\)</span> co-occur. To approximate the overall traversability of an edge, we can calculate an empirical estimate for the conditional probability <span class="math inline">\(P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}\)</span> that an edge is traversed, given that the two incident nodes are activated. This estimate can use the same beta-bernoulli distribution from <a href="../part1/1-01-matrix-meas.html#eq-beta-binomial" class="quarto-xref">Equation&nbsp;<span>2.2</span></a>.</p>
+<p>Still, how do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it <em>has to be possible</em> for <span class="math inline">\(e\)</span> to be traversed? Recall from the introduction that, from a measurement perspective, the underlying networks rarely “exist” in the sense that we never truly find the underlying network, but only samples from (or caused by) it. Imagine that the “real” network is a set of paved sidewalks: our procedure is similar to watching people walk along paths between locations, and wanting to estimate which of the paths would be tread “enough” to be paved. This is where we build on an intuition based on the popular idea of <em>desire paths</em> which is a colloquial name for paths that form when individuals walk over grass or dirt enough to carve a trail. In network analysis and recovery, we usually are only allowed to see the desire paths that might have formed from our data, never the actual “pavement”.</p>
+<p>If presented with two equivalent paths, an individual is likely to choose the one that has been tread more often before i.e.&nbsp;the “more beaten” path. So, we don’t want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed <em>more often than not</em>: how likely it is to “be beaten”. This is accomplished by forcing <span class="math inline">\(\alpha, \beta &lt; 1\)</span>. For the case where <span class="math inline">\(\alpha=\beta=0.5\)</span>, we call this special case an <em>arcsine</em> distribution.</p>
+<p>In a coin tossing game where each “heads” gives a point to player A and “tails” to player B, then the point differential is modeled as a random walk. The arcsine distribution <span class="math inline">\(\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})\)</span> is exactly the probability distribution for the fraction of time we expect one player to be “ahead” of the other. <span class="citation" data-cites="WhatisArcsine_Ackelsberg2018"><a href="#ref-WhatisArcsine_Ackelsberg2018" role="doc-biblioref">[7]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-WhatisArcsine_Ackelsberg2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">E. Ackelsberg, <span>“What is the arcsine law?”</span> 2018, Available:<a href="
+	       https://math.osu.edu/sites/math.osu.edu/files/What_is_2018_Arcsine_Law.pdf
+	       "> https://math.osu.edu/sites/math.osu.edu/files/What_is_2018_Arcsine_Law.pdf </a></div>
+</div></div><div class="page-columns page-full"><blockquote class="blockquote">
+<p>“<em>Contrary to popular opinion, it is quite likely that in a long coin-tossing game one of the players remains practically the whole time on the winning side, the other on the losing side.”</em></p>
+<p>William Feller<span class="citation" data-cites="IntroductionProbabilityTheory_Feller1968"><a href="#ref-IntroductionProbabilityTheory_Feller1968" role="doc-biblioref">[8, Ch. III]</a></span></p>
+</blockquote><div class="no-row-height column-margin column-container"><div id="ref-IntroductionProbabilityTheory_Feller1968" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">W. Feller, <em>An introduction to probability theory and its applications, volume 1</em>. J. Wiley &amp; Sons: New York, 1968.</div>
+</div></div></div>
+<p>This is desirable behavior for a distribution over edge traversability! We expect the vast majority of edges to have a 0 or 1 as the most likely values, with the expected fraction of observations that an edge being traversed was “ahead” of it being <em>not</em> traversed matching our empirical count. We generalize this with <span class="math inline">\(\alpha = 1-\beta\)</span>, with <span class="math inline">\(\alpha + \beta = 1\)</span>, such that the new beta posterior from <a href="../part1/1-01-matrix-meas.html#eq-beta-binomial" class="quarto-xref">Equation&nbsp;<span>2.2</span></a> with <span class="math inline">\(s\)</span> successes over <span class="math inline">\(k\)</span> trials is:</p>
+<p><span id="eq-desirepath-binom"><span class="math display">\[
+\begin{gathered}
+\pi \sim \text{Beta}(\alpha + c, 1-\alpha-c) \\
+c = \frac{s-ak}{k+1}\\
+\end{gathered}
+\tag{5.4}\]</span></span></p>
+<p>Important to note is that <span class="math inline">\(k\)</span> is measured over the <em>co-occurrences</em> <span class="math inline">\((u,v)\)</span>, and successes are the traversals <span class="math inline">\(e\)</span> derived from our samples in <span class="math inline">\(R\)</span>. This lets us formulate a likelihood model for each edge’s traversibility in the global network <span class="math inline">\(G\)</span> (i.e.&nbsp;whether <span class="math inline">\(B(e,v)&gt;0\)</span> for any <span class="math inline">\(v\)</span>), which is i.i.d. Bernoulli. <span id="eq-empirical-model"><span class="math display">\[
+\begin{gathered}
+\pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\
+E \sim \text{Bernoulli}(\pi_e), e \in E
+\end{gathered}
+\tag{5.5}\]</span></span></p>
+<p>This does not yet specify a likelihood for <span class="math inline">\(\mathcal{C}_i\)</span>, because we have not included a mechanism for the down-selection to each <span class="math inline">\(\mathbf{x}_i\)</span>. This will be addressed more completely for the special case of <span class="math inline">\(\mathcal{C}=\mathcal{F}\)</span>, the set of spanning forests on a graph, in <a href="2-06-latent-forest-alloc.html#sec-lfa-like" class="quarto-xref"><span>Generative Model</span></a>. In general, however, failing to specify the prior distribution on <span class="math inline">\(\mathcal{C}_i\)</span> does not necessarily make <a href="#eq-edgevec-prob" class="quarto-xref">Equation&nbsp;<span>5.3</span></a> unusable, but necessitates an “empirical bayes” approach. With the marginals and co-occurrence counts for nonzero values in <span class="math inline">\(X\)</span>, we can make a point estimate for each edge <em>given</em> a node subset, without needing to consider a prior distribution for each <span class="math inline">\(\mathbf{x_i}\)</span>.</p>
+<p>The nonparametric approach, in cases that merit the use of spanning trees, will be central to accurate, scalable estimation of <span class="math inline">\(B\)</span> through our proposed method, Forest Pursuit.</p>
+
+
+
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../content/part1/1-03-recovery-road.html" class="pagination-link" aria-label="Roads to Network Recovery">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Roads to Network Recovery</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../content/part2/2-05-forest-pursuit.html" class="pagination-link" aria-label="Approximate Recovery in Near-linear Time by _Forest Pursuit_">
+        <span class="nav-page-text"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
+
+
+
+
+</body></html>

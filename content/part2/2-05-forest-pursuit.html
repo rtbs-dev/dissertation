@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Approximate Recovery in Near-linear Time by Forest Pursuit – Measuring Network Dependencies from Node Activations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../content/part2/2-06-latent-forest-alloc.html" rel="next">
+<link href="../../content/part2/2-04-rand-sf.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-05-forest-pursuit.html"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Measuring Network Dependencies from Node Activations</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../Measuring-Network-Dependencies-from-Node-Activations.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/00-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">A Practitioner’s Guide to Network Recovery</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology with matrices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vector representations of incidence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-03-recovery-road.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Roads to Network Recovery</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Nonparametric Network Recovery With Random Spanning Forests</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-04-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Latent Graphs with Desire Paths</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-05-forest-pursuit.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-06-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Applications &amp; Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-07-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-08-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/09-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#random-walks-as-spanning-forests" id="toc-random-walks-as-spanning-forests" class="nav-link active" data-scroll-target="#random-walks-as-spanning-forests">Random Walks as Spanning Forests</a>
+  <ul class="collapse">
+  <li><a href="#random-walk-activations" id="toc-random-walk-activations" class="nav-link" data-scroll-target="#random-walk-activations">Random Walk Activations</a></li>
+  <li><a href="#activations-in-a-forest" id="toc-activations-in-a-forest" class="nav-link" data-scroll-target="#activations-in-a-forest">Activations in a Forest</a></li>
+  <li><a href="#spreading-dependencies-as-trees" id="toc-spreading-dependencies-as-trees" class="nav-link" data-scroll-target="#spreading-dependencies-as-trees">Spreading Dependencies as Trees</a></li>
+  </ul></li>
+  <li><a href="#sparse-approximation" id="toc-sparse-approximation" class="nav-link" data-scroll-target="#sparse-approximation">Sparse Approximation</a>
+  <ul class="collapse">
+  <li><a href="#sec-fp-problem" id="toc-sec-fp-problem" class="nav-link" data-scroll-target="#sec-fp-problem">Problem Specification</a></li>
+  <li><a href="#sec-steiner" id="toc-sec-steiner" class="nav-link" data-scroll-target="#sec-steiner">Max. Spanning (Steiner) Trees</a></li>
+  </ul></li>
+  <li><a href="#sec-FP" id="toc-sec-FP" class="nav-link" data-scroll-target="#sec-FP">Forest Pursuit</a>
+  <ul class="collapse">
+  <li><a href="#algorithm-summary" id="toc-algorithm-summary" class="nav-link" data-scroll-target="#algorithm-summary">Algorithm Summary</a></li>
+  <li><a href="#sec-fp-complexity" id="toc-sec-fp-complexity" class="nav-link" data-scroll-target="#sec-fp-complexity">Approximate Complexity</a></li>
+  </ul></li>
+  <li><a href="#sec-FP-experiments" id="toc-sec-FP-experiments" class="nav-link" data-scroll-target="#sec-FP-experiments">Simulation Study</a>
+  <ul class="collapse">
+  <li><a href="#experimental-method" id="toc-experimental-method" class="nav-link" data-scroll-target="#experimental-method">Experimental Method</a></li>
+  <li><a href="#metrics" id="toc-metrics" class="nav-link" data-scroll-target="#metrics">Metrics</a></li>
+  <li><a href="#results---scoring" id="toc-results---scoring" class="nav-link" data-scroll-target="#results---scoring">Results - Scoring</a></li>
+  <li><a href="#results---runtime-performance" id="toc-results---runtime-performance" class="nav-link" data-scroll-target="#results---runtime-performance">Results - Runtime Performance</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part2/2-04-rand-sf.html">Nonparametric Network Recovery With Random Spanning Forests</a></li><li class="breadcrumb-item"><a href="../../content/part2/2-05-forest-pursuit.html"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this chapter, we build on the notion of “Desire Path” estimation of a dependency network from node activations — sampling from a class of subgraphs constrained to active nodes, then merging them. We present <em>Forest Pursuit</em> (FP), a method that is scalable, trivially parallelizes, and offline-capable, while also outperforming commonly used algorithms across a battery of standardized tests and metrics. The key application for using FP is in domains where node activation can be reasonably modeled as arising due to <em>random walks</em>—or similar spreading process—on an underlying dependency graph.</p>
+<p>Because we wish to model our node activations as being <em>caused</em> by other nodes (that they depend on), we draw a connection to a class of models for <em>spreading</em>, or, <em>diffusive processes</em>. We outline how random-walks are related to these diffusive models of graph traversal, enabled by an investigation of the graph’s “regularized laplacian” from <span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[1]</a></span>.</p>
+<div class="no-row-height column-margin column-container"></div><p>First, we build an intuition for the use of trees as an unbiased estimator for desire path estimation when spreading processes are at work on the latent network. Then, the groundwork for FP is laid by combining sparse approximation through <em>matching pursuit</em> with a loss function modeled after the Chow Liu representation for joint probability distributions. The approximate complexity for FP is linear in the spreading rate of the modeled random walks, and linear in dataset size, while running in <span class="math inline">\(O(1)\)</span> time with respect to the network size. This departs dramatically from other methods in the space, all of which assume to scale in the number of nodes. We then test FP against an array of alternative methods (including GLASSO) with MENDR, a newly-developed standard reference dataset and testbench for network recovery. FP outperforms other tested algorithms in nearly every case, and empirically confirms its complexity scaling for sub-thousand network sizes.</p>
+<section id="random-walks-as-spanning-forests" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="random-walks-as-spanning-forests">Random Walks as Spanning Forests</h2>
+<p>The class of diffusive processes we focus on “spread” from one node to another. If a node is activated, it is able to activate other nodes it is connected to, directly encoding our need for the graph edges to represent that nodes “depend” on others to be activated. In this case, a node activates when another node it depends on spreads their state to it. These single-cause activations are often modeled as a random-walk on the dependency graph: visiting a node leads to its activation.</p>
+<section id="random-walk-activations" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="random-walk-activations">Random Walk Activations</h3>
+<p>Random walks are regularly employed to model spreading and diffusive processes on networks. If a network consists of locations, states, agents, etc. as “nodes”, and relationships between nodes as “edges”, then random walks consist of a stochastic process that “visits” nodes by randomly “walking” between them along connecting edges. Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [CITE…lots?]</p>
+<p>When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance’s[PAGERANK], or predict phase-changes in node states (e.g.&nbsp;infected vs.&nbsp;uninfected)[SIR I think]. In our case, Since we have been encoding the activations as binary activation vectors, the “jump” information is lost—activations are “emitted” for observation only upon the random walker’s initial visit.<span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[2]</a></span> Further, the ordering of emissions has been removed in our binary vector representation, leaving only co-occurrence groups in each <span class="math inline">\(\mathbf{x}_i\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> In many cases, however, the existence of relationships is not known already, and analysts might <em>assume</em> their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Humanmemorysearch_Jun2015" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">K.-S. Jun, J. Zhu, T. T. Rogers, Z. Yang, <em>et al.</em>, <span>“Human memory search as initial-visit emitting random walk,”</span> <em>Advances in neural information processing systems</em>, vol. 28, no. 20, pp. 2389–2393, 2015, doi: <a href="https://doi.org/10.1016/j.physleta.2019.04.060">10.1016/j.physleta.2019.04.060</a>.</div>
+</div><div id="fn1"><p><sup>1</sup>&nbsp;For a brief treatment of the case that INVITE emission order is preserved, see <a href="../part3/3-08-ordered.html" class="quarto-xref"><span>Recovery from Working Memory &amp; Partial Orders</span></a></p></div></div></section>
+<section id="activations-in-a-forest" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="activations-in-a-forest">Activations in a Forest</h3>
+<p>As a general setting, the number of node activations (e.g.&nbsp;for datasets like co-authorship) is much smaller than the set of nodes (<span class="math inline">\(\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n\)</span>)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a><br>
+<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[1]</a></span> go to some length describing discrete- and continuous-time random walk models that can give rise to binary activation vectors like our <span class="math inline">\(X(i,j):I\times J\rightarrow \mathbb{B}\)</span>. The <em>regularized laplacian</em> (or <em>forest</em>)kernel of a graph<span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[3]</a></span> plays a central role in their analysis, as it will in our discussion going forward.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(\|\cdot\|_0\)</span> is the <span class="math inline">\(\ell_0\)</span> “pseudonorm”, counting non-zero elements (the support) of its argument.</p></div><div id="ref-SimilaritiesgraphsKernels_Avrachenkov2019" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and D. Rubanov, <span>“Similarities on graphs: Kernels versus proximity measures,”</span> <em>European Journal of Combinatorics</em>, vol. 80, pp. 47–56, Aug. 2019, doi: <a href="https://doi.org/10.1016/j.ejc.2018.02.002">10.1016/j.ejc.2018.02.002</a>.</div>
+</div></div><p><span id="eq-regulap"><span class="math display">\[
+Q_{\beta} = (I+\beta L)^{-1}
+\tag{6.1}\]</span></span></p>
+<p>In that work, it is discussed as the optimal solution to the semi-supervised “node labeling” problem, having a regularization parameter <span class="math inline">\(\beta\)</span>, though its uses go far beyond this.<span class="citation" data-cites="GraphLaplacianRegularization_Pang2017 Countingrootedforests_Knill2013 MatrixForestTheorem_Chebotarev2006"><a href="#ref-GraphLaplacianRegularization_Pang2017" role="doc-biblioref">[4]</a>, <a href="#ref-Countingrootedforests_Knill2013" role="doc-biblioref">[5]</a>, <a href="#ref-MatrixForestTheorem_Chebotarev2006" role="doc-biblioref">[6]</a></span> <span class="math inline">\(Q\)</span> generalizes the so-called “heat kernel” <span class="math inline">\(\exp{(-t\tilde{L})}\)</span>, in the sense that it solves a lagrangian relaxation of a loss function based on the heat equation. This can be related to the PageRank (<span class="math inline">\(\exp{(-tL^{\text{rw}})}\)</span>) kernel as well, which is explicitly based on random walk transition probabilities.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-GraphLaplacianRegularization_Pang2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">J. Pang and G. Cheung, <span>“Graph laplacian regularization for image denoising: Analysis in the continuous domain,”</span> <em><span>IEEE</span> Transactions on Image Processing</em>, vol. 26, no. 4, pp. 1770–1785, Apr. 2017, doi: <a href="https://doi.org/10.1109/TIP.2017.2651400">10.1109/TIP.2017.2651400</a>.</div>
+</div><div id="ref-Countingrootedforests_Knill2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">O. Knill, <span>“Counting rooted forests in a network,”</span> <span>arXiv</span>, <span>arXiv</span>:1307.3810, Jul. 2013. doi: <a href="https://doi.org/10.48550/arXiv.1307.3810">10.48550/arXiv.1307.3810</a>.</div>
+</div><div id="ref-MatrixForestTheorem_Chebotarev2006" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">P. Chebotarev and E. Shamis, <span>“The matrix-forest theorem and measuring relations in small social groups,”</span> <span>arXiv</span>, <span>arXiv</span>:math/0602070, Feb. 2006. doi: <a href="https://doi.org/10.48550/arXiv.math/0602070">10.48550/arXiv.math/0602070</a>.</div>
+</div><div id="fn3"><p><sup>3</sup>&nbsp;<span class="math inline">\(Q\)</span> can also be interpreted as a continuous-time random walk location probability, after exponentially distributed time, if spending exponentially-distributed time in each node.</p></div><div id="fn4"><p><sup>4</sup>&nbsp;edge weights scaled by </p></div></div><p>In fact, <span class="math inline">\(Q\)</span> can be viewed as a transition matrix for a random walk having a geometrically distributed number of steps, giving us a small expected support for <span class="math inline">\(\mathbf{x}_i\)</span>, as needed.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> However we interpret <span class="math inline">\(Q\)</span>, a remarkable fact emerges due to a theorem by Chebotarev: each entry <span class="math inline">\(q=Q(u,v)\)</span> is equal to the probability<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> that nodes <span class="math inline">\(u,v\)</span> are connected in a randomly sampled <em>spanning rooted forest</em></p>
+<p>In other words, co-occurring node activations due to a random walk or heat kernel are deeply tied to the chance that those nodes find themselves <em>on the same tree in a forest</em>.</p>
+</section>
+<section id="spreading-dependencies-as-trees" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="spreading-dependencies-as-trees">Spreading Dependencies as Trees</h3>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-tree">
+<div id="cell-fig-stack-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="19">
+<div class="cell-output cell-output-display">
+<div id="fig-stack-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stack-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-graphs-fig-stack-tree-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stack-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>With the overt link from spreading processes to counts of trees made, there’s room for a more intuitive bridge.</p>
+<p>For single-cause, single source spreading process activations—on a graph—the activation dependency graph for each observation/spread/random walk <em>must be a tree</em>. With a single cause (the “root”), which is the starting position of a random walker, a node can only be reached (activated) by another currently activated node. If the random walk jumps from one visited node to another, previously visited one, that transition did not result in an activation , so the <em>dependency</em> count for that edge should not increase. This description of a random walk, where subsequent visits do not “store” the incoming transition, is roughly equivalent to one more commonly described as a <em>Loop-Erased</em> random walk. It is precisely used to uniformly sample the space of spanning trees on a graph.<span class="citation" data-cites="Generatingrandomspanning_Wilson1996"><a href="#ref-Generatingrandomspanning_Wilson1996" role="doc-biblioref">[7]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-Generatingrandomspanning_Wilson1996" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">D. B. Wilson, <span>“Generating random spanning trees more quickly than the cover time,”</span> in <em>Proceedings of the twenty-eighth annual ACM symposium on theory of computing - STOC ’96</em>, in STOC ’96. ACM Press, 1996, pp. 296–303. doi: <a href="https://doi.org/10.1145/237814.237880">10.1145/237814.237880</a>.</div>
+</div></div><p>Much like a reluctant co-author “worn down” by multiple requests, we can even include random walks that “receive” activation potential from more than one source. Say a node is activated when some fraction of its neighbors have all originated a random walk transition to it, or a node activates on its second visit, or similar. We simply count (as dependency evidence) the ultimate transition that precipitated activation. This could be justified from an empirical perspective as well: say we observe an author turn down requests for one paper from two individuals, but accept a third. We could actually infer a <em>lowered</em> dependency on the first two, <em>despite</em> the eventual coauthorship. Only the interaction that was observed as successful necessarily counts toward success-dependency, barring any contradicting information.</p>
+<p>It’s important to add here that <em>mutual convincing</em> by multiple collaborators simultaneously (or over time) is expressly left out. In other words, only pairwise interactions are permitted. This is not an additional assumption, but a key limitation of our use of graphs in the first place! As Torres et al.&nbsp;go to great lengths elaborating in <span class="citation" data-cites="WhyHowWhen_Torres2021"><a href="#ref-WhyHowWhen_Torres2021" role="doc-biblioref">[8]</a></span>, it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss. The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, <em>not a graph</em>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
+</div></div><p><a href="#fig-stack-tree" class="quarto-xref">Figure&nbsp;<span>6.1</span></a> demonstrates the use of trees as the distribution for subgraphs, instead of outer-products/cliques.</p>
+</section>
+</section>
+<section id="sparse-approximation" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sparse-approximation">Sparse Approximation</h2>
+<p>As indicated previously, we desire a representation of each observation that takes the “node space” vectors (<span class="math inline">\(\mathbf{x}_i\)</span>) to “edge space” ones (<span class="math inline">\(\mathbf{r}_i\)</span>). We have separated each observation with the intention of finding a point-estimate for the “best” edges, such that the edge vector induces a subgraph belonging to a desired class. If we assume that each edge vector is in <span class="math inline">\(\mathbb{B}^{\omega}\)</span>, so that the interactions are unweighted, undirected, simple graphs, then for any family of subgraphs we will be selecting from at most <span class="math inline">\(\omega\leq {n\choose 2}\)</span> edges.</p>
+<p>Representing a vector as sparse combination of a known set of vectors (also known as “atoms”) is called <em>sparse approximation</em>.</p>
+<section id="sec-fp-problem" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-fp-problem">Problem Specification</h3>
+<p>Sparse approximation of a vector <span class="math inline">\(\mathbf{x}\)</span> as a representation <span class="math inline">\(\mathbf{r}\)</span> using a dictionary of atoms (columns of <span class="math inline">\(D\)</span>) is specified more concretely as <span class="citation" data-cites="EfficientimplementationK_Rubinstein2008"><a href="#ref-EfficientimplementationK_Rubinstein2008" role="doc-biblioref">[9]</a></span>: <span id="eq-sparse-approx"><span class="math display">\[\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-D\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq N  \tag{6.2}\]</span></span> where <span class="math inline">\(N\)</span> serves as a sparsity constraint (at most <span class="math inline">\(N\)</span> non-zero entries). This is known to be NP-hard, though a number of efficient methods to approximate a solution are well-studies and widely used. Solving the lagrangian form of <a href="#eq-sparse-approx" class="quarto-xref">Equation&nbsp;<span>6.2</span></a>, with an <span class="math inline">\(\ell_1\)</span>-norm in place of <span class="math inline">\(\ell_0\)</span>, is known as _Basis Pursuit<span class="citation" data-cites="SparseApproximateSolutions_Natarajan1995"><a href="#ref-SparseApproximateSolutions_Natarajan1995" role="doc-biblioref">[10]</a></span>, while greedily solving for the non-zeros of <span class="math inline">\(\mathbf{r}\)</span> one-at-a-time is called <em>matching pursuit</em><span class="citation" data-cites="Matchingpursuitstime_Mallat1993"><a href="#ref-Matchingpursuitstime_Mallat1993" role="doc-biblioref">[11]</a></span>. In that work, each iteration selects the atom with the largest inner product <span class="math inline">\(\langle \mathbf{d}_{i'},\mathbf{x}\rangle\)</span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-EfficientimplementationK_Rubinstein2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">R. Rubinstein, M. Zibulevsky, and M. Elad, <span>“Efficient implementation of the k-SVD algorithm using batch orthogonal matching pursuit,”</span> <em>Cs Technion</em>, vol. 40, no. 8, pp. 1–15, 2008.</div>
+</div><div id="ref-SparseApproximateSolutions_Natarajan1995" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">B. K. Natarajan, <span>“Sparse approximate solutions to linear systems,”</span> <em>SIAM Journal on Computing</em>, vol. 24, no. 2, pp. 227–234, Apr. 1995, doi: <a href="https://doi.org/10.1137/s0097539792240406">10.1137/s0097539792240406</a>.</div>
+</div><div id="ref-Matchingpursuitstime_Mallat1993" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">S. G. Mallat and Z. Zhang, <span>“Matching pursuits with time-frequency dictionaries,”</span> <em>IEEE Transactions on Signal Processing</em>, vol. 41, no. 12, pp. 3397–3415, 1993, doi: <a href="https://doi.org/10.1109/78.258082">10.1109/78.258082</a>.</div>
+</div></div><p>We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree). Our dictionary in this case will be the set of edges given by <span class="math inline">\(B\)</span> (see <a href="2-04-rand-sf.html#sec-subgraph-dists" class="quarto-xref"><span>Subgraph Distributions</span></a>), while our sparsity is given by the relationship of the numbers of nodes and edges in a tree: <span id="eq-sparse-approx-tree"><span class="math display">\[
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
+\tag{6.3}\]</span></span></p>
+<p>There are some oddities to take into account here. As a linear operator (see <a href="../part1/1-01-matrix-meas.html#sec-lin-ops" class="quarto-xref"><span>Models &amp; linear operators</span></a>), <span class="math inline">\(B^T\)</span> takes a vector of edges to node-space, counting the number of edges each node was incident to. This means that, even with a ground-truth set of interactions, <span class="math inline">\(B^T\)</span> would take them to a new matrix <span class="math inline">\(X_{\text{deg}}(i,j):I\times J \rightarrow \mathbb{N}\)</span>, which has entries of the number of interactions each individual in observation <span class="math inline">\(i\)</span> was involved in. While very useful for downstream analysis (see <a href="../part3/3-08-ordered.html#sec-fp-preprocess" class="quarto-xref"><span>Forest Pursuit as Preprocessing</span></a>), the MSE loss in <a href="#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> will never be zero, since <span class="math inline">\(X_{\text{deg}}\)</span> entries are not boolean. Large-degree “hub” nodes in the true graph would give a large residual, and the adjoint would subsequently fail to remove the effect of <span class="math inline">\(B^T\)</span> on the edge vectors.</p>
+<p>It might be possible to utilize a specific semiring, such as <span class="math inline">\((\min,+)\)</span>, to enforce inner products (see <a href="../part1/1-01-matrix-meas.html#sec-products" class="quarto-xref"><span>Distance vs.&nbsp;Incidence</span></a>) that take us back to a binary vector.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> Instead, we will take an empirical bayes approach to the estimation of sparse vectors.<span class="citation" data-cites="EmpiricalBayesianStrategy_Wipf2007"><a href="#ref-EmpiricalBayesianStrategy_Wipf2007" role="doc-biblioref">[15]</a></span> As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) MRF [explained?] on the activated nodes. This is underdetermined (any spanning tree could equally emit the observed activations), so we use an empirical prior as a form of shrinkage: the co-occurrences of nodes across all observed activation patterns. This let’s us optimize a likelihood from <a href="2-04-rand-sf.html#eq-edgevec-prob" class="quarto-xref">Equation&nbsp;<span>5.3</span></a>, for the distribution of spanning trees on the subgraph of <span class="math inline">\(G^*\)</span> inducted by <span class="math inline">\(\mathbf{x}\)</span>. <span id="eq-sparse-approx-tree"><span class="math display">\[
+\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
+\tag{6.4}\]</span></span></p>
+<div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp; This is more than a simple hack, and belies a great depth of possible connection to the problem at hand. It is known that “lines” (arising from equations of the inner product) in tropical projective space <em>are trees</em>.<span class="citation" data-cites="tropicalGrassmannian_2004"><a href="#ref-tropicalGrassmannian_2004" role="doc-biblioref">[12]</a></span> In addition, the tropical equivalent to Kirchoff’s polynomial (which counts over all possible spanning trees), is the direct computation of the minimum spanning tree.<span class="citation" data-cites="TropicalKirchhoffsformula_Jukna2021"><a href="#ref-TropicalKirchhoffsformula_Jukna2021" role="doc-biblioref">[13]</a></span> For treatment of sparse approximation using tropical matrix factorization, see <span class="citation" data-cites="Sparsedataembedding_Omanovic2021"><a href="#ref-Sparsedataembedding_Omanovic2021" role="doc-biblioref">[14]</a></span></p><div id="ref-tropicalGrassmannian_2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline"><span>“The tropical grassmannian,”</span> <em>advg</em>, vol. 4, no. 3, pp. 389–411, Jul. 2004, doi: <a href="https://doi.org/10.1515/advg.2004.023">10.1515/advg.2004.023</a>.</div>
+</div><div id="ref-TropicalKirchhoffsformula_Jukna2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">S. Jukna and H. Seiwert, <span>“Tropical kirchhoff’s formula and postoptimality in matroid optimization,”</span> <em>Discrete Applied Mathematics</em>, vol. 289, pp. 12–21, Jan. 2021, doi: <a href="https://doi.org/10.1016/j.dam.2020.09.018">10.1016/j.dam.2020.09.018</a>.</div>
+</div><div id="ref-Sparsedataembedding_Omanovic2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">A. Omanović, H. Kazan, P. Oblak, and T. Curk, <span>“Sparse data embedding and prediction by tropical matrix factorization,”</span> <em>BMC Bioinformatics</em>, vol. 22, no. 1, Feb. 2021, doi: <a href="https://doi.org/10.1186/s12859-021-04023-9">10.1186/s12859-021-04023-9</a>.</div>
+</div></div><div id="ref-EmpiricalBayesianStrategy_Wipf2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">D. P. Wipf and B. D. Rao, <span>“An empirical bayesian strategy for solving the simultaneous sparse approximation problem,”</span> <em>IEEE Transactions on Signal Processing</em>, vol. 55, no. 7, pp. 3704–3716, Jul. 2007, doi: <a href="https://doi.org/10.1109/tsp.2007.894265">10.1109/tsp.2007.894265</a>.</div>
+</div></div></section>
+<section id="sec-steiner" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-steiner">Max. Spanning (Steiner) Trees</h3>
+<p>The point estimate <span class="math inline">\(\hat{\mathbf{r}}\)</span> is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.<span class="citation" data-cites="EfficientComputationExpectations_Zmigrod2021"><a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[16]</a></span> If we allow the use of all observations <span class="math inline">\(X\)</span> to find an empirical prior for <span class="math inline">\(\mathbf{r}\)</span>, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate. One algorithm for finding a maximum spanning tree is Prim’s[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e.&nbsp;non-zero entry in our vector) one-by-one. In this way, we effectively <em>do</em> perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).</p>
+<div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
+</div><div id="ref-upperboundprobability_Hunter1976" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">D. Hunter, <span>“An upper bound for the probability of a union,”</span> <em>Journal of Applied Probability</em>, vol. 13, no. 3, pp. 597–603, Sep. 1976, doi: <a href="https://doi.org/10.2307/3212481">10.2307/3212481</a>.</div>
+</div></div><p>However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights. There is reason to believe that edge weights based on pairwise joint probabilities might also be appropriate. Namely, the Hunter-Worsley bound for unions of (dependent) variables says that the sum of marginal probabilities over-counts the true union of activations (including by dependence relations). This alone would be known as Boole’s inequality, but the amount it overcounts is <em>at most</em> the weight of the maximum spanning tree over pairwise joint probabilities.<span class="citation" data-cites="upperboundprobability_Hunter1976"><a href="#ref-upperboundprobability_Hunter1976" role="doc-biblioref">[17]</a></span> Adding the tree of joint co-occurrence probabilities is the most conservative way to arrive at the observed marginals from the probability of at least one node occurring (which could then be the “root”).</p>
+<p>Finally, we realize that the problem statement (“find the maximum weight tree on the subgraph”) is not the same as an MST, per-se, but rather the so-called “Steiner Tree” problem. In other words, we would like our tree of interactions to be of minimum weight on a node-induced subgraph <em>of the true graph</em>. The distribution of trees that our interactions are sampled from should be over the available edges in the recovered graph, <em>which we do not yet have</em>. Thankfully, a well-known algorithm for approximating the (graph) Steiner tree problem instead finds the minimum spanning tree over the <em>metric closure</em> of the graph.<span class="citation" data-cites="fastalgorithmSteiner_Kou1981"><a href="#ref-fastalgorithmSteiner_Kou1981" role="doc-biblioref">[18]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
+</div></div><p>This metric closure is a complete graph having weights given by the shortest-path distances between nodes. While we don’t know those exact values either, we do have the fact that the distance metric implied by the forest kernel (in <a href="#eq-regulap" class="quarto-xref">Equation&nbsp;<span>6.1</span></a>) is something of a relaxation of shortest paths. In the limit <span class="math inline">\(\beta\rightarrow 0\)</span>, <span class="math inline">\(Q\)</span> is proportional to shortest path distances, while <span class="math inline">\(\beta\rightarrow\infty\)</span> instead gives commute/resistance distances.<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[1]</a></span> And that kernel is counting the probability of co-occurrence on trees in any random spanning forest!</p>
+<p>All this is to say that node co-occurrence measures are more similar to node-node distances in the underlying graph, <em>not estimators of edge existence</em>. But we can use this as an empirical prior to approximate Steiner trees that <em>are on the true graph</em>.</p>
+<!-- - KL-divergence is convex (we can minimize sum of dists, not just dist of sum) -->
+</section>
+</section>
+<section id="sec-FP" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-FP">Forest Pursuit</h2>
+<p>Instantiating the above, we propose <em>Forest Pursuit</em>, an relatively simple algorithm for correction of clique-bias under a spreading process assumption</p>
+<section id="algorithm-summary" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="algorithm-summary">Algorithm Summary</h3>
+<p>Once again, we assume <span class="math inline">\(m\)</span> observations of activations over <span class="math inline">\(n\)</span> nodes, represented as the design matrix <span class="math inline">\(X:I\times J \rightarrow \mathbb{B}\)</span>. Like GLASSO, we assume that a Gram matrix (or re-scaling of it) is precomputed, for the non-streaming case.</p>
+<p>Based on the discussion in <a href="../part1/1-03-recovery-road.html#nte-cs" class="quarto-xref">Note&nbsp;<span>4.1</span></a> we will use the cosine similarity as a degree-corrected co-occurrence measure, with node-node distances estimated as <span class="math inline">\(d_K=-\log{\text{Ochiai}(j,j')}\)</span>.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn6"><p><sup>6</sup>&nbsp; Note that any kernel could be used, given other justification, though anecdotal evidence has the negative-log-Ochiai distance performing marginally better than MI distance or Yule’s <span class="math inline">\(Q\)</span>.</p></div><div id="ref-fastalgorithmSteiner_Kou1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">L. Kou, G. Markowsky, and L. Berman, <span>“A fast algorithm for steiner trees,”</span> <em>Acta Informatica</em>, vol. 15, no. 2, pp. 141–145, 1981, doi: <a href="https://doi.org/10.1007/bf00288961">10.1007/bf00288961</a>.</div>
+</div></div><p>For each observation, the provided distances serve to approximate the metric closure of the underlying subgraph induced by <span class="math inline">\(\mathbf{x}\)</span>. This is passed to an algorithm for finding the minimum spanning tree. Given a metric closure, the MST in turn would be an approximation of the desired Steiner tree within <span class="math inline">\(2-\tfrac{2}{\|\mathbf{x}\|_0}\)</span> of optimal.<span class="citation" data-cites="fastalgorithmSteiner_Kou1981"><a href="#ref-fastalgorithmSteiner_Kou1981" role="doc-biblioref">[18]</a></span> For <span class="math inline">\(\|\mathbf{x}\|_0 \ll n\)</span>, this error bound will often be close to 1, and approaching 2 as the expected number of activations-per-observation grows.</p>
+<p>After the point estimates for <span class="math inline">\(\mathbf{r}\)</span> have been calculated as trees, we can use the desire-path beta-binomial model (<a href="2-04-rand-sf.html#eq-desirepath-binom" class="quarto-xref">Equation&nbsp;<span>5.4</span></a>) to calculate the overall empirical Bayes estimate for <span class="math inline">\(\hat{G}\)</span>. As a prior for <span class="math inline">\(\alpha\)</span>, instead of a Jeffrey’s or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity. In other words, we assume that <span class="math inline">\(n\)</span> nodes only need about <span class="math inline">\(n-1\)</span> edges to be fully connected, which implies a prior expected sparsity of <span id="eq-min-connect"><span class="math display">\[
+\alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}
+\tag{6.5}\]</span></span> which we can use as a sparsity-promoting initial value for <span class="math inline">\(\text{Beta}(\alpha^*,1-\alpha^*)\)</span>.</p>
+<div id="alg-fp" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-comment-delimiter="//" data-pseudocode-number="1" data-no-end="false" data-line-number-punc=":" data-line-number="true">
+<div class="pseudocode">
+\begin{algorithm} \caption{Forest Pursuit} \begin{algorithmic} \Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0&lt;\alpha&lt;1$ \Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$ \Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$} \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$} \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \Procedure{ForestPursuit}{$X, d_K$} \State $R(\cdot,\cdot) \gets 0$ \For{$i\gets 1, m$}\Comment{\textit{each observation}} \State $\mathbf{x}_i \gets X(i,\cdot)$ \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} \EndFor \State \textbf{return} $R$ \EndProcedure \Procedure{PursueTree}{$\mathbf{x}, d$} \Comment{\textit{Approximate Steiner Tree}} \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$ \Comment{\textit{activated nodes}} \State $T \gets$\Call{MST}{$d[V,V]$} \Comment{\textit{e.g. Prim's Algorithm}} \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$ \State $\mathbf{r} \gets e_n(\mathbf{u,v})$ \Comment{\textit{unroll tree adjacency}} \State \textbf{return} $\mathbf{r}$ \EndProcedure \Procedure{DesirePathBeta}{$X,R, \alpha$} \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$ \State $\sigma \gets \sum_{i=1}^m X(i,j)$ \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$ \Comment{\textit{co-occurrence counts}} \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$ \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \end{algorithmic} \end{algorithm}
+</div>
+</div>
+<p><a href="#alg-fp" class="quarto-xref">Algorithm 1</a> outlines the algorithm in pseudocode for reproducibility.</p>
+</section>
+<section id="sec-fp-complexity" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-fp-complexity">Approximate Complexity</h3>
+<p>The Forest Pursuit calculation presented in <a href="#alg-fp" class="quarto-xref">Algorithm 1</a> assumes an initial value for the distance matrix, which is similar to the covariance estimate that is pre-computed (as an initial guess) for GLASSO. Therefore we do not include the matrix multiplication for the gram matrix in our analysis, at least in the non-streaming case. Because every observation is dealt with completely independently, the FP estimation of <span class="math inline">\(R\)</span> is linear in observation count. It is also trivially parallelizeable,<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> and the bayesian update for <span class="math inline">\(\hat{\alpha}_m\)</span> can be performed in a streaming manner, as well.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;Although, no common python implementation of MST algorithms are as-yet vectorized or parallelized for simultaneous application over many observations. We see development of non-blocking MSTs in common analysis frameworks as important future work.</p></div></div><p>Each observation requires a call to “PursueTree”, which involves an MST call for the pre-computed subset of distances onnodes activated for that observation. Note the use of MST algorithm could apply Prim’s or Kr uskal’s algorithm, or similar. It is recommended to utilize Prims in this case, however, since Prim’s on a sufficiently dense graph can be made to run in <span class="math inline">\(O(n)\)</span> time for <span class="math inline">\(n\)</span> activated nodes by using a <em>d</em>-tree for its heap queue.[CITE] Since we are always using the metric closure, Prim’s will always run on a complete graph.</p>
+<p>Importantly, this means that FP does not scale with the the size of the network, but only the worst-case activation count of a given observation, <span class="math inline">\(O(s_{\text{max}})\)</span>, where <span class="math inline">\(s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}\)</span> We say this is <em>approximately</em> constant in node size:</p>
+<ul>
+<li>the total number of nodes is typically a <em>given</em> for a single problem setting</li>
+<li>in many domains, the basic <em>spreading</em> rate of diffusion model (e.g.&nbsp;<span class="math inline">\(R_0\)</span>, or heat conductivity), does not scale with the total size of an observation</li>
+</ul>
+<p>That last point means that constant scaling with network size is generally down to the domain in question. For instance, a heat equation simulated over a small area, having a given conductivity, will not have a different conductivity over a larger area; conductivity is a material property. Similarly, a virus might have a particular basic reproduction rate, or a set of authors might have a static distribution over how many collaborators they wish to work with. The former is down to viral load generation, and the latter a sociological limit: more a bigger department usually doesnt imply more co-authors.</p>
+<p>Similar to <a href="#eq-min-connect" class="quarto-xref">Equation&nbsp;<span>6.5</span></a>, we might reasonably assume that the expected degree of nodes is roughly constant with network size i.e.&nbsp;a property of domain. So, the the density of activation vectors (as a fraction of all possible edges) is going go scale with the inverse of <span class="math inline">\(n\)</span>. This makes a process linear in activation count to be constant in network size. Then, if <span class="math inline">\(\bar{s}\)</span> is the expected non-zero count of each row of <span class="math inline">\(X\)</span>, the final approximate complexity of FP is <span class="math inline">\(O(m\bar{s})\)</span>.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn8"><p><sup>8</sup>&nbsp; In our reference implementation, which uses Kruskal’s algorithm, the theoretical complexity is likewise <span class="math inline">\(O(m\bar{s}^2\log{\bar{s}})\)</span>, though in our experience the values of <span class="math inline">\(\bar{s}\)</span> are small enough to not impact the runtime significantly.</p></div></div></section>
+</section>
+<section id="sec-FP-experiments" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-FP-experiments">Simulation Study</h2>
+<p>To test the performance of FP against other backboning and recovery methods, we have developed a public repository <a href="https://github.com/rtbs-dev/affinis"><code>affinis</code></a> containing reference implementations for FP, along with many co-occurrence and backboning techniques. The library contains source code and examples for many of the presented methods, and more. [UPDATE w/ DOI?]</p>
+<p>In addition, to support the community and provide for a standard set of benchmarks for network recovery from activations, the <a href="https://github.com/rtbs-dev/mendr"><code>MENDR</code></a> reference dataset and testbench was developed. To make reproducible comparison of recovery algorithms easier, <code>MENDR</code> includes hundreds of randomly generated networks in several classes, along with random walks sampled <em>on those networks</em>. It can also be extended through community contribution, using data versioning to allow consistent comparison between different reports and publications over time.</p>
+<section id="experimental-method" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="experimental-method">Experimental Method</h3>
+<p>For each algorithm shown in <a href="#tbl-methods" class="quarto-xref">Table&nbsp;<span>6.2</span></a>, every combination of the parameters in <a href="#tbl-mendr" class="quarto-xref">Table&nbsp;<span>6.1</span></a> was tested. 30 random graphs for each of nodes were tested, which was repeated again for each of Tree, Block, and scale-free types.</p>
+<div id="tbl-mendr" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mendr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.1: Experiment Settings (MENDR Dataset)
+</figcaption>
+<div aria-describedby="tbl-mendr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 60%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">parameters</th>
+<th style="text-align: center;">values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">random graph <strong>kind</strong></td>
+<td style="text-align: center;">Tree, Block, BA<span class="math inline">\((m\in\{1,2\}\)</span>)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">network <strong><span class="math inline">\(n\)</span>-nodes</strong></td>
+<td style="text-align: center;">10,30,100,300</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">random <strong>walks</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">random walk <strong>jumps</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(j\sim\text{Geometric}(\tfrac{1}{n})+5\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">random walk <strong>root</strong></td>
+<td style="text-align: center;">1 sample <span class="math inline">\(n_0 \sim \text{Multinomial}(\textbf{n},1)\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">random <strong>seed</strong></td>
+<td style="text-align: center;">1, 2, … , 30</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-methods" class="quarto-float quarto-figure quarto-figure-center anchored page-columns page-full">
+<figure class="quarto-float quarto-float-tbl figure page-columns page-full">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6.2: Summary of algorithms compared
+</figcaption>
+<div aria-describedby="tbl-methods-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca" class="page-columns page-full">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 37%">
+<col style="width: 15%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Algorithm</th>
+<th style="text-align: center;">abbrev.</th>
+<th style="text-align: center;"><span class="math inline">\(\alpha\)</span>?</th>
+<th style="text-align: center;">class</th>
+<th style="text-align: right;">source</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Forest Pursuit</td>
+<td style="text-align: center;">FP</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">hybrid</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GLASSO</td>
+<td style="text-align: center;">GL</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">MRF</td>
+<td style="text-align: right;"><span class="citation" data-cites="Sparseinversecovariance_Friedman2008 Structureestimationdiscrete_Loh2012"><a href="#ref-Sparseinversecovariance_Friedman2008" role="doc-biblioref">[19]</a>, <a href="#ref-Structureestimationdiscrete_Loh2012" role="doc-biblioref">[20]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Ochiai Coef.</td>
+<td style="text-align: center;">CS</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Counts</td>
+<td style="text-align: right;"><span class="citation" data-cites="Measuresecologicalassociation_Janson1981"><a href="#ref-Measuresecologicalassociation_Janson1981" role="doc-biblioref">[21]</a></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Hyperbolic Projection</td>
+<td style="text-align: center;">HYP</td>
+<td style="text-align: center;">No</td>
+<td style="text-align: center;">Counts</td>
+<td style="text-align: right;"><span class="citation" data-cites="Scientificcollaborationnetworks._Newman2001"><a href="#ref-Scientificcollaborationnetworks._Newman2001" role="doc-biblioref">[22]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Doubly-Stochastic</td>
+<td style="text-align: center;">eOT</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="twostagealgorithm_Slater2009 Sinkhorndistanceslightspeed_Cuturi2013"><a href="#ref-twostagealgorithm_Slater2009" role="doc-biblioref">[23]</a>, <a href="#ref-Sinkhorndistanceslightspeed_Cuturi2013" role="doc-biblioref">[24]</a></span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">High-Salience Skeleton</td>
+<td style="text-align: center;">HSS</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="Robustclassificationsalient_Grady2012"><a href="#ref-Robustclassificationsalient_Grady2012" role="doc-biblioref">[25]</a></span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Resource Allocation</td>
+<td style="text-align: center;">RP</td>
+<td style="text-align: center;">Yes</td>
+<td style="text-align: center;">Transport</td>
+<td style="text-align: right;"><span class="citation" data-cites="Bipartitenetworkprojection_Zhou2007"><a href="#ref-Bipartitenetworkprojection_Zhou2007" role="doc-biblioref">[26]</a></span></td>
+</tr>
+</tbody>
+</table>
+<div class="no-row-height column-margin column-container"><div id="ref-Sparseinversecovariance_Friedman2008" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline">J. Friedman, T. Hastie, and R. Tibshirani, <span>“Sparse inverse covariance estimation with the graphical lasso,”</span> <em>Biostatistics</em>, vol. 9, no. 3, pp. 432–441, Jul. 2008, doi: <a href="https://doi.org/10.1093/biostatistics/kxm045">10.1093/biostatistics/kxm045</a>.</div>
+</div><div id="ref-Measuresecologicalassociation_Janson1981" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline">S. Janson and J. Vegelius, <span>“Measures of ecological association,”</span> <em>Oecologia</em>, vol. 49, no. 3, pp. 371–376, Jul. 1981, doi: <a href="https://doi.org/10.1007/bf00347601">10.1007/bf00347601</a>.</div>
+</div><div id="ref-Scientificcollaborationnetworks._Newman2001" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[22] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Scientific collaboration networks. II. Shortest paths, weighted networks, and centrality,”</span> <em>Physical Review E</em>, vol. 64, no. 1, p. 016132, Jun. 2001, doi: <a href="https://doi.org/10.1103/physreve.64.016132">10.1103/physreve.64.016132</a>.</div>
+</div><div id="ref-twostagealgorithm_Slater2009" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[23] </div><div class="csl-right-inline">P. B. Slater, <span>“A two-stage algorithm for extracting the multiscale backbone of complex weighted networks,”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 106, no. 26, pp. E66–E66, Jun. 2009, doi: <a href="https://doi.org/10.1073/pnas.0904725106">10.1073/pnas.0904725106</a>.</div>
+</div><div id="ref-Sinkhorndistanceslightspeed_Cuturi2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[24] </div><div class="csl-right-inline">M. Cuturi, <span>“Sinkhorn distances: Lightspeed computation of optimal transport,”</span> in <em>Proceedings of the 27th international conference on neural information processing systems - volume 2</em>, in NIPS’13. Red Hook, NY, USA: Curran Associates Inc., 2013, pp. 2292–2300.</div>
+</div><div id="ref-Robustclassificationsalient_Grady2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[25] </div><div class="csl-right-inline">D. Grady, C. Thiemann, and D. Brockmann, <span>“Robust classification of salient links in complex networks,”</span> <em>Nature Communications</em>, vol. 3, no. 1, May 2012, doi: <a href="https://doi.org/10.1038/ncomms1847">10.1038/ncomms1847</a>.</div>
+</div><div id="ref-Bipartitenetworkprojection_Zhou2007" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[26] </div><div class="csl-right-inline">T. Zhou, J. Ren, M. s. Medo, and Y.-C. Zhang, <span>“Bipartite network projection and personal recommendation,”</span> <em>Phys. Rev. E</em>, vol. 76, no. 4, 4, p. 046115, Oct. 2007, doi: <a href="https://doi.org/10.1103/PhysRevE.76.046115">10.1103/PhysRevE.76.046115</a>.</div>
+</div></div></div>
+</figure>
+</div>
+<p>For each algorithm that could be supplied a prior via additive smoothing, seen in <a href="#tbl-methods" class="quarto-xref">Table&nbsp;<span>6.2</span></a> as “<span class="math inline">\(\alpha\)</span>?: Yes”, a minimum connected (tree) level of sparsity wasy supplied <span class="math inline">\(\alpha=\tfrac{2}{n}\)</span>. The others, esp.&nbsp;GLASSO, do not have a <span class="math inline">\(\tfrac{\text{count}}{\text{exposure}}\)</span> form, and could not be easily interpreted in a way that allowed for additive smoothing. However, since the regularizaiton parameter for GLASSO is often critical for finding good solutions, a 5-fold cross validation was performed for each experiment to select a “best” value, with the final result run using that value. While this does have a constant-time penalty for each experiment, the reconstruction accuracy is significantly improved with this technique, and would reflect common practice in using GLASSO for this reason.</p>
+<p>The three classes of random graphs represent common use cases in sparse graph recovery. In addition, the block and tree graphs are types we expect GLASSO to correctly recover in this binary setting.<span class="citation" data-cites="Structureestimationdiscrete_Loh2012"><a href="#ref-Structureestimationdiscrete_Loh2012" role="doc-biblioref">[20]</a></span> The block graphs of size <span class="math inline">\(n\)</span> were formed by taking the line-graph of randomly generated trees of size <span class="math inline">\(n+1\)</span>.<br>
+Trees were randomly generated using Prüfer sequences as impelmented in NetworkX [CITE]. To simulate possible social networks and other complex systems that show evidence of preferential attachment, scale-free graphs were sampled through the Barabási–Albert (BA) model, which was randomly seeded with a re-attachment paramenter <span class="math inline">\(m\)</span> of either 1 or 2.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Structureestimationdiscrete_Loh2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[20] </div><div class="csl-right-inline">P. Loh and M. J. Wainwright, <span>“Structure estimation for discrete graphical models: Generalized covariance matrices and their inverses,”</span> in <em>Advances in neural information processing systems</em>, Curran Associates, Inc., 2012. doi: <a href="https://doi.org/10.1214/13-aos1162">10.1214/13-aos1162</a>.</div>
+</div></div><p>Every graph has a static ID provided by MENDR, along with generation and retrieval code for public review. New graphs kinds and sizes are simple to add for future benchmarking capability.</p>
+</section>
+<section id="metrics" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="metrics">Metrics</h3>
+<p>To compare each algorithm consistently, several performance measures have been included in the MENDR testbench. They are all functions of the True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN) values.</p>
+<dl class="page-columns page-full">
+<dt>Precision (P)</dt>
+<dd>
+Fraction of positive predictions that are true, also called “positive predictive value” (PPV) <span class="math display">\[P= \frac{TP}{TP+FP}\]</span>
+</dd>
+<dt>Recall (R)</dt>
+<dd>
+Fraction of true values that were returned as positive. Also called the TP-rate (TPR), and has an inherent trade-off with precision. <span class="math display">\[R=\frac{TP}{TP+FN} \]</span>
+</dd>
+<dt>Matthews Correlation Coefficient (MCC)</dt>
+<dd>
+Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems (like sparse recovery) <span class="citation" data-cites="statisticalcomparisonMatthews_Chicco2023"><a href="#ref-statisticalcomparisonMatthews_Chicco2023" role="doc-biblioref">[27]</a></span> <span class="math display">\[\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}\]</span>
+</dd>
+<div class="no-row-height column-margin column-container"><div id="ref-statisticalcomparisonMatthews_Chicco2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[27] </div><div class="csl-right-inline">D. Chicco and G. Jurman, <span>“A statistical comparison between matthews correlation coefficient ( <span>MCC</span>), prevalence threshold, and fowlkes–mallows index,”</span> <em>Journal of Biomedical Informatics</em>, vol. 144, p. 104426, Aug. 2023, doi: <a href="https://doi.org/10.1016/j.jbi.2023.104426">10.1016/j.jbi.2023.104426</a>.</div>
+</div></div><dt>Fowlkes-Mallows (F-M)</dt>
+<dd>
+Geometric mean of Precision and Recall, as opposed to the F-Measure that returns the harmonic mean. Also known to be the limit of the MCC as TN approaches infinity<span class="citation" data-cites="MCCapproachesgeometric_Crall2023"><a href="#ref-MCCapproachesgeometric_Crall2023" role="doc-biblioref">[28]</a></span>, which is useful as TN grows with <span class="math inline">\(n^2\)</span> but TP only with <span class="math inline">\(n\)</span>. <span class="math display">\[\sqrt{P\cdot R}\]</span>
+</dd>
+<div class="no-row-height column-margin column-container"><div id="ref-MCCapproachesgeometric_Crall2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[28] </div><div class="csl-right-inline">J. Crall, <span>“The MCC approaches the geometric mean of precision and recall as true negatives approach infinity,”</span> Apr. 2023, doi: <a href="https://doi.org/10.48550/ARXIV.2305.00594">10.48550/ARXIV.2305.00594</a>.</div>
+</div></div></dl>
+<p>Because this work is focused on unsupervised performance, specifically for the use of these algorithms by analysts investigating dependencies, we opt to calculate TP,TN,FP,FN at every unique edge probability/strength value returned by each algorithm. Then, because we do not know a priori which threshold level will be selected by an analyst in the unsupervised setting, we take a conservative approach and report the expected values E[MCC] and E[F-M] over all unique threshold values. To consistently compare the expected values, we transform the thresholds for every experiment to the range <span class="math inline">\([\epsilon, 1-\epsilon]\)</span>, to avoid division-by-0 at the extremes.</p>
+<p>Another common approach is to report the Average Precision Score (APS). This is not the average precision over the thresholds however, but instead the expected precision over the possible recall values achievable by the algorithm. It is approximating the integral under the parametric P-R curve, instead of the thresholds themselves. <span class="math display">\[\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))\]</span> where <span class="math inline">\(P(e)\)</span> and <span class="math inline">\(R(e)\)</span> are the precision and recall at the threshold set by the edge <span class="math inline">\(e\)</span>, in rank-order. This is more commonly done for supervised settings, however, and will report a high value as long as <em>any</em> threshold is able to return a both a high precision and a high recall, simultaneously.</p>
+</section>
+<section id="results---scoring" class="level3">
+<h3 class="anchored" data-anchor-id="results---scoring">Results - Scoring</h3>
+<p>The results over every experiment are shown in <a href="#fig-fp-overall" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>. Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8. GLASSO is clearly the second-best at recovery in these experiments, though for scale-free networks the improvement over simply thresholding the Ochiai coefficient is negligible. For APS, both GLASSO and Ochiai are equally able to return high scores, indicating at least one threshold for each that performed well. A simple mechanism for FP to perform equally well at APS is discussed in <a href="2-06-latent-forest-alloc.html#sec-fpi" class="quarto-xref"><span>Forest Pursuit Interaction Probability</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-overall">
+<div id="cell-fig-fp-overall" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div id="fig-fp-overall" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fp-overall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-fp-overall-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fp-overall-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.2: Comparison of MENDR recovery scores
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Breaking down the results by graph kind in <a href="#fig-fp-compare" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>, we see the remarkable ability of FP to dramatically outperform every other algorithm in MCC and F-M, showing remarkable accuracy <em>together with stability</em> over the set of threshold values. This is indicative of FP’s ability to more directly estimate the support of each edge, with lower values occurring only when co-occurrences aren’t being consistently explained with the same set of incidences.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-compare">
+<div id="cell-fig-fp-compare" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div id="fig-fp-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fp-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-fp-compare-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fp-compare-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.3: Comparison of MENDR Recovery Scores by Graph Type
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Another important capability of any recovery algorithm is to improve its estimate when provided with more data. Of course, this also will depend on other factors, such as the dimensionality of the problem (network size), and specifically for us, whether <em>longer</em> random walks makes network inference better or worse.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-mendr-trends">
+<div class="cell" data-execution_count="16">
+<div id="fig-mendr-trends" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="16">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mendr-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-1.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Trend: MCC vs network size
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-2.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Trend: MCC vs observation count
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div id="fig-mendr-trends-3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-mendr-trends-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-mendr-trends-output-3.svg" class="img-fluid figure-img" data-ref-parent="fig-mendr-trends">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-mendr-trends-3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(c) Trend: MCC vs random-walk length
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mendr-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.4: Score trends vs problem scaling
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>As <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> shows, FP is positively correlated with <em>all three</em>. Most importantly, the trend for FP is strongest as the number of observations increases, which is not a phenomenon seen in the other methods. In fact, it appears that count-based methods’ scores are negatively correlated with added random walk length and added observations. Only HYP and CS scores are shown in <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>, but all other tested methods (other than FP and GLASSO) show the same trend.</p>
+<p>However, because the graph sampling protocol includes <span class="math inline">\(n\)</span> in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The <em>partial resitual</em> plots are shown in <a href="#fig-partials-mcc" class="quarto-xref">Figure&nbsp;<span>6.5</span></a>, which shows the trends of each variable after controlling for the others.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-mcc">
+<div id="cell-fig-partials-mcc" class="cell" data-execution_count="17">
+<div class="cell-output cell-output-display">
+<div id="fig-partials-mcc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-partials-mcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-partials-mcc-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partials-mcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.5: Partial Residuals (regression on E[MCC])
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>This analysis indicates that <em>all</em> methods should likely increase in their performance when extra observations are added, though FP does this more efficiently than either CS or GLASSO. Interestingly, CS is largely unaffected by network size, compared to FP and GL, though GL performs the worst in this regard. However, it is in the random-walk length that we see the benefit of dependency-based algorithms. The Ochiai coefficient suffers dramatically as more nodes are activated by the spreading process, since this means the implied clique size grows by the square of the number of activations. FP remains unaffected by walk-length, while (impressively) GLASSO appears to have a marginal boost in performance when walk lengths are high.</p>
+</section>
+<section id="results---runtime-performance" class="level3">
+<h3 class="anchored" data-anchor-id="results---runtime-performance">Results - Runtime Performance</h3>
+<p>For both Forest Pursuit and GLASSO, runtime efficiency is critical if these algorithms are going to be adopted by analysts for backboning and recovery. <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> shows the (log-)seconds against the same parameters from before. For similar sized networks, FP is consistently taking 10-100x less time to reach a result than GLASSO does. Additionally, many of the experiments led to ill-conditioned matrices that failed to converge for GLASSO under any of the regularization parameters tests (the “x” markers in <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>). As expected, the number of observations plot shows a clear limit in terms of controlling the lower-bound of FPs runtime, since in this serial version every observation runs one more call to MST. On the other hand, GLASSO appears to have signiicant banding for walk length and observation counts, likely indicating dominance of network size for its runtime.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-runtime">
+<div id="cell-fig-runtime" class="cell" data-execution_count="20">
+<div class="cell-output cell-output-display">
+<div id="fig-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-runtime-output-1.png" width="578" height="491" class="figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.6: Runtime Scaling (Forest-Pursuit vs GLASSO)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>To control for each of the variables, and to empirically validate the theoretical analysis in <a href="#sec-fp-complexity" class="quarto-xref"><span>Approximate Complexity</span></a>}, a regression of the same three (log-)parametwers was performed against (log-)seconds. The slopes in <a href="#fig-partials-runtime" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>, which are plotted on a log-log scale, correspond roughly to polynomial powers in linear scale. In regression terms, we are fitting the log of <span class="math display">\[y_{\text{sec}} = ax_{\text{param}}^\gamma\]</span> so that the slope in a log-log plot is <span class="math inline">\(\gamma\)</span>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-runtime">
+<div id="cell-fig-partials-runtime" class="cell" data-execution_count="22">
+<div class="cell-output cell-output-display">
+<div id="fig-partials-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-partials-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-05-forest-pursuit_files/figure-html/..-codefigs-results-fig-partials-runtime-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-partials-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6.7: Partial Residuals (regression on computation time)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>In a very close match to our previous analysis, the scaling of FP is almost entirely explained by the observation count and random-walk length, alone: the coefficient on network size shows constant-time scaling. Similarly, the scaling with observation count is very nearly linear time, as predicted. The residuals show non-linear behavior for the random-walk length parameter, which would make sense, due to the theoretical <span class="math inline">\(\|E\|\log\|V\|\)</span> scaling of kruskal’s algorithm. At this scale, <span class="math inline">\(n\log n\)</span> and <span class="math inline">\(n^2\log n\)</span> complexity might appear smaller than linear time, due to the log factor. GLASSO hardly scales with random walk length, and only marginally with observation count. In typical GLASSO, the observation count has already been collapsed to calculate the empirical covariance matrix, so its effects here might be due instead to the cross-validation and the need to calculate empirical covariance for observation subsets. The big difference, however, is GLASSO scaling in significantly superlinear time—almost <span class="math inline">\(O(n^2)\)</span>. This is usually the limiting factor for analyst use of such an algorithm in network analysis more generally.</p>
+
+
+
+</section>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../content/part2/2-04-rand-sf.html" class="pagination-link" aria-label="Latent Graphs with Desire Paths">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Latent Graphs with Desire Paths</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../content/part2/2-06-latent-forest-alloc.html" class="pagination-link" aria-label="Modifications &amp; Extensions">
+        <span class="nav-page-text"><span class="chapter-title">Modifications &amp; Extensions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
+
+
+
+
+</body></html>

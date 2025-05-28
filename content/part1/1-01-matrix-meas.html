@@ -51,7 +51,7 @@ div.csl-indent {
 <script src="../../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../../">
 <link href="../../content/part1/1-02-graph-obs.html" rel="next">
-<link href="../../content/0-intro.html" rel="prev">
+<link href="../../content/00-intro.html" rel="prev">
 <script src="../../site_libs/quarto-html/quarto.js"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -168,7 +168,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/0-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
+  <a href="../../content/00-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
@@ -208,17 +208,17 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-01-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Graph Reduce &amp; Desire Paths</span></a>
+  <a href="../../content/part2/2-04-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Latent Graphs with Desire Paths</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-02-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Approximate Recovery in Near-linear Time</span></a>
+  <a href="../../content/part2/2-05-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part2/2-03-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
+  <a href="../../content/part2/2-06-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
   </div>
 </li>
       </ul>
@@ -226,7 +226,7 @@ window.Quarto = {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
- <span class="menu-text">Applications &amp; Extentions</span></a>
+ <span class="menu-text">Applications &amp; Case Studies</span></a>
           <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -234,21 +234,21 @@ window.Quarto = {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-06-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
+  <a href="../../content/part3/3-07-qualitative.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-07-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="../../content/part3/3-08-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
+  <a href="../../content/part3/3-08-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
   </div>
 </li>
       </ul>
   </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/09-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
+  </div>
+</li>
     </ul>
     </div>
 </nav>
@@ -348,7 +348,7 @@ A=0   &amp; p_{01}      &amp; p_{00}      &amp; p_{0\bullet} \\
 \end{array}
 \tag{2.3}\]</span></span></p>
 <p>The co-occurrence probability <span class="math inline">\(p_{11}=P(A\cap B)\)</span> for each pair can also be approximated with the beta-binomial scheme mentioned above, but care must be taken not to confuse this with the edge strength connecting two nodes. First, nodes that rarely activate (low node probability) may nonetheless reliably connect to others when they do occur (high edge probability). In fact, without direct observation of edges, we are not able to estimate their count, <em>or</em> their exposure, which can be a source of systemic error from <em>epistemic uncertainty</em>. We don’t know when edges are used, directly, and we also don’t have a reliable way to estimate the opportunities each edge had to activate (their exposure), either. This is especially true when we wish to know whether an edge even <em>can</em> be traversed, i.e.&nbsp;the edge <em>support</em>. Support, as used in this sense, is the set of inputs for which we expect a non-zero output. Intuitively, this idea captures the sense that we might care more about <em>whether</em> an edge/dependency exists, not <em>how important</em> it is. For that, we have to re-assess our simple model: even if we could count the number of times an edge might have been traversed, how do we estimate the opportunities it had to be available for traversal (it’s “exposure”)?</p>
-<p>Assuming this kind of epistemic uncertainty can be adequately addressed through modeling—attempts at which will be discussed in more detail in <a href="1-03-recovery-road.html" class="quarto-xref"><span>Roads to Network Recovery</span></a>—conditional probability/contingency tables will again be useful for validation. When comparing estimated edge probability to some known “true” edge existence (if we have that), we can count the number of correct predictions, as well as type I (false positive) and type II (false negative) errors. We can do this at <em>every probability/weight threshold value</em>, as well, and we will return to ways to aggregate all of these values into useful scoring metrics in <a href="../part2/2-02-forest-pursuit.html#sec-FP-experiments" class="quarto-xref"><span>Simulation Study</span></a>.</p>
+<p>Assuming this kind of epistemic uncertainty can be adequately addressed through modeling—attempts at which will be discussed in more detail in <a href="1-03-recovery-road.html" class="quarto-xref"><span>Roads to Network Recovery</span></a>—conditional probability/contingency tables will again be useful for validation. When comparing estimated edge probability to some known “true” edge existence (if we have that), we can count the number of correct predictions, as well as type I (false positive) and type II (false negative) errors. We can do this at <em>every probability/weight threshold value</em>, as well, and we will return to ways to aggregate all of these values into useful scoring metrics in <a href="../part2/2-05-forest-pursuit.html#sec-FP-experiments" class="quarto-xref"><span>Simulation Study</span></a>.</p>
 </section>
 </section>
 <section id="sec-products" class="level2 page-columns page-full">
@@ -371,7 +371,7 @@ X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j
 <p>Matrices that can be decomposed into another matrix and its transpose are symmetric, and positive semidefinite (PSD), making every gram matrix PSD. They are directly related to (squared) euclidean distances through the polarization identity[CITE?]:<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> <span id="eq-sq-distance"><span class="math display">\[
 d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j')
 \tag{2.5}\]</span></span></p>
-<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<strong>Important</strong>: these definitions are all using the <span class="math inline">\(\mathbf{x}'\)</span> notation to indicate that these measurements are almost exclusively being done in the <em>data space</em>, i.e.&nbsp;on column vectors. While most definitions work on distances in terms of the measurements/objects/data, for <em>inverse problems</em> (like network recovery, structure learning, etc.) they are more often applied in terms of the features (here, the nodes. This can be seen in statistics as well, where covariance and correlation matrices (which are related to the gram and distance matrix definitions above), are defined as relationships between features/dimensions, not individual samples.</p></div></div><p>In our example from before, the gram matrix will have entries showing the number of papers shared by two authors (or total papers by each, on the diagonal). This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. This is called a <em>bipartite projection</em>[CITE] into the authors “mode”, and is illustrated visually in <a href="../0-intro.html#fig-collab" class="quarto-xref">Figure&nbsp;<span>1.3</span></a>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn9"><p><sup>9</sup>&nbsp;<strong>Important</strong>: these definitions are all using the <span class="math inline">\(\mathbf{x}'\)</span> notation to indicate that these measurements are almost exclusively being done in the <em>data space</em>, i.e.&nbsp;on column vectors. While most definitions work on distances in terms of the measurements/objects/data, for <em>inverse problems</em> (like network recovery, structure learning, etc.) they are more often applied in terms of the features (here, the nodes. This can be seen in statistics as well, where covariance and correlation matrices (which are related to the gram and distance matrix definitions above), are defined as relationships between features/dimensions, not individual samples.</p></div></div><p>In our example from before, the gram matrix will have entries showing the number of papers shared by two authors (or total papers by each, on the diagonal). This is because an inner product between two author (column) vectors will add 1 for each paper in the sum only if it has both authors in common. This is called a <em>bipartite projection</em>[CITE] into the authors “mode”, and is illustrated visually in <a href="../00-intro.html#fig-collab" class="quarto-xref">Figure&nbsp;<span>1.3 (a)</span></a>.</p>
 <p>Due to [CITE Shoenberg/Mercer], we can generalize <a href="#eq-sq-distance" class="quarto-xref">Equation&nbsp;<span>2.5</span></a> such that <em>any</em> function “kernel” function <span class="math inline">\(\kappa(x,y)\)</span> that creates PSD matrix <span class="math inline">\(K(j,j')\in\mathbb{S}^{n\times n}\)</span>. It says that such a PSD matrix can always be decomposed into a form <span class="math inline">\(K=R^TR\)</span> for any matrix <span class="math inline">\(R(i,j)\in \mathbb{S}^{m\times n}\)</span>, thus letting us use the polarization identity to create arbitrary distance metrics. on <span class="math inline">\(\mathbb{S}^n\)</span> <span class="citation" data-cites="SimilaritiesgraphsKernels_Avrachenkov2019"><a href="#ref-SimilaritiesgraphsKernels_Avrachenkov2019" role="doc-biblioref">[4]</a></span><a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> <span id="eq-dist-kernel"><span class="math display">\[
 d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
 \tag{2.6}\]</span></span></p>
@@ -392,7 +392,7 @@ d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 </div></div><p>Representing these as matrices will be further explored in <a href="1-02-graph-obs.html#sec-incidence-vec" class="quarto-xref"><span>Graphs as incidence structures</span></a>. But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of <span class="math inline">\(\mathfrak{I}\)</span>, is a very different question from estimating the similarity/distance between two entities in a vector space.</p>
 <p>In statistics, such discrete structures usually arise when we are concerned with direct dependence from indirect. Take as an example a set of masses connected together by springs. If we shake one mass, all masses will also shake some amount, depending on the spring constants of the springs each mass is “transmitted” force through, and the losses due to friction or air resistance. While the amount of movement over time depends on how “close” in this spring network two masses are, the movement itself can only be transmitted through springs that the masses are <em>incident</em> to. Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence. If we hold all but two masses still, and moving one doesn’t move the other, then we know they are conditionally independent: no spring connects them!</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-springs">
-<div id="cell-fig-springs" class="cell" data-execution_count="25">
+<div id="cell-fig-springs" class="cell" data-execution_count="24">
 <div class="cell-output cell-output-display">
 <div id="fig-springs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -400,7 +400,7 @@ d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 <img src="1-01-matrix-meas_files/figure-html/..-codefigs-graphs-fig-springs-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-springs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: CAPTION ME
+Figure&nbsp;2.1: Spring system as a network of conditional dependencies
 </figcaption>
 </figure>
 </div>
@@ -837,7 +837,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="../../content/0-intro.html" class="pagination-link" aria-label="Introduction">
+      <a href="../../content/00-intro.html" class="pagination-link" aria-label="Introduction">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Introduction</span></span>
       </a>          
   </div>

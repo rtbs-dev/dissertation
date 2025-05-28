@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Qualitative Application of Relationship Recovery – Measuring Network Dependencies from Node Activations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../content/part3/3-08-ordered.html" rel="next">
+<link href="../../content/part2/2-06-latent-forest-alloc.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-6d9f7168ccb3133a0c0fd8fac57d4f56.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
+<link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
+<script src="../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating slimcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-07-qualitative.html">Applications &amp; Case Studies</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-qualitative.html"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Measuring Network Dependencies from Node Activations</a> 
+        <div class="sidebar-tools-main">
+    <a href="../../Measuring-Network-Dependencies-from-Node-Activations.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/00-intro.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false">
+ <span class="menu-text">A Practitioner’s Guide to Network Recovery</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-01-matrix-meas.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Metrology with matrices</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-02-graph-obs.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Vector representations of incidence</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part1/1-03-recovery-road.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Roads to Network Recovery</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Nonparametric Network Recovery With Random Spanning Forests</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-04-rand-sf.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Latent Graphs with Desire Paths</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-05-forest-pursuit.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Approximate Recovery in Near-linear Time by <em>Forest Pursuit</em></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part2/2-06-latent-forest-alloc.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Modifications &amp; Extensions</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Applications &amp; Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-07-qualitative.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/part3/3-08-ordered.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../content/09-conclusion.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">Conclusion &amp; Future Work</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contents</h2>
+   
+  <ul>
+  <li><a href="#network-science-collaboration-network" id="toc-network-science-collaboration-network" class="nav-link active" data-scroll-target="#network-science-collaboration-network">Network Science Collaboration Network</a></li>
+  <li><a href="#les-miserables-character-network" id="toc-les-miserables-character-network" class="nav-link" data-scroll-target="#les-miserables-character-network">Les Miserables Character Network</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full column-body" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../content/part3/3-07-qualitative.html">Applications &amp; Case Studies</a></li><li class="breadcrumb-item"><a href="../../content/part3/3-07-qualitative.html"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">Qualitative Application of Relationship Recovery</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-body">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A more realistic test of <em>Forest Pursuit’s</em> behavior is in unsupervised, qualitative analysis of complex systems and networks. In this chapter we will recreate two well-known bipartite datasets from network science, and compare several network recreation methods on them. As we have discussed previously<span class="citation" data-cites="PerceivedAssortativitySocial_Fisher2017"><a href="#ref-PerceivedAssortativitySocial_Fisher2017" role="doc-biblioref">[1]</a></span>, there is some interest in quantifying network assortativity for social networks, and whether the positive assortativity effect is a methodological artifact. Assuming an analyst is interested in social network <em>dependencies</em>—like which nodes are directly <em>influencing</em> which others—we provide a glimpse at how correcting for clique bias with <em>Forest Pursuit</em> (FP) affects assortativity.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-PerceivedAssortativitySocial_Fisher2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. N. Fisher, M. J. Silk, and D. W. Franks, <span>“The perceived assortativity of social networks: Methodological problems and solutions,”</span> in <em>Trends in social network analysis</em>, Springer International Publishing, 2017, pp. 1–19. doi: <a href="https://doi.org/10.1007/978-3-319-53420-6_1">10.1007/978-3-319-53420-6_1</a>.</div>
+</div></div><p>In the second case study, we also investigate how centrality measures can be adversely affected when clique-bias is not accounted for, especially when appearance in cliques is known to be rare for certain node types.</p>
+<section id="network-science-collaboration-network" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="network-science-collaboration-network">Network Science Collaboration Network</h2>
+<p>Following in the steps of <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>, we recreate a network from co-authorships in works cited by two literature review papers, <span class="citation" data-cites="StructureFunctionComplex_Newman2003"><a href="#ref-StructureFunctionComplex_Newman2003" role="doc-biblioref">[3]</a></span> and [CITE]. The list of all cited papers was reconstructed via web-of-science queries, and these were used to construct author “activation” observations.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> A baseline co-authorship network was initially constructed using the largest connected component, and a modularity-maximizing community detection algorithm [<span class="citation" data-cites="Findingcommunitystructure_Clauset2004"><a href="#ref-Findingcommunitystructure_Clauset2004" role="doc-biblioref">[5]</a></span>;Findingevaluatingcommunity_Newman2004] was used to highlight community structure. Nodes and papers were retained if they had two or more papers and authors listed, respectively. This baseline network can be seen in <a href="#fig-netsci-cooc" class="quarto-xref">Figure&nbsp;<span>8.1</span></a>, where (to keep with the treatment in <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>) we have added a quotient network of the communities themselves.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-StructureFunctionComplex_Newman2003" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">M. E. J. Newman, <span>“The structure and function of complex networks,”</span> <em>SIAM Review</em>, vol. 45, no. 2, pp. 167–256, Jan. 2003, doi: <a href="https://doi.org/10.1137/s003614450342480">10.1137/s003614450342480</a>.</div>
+</div><div id="fn1"><p><sup>1</sup>&nbsp; An additional paper (<span class="citation" data-cites="Coherentnoisescale_Sneppen1997"><a href="#ref-Coherentnoisescale_Sneppen1997" role="doc-biblioref">[4]</a></span>) was added to ensure the the largest connected component contained necessary communities that were originally missing compared to <span class="citation" data-cites="Findingevaluatingcommunity_Newman2004"><a href="#ref-Findingevaluatingcommunity_Newman2004" role="doc-biblioref">[2]</a></span>.</p><div id="ref-Coherentnoisescale_Sneppen1997" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">K. Sneppen and M. E. J. Newman, <span>“Coherent noise, scale invariance and intermittency in large systems,”</span> <em>Physica D: Nonlinear Phenomena</em>, vol. 110, no. 3–4, pp. 209–222, Dec. 1997, doi: <a href="https://doi.org/10.1016/s0167-2789(97)00128-0">10.1016/s0167-2789(97)00128-0</a>.</div>
+</div><div id="ref-Findingevaluatingcommunity_Newman2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">M. E. J. Newman and M. Girvan, <span>“Finding and evaluating community structure in networks,”</span> <em>Physical Review E</em>, vol. 69, no. 2, p. 026113, Feb. 2004, doi: <a href="https://doi.org/10.1103/physreve.69.026113">10.1103/physreve.69.026113</a>.</div>
+</div></div><div id="ref-Findingcommunitystructure_Clauset2004" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">A. Clauset, M. E. J. Newman, and C. Moore, <span>“Finding community structure in very large networks,”</span> <em>Physical Review E</em>, vol. 70, no. 6, p. 066111, Dec. 2004, doi: <a href="https://doi.org/10.1103/physreve.70.066111">10.1103/physreve.70.066111</a>.</div>
+</div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-cooc">
+<div id="cell-fig-netsci-cooc" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div id="fig-netsci-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-netsci-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-cooc-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.1: 134 Network scientists connected by co-authorship"><img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-cooc-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.1: 134 Network scientists connected by co-authorship
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The detected assortativity <span class="math inline">\(r=0.059\)</span> is small, but positive. As expected, each community tends to have a dominant “clique”, since many members of these groups tend to mutually author papers together (simultaneously).</p>
+<p>However, if we are after a “social network” that describes social influence of individuals w.r.t. others, then we are hoping to recover collaborative <em>dependency relationships</em>.</p>
+<ul>
+<li>Who is causing who to join papers?</li>
+<li>Who are the central “collaborators” that influence the paper writing of many others?</li>
+</ul>
+<p>With some background knowledge of how university labs tend to work (with students, post-docs, advisors, colleagues, etc.), we might not believe that every member of a community has significant influence on the writing of every other member. So, to estimate a dependency network of collaboration relationships, we could turn to a Chow-Liu tree, which is shown in <a href="#fig-netsci-tree" class="quarto-xref">Figure&nbsp;<span>8.2</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-tree">
+<div id="cell-fig-netsci-tree" class="cell" data-execution_count="12">
+<div class="cell-output cell-output-display">
+<div id="fig-netsci-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-netsci-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-tree-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.2: Chow-Liu tree of NetSci collaborator dependency relationships"><img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-tree-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.2: Chow-Liu tree of NetSci collaborator dependency relationships
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>This dependency is much more sparse, and indeed the assortativity coefficient has dropped to <span class="math inline">\(r=-0.251\)</span>. In academic writing, we might even expect a lowered assortativity, since students that may not go on to be prolific in their original field would still seek out prolific advisors, initially. Unfortunately, enforcing a tree structure has some negative side effects. Overlaying the original community structure from <a href="#fig-netsci-cooc" class="quarto-xref">Figure&nbsp;<span>8.1</span></a> onto the tree and calculating a quotient graph shows that the community structure is impacted by the change. Many of the communities are “unrolled” into long chains of authors, since trees cannot allow small loops or cycles. This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems.</p>
+<p>With <em>Forest Pursuit</em>, we can attempt to correct for “clique bias” in the measurement of dependency relationships, while allowing for flexibility in the global network structure. The FP recovered collaborator graph is shown in <a href="#fig-netsci-fp" class="quarto-xref">Figure&nbsp;<span>8.3</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-fp">
+<div id="cell-fig-netsci-fp" class="cell" data-execution_count="13">
+<div class="cell-output cell-output-display">
+<div id="fig-netsci-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-netsci-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-fp-output-1.svg" class="lightbox" data-gallery="netsci" title="Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relationships"><img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-fp-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.3: Forest Pursuit estimate of NetSci collaborator dependency relationships
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The communities from the co-occurrence network are entirely preserved, with a nearly identical community structure in the graph quotient compared to the co-occurrence graph. But now we see an assortativity that is close to zero (slightly negative at <span class="math inline">\(r=-0.069\)</span>). This brings the assortativity more in line with the World Wide Web networks, or even close to results for random preferential attachment networks that are zero in the limit<span class="citation" data-cites="AssortativeMixingNetworks_Newman2002"><a href="#ref-AssortativeMixingNetworks_Newman2002" role="doc-biblioref">[6]</a></span>.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-AssortativeMixingNetworks_Newman2002" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. E. J. Newman, <span>“Assortative mixing in networks,”</span> <em>Physical Review Letters</em>, vol. 89, no. 20, p. 208701, Oct. 2002, doi: <a href="https://doi.org/10.1103/physrevlett.89.208701">10.1103/physrevlett.89.208701</a>.</div>
+</div></div><p>Relative to the tree network, there are not so many long chains, as many authors have been allowed to “loop-back” and have relationships with nearby colleagues, reducing the path distance between communities in the process. Still, like the trees, FP tends to reduce the degree of each node, which is summarized in <a href="#fig-netsci-degree" class="quarto-xref">Figure&nbsp;<span>8.4</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-netsci-degree">
+<div id="cell-fig-netsci-degree" class="cell" data-execution_count="15">
+<div class="cell-output cell-output-display">
+<div id="fig-netsci-degree" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-netsci-degree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-netsci-degree-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-netsci-degree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.4: Degree distributions of FP vs co-occurrence social networks
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>From a domain modeling perspective, it might be reasonable to assume that any given author has 2-3 influential collaboration relationships shown, especially considering students and post-docs are likely to constitute a good number of nodes. Even from a logistics perspective (during a given time window working with an advisor) the number of times a student asks/is asked to participate in a paper has to be limited, given average publishing rates.<br>
+Only rare individuals would have upwards of 10 influential relationships, with a mean closer to the 2-3 of the FP network, rather than a full quarter having 10 and the median being 4-5 (as in the co-occurrence network). In addition, recall that this is a social network derived from literature review paper citations, not exhaustive inventories of each author’s work, so every influential relationship should not be shown in this sample.</p>
+</section>
+<section id="les-miserables-character-network" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="les-miserables-character-network">Les Miserables Character Network</h2>
+<p>Another famous network derives from <span class="citation" data-cites="StanfordGraphBaseplatform_Knuth1993"><a href="#ref-StanfordGraphBaseplatform_Knuth1993" role="doc-biblioref">[7]</a></span> via mining character co-occurrences in chapters of <em>Les Misérables</em> (1862), Victor Hugo’s sprawling saga of [in]equality and [in]justice in 19th-century France. This dataset is often reported as being inherently a <em>graph</em>, but we have reconstructed the underlying bipartite observations for the purpose of removing clique bias from the network reconstruction. In the original network, an extra count is added to the weight of an edge every time a character occurs in a chapter with another. Once again, we have only retained characters/chapters that appeared with two or more chapters/characters, respectively. In <a href="#fig-lesmis-cooc" class="quarto-xref">Figure&nbsp;<span>8.5</span></a>, we run the same community detection scheme to improve the visual understandability of the network, along with inset quotient graphs.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-StanfordGraphBaseplatform_Knuth1993" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">D. E. Knuth, <em>The stanford GraphBase: A platform for combinatorial computing</em>, vol. 1. AcM Press New York, 1993.</div>
+</div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-cooc">
+<div id="cell-fig-lesmis-cooc" class="cell" data-execution_count="21">
+<div class="cell-output cell-output-display">
+<div id="fig-lesmis-cooc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lesmis-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-lesmis-cooc-output-1.svg" class="lightbox" data-gallery="lesmis" title="Figure&nbsp;8.5: Les Miserables character co-occurrence network"><img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-lesmis-cooc-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lesmis-cooc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.5: Les Miserables character co-occurrence network
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Note that the communities demonstrate clear clique-like behavior. On one hand, this does make assessment of clusters easier, since characters in roughly the same scenes are densely grouped together. However, this network makes it difficult to parse relationships, such that backboning would become necessary.</p>
+<p>We should also ask <em>what we want</em> out of this “social” network. Another way we might think about a social network of characters is “which characters <em>influence</em> the appearance (or not) of which other characters?” By extension, “which characters are <em>significant</em>, in the sense that they dictate the appearance of more characters than others?” From a domain modeling perspective, this is like asking <em>how</em> an author is deciding which characters to include in a chapter. By not correcting for clique-bias, we are implicitly assuming that Victor Hugo would be setting out to write a chapter and immediately writes down a list of every character, independently, should appear. Instead, it’s likely that the desired appearance of certain characters in a chapter <em>leads to</em> the inclusion of others, as the plot requires.</p>
+<p>Because the inclusion of certain characters <em>leads to</em> the inclusion of others (by this model), we can reasonably model the authorial “character inclusion process” as <em>spreading</em> from character to character. With this in mind, we apply Forest Pursuit to correct for clique-bias, and show the resulting dependency network (with the original community partition) in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a>.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-fp">
+<div id="cell-fig-lesmis-fp" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="24">
+<div class="cell-output cell-output-display">
+<div id="fig-lesmis-fp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lesmis-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<a href="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-lesmis-fp-output-1.svg" class="lightbox" data-gallery="lesmis" title="Figure&nbsp;8.6: Les Miserables character dependency network (Forest Pursuit)"><img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-lesmis-fp-output-1.svg" class="img-fluid figure-img"></a>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lesmis-fp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.6: Les Miserables character dependency network (Forest Pursuit)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>The network has been filtered to only include necessary edges to retain overall connectivity. As before, our community structure shown in the quotient graph has been preserved, even with the significant edge density reduction.</p>
+<p>Applying these networks, we might wish to distinguish through them which characters are “main” and which are “supporting”, though more on a gradient than in a binary/classification sense. One way to do this is through centrality measures [CITE], which estimate the “importance” of nodes in various ways. Eigenvector centrality, specifically, finds the importance of nodes relative to the importance of each node’s neighbors<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp; Regularized eigenvector centrality is equivalent to PageRank centrality, <em>i.e.</em> the seminal work from [CITE], of Google fame.</p></div></div><p>The topology of a network greatly impacts the centrality measure recovered. In <a href="#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a> we show a bump-plot of the ranks of the top 15 most central nodes for both the original co-occurrence network and the FP network estimate. In the original network, centrality rewards characters appearing in mutual cliques as being central, especially the “revolutionary” group (shown in orange in <a href="#fig-lesmis-fp" class="quarto-xref">Figure&nbsp;<span>8.6</span></a> and <a href="#fig-lesmis-cooc" class="quarto-xref">Figure&nbsp;<span>8.5</span></a>). Are these really the most important characters? Even Javert, though being an important recurring character, largely plays the role of generic law enforcement throughout, while characters like Marius play central motivating roles across several distinct social groups throughout the novel.</p>
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-lesmis-centrality">
+<div id="cell-fig-lesmis-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="28">
+<div class="cell-output cell-output-display">
+<div id="fig-lesmis-centrality" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lesmis-centrality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-07-qualitative_files/figure-html/..-codefigs-qualitative-fig-lesmis-centrality-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lesmis-centrality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8.7: Changes in character centrality ranking for FP vs co-occurrence
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>This brings up another benefit of correcting clique-bias: estimating character importance <em>despite</em> systematic interaction-reduction bias from authors. As made famous by the so-called “Bechdel test” [CITE], authors historically tend to systematically reduce the agency and interaction rates of women in literature<span class="citation" data-cites="genderagencygap_Stuhler2024"><a href="#ref-genderagencygap_Stuhler2024" role="doc-biblioref">[8]</a></span>. We highlight every female character in <a href="#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a>, and which shows that the co-occurrence network had a single female character in the top 15 most central (Eponine, ranked 14th). By correcting for clique-bias, <em>every</em> female character significantly increases in centrality ranking. In context, titles of entire books and volumes of <em>Les Misérables</em> are named after women we would consider crucial to the plot (<em>e.g.</em> Fantine, Cosette, and Eponine).<br>
+As <span class="citation" data-cites="genderagencygap_Stuhler2024"><a href="#ref-genderagencygap_Stuhler2024" role="doc-biblioref">[8]</a></span> indicates, however, authors are likely to under-represent their agency and interactions with other characters throughout the story, so networks based primarily on co-occurrence will likewise systematically underestimate their importance.</p>
+
+
+<div class="no-row-height column-margin column-container"><div id="ref-genderagencygap_Stuhler2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">O. Stuhler, <span>“The gender agency gap in fiction writing (1850 to 2010),”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 121, no. 29, Jul. 2024, doi: <a href="https://doi.org/10.1073/pnas.2319514121">10.1073/pnas.2319514121</a>.</div>
+</div></div>
+</section>
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation column-body">
+  <div class="nav-page nav-page-previous">
+      <a href="../../content/part2/2-06-latent-forest-alloc.html" class="pagination-link" aria-label="Modifications &amp; Extensions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">Modifications &amp; Extensions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../content/part3/3-08-ordered.html" class="pagination-link" aria-label="Recovery from Working Memory &amp; Partial Orders">
+        <span class="nav-page-text"><span class="chapter-title">Recovery from Working Memory &amp; Partial Orders</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+    <script type="text/javascript">
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let pseudocodeOptions = {
+          indentSize: el.dataset.indentSize || "1.2em",
+          commentDelimiter: el.dataset.commentDelimiter || "//",
+          lineNumber: el.dataset.lineNumber === "true" ? true : false,
+          lineNumberPunc: el.dataset.lineNumberPunc || ":",
+          noEnd: el.dataset.noEnd === "true" ? true : false,
+          titlePrefix: el.dataset.captionPrefix || "Algorithm"
+        };
+        pseudocode.renderElement(el.querySelector(".pseudocode"), pseudocodeOptions);
+      });
+    })(document);
+    (function(d) {
+      d.querySelectorAll(".pseudocode-container").forEach(function(el) {
+        let captionSpan = el.querySelector(".ps-root > .ps-algorithm > .ps-line > .ps-keyword")
+        if (captionSpan !== null) {
+          let captionPrefix = el.dataset.captionPrefix + " ";
+          let captionNumber = "";
+          if (el.dataset.pseudocodeNumber) {
+            captionNumber = el.dataset.pseudocodeNumber + " ";
+            if (el.dataset.chapterLevel) {
+              captionNumber = el.dataset.chapterLevel + "." + captionNumber;
+            }
+          }
+          captionSpan.innerHTML = captionPrefix + captionNumber;
+        }
+      });
+    })(document);
+    </script>
+  
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>
