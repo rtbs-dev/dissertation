@@ -1,4 +1,16 @@
-# Vector representations of incidence
+# Vector representations of incidence {#sec-vec}
+
+<!-- …the dimensionality of many data sets is only artificially high; though each data point consists of perhaps thousands of features, it may be described as a function of only a few underlying parameters. -->
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _“By stripping away all the extra baggage of distance, length, angle, continuity, betweenness, etc. and retaining only the notion of incidence, we find that what remains is still quite fascinating and highly nontrivial.”_
+> 
+> \hfill -- G. Eric Moorehouse \
+:::
+::::
+
 
 To provide a sufficiently rigorous foundation for network recovery from binary occurrence, we will need a rigorous way to represent networks and occurrences that lends itself to building structured ways both connect to each other.
 We build on the incidence structure and matrix product formalism from the previous chapter, introducing various ways to build graphs as incidence structures that have direct representations as matrices.
@@ -39,7 +51,7 @@ $$ {#eq-simple-incidence}
 Variations on graphs can often be conveniently defined as constraints on $\mathcal{I}$:
 
 - Self loops can be prohibited by only allowing unique flags for a given relation^[
- never two flags with the same pair, i.e. $\mathcal{I}$ is a set, not a multiset.
+ never two flags with the same pair, _i.e._, $\mathcal{I}$ is a set, not a multiset.
 ]
 - Multigraphs are similarly described by whether we allow pairs of vertices to appear with more than one edge^[
  in the set of flags containing nodes $u$ or $v$, only one $e$ may be incident to both of them.
@@ -54,12 +66,12 @@ $$
 G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:\mathcal{I}\rightarrow S
 $$ {#eq-map-incidence}
 
-- Undirected, unweighted graphs only need single elements: "incidence exists" i.e.$S=\{1\}$
-- Directed graphs can use two elements e.g. a "spin" for $S=\{-1,1\}$
-- Weighted, undirected graphs are supported on positive scalars e.g. $S=\mathbb{R}^+$
-- Weighted, directed graphs are supported on any scalar e.g. $S=\mathbb{R}_{\neq0}$
+- Undirected, unweighted graphs only need single elements: "incidence exists" _i.e._, $S=\{1\}$
+- Directed graphs can use two elements _e.g._, a "spin" for $S=\{-1,1\}$
+- Weighted, undirected graphs are supported on positive scalars _e.g._, $S=\mathbb{R}^+$
+- Weighted, directed graphs are supported on any scalar _e.g._, $S=\mathbb{R}_{\neq0}$
 
-If the "absence" of incidence needs to be modeled explicitly, a "null" stand-in (0,False) can be added to each $S$, which is useful for representing each structure as arrays for use with linear algebra (i.e. $\{0,1\}$,$\{-1,0,-1\}$,$\mathbb{R}^+_0$, and $\mathbb{R}$, respectively).
+If the "absence" of incidence needs to be modeled explicitly, a "null" stand-in (0,False) can be added to each $S$, which is useful for representing each structure as arrays for use with linear algebra (_i.e._, $\{0,1\}$,$\{-1,0,-1\}$,$\mathbb{R}^+_0$, and $\mathbb{R}$, respectively).
 By doing so, we can also place an exact limit on the maximum possible size of $\omega=\|E\|$ in the simple graph case, and indicate edges by their unique ID, such that $\mathcal{I}= E\times V$ is no longer a subset relation for $E=\{1,\cdots,{n\choose2} \}$.
 Instead of existence in $\mathcal{I}$, we explicitly use incidence relation $S$ to tell us whether each possible edge "exists" or not, simplifying our graph definition further^[
  if we allomulti-edges
@@ -135,7 +147,7 @@ $$
 
 ### Inner products on $B$
 
-With all of this background, the other representations of graphs can seen as derivations from the canonical incidence matrices. 
+With all of this background, the other representations of graphs can be seen as derivations from the canonical incidence matrices. 
 The Laplacian, which is usually introduced either in terms of ajacency/degree, or as the gram matrix for oriented edge vectors, is also related to the gram matrix between all pairs of incidences on $(u,v)$.
 The other identities are simply consequences of the polarization identity: 
 $$
@@ -196,8 +208,8 @@ In addition, it allows for repeated measurements of edges over the same set of n
 
 ## Node activation, bipartite graphs, and hypergraphs 
 
-What if an incidence structure allows for more than 2 incidences for the "line" set?
-In our binary design matrix, we might consider each observation its own "line", such that it is incidence to all the activated nodes.
+What if an incidence structure allows for more than two incidences for the "line" set?
+In our binary design matrix, we might consider each observation its own "line", such that it is incident to all the activated nodes.
 This is no longer a graph of edges and nodes, but rather a more general object. 
 
 <!-- ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png) -->
@@ -214,7 +226,7 @@ X & 0_{m,m}
 $$
 
 The graph having this adjacency structure has two sets of nodes that do not intraconnect (ergo, "bipartite").
-The resulting structure for our toy example is shown next to the incidence matrix in fig @fig-incidence-struct. 
+The resulting structure for our toy example is shown next to the incidence matrix in @fig-incidence-struct. 
 
 ::::{#fig-incidence-struct layout="[[1,1]]"}
 
@@ -247,7 +259,7 @@ $$
 
 When the set of lines is a family of subsets of points, incidences on points and lines form a _hypergraph_.
 Hypergraphs are usually thought of as graphs where edges can connect more than two nodes, which again can be made into an incidence structure in the same way our graphs are.
-This isomorphism lets many of the familiar ideas on graphs (e.g. walks, paths, laplacians, etc.) be reformulated in terms of hypergraphs.
+This isomorphism lets many of the familiar ideas on graphs (_e.g._, walks, paths, laplacians, etc.) be reformulated in terms of hypergraphs.
 For a more in-depth elaboration on algebraic graph theory on graphs, see @orientedhypergraphicapproach_Reff2012.
 
 
@@ -268,7 +280,7 @@ Graphs of dependency information can provide useful kernels _on the graph_.^[
  A "graph kernel," on the other hand, describes a kernel that defines distances _between different graphs_.
  ]
 For an in-depth analysis of common kernels on graphs, including the now-famous PageRank, Heat, and Commute-time kernels, see @SimilaritiesgraphsKernels_Avrachenkov2019.
-In @GeneralizedEuclideanmeasure_Coscia2020 the "commute time" kernel is said to generate a "generalized euclidean distance", and using an adjacency matrix kernel before normalization by marginals gives what is known as "soft cosine" measures, which incorporate prior knowledge e.g. for semantic similarities between words. 
+In @GeneralizedEuclideanmeasure_Coscia2020 the "commute time" kernel is said to generate a "generalized euclidean distance", and using an adjacency matrix kernel before normalization by marginals gives what is known as "soft cosine" measures, which incorporate prior knowledge _e.g._, for semantic similarities between words. 
 
 Importantly, each of these methods assume that a network structure is already available.
 What can often happen in practice, however, is the use of a filtered/thresholded version of the hypergraphic Gram matrix _as the network_, because no a priori network is available.

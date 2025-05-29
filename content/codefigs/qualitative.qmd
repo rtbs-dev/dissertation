@@ -244,10 +244,7 @@ ax = draw_graph_communities(G,pos_cos,colors)
 
         
 # print(len(subset))
-plt.title(
-    'Network Scientist Co-Occurrence Graph '
-    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
-);
+
 insax = ax.inset_axes([0,0,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
@@ -259,6 +256,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+insax.set_title('Community Block Quotient Graph')
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+);
 ```
 
 ```{python}
@@ -277,11 +279,11 @@ plt.figure(figsize=(12,10))
 ax = draw_graph_communities(G, pos_tree, colors)
 nx.connected.is_connected(G)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
-plt.title(
-    'Network Scientist Collaborator Chow-Liu Tree '
-    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
-    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-);
+# plt.title(
+#     'Network Scientist Collaborator Chow-Liu Tree '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
 insax = ax.inset_axes([0,0,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
@@ -293,6 +295,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+insax.set_title('Community Block Quotient Graph')
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+);
 ```
 
 ```{python}
@@ -310,11 +317,11 @@ pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure(figsize=(12,10))
 
 ax = draw_graph_communities(G,pos,colors)
-plt.title(
-    'Network Scientist Collaboration Network Estimate '
-    f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
-    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-);
+# plt.title(
+#     'Network Scientist Collaboration Network Estimate '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
 
 insax = ax.inset_axes([0,0,0.3,0.3])
 
@@ -327,6 +334,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+insax.set_title('Community Block Quotient Graph')
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+);
 ```
 
 ```{python}
@@ -476,7 +488,7 @@ ax = draw_graph_communities(G,pos_cos,colors)
 cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
 # plt.figure(figsize=(3,4))
 # sns.barplot(cent, orient='h')
-insax = ax.inset_axes([0.7,0.8,0.3,0.2])
+insax = ax.inset_axes([-.1,-.1,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -487,6 +499,12 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+insax.set_title('Community Block Quotient Graph')
+# plt.tight_layout()
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+#     (0.5,0.95),xycoords='axes fraction', fontsize=12,
+# );
 # plt.title(
 #     'Les Misérables Character Dependency Network '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
@@ -524,7 +542,7 @@ plt.figure(figsize=(12,10))
 ax = draw_graph_communities(G, pos, colors)
 centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
 
-insax = ax.inset_axes([0.7,0.8,0.3,0.2])
+insax = ax.inset_axes([-.15,-.15,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -535,6 +553,11 @@ nx.draw_networkx(
     edge_color='grey', with_labels=False,
     ax=insax,
 )
+insax.set_title('Community Block Quotient Graph')
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+#     (0.5,0.95),xycoords='axes fraction', fontsize=12,
+# );
 # plt.title(
 #     'Les Misérables Character Dependency Network '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
@@ -643,10 +666,6 @@ bumpsplot(
 )#['rank'].unstack())
 sns.despine(left=True)
 plt.gca().get_yaxis().set_visible(False)
-```
-
-```{python}
-lw
 ```
 
 ## Semantic Fluency (SNAFU)
@@ -819,6 +838,7 @@ A_cooc = pd.DataFrame(
 G = nx.from_pandas_adjacency(A_cooc)
 
 # G = nx.from_pandas_adjacency(A_cooc>30)
+centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 
 subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
 s_subs=pd.Series(list(subset), dtype=authortype)
@@ -837,29 +857,35 @@ plt.figure(figsize=(12,10))
 
 ax = draw_graph_communities(G,pos_cos,colors)
 
-plt.title(
-    'Verbal Fluency Animals (DS-filtered) Co-Occurrence Graph '
-    f'(r = {nx.degree_assortativity_coefficient(G):.2f}) '
-    fr'($\psi$ = {connective_efficiency(e_cooc):.2f})'
-    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-);
-insax = ax.inset_axes([0.6,0.6,0.3,0.3])
+# plt.title(
+#     'Verbal Fluency Animals (DS-filtered) Co-Occurrence Graph '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.2f}) '
+#     fr'($\psi$ = {connective_efficiency(e_cooc):.2f}'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
+# insax = ax.inset_axes([0.6,0.6,0.3,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block Quotient Graph')
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_cooc):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
+);
 ```
 
 ```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
-centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centCS.head(15)
 ```
 
@@ -882,23 +908,29 @@ plt.figure(figsize=(12,10))
 ax = draw_graph_communities(G, pos_tree, colors)
 nx.connected.is_connected(G)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
-plt.title(
-    'Verbal Fluency Animal Dependencies (Chow-Liu) Network '
-    f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
-    fr'($\psi$ = {connective_efficiency(e_tree):.2f})'
-    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-);
-insax = ax.inset_axes([0.65,0.,0.3,0.3])
+# plt.title(
+#     'Verbal Fluency Animal Dependencies (Chow-Liu) Network '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
+#     fr'($\psi$ = {connective_efficiency(e_tree):.2f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
+# insax = ax.inset_axes([0.65,0.,0.3,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_tree):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
+);
 ```
 
 ```{python}
@@ -927,34 +959,42 @@ glasso = (-(
 
 G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso).mask), index=animals_list.values, columns=animals_list.values))
 # pos_cos = nx.kamada_kawai_layout(G, dist = pd.DataFrame(-np.log(ochiai(X)), columns=animals.columns, index=animals.columns).to_dict())
+centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.connected.is_connected(G)
 plt.figure(figsize=(12,10))
 
 ax = draw_graph_communities(G,pos,colors)
-plt.title(
-    'Verbal Fluency Animal Dependencies (GLASSO) Network '
-    f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
-    fr'($\psi$ = {connective_efficiency(e_gl):.2f})'
-);
-insax = ax.inset_axes([0,0,0.3,0.3])
+# plt.title(
+#     'Verbal Fluency Animal Dependencies (GLASSO) Network '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
+#     fr'($\psi$ = {connective_efficiency(e_gl):.2f})'
+# );
+# insax = ax.inset_axes([0,0,0.3,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# plt.Text()
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_gl):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
+);
 ```
 
 ```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
-centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centGL.head(15)
 ```
 
@@ -976,6 +1016,7 @@ G = nx.from_pandas_adjacency(pd.DataFrame(
 
     index=roll_df.columns, columns=roll_df.columns
 ))
+centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
@@ -983,32 +1024,38 @@ pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure(figsize=(12,10))
 
 ax = draw_graph_communities(G,pos,colors)
-plt.title(
-    'Verbal Fluency Animal Dependencies (FP) Network Estimate '
-    f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
-    fr'($\psi$ = {connective_efficiency(e_fp):.2f})'
+# plt.title(
+#     'Verbal Fluency Animal Dependencies (FP) Network Estimate '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
+#     fr'($\psi$ = {connective_efficiency(e_fp):.2f})'
 
-    # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# );
+# # nx.is_connected(G)
+# insax = ax.inset_axes([0.,0.65,0.3,0.3])
+
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
 );
-# nx.is_connected(G)
-insax = ax.inset_axes([0.,0.65,0.3,0.3])
-
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=30*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
 ```
 
 ```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
 nx.eigenvector_centrality_numpy(G)
-centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
 centFP.head(15)
 ```
 
@@ -1163,6 +1210,12 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(Gest), index=animals_list.values, 
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure(figsize=(10,6))
 draw_graph_communities(G,pos,colors)
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
+);
 plt.title(
     r' Animal Dependencies (FP$\rightarrow$DS) Network '
     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -1183,10 +1236,16 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(glasso).mask
 #
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 draw_graph_communities(G,pos, colors)
-plt.title(
-    r' Animal Dependencies (FP$\rightarrow$GLASSO) Network '
-    f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
-    fr'($\psi$ = {connective_efficiency(Gest):.2f})'
+# plt.title(
+#     r' Animal Dependencies (FP$\rightarrow$GLASSO) Network '
+#     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
+#     fr'($\psi$ = {connective_efficiency(Gest):.2f})'
+# );
+plt.annotate(
+    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
+    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    horizontalalignment='center'
 );
 ```
 

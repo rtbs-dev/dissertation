@@ -225,6 +225,20 @@ fig
 ```
 
 ```{python}
+#| label: fig-obs-cascade
+#| fig-cap: Observations as partially-ordered sets
+
+with open('obs-cascade.tex') as f: 
+    # print(f.read())
+    fig =TexFragment(
+        f.read(),
+        
+        **(tex_kws|dict(scale=1.5)),
+    ).run_latex(tex_program=tex)
+fig
+```
+
+```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
 # Bipartite representation of node "activation" data
@@ -423,15 +437,17 @@ tab = r"""
  \tabtab Ochiai Coeff. & & $\bullet$  &\\
  \tabtab Hyperbolic Proj. & & $\bullet$ & $\bullet$\\
  \tabtab Mutual Info. & & $\bullet$  & \\
+ \tabtab \textit{capability ``gap''} &  $\bullet$ & & $\bullet$ \\
 \multicolumn{2}{l}{\textbf{Information Flow}}   &    \\
  \tabtab Resource Allocation & & $\bullet$  & $\bullet$ \\
- \tabtab Doubly Stochastic & ? & $\bullet$ &  \\
+ \tabtab Doubly Stochastic & $\sim$ & $\bullet$ &  \\
  \tabtab High-Salience Skeleton & $\bullet$ &  \\
 \multicolumn{2}{l}{\textbf{Global Structure}}     &    \\
  \tabtab Chow Liu & $\bullet$ &  \\
- \tabtab MRF/GLASSO & $\bullet$ & &  \\
+ \tabtab MRF/GLASSO & $\bullet$ & & $\sim$ \\
  \tabtab Deg. Sequence & & $\bullet$ & $\bullet$ \\
  \tabtab S.B.M. & $\bullet$ & & $\bullet$ \\
+
 
 \bottomrule
 \end{tabular}
@@ -543,21 +559,21 @@ def plot_smoothed_lda():
     pgm = daft.PGM([6.3, 4.05], origin=[-1., -0.3], aspect=1.)
     pgm.add_node(daft.Node("alpha", r"$\alpha$", 0.5, 1., fixed=True))
     pgm.add_node(daft.Node("theta", r"$\theta$", 1.5, 1))
-    pgm.add_node(daft.Node("z", r"z", 2.5, 1))
+    pgm.add_node(daft.Node("e", r"e", 2.5, 1))
     pgm.add_node(daft.Node("w", r"w", 3.5, 1, observed=True))
     
-    pgm.add_node(daft.Node("beta", r"$\beta$", 2.5, 2.2, fixed=True))
+    pgm.add_node(daft.Node("pi", r"$\pi$", 2.5, 2.2, fixed=True))
     pgm.add_node(daft.Node("phi", r"$\phi$", 3.5, 2.2))
     
     # Add in the edges.
     pgm.add_edge("alpha", "theta")
-    pgm.add_edge("theta", "z")
-    pgm.add_edge("z", "w")
-    pgm.add_edge("beta", "phi")
+    pgm.add_edge("theta", "e")
+    pgm.add_edge("e", "w")
+    pgm.add_edge("pi", "phi")
     pgm.add_edge("phi", "w")
    
     # And plates.
-    pgm.add_plate(daft.Plate([3., 1.8, .9, .9], label=r"$K$", shift=-0.1))
+    pgm.add_plate(daft.Plate([3., 1.8, .9, .9], label=r"$E$", shift=-0.1))
     pgm.add_plate(daft.Plate([1., .2, 3., 1.4], label=r"$n = 1, \ldots, N$", shift=-0.1))
     pgm.add_plate(daft.Plate([2., .5, 1.9, 1.], label=r"$m = 1, \ldots, M_n$", shift=-0.1))
     pgm.render()

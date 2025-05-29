@@ -1,4 +1,15 @@
-# Qualitative Application of Relationship Recovery
+# Qualitative Application of Relationship Recovery {#sec-qual}
+
+
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _“Please tell me what this is all about, papa. Please, please tell me what this is. Please, what is it?”_
+> 
+> \hfill -- Cosette, Les Misérables (1998) \
+:::
+::::
 
 A more realistic test of _Forest Pursuit's_ behavior is in unsupervised, qualitative analysis of complex systems and networks.
 In this chapter we will recreate two well-known bipartite datasets from network science, and compare several network recreation methods on them.
@@ -10,20 +21,24 @@ In the second case study, we also investigate how centrality measures can be adv
 
 ## Network Science Collaboration Network
 
-Following in the steps of @Findingevaluatingcommunity_Newman2004, we recreate a network from co-authorships in works cited by two literature review papers, @StructureFunctionComplex_Newman2003 and [CITE].
+Following in the steps of @Findingevaluatingcommunity_Newman2004, we recreate a network from co-authorships in works cited by two literature review papers, @StructureFunctionComplex_Newman2003 and @ComplexnetworksStructure_BOCCALETTI2006.
 The list of all cited papers was reconstructed via web-of-science queries, and these were used to construct author "activation" observations.^[
   An additional paper (@Coherentnoisescale_Sneppen1997) was added to ensure the the largest connected component contained necessary communities that were originally missing compared to @Findingevaluatingcommunity_Newman2004.
 ]
+Nodes and papers were retained only if they had two or more papers and authors listed, respectively. 
 A baseline co-authorship network was initially constructed using the largest connected component, and a modularity-maximizing community detection algorithm [@Findingcommunitystructure_Clauset2004;Findingevaluatingcommunity_Newman2004] was used to highlight community structure.
-Nodes and papers were retained if they had two or more papers and authors listed, respectively. 
+As recommended in @Findingevaluatingcommunity_Newman2004, we also show a reduced course-grained "quotient" graph of the communities and their interconnection to help visualize and understand the large-scale structure each network presents.  
 This baseline network can be seen in @fig-netsci-cooc, where (to keep with the treatment in @Findingevaluatingcommunity_Newman2004) we have added a quotient network of the communities themselves.
 
 {{< embed ../codefigs/qualitative.qmd#fig-netsci-cooc >}}
 
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-tree >}}
+
+
 The detected assortativity $r=0.059$ is small, but positive.
 As expected, each community tends to have a dominant "clique", since many members of these groups tend to mutually author papers together (simultaneously). 
 
-However, if we are after a "social network" that describes social influence of individuals w.r.t. others, then we are hoping to recover collaborative _dependency relationships_.
+However, if we are after a "social network" that describes social influence of individuals with respect to others, then we are hoping to recover collaborative _dependency relationships_.
 
 - Who is causing who to join papers?
 - Who are the central "collaborators" that influence the paper writing of many others?
@@ -31,7 +46,6 @@ However, if we are after a "social network" that describes social influence of i
 With some background knowledge of how university labs tend to work (with students, post-docs, advisors, colleagues, etc.), we might not believe that every member of a community has significant influence on the writing of every other member. 
 So, to estimate a dependency network of collaboration relationships, we could turn to a Chow-Liu tree, which is shown in @fig-netsci-tree.
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-tree >}}
 
 This dependency is much more sparse, and indeed the assortativity coefficient has dropped to $r=-0.251$.
 In academic writing, we might even expect a lowered assortativity, since students that may not go on to be prolific in their original field would still seek out prolific advisors, initially.
@@ -40,10 +54,12 @@ Overlaying the original community structure from @fig-netsci-cooc onto the tree 
 Many of the communities are "unrolled" into long chains of authors, since trees cannot allow small loops or cycles. 
 This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems. 
 
+
+{{< embed ../codefigs/qualitative.qmd#fig-netsci-fp >}}
+
 With _Forest Pursuit_, we can attempt to correct for "clique bias" in the measurement of dependency relationships, while allowing for flexibility in the global network structure.
 The FP recovered collaborator graph is shown in @fig-netsci-fp.  
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-fp >}}
 
 The communities from the co-occurrence network are entirely preserved, with a nearly identical community structure in the graph quotient compared to the co-occurrence graph.
 But now we see an assortativity that is close to zero (slightly negative at $r=-0.069$).
@@ -59,8 +75,17 @@ Even from a logistics perspective (during a given time window working with an ad
 Only rare individuals would have upwards of 10 influential relationships, with a mean closer to the 2-3 of the FP network, rather than a full quarter having 10 and the median being 4-5 (as in the co-occurrence network). 
 In addition, recall that this is a social network derived from literature review paper citations, not exhaustive inventories of each author's work, so every influential relationship should not be shown in this sample.
 
+So, which network is preferable?
+It depends.
 
-## Les Miserables Character Network
+The premise of FP is to find a max. likelihood network _such that_ the observed activations (authors on a paper) arise from a random walk along dependencies (author relationships of _influence_ causing others to join). 
+If influential (dependency) relationships are being measured, then the logistics of maintaining 2-3 of them seems more realistic than 5-10 (especially only from the sampled papers).
+Additionally, we expect students having few influential relationships would attach preferentially to advisors with more, so a positive assortativity might be problematic.
+FP agrees with these conclusions, making it _consistent_ with that set of a priori domain beliefs vs. the co-occurrence network alone.
+These kinds of qualitative assessments are not rigorous, but the modeling questions required to choose FP (or not) go a long way to reducing error in _trueness_.
+They help modelers validate whether the recovered network was made in a consistent way with their domain knowledge. 
+
+## Les Misérables Character Network
 
 Another famous network derives from @StanfordGraphBaseplatform_Knuth1993 via mining character co-occurrences in chapters of _Les Misérables_ (1862), Victor Hugo's sprawling saga of [in]equality and [in]justice in 19th-century France.
 This dataset is often reported as being inherently a _graph_, but we have reconstructed the underlying bipartite observations for the purpose of removing clique bias from the network reconstruction.
@@ -86,27 +111,42 @@ With this in mind, we apply Forest Pursuit to correct for clique-bias, and show 
 
 {{< embed ../codefigs/qualitative.qmd#fig-lesmis-fp >}}
 
-The network has been filtered to only include necessary edges to retain overall connectivity.
+The network edge probabilities have been thresholded in the same manner as the DS (minimum connectivity) filter, only including necessary edges to still retain overall connectivity.
 As before, our community structure shown in the quotient graph has been preserved, even with the significant edge density reduction.
 
 Applying these networks, we might wish to distinguish through them which characters are "main" and which are "supporting", though more on a gradient than in a binary/classification sense. 
-One way to do this is through centrality measures [CITE], which estimate the "importance" of nodes in various ways.
+One way to do this is through centrality measures [@Mathematicsnetworks_Newman2018;@atlasaspiringnetwork_Coscia2021], which estimate the "importance" of nodes in various ways.
 Eigenvector centrality, specifically, finds the importance of nodes relative to the importance of each node's neighbors^[
-  Regularized eigenvector centrality is equivalent to PageRank centrality, _i.e._ the seminal work from [CITE], of Google fame.
+  Regularized eigenvector centrality is equivalent to PageRank centrality, _i.e._ the seminal work from [@PageRankCitationRanking_Page1999], of Google fame.
 ]
+It does this by estimating the stationary distribution of a random walk on the network (what is the probability after many jumps of ending up in each node?)
 
 The topology of a network greatly impacts the centrality measure recovered.
+In fact, a well-known result shows that much of the variance in eigenvector/PageRank centrality values can be explained with node in-degree alone.[@ApproximatingPageRankDegree_Fortunato]
+Of course, we _do_ tend to see nodes with high-degree as _hubs_, and more important for it---that is, we _would_ if we weren't so concerned with having to deal with clique bias in the network. 
+The tendency of eigenvector centrality to rely on degree (and therefore reward densely-connected cliques with high importance) prevents us from using it over more expensive methods like _betweenness centrality_.
+Instead, we might be able to differentiate between high-degree nodes in cliques and "actual" hubs by controlling for clique bias ahead of time with _Forest Pursuit_.
+
+<!-- Theoretically, eigenvector centrality effectively --> 
 In @fig-lesmis-centrality we show a bump-plot of the ranks of the top 15 most central nodes for both the original co-occurrence network and the FP network estimate.
 In the original network, centrality rewards characters appearing in mutual cliques as being central, especially the "revolutionary" group (shown in orange in @fig-lesmis-fp and @fig-lesmis-cooc).
 Are these really the most important characters?
-Even Javert, though being an important recurring character, largely plays the role of generic law enforcement throughout, while characters like Marius play central motivating roles across several distinct social groups throughout the novel.
+Important characters like Cosette and Fantine are nowhere near the top. 
+We wish to find important characters in the sense that they have influence over the appearance of many other characters. 
+In that case, even Javert (though being an important recurring character) largely plays the role of generic law enforcement throughout, not necessarily pulling other characters in or out of scenes with him as much as others like Marius.
+More than Javert, Marius plays central motivating roles across several distinct social groups throughout the novel.
+All of these problems are corrected to some degree in the FP estimate. 
 
 {{< embed ../codefigs/qualitative.qmd#fig-lesmis-centrality >}}
 
+Why are the centrality levels for Fantine, Eponine, and Cosette so much higher in FP? Why were they so low in the first place? 
 This brings up another benefit of correcting clique-bias: estimating character importance _despite_ systematic interaction-reduction bias from authors. 
-As made famous by the so-called "Bechdel test" [CITE], authors historically tend to systematically reduce the agency and interaction rates of women in literature[@genderagencygap_Stuhler2024].
-We highlight every female character in @fig-lesmis-centrality, and which shows that the co-occurrence network had a single female character in the top 15 most central (Eponine, ranked 14th).
-By correcting for clique-bias, _every_ female character significantly increases in centrality ranking.
+As made famous by the so-called "Bechdel test" [@MediaMarginsPopular_Savigny2015], authors tend to systematically reduce the agency and interaction rates of female characters, an effect that has been studied from many angles covering multiple centuries [@genderagencygap_Stuhler2024].
+We highlight every female character in @fig-lesmis-centrality (bold/thicker paths), which shows that the co-occurrence network had one single female character in the top 15 most central (Eponine, ranked 14th).
+This is because their degrees are overshadowed by large cliques!
+By correcting for clique-bias, _every_ female character significantly increases in centrality ranking
+This way, the occurrence of many characters can be explained _through_ these female characters, rather than assuming each character separately connects with every other, biasing importances toward large groups of men. 
+
 In context, titles of entire books and volumes of _Les Misérables_ are named after women we would consider crucial to the plot (_e.g._ Fantine, Cosette, and Eponine).  
 As @genderagencygap_Stuhler2024 indicates, however, authors are likely to under-represent their agency and interactions with other characters throughout the story, so networks based primarily on co-occurrence will likewise systematically underestimate their importance. 
 

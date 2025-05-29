@@ -1,48 +1,56 @@
 \begin{tikzpicture}
+\begin{scope}[yshift=-0.75cm]
   \Text[x=-0.5,fontsize=\Large]{$\{$}
-  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={231,195,138}]{07}
-  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={231,195,138}]{03}
-  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={231,195,138}]{05}
-  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={231,195,138}]{08}
-  \Text[x=3.5,fontsize=\Large, anchor=west]{$\}=x_1$}
-
-  
-  \Edge[lw=1,Direct](07)(03)
-  \Edge[lw=1,Direct, bend=25](07)(05)
-  \Edge[lw=1,color=red,opacity=0.3](03)(05)  
-  \Edge[lw=1,Direct](05)(08)
-\end{tikzpicture}
-
-\vspace{1em}
-
-\begin{tikzpicture}
-  \Text[x=-0.5,fontsize=\Large]{$\{$}
-  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={141,203,160}]{06}
-  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={141,203,160}]{05}
-  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={141,203,160}]{01}
-  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={141,203,160}]{08}
+  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={231,195,138}]{g}
+  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={231,195,138}]{c}
+  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={231,195,138}]{e}
+  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={231,195,138}]{h}
   \Text[x=3.5,fontsize=\Large, anchor=west]{$\}=x_2$}
 
-  \Edge[lw=1,Direct](06)(05)
-  \Edge[lw=1,Direct](05)(01)  
-  \Edge[lw=1,color=red,opacity=0.3](01)(08)  
-  \Edge[lw=1,Direct, bend=25](05)(08)
-\end{tikzpicture}
+  \Edge[lw=1,Direct](g)(c)
+  \Edge[lw=1,Direct, bend=-25](g)(e)
+  \Edge[lw=1,Direct, bend=25](g)(h)
+  
+\end{scope}
 
-\vspace{1em}
+% \vspace{1em}
 
-\begin{tikzpicture}
+\begin{scope}[yshift=-1.5cm]
   \Text[x=-0.5,fontsize=\Large]{$\{$}
-  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={252,98,141}]{09}
-  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={252,98,141}]{10}
-  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={252,98,141}]{06}
-  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={252,98,141}]{02}
+  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={141,203,160}]{f}
+  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={141,203,160}]{e}
+  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={141,203,160}]{a}
+  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={141,203,160}]{h}
   \Text[x=3.5,fontsize=\Large, anchor=west]{$\}=x_3$}
 
-  \Edge[lw=1,Direct](09)(10)
-  \Edge[lw=1,color=red,opacity=0.3](10)(06)
-  \Edge[lw=1,Direct,bend=25](09)(06)
-  \Edge[lw=1,color=red,opacity=0.3](06)(02)
-  \Edge[lw=1,Direct,bend=-25](10)(02)
-  
+  \Edge[lw=1,Direct](a)(e)
+  \Edge[lw=1,Direct, bend=25](e)(h)
+  \Edge[lw=1,Direct](e)(f)
+\end{scope}
+
+% \vspace{1em}
+
+\begin{scope}[yshift=-2.25cm]
+  \Text[x=-0.5,fontsize=\Large]{$\{$}
+  \Vertex[size=0.5,IdAsLabel,x=0,RGB,color={252,98,141}]{i}
+  \Vertex[size=0.5,IdAsLabel,x=1,RGB,color={252,98,141}]{j}
+  \Vertex[size=0.5,IdAsLabel,x=2,RGB,color={252,98,141}]{f}
+  \Vertex[size=0.5,IdAsLabel,x=3,RGB,color={252,98,141}]{b}
+  \Text[x=3.5,fontsize=\Large, anchor=west]{$\}=x_4$}
+
+  \Edge[lw=1,Direct](i)(j)
+  \Edge[lw=1,Direct, bend=25](i)(f)
+  \Edge[lw=1,Direct, bend=-25](j)(b)
+\end{scope}
+
+\begin{scope}
+  \Text[x=-0.5,fontsize=\Large]{$\{$}
+  \Vertex[size=0.5,IdAsLabel,x=0.5,RGB,color={171,215,230}]{d}
+  \Vertex[size=0.5,IdAsLabel,x=1.5,RGB,color={171,215,230}]{h}
+  \Vertex[size=0.5,IdAsLabel,x=2.5,RGB,color={171,215,230}]{e}
+  \Text[x=3.5,fontsize=\Large, anchor=west]{$\}=x_1$}
+
+  \Edge[lw=1,Direct](d)(h)
+  \Edge[lw=1,Direct](h)(e)
+\end{scope}
 \end{tikzpicture}

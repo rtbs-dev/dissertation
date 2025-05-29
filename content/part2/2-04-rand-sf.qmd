@@ -1,6 +1,18 @@
-# Latent Graphs with Desire Paths
+# Latent Graphs with Desire Paths {#sec-desirepath}
 
-Addressing gaps discussed in the previous section to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations.
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _“A desire path is no more than the trace of a decision---less than that, an impulse---to find a new way to join what we know with what we have yet to discover.”_
+> 
+> \hfill -- David Farrier \
+:::
+::::
+
+
+
+Addressing gaps discussed in @sec-lit-review to reach a generative model for network recovery requires careful attention to the generation mechanism for node activations.
 While there are many ways we might imagine bipartite data to be be generated, presuming the existence of a dependency graph that _causes_ activation patterns will give us useful ways to narrow down the generative specification.
 
 First, we will investigate the common assumption that pairwise co-occurrences can serve as proxies for measuring relatedness, and how this "gambit of the group" is, in fact, a strong bias toward dense, clique-filled recovered networks.
@@ -12,27 +24,29 @@ Inspired by the behavior of so-called "desire paths", we constrain the beta prio
 
 As we saw repeatedly in @sec-lit-review, networks are regularly assumed to arise from co-occurrences, whether directly as counts or weighted in some way.
 This assumption can be a significant a source of bias in the measurement of edges.
-_Why_ a flat count of co-occurrence leads to "hairballs" and bias for dense clusters can be related to the use of inner products on node activation vectors. 
+In this section we provide an intuitive understanding for _why_ a flat count of co-occurrence leads to "hairballs" (specifically, a bias for dense clusters and cliques), related to the use of matrix products on node activation design matrices. 
 
 
 ### Gambit of the Group
 
 It seems reasonable, when interactions are unobserved, to assume some evidence for all possible interactions is implied by co-occurrence.
 However, similar to the use of uniform priors in other types of inference, if we don't have a good reason to employ a fully-connected co-occurrence prior on interaction dependencies, we are adding systematic bias to our inference.
-Whether co-occurrence observations can be used to infer interaction networks directly was discussed at length in @Techniquesanalyzingvertebrate_Whitehead1999, where Whitehead and Dufault call this the _gambit of the group_.
+Whether co-occurrence observations can be used to infer interaction networks directly was discussed at length in @Techniquesanalyzingvertebrate_Whitehead1999, where they call this the _gambit of the group_.
 
-> So, consiously or unconsciously, many ethnologists studying social organization makr what might be called the "gambit of the group": the assume that animals which are clustered [...] are interacting with one another and then use membership of the same cluster [...] to define association.
+> "So, consiously or unconsciously, many ethnologists studying social organization makr what might be called the 'gambit of the group': they assume that animals which are clustered [...] are interacting with one another and then use membership of the same cluster [...] to define association."
+>
+> @Techniquesanalyzingvertebrate_Whitehead1999
 
 This work was rediscovered in the context of measuring assortativity for social networks,^[Assortativity is, roughly, the correlation between node degree and the degrees of its neighbors.] where the author of @PerceivedAssortativitySocial_Fisher2017 advises that "group-based methods" can introduce sampling bias to the calculation of assortativity, namely, systematic overestimation when the sample count is low. 
  
-The general problems with failing to specify a model of what "edges" actually _are_ get analyzed in more depth in @Statisticalinferencelinks_Peel2022.
-They include a warning not to naively use correlational measures with a threshold, since even simple 3-node systems will easily yield false positives edges.
-Still, it would be helpful for practitioners to have a more explicit mental model of _why_ co-occurence-based models yield systematic bias,  
+A reader can analyze general problems with failing to specify a model of what "edges" actually _are_ more in-depth in @Statisticalinferencelinks_Peel2022.
+They also include a warning not to naively use correlational measures with a threshold, since even simple 3-node systems will easily yield false positives edges.
+Still, it would be helpful for practitioners to have a more explicit mental model of _why_ co-occurence-based models yield systematic bias, and use that to build an alternative having some of the same benefits (speed, interpretability, uncertainty quantification, etc.) 
 
 
-### Inner-Product Projections and "Clique Bias"
+### Inner-Product projections and "clique bias"
 
-Underlying correlation and co-occurrence models for edge strength is a reliance on inner products between  node occurrence vectors.
+Underlying correlation and co-occurrence models for edge strength is a reliance on matrices of inner products between  node occurrence vectors.
 They all use gram matrices (or centered/scaled versions of them), which were brought up in @sec-products.
 The matrix multiplication performed represents inner products between all pairs of feature vectors.
 For $X(i,j)\in\mathbb{B}$, these inner products sum together the times in each observation that two nodes were activated together.
@@ -58,17 +72,27 @@ This is illustrated in @fig-stacked-graphs.
 Inner-product projections as sums of cliques illustrating "clique bias". 
 :::
 
+If every observation of node activations leads to an implied clique, we can reframe much of the "hairball" effect as a systematic bias (i.e. measurement error in the sense of_trueness_.
+We call this _clique bias_: the inferred graph will inherently include more and more cliques of node subsets as data arrives (assumed to themselves be cliques).
+
 For many modeling scenarios, this paradigm allows practitioners to make a more straight-forward intuition-check: do clique observations _make sense_ here?
 When a list of authors for a paper is finished, does that imply that all authors mutually interacted with all others directly to equally arrive at the decision to publish?
 This would be similar to assuming the authors might simultaneously enter the same room, look at a number of others (who all look exclusively at each other, as well), and _all at once_ decide to publish together.
-In our introduction, we described a more likely scenario we could expect from an observer on the ground: a researcher asks a colleague or two to collaborate, who might know a couple more with relevant expertise, and so on. 
+
+Or, from the standpoint of scaling: does each extra node activation impart an amount of information that depends on the number of activated nodes?
+Put another way, if we knew our observations were on a "grid graph", each node might require two (or so) new edges.
+A tree or path adds one new edge for each new node.
+But a clique assumption means that each extra node activation adds edges quadratically in the number of already-activated nodes. 
+Does this make sense?
+In our introduction, we described a more likely scenario we could expect from an observer on the ground: a researcher asks a colleague or two to collaborate, who might know a couple more with relevant expertise, and so on.
+From purely a logistical standpoint, it quickly becomes unfeasible for authors to mutually collaborate with all other co-authors equally: 10 coauthors already implies the 10th had to equally split interaction among 9 others to satisfy our model. 
 
 
 ## Networks as Desire Path Density Estimates
 
 Unfortunately, methods based on inner-product thresholding are still incredibly common, in no small part due to how _easy_ it is to create them from occurrence data, regardless of this "clique-bias".
-The ability to map an operation onto every observation, e.g. in parallel, and then reduce all the observations into an aggregate edge estimate is a highly desirable algorithmic trait.
-This may be a reason so many projection and backboning techniques attempt two re-weight (but retain) the same basic structure, time and again. 
+The ability to map an operation onto every observation, _e.g._, in parallel, and then reduce all the observations into an aggregate edge estimate is a highly desirable algorithmic trait.
+This may be a reason so many projection and backboning techniques attempt to re-weight (but retain) the same basic structure, time and again. 
 
 What we need is a way to maintain the ease-of-use of inner-product network creation:
 
@@ -79,12 +103,12 @@ but with a more domain-appropriate operator at the observation level.
 
 Let's start with replacements for the clique assumption.
 There are many non-clique classes of graphs we might believe local interactions occur on: path-graphs, trees, or any number of graphs that reflect the topolgy or mechanism of local interactions in our domain of interest.
- Authors have proposed classes of graphs that mirror human perception of set shapes [RELATIVE NEIGHBORHOOD]^[
-  e.g. for dependencies based on perception, such as human decision making tendencies, or causes based on color names.
-], or graphs whose modeled dependencies are strictly planar [planar maximally filtered graps]^[
-  e.g. when interactions are limited to planar dependencies, like inferring ancient geographic borders.
+ Authors have proposed classes of graphs that mirror human perception of set shapes [@Relativeneighborhoodgraphs_Jaromczyk1992]^[
+  _e.g._, for dependencies based on perception, such as human decision making tendencies, or causes based on color names.
+], or graphs whose modeled dependencies are strictly planar [@toolfilteringinformation_Tumminello2005]^[
+  _e.g._, when interactions are limited to planar dependencies, like inferring ancient geographic borders.
 ].
-Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[CITE] 
+Alternatively, the interactions might be scale free, small-world, trees, or samples from stochastic block models.[@StochasticblockmodelsFirst_Holland1983] 
 In any case, these assumptions provide an explicit way to describe the set of _possible_ interaction graphs we believe our individual observations are sampled from.
 
 ### Subgraph Distributions {#sec-subgraph-dists}
@@ -92,12 +116,12 @@ In any case, these assumptions provide an explicit way to describe the set of _p
 Let's use the notation from @eq-edge-vectors, such that each observation of nodes $\mathbf{x}_i$ is implicitly derived from a set of activated edges $\mathbf{r_i}$.
 To start, our current belief about what overall structure the whole network can take is $G^*=(V,E,B^*)$, where $B^*$ might always return $1$ to start out (the complete graph).
 To further constrain the problem, let us assume that node activation is noiseless: any activated nodes were truly activated, and unactivated nodes were truly inactive (no false negative or false positive activations).^[
- Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures e.g. when the metric is known to be tree-like.
+ Hidden nodes (unobserved nodes beyond the $n$) are outside the scope of this work, though could potentially be implied for certain structures _e.g._, when the metric is known to be tree-like.
  @TreeIam_Sonthalia2020 use a greedy embedding that minimizes distortion to estimate the need for added _Steiner_ nodes. 
 ]
 So, each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$.
 Then, our domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on $g_i$.
-This family  $\mathcal{C}_i$ belongs to the relevant class of graphs $\mathcal{C}$, limited to nodes $V_i$, i.e.
+This family  $\mathcal{C}_i$ belongs to the relevant class of graphs $\mathcal{C}$, limited to nodes $V_i$, _i.e._,
 
 $$
 \begin{gathered}
@@ -105,14 +129,14 @@ $$
 E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
 V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 \end{gathered}
-$${#eq-subgraph-family}^[$\mathcal{P}(A)$ is the _powerset_ of $A$, i.e. the set of all subsets of $A$. ]
+$${#eq-subgraph-family}^[$\mathcal{P}(A)$ is the _powerset_ of $A$, _i.e._, the set of all subsets of $A$. ]
 
 In other words, the edges that "caused" to the node activations in a given observation must _together_ belong to a graph that, in turn, belongs to our desired class, which must occur on the nodes that were activated.
 
-Assuming we can define an associated measure $\mu_i(c)$ onfor each $c\in\mathcal{C}_i$, we are able to define a probability distribution over subgraphs in the class.^[
+Assuming we can define an associated measure $\mu_i(c)$ (one for each $c\in\mathcal{C}_i$) we are able to define a probability distribution over subgraphs in the class.^[
  This is certainly not a trivial assumption, and might either be ill-defined or require techniques like the Gumbel trick[@GradientEstimationStochastic_Paulus2020] to approximate, unless the partition function $Z$ has a closed form, or $\mu$ is already a probability measure on some $\sigma$-algebra over $\mathcal{C}$.
  Closed-form $\mathcal{Z}$ values on $\mathcal{C}$ are known for a handful of graph classes, such as the space of spanning trees, $\mathcal{C}=\mathcal{T}$.
- However, another way this might be accomplished is through random geometric graphs[CITE], or geometric spanners like Urqhart[CITE] and Relative Neighborhood [CITE] graphs on a "sprinkling" of points that preserves their observed pairwise distances.   
+ However, another way this might be accomplished is through random geometric graphs[@RandomPlaneNetworks_Gilbert1961], or geometric spanners like the Relative Neighborhood [@Relativeneighborhoodgraphs_Jaromczyk1992] graphs on a "sprinkling" of points that preserves their observed pairwise distances.   
  This is further discussed in @sec-future-hyperbolic.
 ]
 Using notation similar to distributions over spanning trees in @EfficientComputationExpectations_Zmigrod2021: 
@@ -133,7 +157,7 @@ $${#eq-edgevec-prob}
 So we may not have an exact vector, but we have established a way to specify a family of edge vectors that could be responsible.
 With $p_i(c)$, we also have a mechanism to sample them when a partition function is available (or able to be approximated).
 
-With these mechanics in place, we see the choice of a clique (implied by the inner product) is a trivial application of @eq-edgevec-prob, since that is equivalent to selecting the class of cliques on $V_i$ nodes.
+With these mechanics in place, we see that choosing "cliques" (implied by the inner product) is a trivial application of @eq-edgevec-prob, since that is equivalent to selecting the class of cliques on $V_i$ nodes.
 This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1 possible selection, with probability $p_i(K^{V_i})=1$.  
 
 
@@ -144,7 +168,7 @@ This has only one element ($\|\mathcal{C}_{\text{clique}}\|=1$), there is only 1
 
 ### Graph Unions as Desire Paths
 
-With a distribution over subgraphs each observation, we are potentially able to sambple from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution.
+With a distribution over subgraphs each observation, we are potentially able to sample from them for bootstrap or Monte Carlo estimation purposes, or simply find a maximum likelihood estimate for each distribution.
 Assuming this is true, we may now sample or approximate a matrix $R(i,e):I\times E \rightarrow \mathbb{B}$.  
 Methods for doing this efficiently in certain cases are the focus of @sec-FP and @sec-lfa-gibbs.
 However, once $R(i,e)$ is estimated, a reasonable mechanism for estimating the support of the set of edges is to use $\frac{\text{count}}{\text{exposure}}$, but with a few needed modifications.
@@ -153,17 +177,20 @@ First, while the nodes counts in $\sum_i B(i,\cdot)$ are by assumption _not_ ind
 A model certainly could be constructed where edge existence depends on other edges existing (or not).
 But nothing is inherently self-inconsistent with a model that assumes the traversability of individual edges will be independent of one another. 
 
-let P(e) be the probability that an edge is traversed (in any observation), and P(u,v) the probability that nodes $u,v$ co-occur.
+Let P(e) be the probability that an edge is traversed (in any observation), and P(u,v) the probability that nodes $u,v$ co-occur.
 To approximate the overall traversability of an edge, we can calculate an empirical estimate for the conditional probability $P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}$ that an edge is traversed, given that the two incident nodes are activated.
-This estimate can use the same beta-bernoulli distribution from @eq-beta-binomial.
+This estimate can use the same Beta-Bernoulli distribution from @eq-beta-binomial.
 
 Still, how do we ensure our estimate is approximating traversability, so that the probability that an edge probability converges toward 1 as long as it _has to be possible_ for $e$ to be traversed?
-Recall from the introduction that, from a measurement perspective, the underlying networks rarely "exist" in the sense that we never truly find the underlying network, but only samples from (or caused by) it.
+Recall from the introduction that, from a measurement perspective, the underlying networks rarely "exist" in the sense that we never truly find the underlying network, but only observations sampled from it.
 Imagine that the "real" network is a set of paved sidewalks: our procedure is similar to watching people walk along paths between locations, and wanting to estimate which of the paths would be tread "enough" to be paved. 
 This is where we build on an intuition based on the popular idea of _desire paths_ which is a colloquial name for paths that form when individuals walk over grass or dirt enough to carve a trail.
-In network analysis and recovery, we usually are only allowed to see the desire paths that might have formed from our data, never the actual "pavement".
+In network analysis and recovery from activations, then, we are only allowed to see lists of visited locations.
+If we can add a domain-informed assumption on what the _trajectories_ of individuals could have been, based on those locations, then we can estimate the desire paths that might have formed from them.
+Importantly, we can use this framing to "reset" the trueness of our uncertainty: given a trajectory assumption, the desire path uncertainty becomes one of precision due to lack of knowledge about which path was taken.
+As @Statisticalinferencelinks_Peel2022 recommend, desire paths are _inferred_, and we  never rely on needing to guess the actual "pavement"---only beliefs about "future paving". 
 
-If presented with two equivalent paths, an individual is likely to choose the one that has been tread more often before i.e. the "more beaten" path.
+If presented with two equal-length desire paths, an individual is likely to choose the one that has been tread more often before _i.e._, the "more beaten" path.
 So, we don't want a probability that an edge has been traversed, but a probability over fractions of the time we expect an edge to have been traversed _more often than not_: how likely it is to "be beaten".
 This is accomplished by forcing $\alpha, \beta < 1$.
 For the case where $\alpha=\beta=0.5$, we call this special case an _arcsine_ distribution.
@@ -187,7 +214,7 @@ c = \frac{s-ak}{k+1}\\
 $${#eq-desirepath-binom} 
 
 Important to note is that $k$ is measured over the _co-occurrences_ $(u,v)$, and successes are the traversals $e$ derived from our samples in $R$.
-This lets us formulate a likelihood model for each edge's traversibility in the global network $G$ (i.e. whether $B(e,v)>0$ for any $v$), which is i.i.d. Bernoulli. 
+This lets us formulate a likelihood model for each edge's traversibility in the global network $G$ (_i.e._, whether $B(e,v)>0$ for any $v$), which is i.i.d. Bernoulli. 
 $$
 \begin{gathered}
 \pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\ 
@@ -200,5 +227,5 @@ This will be addressed more completely for the special case of $\mathcal{C}=\mat
 In general, however, failing to specify the prior distribution on $\mathcal{C}_i$ does not necessarily make @eq-edgevec-prob unusable, but necessitates an "empirical bayes" approach.
 With the marginals and co-occurrence counts for nonzero values in $X$, we can make a point estimate for each edge _given_ a node subset, without needing to consider a prior distribution for each $\mathbf{x_i}$.
 
-The nonparametric approach, in cases that merit the use of spanning trees, will be central to accurate, scalable estimation of $B$ through our proposed method, Forest Pursuit. 
+The nonparametric approach, in cases that merit the use of spanning trees, will be central to accurate and scalable estimation of $B$ through our proposed method covered in the next chapter, _Forest Pursuit_. 
 

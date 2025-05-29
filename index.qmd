@@ -8,6 +8,20 @@
 
 # Foreward {-}
 
+> DISCLAIMER FOR PRIOR WORK
+
+Portions of @sec-desirepath, @sec-fp, @sec-extend, along with network figures from @sec-qual and @sec-ordered, are planned for submission to PLOS _Complex Systems_ later this year.  
+
+@sec-fp references `MENDR`, a standard reference dataset and test-bench for network recovery algorithms created in the course of completing this thesis.
+It is awaiting DOI assignment through NIST internal review processes.
+Likewise for `affinis`, a python library for dependency inference from binary activations containing our reference implementations of various algorithms (including _Forest Pursuit_).
+
+Portions of @sec-ordered involving INVITE and recovery from partially ordered node sets are taken from @OrganizingTaggedKnowledge_Sexton2020 in the Journal of Mechanical Design, and its predecessor @UsingSemanticFluency_Sexton2019 from the 45th ASME Design Automation Conference.  
+
+
+```{=latex}
+\includepdf[pages=-]{resource/prev-pub-letter.pdf}
+```
 
 # Acknowledgements {-}
 

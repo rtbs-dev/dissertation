@@ -1,4 +1,20 @@
-# Approximate Recovery in Near-linear Time by _Forest Pursuit_
+# Approximate Recovery in Near-linear Time by _Forest Pursuit_ {#sec-fp}
+
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _"Does the pursuit of truth give you as much pleasure as before? Surely it is not the knowing but the learning, not the possessing but the acquiring, not the being-there but the getting there that afford the greatest satisfaction."_
+> 
+> \hfill -- Carl Friedrich Gauss \
+:::
+::::
+
+<!-- > _"Man pursues being blindly by hiding from himself the free project which is this pursuit."_ -->
+<!-- > \hfill -- Jean-Paul Sartre \ -->
+
+<!-- > _“Many are obstinate with regard to the path once they have entered upon it, few with regard to the goal.”_ -->
+<!-- > \hfill -- Friedrich Nietzsche [tr. Hollingdale (1986)] \ -->
 
 In this chapter, we build on the notion of "Desire Path" estimation of a dependency network from node activations --- sampling from a class of subgraphs constrained to active nodes, then merging them.
 We present _Forest Pursuit_ (FP), a method that is scalable, trivially parallelizes, and offline-capable, while also outperforming commonly used algorithms across a battery of standardized tests and metrics. 
@@ -10,8 +26,8 @@ We outline how random-walks are related to these diffusive  models of graph trav
 First, we build an intuition for the use of trees as an unbiased estimator for desire path estimation when spreading processes are at work on the latent network.
 Then, the groundwork for FP is laid by combining sparse approximation through _matching pursuit_ with a loss function modeled after the Chow Liu representation for joint probability distributions.
 The approximate complexity for FP is linear in the spreading rate of the modeled random walks, and linear in dataset size, while running in $O(1)$ time with respect to the network size.
-This departs dramatically from other methods in the space, all of which assume to scale in the number of nodes. 
-We then test FP against an array of alternative methods (including GLASSO) with MENDR, a newly-developed standard reference dataset and testbench for network recovery.
+This departs dramatically from other methods in the space, all of scale in the number of nodes in the entire network. 
+We then test FP against an array of alternative methods (including GLASSO) with MENDR, our proposed standard reference dataset and testbench for network recovery.
 FP outperforms other tested algorithms in nearly every case, and empirically confirms its complexity scaling for sub-thousand network sizes. 
 
 ## Random Walks as Spanning Forests 
@@ -24,20 +40,20 @@ These single-cause activations are often modeled as a random-walk on the depende
 ### Random Walk Activations 
 Random walks are regularly employed to model spreading and diffusive processes on networks.
 If a network consists of locations, states, agents, etc. as "nodes", and relationships between nodes as "edges", then random walks consist of a stochastic process that "visits" nodes by randomly "walking" between them along connecting edges.
-Epidemiological models, cognitive search in semantic networks, stock price influences, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [CITE...lots?]
+Epidemiological models, cognitive search in semantic networks, website traffic routing, social and information cascades, and many other domains also involving complex systems, have used the statistical framework of random walks to describe, alter, and predict their behaviors. [@effectivenessrandomwalks_Kim2023;@RobustCascadeReconstruction_Xiao2018;@Humanmemorysearch_Jun2015;@RandomWalksElectric_Doyle2000;@MarkovPerspectiveDevelopment_Mane2011]
 
-When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [LITTLEBALLOFFUR, etc], estimate node importance's[PAGERANK], or predict phase-changes in node states (e.g. infected vs. uninfected)[SIR I think].
-In our case, Since we have been encoding the activations as binary activation vectors, the "jump" information is lost---activations are "emitted" for observation only upon the random walker's initial visit.[@Humanmemorysearch_Jun2015]
+When network structure is known, the dynamics of random-walks are used to capture the network structure via sampling [@LittleBallFur_Rozemberczki2020], estimate node importance's[Mathematicsnetworks_Newman2018], or predict phase-changes in node states (_e.g._, infected vs. uninfected)[@StructureFunctionComplex_Newman2003].
+In our case, since we have been encoding the activations as binary activation vectors, the "jump" information is lost---activations are "emitted" for observation only upon the random walker's initial visit.[@Humanmemorysearch_Jun2015]
 Further, the ordering of emissions has been removed in our binary vector representation, leaving only co-occurrence groups in each $\mathbf{x}_i$.^[For a brief treatment of the case that INVITE emission order is preserved, see @sec-ordered]
 In many cases, however, the existence of relationships is not known already, and analysts might *assume* their data was generated by random-walk-like processes, and want to use that knowledge to estimate the underlying structure of the relationships between nodes.
 
 ### Activations in a Forest
 
-As a general setting, the number of node activations (e.g. for datasets like co-authorship) is much smaller than the set of nodes ($\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n$)^[
+As a general setting, the number of node activations (_e.g._, for datasets like co-authorship) is much smaller than the set of nodes ($\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n$)^[
   $\|\cdot\|_0$ is the $\ell_0$ "pseudonorm", counting non-zero elements (the support) of its argument.
 ]  
 @Semisupervisedlearning_Avrachenkov2017 go to some length describing discrete- and continuous-time random walk models that can give rise to binary activation vectors like our $X(i,j):I\times J\rightarrow \mathbb{B}$.
-The _regularized laplacian_ (or _forest_)kernel of a graph[@SimilaritiesgraphsKernels_Avrachenkov2019] plays a central role in their analysis, as it will in our discussion going forward.
+The _regularized laplacian_ (or _forest_) kernel of a graph[@SimilaritiesgraphsKernels_Avrachenkov2019] plays a central role in their analysis, as it will in our discussion going forward.
 
 $$
 Q_{\beta} = (I+\beta L)^{-1}
@@ -45,26 +61,25 @@ $${#eq-regulap}
 
 In that work, it is discussed as the optimal solution to the semi-supervised "node labeling" problem, having a regularization parameter $\beta$, though its uses go far beyond this.[@GraphLaplacianRegularization_Pang2017;@Countingrootedforests_Knill2013;@MatrixForestTheorem_Chebotarev2006]
 $Q$ generalizes the so-called "heat kernel" $\exp{(-t\tilde{L})}$, in the sense that it solves a lagrangian relaxation of a loss function based on the heat equation.
-This can be related to the PageRank ($\exp{(-tL^{\text{rw}})}$) kernel as well, which is explicitly based on random walk transition probabilities.
+This can be related to the PageRank ($\exp{(-tL_{\text{rw}})}$) kernel as well, which is explicitly based on random walk transition probabilities.
 
 In fact, $Q$ can be viewed as a transition matrix for a random walk having a geometrically distributed number of steps, giving us a small expected support for $\mathbf{x}_i$, as needed.^[$Q$ can also be interpreted as a continuous-time random walk location probability, after exponentially distributed time, if spending exponentially-distributed time in each node.]
-However we interpret $Q$, a remarkable fact emerges due to a theorem by Chebotarev: each entry $q=Q(u,v)$ is equal to the probability^[edge weights scaled by \beta] that nodes $u,v$ are connected in a randomly sampled _spanning rooted forest_
+However we interpret $Q$, a remarkable fact emerges due to a theorem by Chebotarev[@MatrixForestTheorem_Chebotarev2006; @Countingrootedforests_Knill2013]: each entry $q=Q(u,v)$ is equal to the probability^[edge weights scaled by \beta] that nodes $u,v$ are connected in a randomly sampled _spanning rooted forest_
 
 In other words, co-occurring node activations due to a random walk or heat kernel are deeply tied to the chance that those nodes find themselves _on the same tree in a forest_.
 
 ### Spreading Dependencies as Trees
 
-{{< embed ../codefigs/graphs.qmd#fig-stack-tree >}}
 
 With the overt link from spreading processes to counts of trees made, there's room for a more intuitive bridge.
 
 For single-cause, single source spreading process activations---on a graph---the activation dependency graph for each observation/spread/random walk _must be a tree_.
 With a single cause (the "root"), which is the starting position of a random walker, a node can only be reached (activated) by another currently activated node.
-If the random walk jumps from one visited node to another, previously visited one, that transition did not result in an activation , so the _dependency_ count for that edge should not increase.
+If the random walk jumps from one visited node to another, previously visited one, that transition did not result in an activation, so the _dependency_ count for that edge should not increase.
 This description of a random walk, where subsequent visits do not "store" the incoming transition, is roughly equivalent to one more commonly described as a _Loop-Erased_ random walk.
 It is precisely used to uniformly sample the space of spanning trees on a graph.[@Generatingrandomspanning_Wilson1996]
 
-Much like a reluctant co-author "worn down" by multiple requests, we can even include random walks that "receive" activation potential from more than one source.
+Much like a reluctant co-author "worn down" by multiple collaboration requests, we can even include random walks that "receive" activation potential from more than one source.
 Say a node is activated when some fraction of its neighbors have all originated a random walk transition to it, or a node activates on its second visit, or similar. 
 We simply count (as dependency evidence) the ultimate transition that precipitated activation.
 This could be justified from an empirical perspective as well: say we observe an author turn down requests for one paper from two individuals, but accept a third.
@@ -77,6 +92,8 @@ This is not an additional assumption, but a key limitation of our use of graphs 
 As Torres et al. go to great lengths elaborating in [@WhyHowWhen_Torres2021], it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss.
 The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, _not a graph_. 
 
+{{< embed ../codefigs/graphs.qmd#fig-stack-tree >}}
+
 @fig-stack-tree demonstrates the use of trees as the distribution for subgraphs, instead of outer-products/cliques.  
 
 
@@ -87,7 +104,7 @@ As indicated previously, we desire a representation of each observation that tak
 We have separated each observation with the intention of finding a point-estimate for the "best" edges, such that the edge vector induces a subgraph belonging to a desired class.
 If we assume that each edge vector is in $\mathbb{B}^{\omega}$, so that the interactions are unweighted, undirected, simple graphs, then for any family of subgraphs we will be selecting from at most $\omega\leq {n\choose 2}$ edges.
  
-Representing a vector as sparse combination of a known set of vectors (also known as "atoms") is called _sparse approximation_.
+Representing a vector as a sparse combination of a known set of vectors (also known as "atoms") is called _sparse approximation_.
 
 ### Problem Specification{#sec-fp-problem}
 
@@ -95,7 +112,7 @@ Sparse approximation of a vector $\mathbf{x}$ as a representation $\mathbf{r}$ u
 $$\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-D\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq N $${#eq-sparse-approx}
 where $N$ serves as a sparsity constraint (at most $N$ non-zero entries).
 This is known to be NP-hard, though a number of efficient methods to approximate a solution are well-studies and widely used.
-Solving the lagrangian form of @eq-sparse-approx, with an $\ell_1$-norm in place of $\ell_0$, is known as _Basis Pursuit[@SparseApproximateSolutions_Natarajan1995], while greedily solving for the non-zeros of $\mathbf{r}$ one-at-a-time is called _matching pursuit_[@Matchingpursuitstime_Mallat1993].
+Solving the Lagrangian form of @eq-sparse-approx, with an $\ell_1$-norm in place of $\ell_0$, is known as _Basis Pursuit_[@SparseApproximateSolutions_Natarajan1995], while greedily solving for the non-zeros of $\mathbf{r}$ one-at-a-time is called _matching pursuit_[@Matchingpursuitstime_Mallat1993].
 In that work, each iteration selects the atom with the largest inner product $\langle \mathbf{d}_{i'},\mathbf{x}\rangle$.
 
 We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree).
@@ -110,24 +127,24 @@ This means that, even with a ground-truth set of interactions, $B^T$ would take 
 While very useful for downstream analysis (see @sec-fp-preprocess), the MSE loss in @eq-sparse-approx-tree will never be zero, since $X_{\text{deg}}$ entries are not boolean.
 Large-degree "hub" nodes in the true graph would give a large residual, and the adjoint would subsequently fail to remove the effect of $B^T$ on the edge vectors. 
 
-It might be possible to utilize a specific semiring, such as $(\min,+)$, to enforce inner products (see @sec-products) that take us back to a binary vector.^[
-  This is more than a simple hack, and belies a great depth of possible connection to the problem at hand.
-  It is known that "lines" (arising from equations of the inner product) in tropical projective space _are trees_.[@tropicalGrassmannian_2004]
-  In addition, the tropical equivalent to Kirchoff's polynomial (which counts over all possible spanning trees), is the direct computation of the minimum spanning tree.[@TropicalKirchhoffsformula_Jukna2021]
-  For treatment of sparse approximation using tropical matrix factorization, see @Sparsedataembedding_Omanovic2021
-] 
+It might be possible to utilize a specific semiring, such as $(\min,+)$, to enforce inner products (see @sec-products) that take us back to a binary vector.
+This would be more than a simple hack, and belies a great depth of possible connection to the problem at hand.
+It is known that "lines" (arising from equations of the inner product) in tropical projective space _are trees_.[@tropicalGrassmannian_2004]
+In addition, the tropical equivalent to Kirchoff's polynomial (which counts over all possible spanning trees), is the direct computation of the minimum spanning tree.[@TropicalKirchhoffsformula_Jukna2021]
+For treatment of sparse approximation using tropical matrix factorization, see @Sparsedataembedding_Omanovic2021
+ 
 Instead, we will take an empirical bayes approach to the estimation of sparse vectors.[@EmpiricalBayesianStrategy_Wipf2007]
-As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) MRF [explained?] on the activated nodes.
+As a probabilistic graphical model, we assume each observation is emitted from a (tree-structured) Markov Random Field _only defined on the activated nodes_.
 This is underdetermined (any spanning tree could equally emit the observed activations), so we use an empirical prior as a form of shrinkage: the co-occurrences of nodes across all observed activation patterns.
 This let's us optimize a likelihood from @eq-edgevec-prob, for the distribution of spanning trees on the subgraph of $G^*$ inducted by $\mathbf{x}$. 
 $$
 \mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
 $${#eq-sparse-approx-tree}
 
-### Max. Spanning (Steiner) Trees {#sec-steiner}
+### Maximum Spanning (Steiner) Trees {#sec-steiner}
 The point estimate $\hat{\mathbf{r}}$ is therefore the mode of a distribution over trees, which is precisely the maximum spanning tree.[@EfficientComputationExpectations_Zmigrod2021]
 If we allow the use of all observations $X$ to find an empirical prior for $\mathbf{r}$, then we can calculate a value for the mutual information for the activated nodes, and use this to directly calculate the Chow-Liu estimate.
-One algorithm for finding a maximum spanning tree is Prim's[CITE?], which effectively performs the matching pursuit technique of greedily adding an edge (i.e. non-zero entry in our vector) one-by-one.
+One algorithm for finding a maximum spanning tree is Prim's[@Datastructuresnetwork_Tarjan1983], which effectively performs the matching pursuit technique of greedily adding an edge (_i.e._, non-zero entry in our vector) one-by-one.
 In this way, we effectively _do_ perform matching pursuit, but minimizing the KL-divergence between observed node activations and a tree-structured MRF limited to those nodes, alone (rather than the mean-square-error).
 
 However, the mode of the tree distribution is not strictly the one that uses mutual information as edge weights.
@@ -148,14 +165,14 @@ And that kernel is counting the probability of co-occurrence on trees in any ran
 
 All this is to say that node co-occurrence measures are more similar to node-node distances in the underlying graph, _not estimators of edge existence_.
 But we can use this as an empirical prior to approximate Steiner trees that _are on the true graph_.
-
+For another recent application of sampling steiner trees to reconstruct node dependencies (though not for global network reconstruction), see @RobustCascadeReconstruction_Xiao2018. 
 
 
 <!-- - KL-divergence is convex (we can minimize sum of dists, not just dist of sum) -->
 
 ## Forest Pursuit {#sec-FP}
 
-Instantiating the above, we propose _Forest Pursuit_, an relatively simple algorithm for correction of clique-bias under a spreading process assumption
+Instantiating the above, we propose _Forest Pursuit_, an relatively simple algorithm for correction of clique-bias under a spreading process assumption.
 
 ### Algorithm Summary
 
@@ -168,8 +185,9 @@ Based on the discussion in @nte-cs we will use the cosine similarity as a degree
 
 For each observation, the provided distances serve to approximate the metric closure of the underlying subgraph induced by $\mathbf{x}$.
 This is passed to an algorithm for finding the minimum spanning tree.
-Given a metric closure, the MST in turn would be an approximation of the desired Steiner tree within $2-\tfrac{2}{\|\mathbf{x}\|_0}$ of optimal.[@fastalgorithmSteiner_Kou1981]
-For $\|\mathbf{x}\|_0 \ll n$, this error bound will often be close to 1, and approaching 2 as the expected number of activations-per-observation grows.
+Given a metric closure, the MST in turn would be an approximation of the desired Steiner tree that has a total weight that will be a factor of at most $2-\tfrac{2}{\|\mathbf{x}\|_0}$ worse than the optimal tree.[@fastalgorithmSteiner_Kou1981]
+For $\|\mathbf{x}\|_0 \ll n$ (_i.e._, many fewer authors-per paper than total authors), this error bound will be close to 1 (perfect reconstruction).
+The error factor bound approaches double the weight (in the worst-case) of the optimal tree as the expected number of authors-per-paper grows to infinity.
 
 After the point estimates for $\mathbf{r}$ have been calculated as trees, we can use the desire-path beta-binomial model (@eq-desirepath-binom) to calculate the overall empirical Bayes estimate for $\hat{G}$.
 As a prior for $\alpha$, instead of a Jeffrey's or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity.
@@ -212,7 +230,7 @@ which we can use as a sparsity-promoting initial value for $\text{Beta}(\alpha^*
   \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$
   \Comment{\textit{activated nodes}}
   \State $T \gets$\Call{MST}{$d[V,V]$}
-  \Comment{\textit{e.g. Prim's Algorithm}}
+  \Comment{\textit{e.g., Prim's Algorithm}}
   \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$
   \State $\mathbf{r} \gets e_n(\mathbf{u,v})$
   \Comment{\textit{unroll tree adjacency}}
@@ -243,25 +261,25 @@ It is also trivially parallelizeable,^[Although, no common python implementation
 ] 
 and the bayesian update for $\hat{\alpha}_m$ can be performed in a streaming manner, as well.
 
-Each observation requires a call to "PursueTree", which involves an MST call for the pre-computed subset of distances onnodes activated for that observation.
-Note the use of MST algorithm could apply Prim's or Kr uskal's algorithm, or similar.
-It is recommended to utilize Prims in this case, however, since Prim's on a sufficiently dense graph can be made to run in $O(n)$ time for $n$ activated nodes by using a _d_-tree for its heap queue.[CITE]
+Each observation requires a call to "PursueTree", which involves an MST call for the pre-computed subset of distances on nodes activated for that observation.
+Note the use of "MST" here requires any minimum spanning tree algorithm, _e.g._, Prim's, Kruskal's, or similar.
+It is recommended to utilize Prim's in this case, however, since Prim's on a sufficiently dense graph can be made to run in $O(n)$ time for $n$ activated nodes by using a _d_-tree for its heap queue.[@Datastructuresnetwork_Tarjan1983]
 Since we are always using the metric closure, Prim's will always run on a complete graph.
 
-Importantly, this means that FP does not scale with the the size of the network, but only the worst-case activation count of a given observation, $O(s_{\text{max}})$, where $s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}$
+Importantly, this means that FP's complexity does not scale with the size of the network, but only the worst-case activation count of a given observation, $O(s_{\text{max}})$, where $s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}$
 We say this is _approximately_ constant in node size:
 
-- the total number of nodes is typically a _given_ for a single problem setting
-- in many domains, the basic _spreading_ rate of diffusion model (e.g. $R_0$, or heat conductivity), does not scale with the total size of an observation
+- The total number of nodes is typically a _given_ for a single problem setting
+- In many domains, the basic _spreading_ rate of diffusion model (_e.g._, $R_0$, or heat conductivity), does not scale with the total size of an observation
 
 That last point means that constant scaling with network size is generally down to the domain in question.
 For instance, a heat equation simulated over a small area, having a given conductivity, will not have a different conductivity over a larger area; conductivity is a material property.
 Similarly, a virus might have a particular basic reproduction rate, or a set of authors might have a static distribution over how many collaborators they wish to work with.
-The former is down to viral load generation, and the latter a sociological limit: more a bigger department usually doesnt imply more co-authors.
+The former is down to viral load generation, and the latter a sociological limit: a bigger department usually does not imply more authors-per-paper by itself.
 
-Similar to @eq-min-connect, we might reasonably assume that the expected degree of nodes is roughly constant with network size i.e. a property of domain.
-So, the the density of activation vectors (as a fraction of all possible edges) is going go scale with the inverse of $n$.
-This makes a process linear in activation count to be constant in network size.
+Similar to @eq-min-connect, we might reasonably assume that the expected degree of nodes is roughly constant with network size _i.e._, an inherent property of the domain.
+So, the density of activation vectors (as a fraction of all possible edges) is going go scale with the inverse of $n$.
+This makes our process, which is linear in activation count, out to be _constant_ $O(1)$ in network size.
 Then, if $\bar{s}$ is the expected non-zero count of each row of $X$, the final approximate complexity of FP is $O(m\bar{s})$.^[
   In our reference implementation, which uses Kruskal's algorithm, the theoretical complexity is likewise $O(m\bar{s}^2\log{\bar{s}})$, though in our experience the values of $\bar{s}$ are small enough to not impact the runtime significantly.
 ]
@@ -278,19 +296,11 @@ It can also be extended through community contribution, using data versioning to
 
 ### Experimental Method
 
-For each algorithm shown in @tbl-methods, every combination of the parameters in @tbl-mendr was tested. 30 random graphs for each of  nodes were tested, which was repeated again for each of Tree, Block, and scale-free types. 
-
-|parameters             | values                           |
-| :-                    |:-:                               | 
-| random graph **kind** | Tree, Block, BA$(m\in\{1,2\}$)                |
-| network **$n$-nodes** | 10,30,100,300                    |
-| random **walks**      | 1 sample $m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10$|
-| random walk **jumps** | 1 sample $j\sim\text{Geometric}(\tfrac{1}{n})+5$     | 
-| random walk **root**  | 1 sample $n_0 \sim \text{Multinomial}(\textbf{n},1)$|
-| random **seed**       |  1, 2, ... ,  30                 |
-
-: Experiment Settings (MENDR Dataset) {#tbl-mendr}
-
+For each algorithm shown in @tbl-methods, every combination of the parameters in @tbl-mendr was tested. 30 random graphs for each of  nodes were tested, which was repeated again for each of three separate kinds of global graph structure.
+Every algorithm that could be supplied a prior via additive smoothing is shown in @tbl-methods as "$\alpha$?: Yes", and a minimum-connected (tree) sparsity prior was supplied $\alpha=\tfrac{2}{n}$.
+The others, esp. GLASSO, do not have a $\tfrac{\text{count}}{\text{exposure}}$ form, and could not be easily interpreted in a way that allowed for additive smoothing.
+However, since the regularizaiton parameter for GLASSO is often critical for finding good solutions, a 5-fold cross validation was performed for each experiment to select a "best" value, with the final result run using that value.
+While  this does have a constant-time penalty for each experiment, the reconstruction accuracy is significantly improved with this technique, and would reflect common practice in using GLASSO for this reason. 
 
 
 | Algorithm            | abbrev. | $\alpha$? | class    | source                                                                     |   
@@ -306,16 +316,22 @@ For each algorithm shown in @tbl-methods, every combination of the parameters in
 : Summary of algorithms compared {#tbl-methods}
 
 
-For each algorithm that could be supplied a prior via additive smoothing, seen in @tbl-methods as "$\alpha$?: Yes", a minimum connected (tree) level of sparsity wasy supplied $\alpha=\tfrac{2}{n}$.
-The others, esp. GLASSO, do not have a $\tfrac{\text{count}}{\text{exposure}}$ form, and could not be easily interpreted in a way that allowed for additive smoothing.
-However, since the regularizaiton parameter for GLASSO is often critical for finding good solutions, a 5-fold cross validation was performed for each experiment to select a "best" value, with the final result run using that value.
-While  this does have a constant-time penalty for each experiment, the reconstruction accuracy is significantly improved with this technique, and would reflect common practice in using GLASSO for this reason. 
-
 The three classes of random graphs represent common use cases in sparse graph recovery.
 In addition, the block and tree graphs are types we expect GLASSO to correctly recover in this binary setting.[@Structureestimationdiscrete_Loh2012]
 The block graphs of size $n$ were formed by taking the line-graph of randomly generated trees of size $n+1$.  
-Trees were randomly generated using Prüfer sequences as impelmented in NetworkX [CITE].
-To simulate possible social networks and other complex systems that show evidence of preferential attachment, scale-free graphs were sampled through the Barabási–Albert (BA) model, which was randomly seeded with a re-attachment paramenter $m$ of either 1 or 2.
+Trees were randomly generated using Prüfer sequences as impelmented in NetworkX [@ExploringNetworkStructure_Hagberg2008].
+To simulate possible social networks and other complex systems that show evidence of preferential attachment, scale-free graphs were sampled through the Barabási–Albert (BA) model, which was randomly seeded with a re-attachment parameter $m\in\{1,2\}$[@EmergenceScalingRandom_Barabasi1999].
+
+|parameters             | values                           |
+| :-                    |:-:                               | 
+| random graph **kind** | Tree, Block, BA$(m\in\{1,2\}$)                |
+| network **$n$-nodes** | 10,30,100,300                    |
+| random **walks**      | 1 sample $m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10$|
+| random walk **jumps** | 1 sample $j\sim\text{Geometric}(\tfrac{1}{n})+5$     | 
+| random walk **root**  | 1 sample $n_0 \sim \text{Multinomial}(\textbf{n},1)$|
+| random **seed**       |  1, 2, ... ,  30                 |
+
+: Experiment Settings (`MENDR` Dataset) {#tbl-mendr}
 
 Every graph has a static ID provided by MENDR, along with generation and retrieval code for public review.
 New graphs kinds and sizes are simple to add for future benchmarking capability.  
@@ -326,22 +342,27 @@ New graphs kinds and sizes are simple to add for future benchmarking capability.
 To compare each algorithm consistently, several performance measures have been included in the MENDR testbench.
 They are all functions of the True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN) values.
 
-Precision (P)
-: Fraction of positive predictions that are true, also called "positive predictive value" (PPV) $$P= \frac{TP}{TP+FP}$$
+:::{#nte-precision .callout-note title="Precision (P)"}
+Fraction of positive predictions that are true, also called "positive predictive value" (PPV) $$P= \frac{TP}{TP+FP}$$
+:::
 
-Recall (R)
-: Fraction of true values that were returned as positive.
+:::{#nte-recall .callout-note title="Recall (R)"}
+Fraction of true values that were returned as positive.
   Also called the TP-rate (TPR), and has an inherent trade-off with precision. $$R=\frac{TP}{TP+FN} $$
+:::
 
-Matthews Correlation Coefficient (MCC)
-: Balances all of TP,TN,FP,FN.
+:::{#nte-mcc .callout-note title="Matthews Correlation Coefficient (MCC)"}
+Balances all of TP,TN,FP,FN.
   Preferred for class-imbalanced problems (like sparse recovery) [@statisticalcomparisonMatthews_Chicco2023]
   $$\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}$$
+:::
 
-Fowlkes-Mallows (F-M)
+
+:::{#nte-fm .callout-note title="Fowlkes-Mallows (F-M)"}
 : Geometric mean of Precision and Recall, as opposed to the F-Measure that returns the harmonic mean.
   Also known to be the limit of the MCC as TN approaches infinity[@MCCapproachesgeometric_Crall2023], which is useful as TN grows with $n^2$ but TP only with $n$.
   $$\sqrt{P\cdot R}$$
+:::
 
 Because this work is focused on unsupervised performance, specifically for the use of these algorithms by analysts investigating dependencies, we opt to calculate TP,TN,FP,FN at every unique edge probability/strength value returned by each algorithm.
 Then, because we do not know a priori which threshold level will be selected by an analyst in the unsupervised setting, we take a conservative approach and report the expected values E[MCC] and E[F-M] over all unique threshold values.
@@ -380,7 +401,7 @@ Most importantly, the trend for FP is strongest as the number of observations in
 In fact, it appears that count-based methods' scores are negatively correlated with added random walk length and added observations.
 Only HYP and CS scores are shown in @fig-mendr-trends, but all other tested methods (other than FP and GLASSO) show the same trend. 
 
-However, because the graph sampling protocol includes $n$ in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The _partial resitual_ plots are shown in @fig-partials-mcc, which shows the trends of each variable after controlling for the others. 
+However, because the graph sampling protocol includes $n$ in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The _partial residual_ plots are shown in @fig-partials-mcc, which shows the trends of each variable after controlling for the others. 
 
 {{< embed ../codefigs/results.qmd#fig-partials-mcc >}}
 
@@ -409,7 +430,7 @@ In regression terms, we are fitting the log of $$y_{\text{sec}} = ax_{\text{para
 
 In a very close match to our previous analysis, the scaling of FP is almost entirely explained by the observation count and random-walk length, alone: the coefficient on network size shows constant-time scaling.
 Similarly, the scaling with observation count is very nearly linear time, as predicted.
-The residuals show non-linear behavior for the random-walk length parameter, which would make sense, due to the theoretical $\|E\|\log\|V\|$ scaling of kruskal's algorithm.
+The residuals show non-linear behavior for the random-walk length parameter, which would make sense, due to the theoretical $\|E\|\log\|V\|$ scaling of Kruskal's algorithm.
 At this scale, $n\log n$ and $n^2\log n$ complexity might appear smaller than linear time, due to the log factor.
 GLASSO hardly scales with random walk length, and only marginally with observation count.
 In typical GLASSO, the observation count has already been collapsed to calculate the empirical covariance matrix, so its effects here might be due instead to the cross-validation and the need to calculate empirical covariance for observation subsets.

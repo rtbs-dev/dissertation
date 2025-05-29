@@ -1,4 +1,15 @@
-# Modifications & Extensions  
+# Modifications & Extensions {#sec-extend}
+
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _"Sure, we could include all the of variables in the analysis, but do-calculus (or similar) will usually tell us that we don’t have to."_
+> 
+> \hfill -- Richard McElreath \
+:::
+::::
+
 
 _Forest Pursuit_ is a flexible base for adding or modifying behavior as needed.
 In this chapter we demonstrate two ways to extend it, along with a probabilistic model to serve as a foundation for future extensions.
@@ -140,7 +151,7 @@ This works because we can marginalize out the equal marked-node probability $\ph
 
 Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the _Bayesian Spanning Tree_ distribution from @BayesianSpanningTree_Duan2021.
 Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated, and sampling can continue.
-This would be very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[CITE], but with edges selected from a spanning forest distribution instead of "topics" from a multinomial.
+This would be very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation[@Latentdirichletallocation_Blei2003], but with edges selected from a spanning forest distribution instead of "topics" from a multinomial.
 Derivations and implementation of such a scheme is left for future work.    
 
 

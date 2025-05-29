@@ -85,3 +85,5 @@ format:
       body-width: 900px
       margin-width: 400px
       gutter-width: 1.5rem
+    include-in-header:
+      - resource/flushright.html

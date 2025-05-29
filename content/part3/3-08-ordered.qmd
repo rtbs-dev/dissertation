@@ -1,5 +1,16 @@
 # Recovery from Working Memory & Partial Orders {#sec-ordered}
 
+
+::::{.flushright data-latex=""}
+
+::: {.minipage data-latex="{.8\linewidth}"}
+
+> _"So an analytically astute observer would find that a salmon is more closely related to a camel than it is to a hagfish. On what basis, then, do we justify grouping salmon under the label fish, but not camels?"_
+> 
+> \hfill -- Samuel Beswick (sarcastically) \
+:::
+::::
+
 This whole time we have assumed that the ordering of nodes was unknown, or at the very least unreliable.
 However, there are frequently cases, especially in text processing applications, where we have some sense of an ordering on activations.
 By _partial order_ on a set (a "poset"), we mean that all elements are either comparable as greater (before) or less (after), or incomparable.
@@ -10,6 +21,8 @@ We don't know if (i) asked (f) before or after (j) asked (b).^[
   Interestingly, in the case where the node activations _are_ given a total order (in the form of _timestamps_), @Inferringnetworksdiffusion_GomezRodriguez2012 derive an algorithm called _NetInf_.
   It utilizes sums over minimum spanning trees that satisfy time constraints, similar to a special case of Forest Pursuit where all activations have a total ordering.
 ]
+We have updated the original example with explicit partial orders in @fig-obs-cascade. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right). 
+{{< embed ../codefigs/graphs.qmd#fig-obs-cascade >}}
 
 Sadly our co-authorship example does not often include the (partial) order of author additions,^[though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!
 ] but other common network recovery problems do have an inherent order to them.
@@ -35,6 +48,11 @@ Tags are another way to flexibly structure this otherwise "unstructured" data, w
 
 Whether entered directly or generated from text by keyword extraction, the tags will tend to have ordering information readily available. 
 A traditional way to model this kind of text is through either bag-of-words (the co-occurrence node activation data already discussed) or as a sequence of order-n markov model emissions.
+An order-n markov model $\text{MC}n$ estimates the probability of observing the $i$th item $t_i$ in a sequence $T$ as
+$$
+P(t_i|T) \approx P(t_i | t_{i-1}, \cdots,t_{i-n})
+$$
+
 Unlike the clique bias from before, assuming markov jumps for each observation leads to a different kind of bias, with higher precision but reduced recall as shown in @fig-stack-markov. 
 
 {{< embed ../codefigs/graphs.qmd#fig-stack-markov >}}
@@ -114,9 +132,7 @@ Like in that work, we need to know a selection tag$\rightarrow$subsystem assignm
 
 Then, if we can compare the semi-supervised tag classifications to a ground-truth classification by a human annotator (which are available for the excavator dataset thanks to @sharedreliabilitydatabase_Ho2015), we can assess the ability of each network to capture the human annotator's internal/cognitive tag relationship structure.
 
-> _Which network assigns tags to subsystems most like a domain expert?_
-
-### Results
+### Which network assigns tags to subsystems most like a domain expert?
 
 To test the ability of the similarity measures to accomplish this, the top three most common subsystems in the data were used as classes, namely, Hydraulic System, Engine, and Bucket.
 The tags "hydraulic", "engine", and "bucket" were assigned to those subsystems as known labels, respectively.
@@ -126,7 +142,7 @@ We determine ground-truth classification labels as subsystems that account for $
 Tags more balanced than that are considered "unknown subsystem".
 
 
-To perform semi-supervised classification on the recovered relationship graphs, we use a label-spreading algorithm described in [@Learninglocalglobal_Zhou2004], which itself was inspired by spreading activation networks in experimental psychology [@architecturecognition_Anderson2013 @Observationphasetransitions_Shrager1987]. The result of this algorithm is tags having a score for each class, with the classification being the maximally scored class for that tag. These class assignments can then be compared to the ground-truth labels, which we have done by weighted macro-averaging of the $F_1$-score (see @fig-excavate-f1kl).
+To perform semi-supervised classification on the recovered relationship graphs, we use a label-spreading algorithm described in [@Learninglocalglobal_Zhou2004], which itself was inspired by spreading activation networks in experimental psychology [@architecturecognition_Anderson2013; @Observationphasetransitions_Shrager1987]. The result of this algorithm is tags having a score for each class, with the classification being the maximally scored class for that tag. These class assignments can then be compared to the ground-truth labels, which we have done by weighted macro-averaging of the $F_1$-score (see @fig-excavate-f1kl).
 
 
 :::{#fig-excavate-results}
@@ -162,7 +178,7 @@ Because the probability of a sampled tree is precisely proportional to the produ
 The similarity would be exact whenever the tree that set of nodes traveled along _was_ the mode of the tree distribution: the MST.
 
 In other words, whenever the random walks _did_ use the minimum distance to reach each node, the two methods should be equivalent.
-While this isn't happening much individually, the effect of _many_ random walks will average out to this MST, precisely because _it is the tree distribution mode_ from which we assume node activations sample under RSFm. 
+While this isn't happening much individually, the effect of _many_ random walks will average out to this MST, precisely because _it is the tree distribution mode_ from which we assume node activations sample under _marked Random Spanning Forests_. 
 
 To illustrate FP's efficacy in network estimation despite ignoring partial order information, we turn to a classic network recovery problem in this space: _semantic networks from fluency data_[@newdissimilaritymeasure_Prescott2006;@Estimatingsemanticnetworks_Zemla2018].
 
@@ -298,6 +314,6 @@ As shown in @fig-fluency-preprocess, GLASSO and DS both increase their connectiv
 
 This is likely due to the increase in "signal-to-noise" ratio for each datapoint, since observations are only similar when they have a node interacting the same "amount", not merely when similar nodes are activated. 
 
-Because the entries are now integer counts, FP preprocessing might also give a better path to using distribution-based embedding and clustering techniques, such as Hellinger distances between multinomial sample counts
+Because the entries are now integer counts, FP preprocessing might also give a better path to using distribution-based embedding and clustering techniques, such as Hellinger distances between multinomial sample counts.
 This goes for many other techniques from text processing that rely on multinomial assumptions (i.e. techniques otherwise inapplicable to binary data).  
 FP Preprocessing, with further empirical and theoretical validation, might prove to be a powerful tool for practitioners to flexibly backbone and analyse their networks with a variety of new techniques.   

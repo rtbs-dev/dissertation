@@ -66,7 +66,7 @@
 \directlua{pdf.setminorversion(6)}
 % \usepackage[T1]{fontenc}
 % \usepackage[utf8]{inputenc}
-
+\usepackage{pdfpages}
 \usepackage[english]{babel}
 \usepackage[otfmath]{XCharter}
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
@@ -274,7 +274,8 @@ Doctor of Philosophy \\
 
 \noindent Advisory Committee: \\
 \hbox{\ }\hspace{.5in}Professor Mark D. Fuge, Chair/Advisor \\
-\hbox{\ }\hspace{.5in}Professor Jordan L. Boyd-Graber \\
+\hbox{\ }\hspace{.5in}Professor Jordan L. Boyd-Graber, (Dean's
+Representative) \\
 \hbox{\ }\hspace{.5in}Professor Maria K. Cameron \\
 \hbox{\ }\hspace{.5in}Professor Michelle Girvan \\
 \hbox{\ }\hspace{.5in}Professor Vincent P. Lyzinski \\
@@ -306,6 +307,32 @@ Doctor of Philosophy \\
 \addcontentsline{toc}{chapter}{Foreward}
 
 \markboth{Foreward}{Foreward}
+
+\begin{quote}
+DISCLAIMER FOR PRIOR WORK
+\end{quote}
+
+Portions of Chapter~\ref{sec-desirepath}, Chapter~\ref{sec-fp},
+Chapter~\ref{sec-extend}, along with network figures from
+Chapter~\ref{sec-qual} and Chapter~\ref{sec-ordered}, are planned for
+submission to PLOS \emph{Complex Systems} later this year.
+
+Chapter~\ref{sec-fp} references \texttt{MENDR}, a standard reference
+dataset and test-bench for network recovery algorithms created in the
+course of completing this thesis. It is awaiting DOI assignment through
+NIST internal review processes. Likewise for \texttt{affinis}, a python
+library for dependency inference from binary activations containing our
+reference implementations of various algorithms (including \emph{Forest
+Pursuit}).
+
+Portions of Chapter~\ref{sec-ordered} involving INVITE and recovery from
+partially ordered node sets are taken from
+\textcite{OrganizingTaggedKnowledge_Sexton2020} in the Journal of
+Mechanical Design, and its predecessor
+\textcite{UsingSemanticFluency_Sexton2019} from the 45th ASME Design
+Automation Conference.
+
+\includepdf[pages=-]{resource/prev-pub-letter.pdf}
 
 \bookmarksetup{startatroot}
 
@@ -361,11 +388,16 @@ sub-communities\autocite{Statisticalinferencelinks_Peel2022}, treatment
 of error as purely aleatory, rather than epistemic
 \autocite{Measurementerrornetwork_Wang2012}, or simply ignoring
 measurement error in network reconstruction
-entirely\autocite{ReconstructingNetworksUnknown_Peixoto2018}.
+entirely\autocite{ReconstructingNetworksUnknown_Peixoto2018}. This
+thesis builds on recent methodological recommendations for increased
+focus on how \emph{dependencies} should play a central role in network
+analysis \autocite{WhyHowWhen_Torres2021}, and facilitating a paradigm
+shift toward network analysis as \emph{inference} of an inverse problem
+\autocite{Statisticalinferencelinks_Peel2022}.
 
 \section{Ambiguous Metrology}\label{ambiguous-metrology}
 
-Networks in the ``wild'' rarely exist of and by themsleves. Rather, they
+Networks in the ``wild'' rarely exist of and by themselves. Rather, they
 are a model of interaction or relation \emph{between} things that were
 observed. One of the most beloved examples of a network, the famed
 \emph{Zachary's Karate Club}\autocite{InformationFlowModel_Zachary1977},
@@ -374,14 +406,14 @@ club member interacted with another (outside of the club), Zachary
 recorded it as two integers (the IDs of the members). The final list of
 pairs can be \emph{interpreted} as an ``edge list'', which can be
 modeled with a network: a simple graph. This was famously used to show
-natural community structure that nicely matches the group separation
-that eventually took place when the club split into
-two.\autocite{Communitystructuresocial_Girvan2002}
+natural community structure (Figure~\ref{fig-karate-club}) that nicely
+matches the group separation that eventually took place when the club
+split into two.\autocite{Communitystructuresocial_Girvan2002}
 
 Note, however, that we could have just as easily taken note of the
-instigating student for each interaction (i.e.~which student initiated
-conversation, or invited the other to socialize, etc.). If that
-relational asymmetry is available, our ``edges'' are now
+instigating student for each interaction (\emph{i.e.}, which student
+initiated conversation, or invited the other to socialize, etc.). If
+that relational asymmetry is available, our ``edges'' are now
 \emph{directed}, and we might be able to ask questions about the rates
 that certain students are asked vs.~do the asking, and what that implies
 about group cohesion. Additionally, the time span is assumed to be ``for
@@ -405,13 +437,43 @@ extant edge 78 highlighted.}
 
 \end{figure}%
 
-\emph{We do not know if any of these are true}. In fact, as illustrated
-in Figure~\ref{fig-karate-club}, we do not know if the network being
-described from the original edge data even has 77 or 78 edges, due to
-ambiguous reporting in the original work. Lacking a precise definition
-of what the graph's components (i.e.~it's edges) are, \emph{as
-measurable entities}, means we cannot estimate the measurement error in
-the graph.
+This observation raises an interesting metrology problem: \emph{We do
+not know if any of these are true}. ``Metrology'' is not limited to
+physical units, like ``meters'' and ``grams'', but more generally is
+concerned with systematic quantification with uncertainty. Units provide
+a natural framework to describe what a metrologist is usually after: not
+just ``how much'', but ``how \emph{accurately} and \emph{precisely} that
+much'', as well. When we use ``metrology'' in the context of network
+analysis, we are specifically referring to the need to:
+
+\begin{itemize}
+\tightlist
+\item
+  Quantify a network
+\item
+  Consider the trueness of that quantification
+\item
+  Consider the precision of that quantification.
+\end{itemize}
+
+The difference between trueness and precision is a crucial, often
+overlooked distinction: how close a set of measurements are to a
+reference value vs.~how repeatable/reproducible a measurement
+is\autocite{Accuracytruenessprecision_ISO1994}.
+
+The metrological questions we posed above are ones of \_trueness\_we
+have no way to tell if Zachary's network model is specified correctly,
+because the reference network ``type'' is under-defined and we have no
+networks to compare it with. We simply have to take the network as a
+reference unto itself; it is a calibration artefact, much like a
+physical ``meter rod''. However, even with an assumed perfect
+``trueness'', precision is often an issue as well! In fact, as
+illustrated in Figure~\ref{fig-karate-club}, we do not know if the
+network being described from the original edge data even has 77 or 78
+edges, due to ambiguous reporting in the original work. Lacking a
+precise definition of what the graph's components (\emph{i.e.}, it's
+edges) are, \emph{as measurable entities}, means we cannot estimate the
+accuracy of the graph, whether for trueness or precision.
 
 \section{Indirect Network
 Measurement}\label{indirect-network-measurement}
@@ -419,18 +481,22 @@ Measurement}\label{indirect-network-measurement}
 While the karate club graph has unquantified edge uncertainty derived
 from ambiguous edge measurements, we are fortunate that we \emph{have
 edge measurements}. Regardless of how the data was collected, it is de
-facto reported as a list of pairs. In many cases, we simply do not have
-such luxury. Instead, our edges are only measured \emph{indirectly}, and
-instead we are left with lists of node co-ocurrences. Networks
-connecting movies as being ``similar'' might be derived from data that
-lists sets of movies watched by each user; networks of disease spread
-pathways might be implied from patient infection records; famously, we
-might build a network of collaboration strength between academic authors
-by mining datasets of the papers they co-author together.
+facto reported as a list of pairs, which lends itself to treatment as a
+reference artefact. In many cases, we simply do not have such luxury.
+
+Instead, edges are often measured \emph{indirectly}, and instead we are
+given lists of node co-ocurrences. Networks connecting movies as being
+``similar'' might be derived from data that lists sets of movies watched
+by each user; networks of disease spread pathways might be implied from
+patient infection records; famously, we might build a network of
+collaboration strength between academic authors by mining datasets of
+the papers they co-author together.
 
 Such networks are derived from what we will call \emph{node activation}
-data, i.e., records of what entities happened ``together'', whether
-contemporaneously, or in some other context or artifact.
+data, \emph{i.e.}, records of what entities happened ``together'',
+whether contemporaneously, or in some other context or artifact. For
+this class, \emph{precision} might be easy to assess, having
+oft-repeated activations.
 
 \begin{figure}
 
@@ -444,15 +510,16 @@ contemporaneously, or in some other context or artifact.
 
 \end{figure}%
 
-These are naturally represented as ``bipartite'' networks, having
-separate entites for, say, ``papers'' and ``authors'', and connecting
-them with edges (paper 1 is ``connected'' to its authors E,H,C, etc.).
-But analysts are typically seeking the collaboration network connecting
-authors (or papers) themselves! Networks of relationships in this
-situation are not directly observed, but which \emph{if recovered} could
-provide estimates for community structure, importances of individual
-authors (e.g.~as controlling flow of information), and the ``distances''
-that separate authors from each other, in their respective domains.
+These networkx are naturally represented as ``bipartite'' networks,
+having separate entites for, say, ``papers'' and ``authors'', and
+connecting them with edges (paper 1 is ``connected'' to its authors
+E,H,C, etc.). But analysts are typically seeking the collaboration
+network connecting authors (or papers) themselves! Networks of
+relationships in this situation are not directly observed, but which
+\emph{if recovered} could provide estimates for community structure,
+importances of individual authors (e.g.~as controlling flow of
+information), and the ``distances'' that separate authors from each
+other, in their respective domains.
 \autocite{Scientificcollaborationnetworks._Newman2001} Common practice
 assumes that co-authorship in any paper is sufficient evidence of at
 least some level of social ``acquaintance'', where more papers shared
@@ -501,7 +568,7 @@ wished to study the social network of collaboration more directly: if we
 had the luxury of being in situ as, say, a sociologist performing an
 academic ethnography, we might have been more strict with our definition
 of ``connection''. If the goal is a meaningful social network reflecting
-the strength of interraction between colleages, perhaps the we prefer
+the strength of interraction between colleagues, perhaps we prefer that
 our edges represent ``mutual willingness to collaborate''. Edge
 ``measurement'', then, could involve records of events that show
 willingness to seek or participate in collaboration event, such as:
@@ -509,20 +576,22 @@ willingness to seek or participate in collaboration event, such as:
 \begin{itemize}
 \tightlist
 \item
-  \emph{author (g) asked (e), (h), and (c) to co-author a paper, all of
+  \emph{Author (g) asked (e), (h), and (c) to co-author a paper, all of
   whom agreed}
 \item
   \emph{(i) asked (f) and (j), but (j) wanted to add (b)'s expertise
   before writing one of the sections}
+\item
+  etc.
 \end{itemize}
 
-and so on. Each time two colleagues had an opportunity to work together
-\emph{and it was seized upon} we might conclude that evidence of their
-relationship strengthed. With data like this, we could be more confident
-in claiming our collaboration network can serve as ``ground truth,'' as
-far as empirically confirmed collaborations go. However, even if the
-underlying ``activations'' are identical, our new, directly measured
-graph looks very different.
+Each time two colleagues had an opportunity to work together \emph{and
+it was seized upon} we might conclude that evidence of their
+relationship strengthened. With data like this, we could be more
+confident in claiming our collaboration network can serve as ``ground
+truth,'' as far as empirically confirmed collaborations go. However,
+even if the underlying ``activations'' are identical, our new, directly
+measured graph looks very different.
 
 Fundamentally, the network in Figure~\ref{fig-colleague} shows which
 relationships the authors \emph{depend} on to accomplish their
@@ -531,10 +600,15 @@ modeled as edges, we call such a graph a \emph{dependency network}. We
 will investigate this idea further later on, but ultimately, if a
 network of dependencies is desired (or implied, based on analysis
 needs), then the critical problem remaining is \emph{how do we recover
-dependency networks from node activations?} Additionally, what goes
-wrong when we use co-occurence/activation data to estimate the
-dependency network, especially when we wish to use it for metrics like
-centrality, shortest path distances, and community belonging?
+dependency networks from node activations?} What is missing, once again,
+is any sense of \emph{reference value} to base our assessment of
+\emph{trueness} on. This thesis is primarily concerned with a
+metrological need within the network analysis community to have terms
+and techniques for describing and dealing with this problem. What goes
+wrong when we use co-occurrence/activation data to estimate the
+dependency network? What goes wrong when we wish to use co-occurrences
+for metrics like centrality and assortativity, or for exploratory
+analyses like building relationship type inventories?
 
 \begin{figure}
 
@@ -553,7 +627,7 @@ Even more practically, networks created directly from bipartite-style
 data are notorious for quickly becoming far too dense for useful
 analysis, earning them the (not-so-)loving moniker ``hairballs''.
 Network ``backboning,'' as it has come to be called tries to find a
-subset of edges in this hairball that still captures it's core topology
+subset of edges in this hairball that still captures its core topology
 in a way that's easier to
 visualize.\autocite{twostagealgorithm_Slater2009,backbonebipartiteprojections_Neal2014}
 Meanwhile, underlying networks of dependencies that \emph{cause} node
@@ -565,64 +639,111 @@ hairballs.
 
 \section{Scope of this work}\label{scope-of-this-work}
 
-The purpose of this thesis is to provide a solid foundation for basic
-edge metrology when our data consists of binary node activations, by
-framing network analysis as a problem of \emph{inference}, as suggested
-by \textcite{Statisticalinferencelinks_Peel2022}. We give special focus
-to binary activations that occur due to spreading processes, such as
-random walks or cascades on an underlying carrier graph. Recovering the
+The purpose of this thesis is to provide a solid foundation for edge
+metrology when our data consists of binary node activations, by framing
+network analysis as a problem of \emph{inference}, as suggested by
+\textcite{Statisticalinferencelinks_Peel2022}. We give special focus to
+binary activations that occur due to spreading processes, such as random
+walks or cascades on an underlying carrier graph. Recovering the
 carrier, or, ``dependency'' network from node activations is of great
 interest to the network backboning and causal modeling communities, but
 often involves either unspoken sources of epistemic and aleatory error,
 or high computation costs (or both). To begin addressing these issues,
-we present a guide to current practices, pitfalls, and how common
-statistical tools apply to the network recovery problem: a
-\emph{Practitioner's Guide to Network Recovery}. We cover what
-``measurement'' means in our context, and specifically the ways we
-encode observations, operations, and uncertainties numerically.
-Clarifying what different versions of what ``relation'' means (whether
-proximity or incidence) is critical, since network structure is intended
-to encode such relations as mathematical objects, despite common
-ambiguities and confusion around what practitioners intend on
-communicating through them. Then we use this structure to present a
-cohesive framework for selecting a useful network recovery technique,
-based on the available data and where in the data processing pipeline is
-acceptable to admit either extra modeling assumptions or information
-loss.
+Part I of this thesis presents a guide and review of current practices,
+some of their pitfalls, and how common statistical tools apply to the
+network recovery problem: a \emph{Practitioner's Guide to Network
+Recovery}. We will cover what ``measurement'' means in our context, and
+specifically the ways we encode observations, operations, and
+uncertainties numerically. Clarifying what different versions of what
+``relation'' means (whether proximity or incidence) is critical, since
+network structure is intended to encode such relations as mathematical
+objects (), despite common ambiguities and confusion around what
+practitioners intend on communicating through them. Then we organize a
+literature review to present a cohesive framework for assessing network
+recovery techniques, based on the assumptions and compromises being made
+to make the network inference problem tractable.
 
-Next, building on a gap found in the first part, we present a novel
-method, \emph{Forest Pursuit}, to extract dependency networks when we
-know a \emph{spreading process} causes node activation (e.g.~paper
-co-authorship caused by collaboration requests). We create a new
-reference dataset to enable community benchmarking of network recovery
-techniques, and use it show greatly improved accuracy over many other
-widely-used methods. Forest Pursuit in its simplest form scales linearly
-with the size of active-node sets, being trivially parallelizable and
-streamable over dataset size, and agnostic to network size overall. We
-then expand our analysis to re-imagine Forest Pursuit as a Bayesian
-probabilistic model, \emph{Latent Forest Allocation}, which has an
-easily-implemented Expectation Maximization scheme for posterior
-estimation. This significantly improves upon the accuracy results of
-Forest Pursuit, at the cost of some speed and scalability, giving
-analysts multiple options to adapt to their needs.
+Next, building on a gap found in the first part, Part II presents a
+novel method, \emph{Forest Pursuit}, to extract dependency networks when
+we know a \emph{spreading process} causes node activation (e.g.~paper
+co-authorship caused by collaboration requests). We formalize a generic
+foundation for representing inferred networks as unions of observed
+subgraphs (Chapter~\ref{sec-desirepath}), which we term \emph{Desire
+Path Density} estimates. A closed form for Desire Path tree densities
+leads to the \emph{Forest Pursuit} algorithm, (Chapter~\ref{sec-fp})
+which scales linearly with the size of active-node sets, is trivially
+parallelizable and streamable over dataset size, and is agnostic to
+network size. We create a new reference dataset to enable community
+benchmarking of network recovery techniques, and use it show greatly
+improved accuracy over many other widely-used methods. We then extend
+Forest Pursuit (Chapter~\ref{sec-extend}) as a Bayesian probabilistic
+model, for which we present an Expectation Maximization scheme for
+posterior estimation. This improves upon the accuracy results of Forest
+Pursuit, at the cost of some speed and scalability, giving analysts
+multiple options to adapt to their needs.
 
-Last, we apply Forest Pursuit to several qualitative case-studies,
-including a scientific collaboration network, and the verbal fluency
-``animals'' network recovery problem, which dramatically change
-interpretation under use of our method. We investigate its use as a
-low-cost preprocessor for other methods of network recovery,like GLASSO,
-improving their stability and interpretability. Finally we discuss the
-special case when node activations are reported as an ordered set, where
-accounting for cascade-like effects becomes crucial to balance false
-positive and false-negative edge prediction. Along with application of
-this idea to knowledge-graph creation from technical language in the
-form maintenance work-order data, we discuss more broadly the future
-needs of network recovery, specifically in the context of embeddings and
-gradient-based machine learning toolkits.
+Last, in Part III we apply Forest Pursuit to several qualitative
+case-studies. We reconstruct scientific collaboration dataset to
+re-assess properties of the inferred network, and again with the classic
+\emph{Les Miserables} character co-occurrences (Chapter~\ref{sec-qual}).
+Then, we investigate network dependency recovery when partial-order
+information for co-occurrences are available, such as with text analysis
+(Chapter~\ref{sec-ordered}), and test Forest Pursuit on a classic verbal
+fluency ``animals'' network recovery problem. Finally, we discuss more
+broadly the future needs of network recovery with Forest Pursuit
+(Chapter~\ref{sec-conclusion}), specifically in the context of
+human-in-the-loop relationship annotation, hyperbolic graph embeddings,
+and gradient-based machine learning toolkits.
+
+\subsection{Overview}\label{overview}
+
+In summary, the remainder of this thesis provides the following:
+
+\begin{itemize}
+\tightlist
+\item
+  Chapter~\ref{sec-mat-met} and Chapter~\ref{sec-vec} defines common
+  operations on binary observations, and builds a unified representation
+  of both dependencies and co-occurrences as incidence structures and
+  vectors.
+\item
+  Chapter~\ref{sec-lit-review} reviews current literature, and organizes
+  it into a useful framework for needs assessment and future work.
+\item
+  Chapter~\ref{sec-desirepath} generalizes co-occurrence estimation to
+  incorporate a priori domain information as Desire Path Density
+  estimates of networks.\\
+\item
+  Chapter~\ref{sec-fp} presents a new scalable algorithm for dependency
+  recovery and validates it on a new testbench for network recovery
+  problems
+\item
+  Chapter~\ref{sec-extend} builds on Forest Pursuit to improve its
+  performance on certain metrics, and re-formulates it as a
+  probabilistic model.
+\item
+  Chapter~\ref{sec-qual} and Chapter~\ref{sec-ordered} present case
+  studies for applying forest pursuit to network analysis problems
+  without available ground-truth networks.
+\end{itemize}
 
 \part{A Practitioner's Guide to Network Recovery}
 
-\chapter{Metrology with matrices}\label{metrology-with-matrices}
+\chapter{Metrology with matrices}\label{sec-mat-met}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``Matrices act. They don't just sit there.''}
+
+\hfill -- Gilbert Strang\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 Where metrology is concerned, the actual unit of observation and how it
 is encoded for us is critical to how analysts may proceed with
@@ -633,18 +754,18 @@ specifically. Independent variables are observed, multiple times
 (``observations''), and changes in outcome for each can be compared to
 the varying values associated with the independent variable input
 (``features''). For generality, say a practitioner records their
-measurements as scalar values,
-i.e.~\(x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}\). The structure most
-often used to record scalar values of \(n\) independent/input variable
+measurements as scalar values, \emph{i.e.},
+\(x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}\). The structure most often
+used to record scalar values of \(n\) independent/input variable
 features over the course of \(m\) observations is called a design matrix
 \(X:\mathbb{S}^{m\times n}\).\footnote{ Not all observations are scalar,
   but they can become so. If individual measurements are
-  higher-dimensional (e.g.~images are 2D), X is a tensor, which can be
-  transformed through unrolling or embedding into a lower dimensional
-  representation before proceeding. There are other techniques for
-  dealing with e.g.~categorical data, such as one-hot encoding (where
-  the features are binary for each possible category, with boolean
-  entries for each observation).}
+  higher-dimensional (\emph{e.g.}, images are 2D), X is a tensor, which
+  can be transformed through unrolling or embedding into a lower
+  dimensional representation before proceeding. There are other
+  techniques for dealing with \emph{e.g.}, categorical data, such as
+  one-hot encoding (where the features are binary for each possible
+  category, with boolean entries for each observation).}
 
 \section{Observation and feature ``spaces''}\label{sec-matrix-notation}
 
@@ -654,17 +775,17 @@ then the design matrix can map the index of an observation and a feature
 to the corresponding measurement.
 \begin{equation}\phantomsection\label{eq-design-mat}{
 x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S}
-}\end{equation} i.e.~the measured value of the \(j\)th independent
-variable from the \(i\)th observation.\footnote{ This notation is
-  adapted from the sparse linear algebraic treatment of graphs in
-  \textcite{GraphAlgorithmsLanguage_Kepner2011} and
+}\end{equation} \emph{i.e.}, the measured value of the \(j\)th
+independent variable from the \(i\)th observation.\footnote{ This
+  notation is adapted from the sparse linear algebraic treatment of
+  graphs in \textcite{GraphAlgorithmsLanguage_Kepner2011} and
   \textcite{MathematicalfoundationsGraphBLAS_Kepner2016}.} In this
 scheme, an ``observation'' is a single row vector of features in
 \(\mathbb{S}^{n\times 1}\) (or simply \(\mathbb{S}^{n}\)), such that
 each observation encodes a position in the space defined by the
-features, i.e.~the \emph{feature space}, and extracting a specific
-observation vector \(i\) from the entire matrix can be denoted as
-\[\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}\]
+features, \emph{i.e.}, the \emph{feature space}, and extracting a
+specific observation vector \(i\) from the entire matrix can be denoted
+as \[\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}\]
 Similarly, every ``feature'' is associated with a single column vector
 in \(\mathbb{S}^{1\times m}\), which can likewise be interpreted as a
 position in the space of observations (the \emph{data space}):
@@ -714,15 +835,16 @@ represented as a matrix\footnote{in the finite-dimensional case}, and
 applying it to a model with \(l\) parameters is called the \emph{forward
 map}:
 \[\mathbf{x} = F\mathbf{p}\qquad F:\mathbb{R}^{l}\rightarrow \mathbb{R}^n\]
-where \(P\) is the space of possible parameter vectors, i.e.~the
+where \(P\) is the space of possible parameter vectors, \emph{i.e.}, the
 \emph{model space}. The forward map takes a modeled vector and predicts
 a location in data space.
 
 Of critical importance, then, is our ability to recover some model
-parameters from our observed data, e.g.~if our images were blurred
-through convolution with a blurring kernel, then we are interested in
-\emph{deconvolution}. If \(F\) is invertible, the most direct solution
-might be to apply the operator to the data, as the \emph{adjoint map}:
+parameters from our observed data, \emph{e.g.}, if our images were
+blurred through convolution with a blurring kernel, then we are
+interested in \emph{deconvolution}. If \(F\) is invertible, the most
+direct solution might be to apply the operator to the data, as the
+\emph{adjoint map}:
 \[ \mathbf{p} = F^H\mathbf{x}\qquad F^H:\mathbb{R}^{n}\rightarrow \mathbb{R}^l\]
 which removes the effect of \(F\) from the data \(\mathbf{x}\) to
 recover the desired model \(\mathbf{p}\).
@@ -785,7 +907,8 @@ it, we still do not generally accept a probability of zero.
 
 One approach to dealing with this involves adding \emph{pseudocounts}
 that smooth out our estimates for count/exposure, from which we get the
-name ``additive smoothing''.{[}CITE?{]}
+name ``smoothing''
+\autocite[45-53]{SpeechLanguageProcessing_Jurafsky2025}.
 \[\hat{p} = \frac{s+\alpha}{k+2\alpha} \] Adding 1 success and 1 failure
 (\(\alpha=1\)) as pseudocounts to our observations is called
 \emph{Laplace's Rule of Succession}, or simply ``Laplace
@@ -827,20 +950,20 @@ violated.\footnote{ In fact, a recent method from
   probabilistic binary observations, \emph{with dependencies}, by
   generalizing the mechanics overviewed here to a fully multivariate
   Bernoulli distribution, capable of including 3rd- and higher-order
-  interractions, not just pairwise.\\
+  interactions (not just pairwise).\\
 }
 
 However, it's common to estimate how similar two random variables
-\(A,B\) are, e.g.~if samples of each correspond to columns of binary
-\(X\). For instance, the joint probabilities \(P(A\cap B)\) answer ``how
-often does A happen with B, out of all data?'' Conditional probabilities
-\(P(A|B)=\frac{P(A\cap B)}{P(B)}\) measure how often A occures given B
-happened. Once again, we can estimate the base probabilities \(P(A)\)
-and \(P(B)\) with methods like Equation~\ref{eq-beta-binomial} for each
-marginal sums \(X(\cdot,A)\) or \(X(\cdot,B)\), but the joint and
-conditional probabilities can instead be estimated using matrix
-multiplication using the Gram matrix, discussed below. It encodes
-pair-wise co-occurrence counts, such that
+\(A,B\) are, \emph{e.g.}, if samples of each correspond to columns of
+binary \(X\). For instance, the joint probabilities \(P(A\cap B)\)
+answer ``how often does A happen with B, out of all data?'' Conditional
+probabilities \(P(A|B)=\frac{P(A\cap B)}{P(B)}\) measure how often A
+occurs given B happened. Once again, we can estimate the base
+probabilities \(P(A)\) and \(P(B)\) with methods like
+Equation~\ref{eq-beta-binomial} for each marginal sums \(X(\cdot,A)\) or
+\(X(\cdot,B)\), but the joint and conditional probabilities can instead
+be estimated using matrix multiplication using the Gram matrix,
+discussed below. It encodes pair-wise co-occurrence counts, such that
 \(G(i,i'):\mathbb{Z}^{n\times n}\) has the co-occurrence count for node
 \(i\) with \(i'\).
 
@@ -870,14 +993,14 @@ source of systemic error from \emph{epistemic uncertainty}. We don't
 know when edges are used, directly, and we also don't have a reliable
 way to estimate the opportunities each edge had to activate (their
 exposure), either. This is especially true when we wish to know whether
-an edge even \emph{can} be traversed, i.e.~the edge \emph{support}.
-Support, as used in this sense, is the set of inputs for which we expect
-a non-zero output. Intuitively, this idea captures the sense that we
-might care more about \emph{whether} an edge/dependency exists, not
-\emph{how important} it is. For that, we have to re-assess our simple
-model: even if we could count the number of times an edge might have
-been traversed, how do we estimate the opportunities it had to be
-available for traversal (it's ``exposure'')?
+an edge even \emph{can} be traversed, \emph{i.e.}, the edge
+\emph{support}. Support, as used in this sense, is the set of inputs for
+which we expect a non-zero output. Intuitively, this idea captures the
+sense that we might care more about \emph{whether} an edge/dependency
+exists, not \emph{how important} it is. For that, we have to re-assess
+our simple model: even if we could count the number of times an edge
+might have been traversed, how do we estimate the opportunities it had
+to be available for traversal (it's ``exposure'')?
 
 Assuming this kind of epistemic uncertainty can be adequately addressed
 through modeling---attempts at which will be discussed in more detail in
@@ -916,13 +1039,18 @@ Z(i,j)=X\oplus,\otimes Y = \bigoplus_{j=1}^{n} X(i,j) \otimes Y(j,k) = XY
 \end{aligned}
 \] For ease-of-use, we will assume the standard field for any given set
 \((\mathbb{S},+,\times)\) if not specified otherwise, which recovers
-standard inner products \(\langle\cdot,\cdot\rangle\). However,
-\textcite{MathematicalfoundationsGraphBLAS_Kepner2016} illustrates the
-usefulness of various fields (or semirings). They allow linear-algebraic
-representation of many graph operations, such as shortest paths through
-inner products over \((\mathbb{R}\cup -\infty,\textrm{min}, +)\). This
-works because discrete/boolean edge weights will not accumulate extra
-strength beyond 1 under contraction over observations.
+standard inner products \(\langle\cdot,\cdot\rangle\). Still, the idea
+that matrix products can be generalized will allow us to ``stay'' in the
+correct (binary) domain under contraction, which will be an issue dealt
+with again in Section~\ref{sec-fp-problem}. It might be of interest to a
+reader to refer to an entirely linear-algebraic formulation of graph
+theory in \textcite{MathematicalfoundationsGraphBLAS_Kepner2016}, which
+also illustrates the usefulness of various fields (or semirings). They
+allow linear-algebraic representation of many graph operations, such as
+shortest paths through inner products over
+\((\mathbb{R}\cup -\infty,\textrm{min}, +)\). This works because
+discrete/boolean edge weights will not accumulate extra strength beyond
+1 under contraction over observations.
 
 \subsection{Kernels \& distances}\label{kernels-distances}
 
@@ -937,17 +1065,17 @@ X^TX=G(j,j')=\langle\mathbf{x'}_j,\mathbf{x}_{j'}'\rangle = \sum_{i=1}^{m} X(i,j
 Matrices that can be decomposed into another matrix and its transpose
 are symmetric, and positive semidefinite (PSD), making every gram matrix
 PSD. They are directly related to (squared) euclidean distances through
-the polarization identity{[}CITE?{]}:\footnote{\textbf{Important}: these
+the polarization identity:\footnote{\textbf{Important}: these
   definitions are all using the \(\mathbf{x}'\) notation to indicate
   that these measurements are almost exclusively being done in the
-  \emph{data space}, i.e.~on column vectors. While most definitions work
-  on distances in terms of the measurements/objects/data, for
-  \emph{inverse problems} (like network recovery, structure learning,
-  etc.) they are more often applied in terms of the features (here, the
-  nodes. This can be seen in statistics as well, where covariance and
-  correlation matrices (which are related to the gram and distance
-  matrix definitions above), are defined as relationships between
-  features/dimensions, not individual samples.}
+  \emph{data space}, \emph{i.e.}, on column vectors. While most
+  definitions work on distances in terms of the
+  measurements/objects/data, for \emph{inverse problems} (like network
+  recovery, structure learning, etc.) they are more often applied in
+  terms of the features (here, the nodes. This can be seen in statistics
+  as well, where covariance and correlation matrices (which are related
+  to the gram and distance matrix definitions above), are defined as
+  relationships between features/dimensions, not individual samples.}
 \begin{equation}\phantomsection\label{eq-sq-distance}{
 d^2(j,j') = \|\mathbf{x}_{j'}'-\mathbf{x}_{j'}'\|^2 = G(j,j) - 2G(j,j') + G(j',j') 
 }\end{equation}
@@ -957,10 +1085,11 @@ the number of papers shared by two authors (or total papers by each, on
 the diagonal). This is because an inner product between two author
 (column) vectors will add 1 for each paper in the sum only if it has
 both authors in common. This is called a \emph{bipartite
-projection}{[}CITE{]} into the authors ``mode'', and is illustrated
-visually in Figure~\ref{fig-collab}.
+projection}\autocite{Bipartitenetworkprojection_Zhou2007,atlasaspiringnetwork_Coscia2021}
+into the authors ``mode'', and is illustrated visually in
+Figure~\ref{fig-collab}.
 
-Due to {[}CITE Shoenberg/Mercer{]}, we can generalize
+Due to \autocite{Metricspacespositive_Schoenberg1938}, we can generalize
 Equation~\ref{eq-sq-distance} such that \emph{any} function ``kernel''
 function \(\kappa(x,y)\) that creates PSD matrix
 \(K(j,j')\in\mathbb{S}^{n\times n}\). It says that such a PSD matrix can
@@ -977,13 +1106,14 @@ d_K(j,j') = \tfrac{1}{2}\left(K(j,j)+K(j',j'))\right)-K(j,j')
 
 This ability to create valid distance measures from arbitrary kernel
 functions is the core of a vast area of machine learning and statistics
-that employs the so-called \emph{kernel trick}. {[}CITE?{]} Different
-kernels yield different properties useful for distinguishing points
-having specific properties. One class of kernels are normalized to the
-range \([0,1]\), such that we ensure that equality along any one
-dimension is given a weight of \(\tilde{K}(j,j)=1\). Such a kernel
-matrix can be derived from any other kernel, and is often combined with
-a logarithmic similarity measure \(\tilde{\kappa}(x,y)=\log{s(x,y)}\).
+that employs the so-called \emph{kernel trick}.
+\autocite{Patternrecognition_Theodoridis2010} Different kernels yield
+different properties useful for distinguishing points having specific
+properties. One class of kernels are normalized to the range \([0,1]\),
+such that we ensure that equality along any one dimension is given a
+weight of \(\tilde{K}(j,j)=1\). Such a kernel matrix can be derived from
+any other kernel, and is often combined with a logarithmic similarity
+measure \(\tilde{\kappa}(x,y)=\log{s(x,y)}\).
 \begin{equation}\phantomsection\label{eq-norm-diag}{
 \begin{aligned}
 \tilde{K}(j,j') &= \frac{K(j,j')}{\sqrt{K(j,j)^2K(j',j')^2}}\\
@@ -1016,13 +1146,13 @@ incidence sets makes it clear that estimating the size and elements of
 \(\mathfrak{I}\), is a very different question from estimating the
 similarity/distance between two entities in a vector space.
 
-In statistics, such discrete structures usually arise when we are
-concerned with direct dependence from indirect. Take as an example a set
-of masses connected together by springs. If we shake one mass, all
-masses will also shake some amount, depending on the spring constants of
-the springs each mass is ``transmitted'' force through, and the losses
-due to friction or air resistance. While the amount of movement over
-time depends on how ``close'' in this spring network two masses are, the
+In statistics, such discrete structures usually arise when we wish to
+distinguish direct dependence from indirect. Take as an example a set of
+masses connected together by springs. If we shake one mass, all masses
+will also shake some amount, depending on the spring constants of the
+springs each mass is ``transmitted'' force through, and the losses due
+to friction or air resistance. While the amount of movement over time
+depends on how ``close'' in this spring network two masses are, the
 movement itself can only be transmitted through springs that the masses
 are \emph{incident} to. Movement could be modeled through
 similarity/distance measurements like correlation, since none of the
@@ -1054,8 +1184,24 @@ P(A\cap B |C ) = P(A|C)P(B|C)\implies (A\perp B|C)\implies (A,B)\notin \mathfrak
 }\end{equation} for a set of incidences \(\mathfrak{I}\) defining a PGM
 that was sampled as \(X\).
 
-\chapter{Vector representations of
-incidence}\label{vector-representations-of-incidence}
+\chapter{Vector representations of incidence}\label{sec-vec}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``By stripping away all the extra baggage of distance, length,
+angle, continuity, betweenness, etc. and retaining only the notion of
+incidence, we find that what remains is still quite fascinating and
+highly nontrivial.''}
+
+\hfill -- G. Eric Moorehouse\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 To provide a sufficiently rigorous foundation for network recovery from
 binary occurrence, we will need a rigorous way to represent networks and
@@ -1115,8 +1261,8 @@ Variations on graphs can often be conveniently defined as constraints on
 \tightlist
 \item
   Self loops can be prohibited by only allowing unique flags for a given
-  relation\footnote{ never two flags with the same pair,
-    i.e.~\(\mathcal{I}\) is a set, not a multiset.}
+  relation\footnote{ never two flags with the same pair, \emph{i.e.},
+    \(\mathcal{I}\) is a set, not a multiset.}
 \item
   Multigraphs are similarly described by whether we allow pairs of
   vertices to appear with more than one edge\footnote{ in the set of
@@ -1138,22 +1284,22 @@ G = (V,E,\mathcal{I},B) \quad s.t. \quad \mathcal{I} \subseteq E\times V\quad B:
 \tightlist
 \item
   Undirected, unweighted graphs only need single elements: ``incidence
-  exists'' i.e.\(S=\{1\}\)
+  exists'' \emph{i.e.}, \(S=\{1\}\)
 \item
-  Directed graphs can use two elements e.g.~a ``spin'' for
+  Directed graphs can use two elements \emph{e.g.}, a ``spin'' for
   \(S=\{-1,1\}\)
 \item
   Weighted, undirected graphs are supported on positive scalars
-  e.g.~\(S=\mathbb{R}^+\)
+  \emph{e.g.}, \(S=\mathbb{R}^+\)
 \item
-  Weighted, directed graphs are supported on any scalar
-  e.g.~\(S=\mathbb{R}_{\neq0}\)
+  Weighted, directed graphs are supported on any scalar \emph{e.g.},
+  \(S=\mathbb{R}_{\neq0}\)
 \end{itemize}
 
 If the ``absence'' of incidence needs to be modeled explicitly, a
 ``null'' stand-in (0,False) can be added to each \(S\), which is useful
 for representing each structure as arrays for use with linear algebra
-(i.e.~\(\{0,1\}\),\(\{-1,0,-1\}\),\(\mathbb{R}^+_0\), and
+(\emph{i.e.}, \(\{0,1\}\),\(\{-1,0,-1\}\),\(\mathbb{R}^+_0\), and
 \(\mathbb{R}\), respectively). By doing so, we can also place an exact
 limit on the maximum possible size of \(\omega=\|E\|\) in the simple
 graph case, and indicate edges by their unique ID, such that
@@ -1264,7 +1410,7 @@ B = B_u + B_e \qquad B_o \equiv B_u - B_v
 \subsection{\texorpdfstring{Inner products on
 \(B\)}{Inner products on B}}\label{inner-products-on-b}
 
-With all of this background, the other representations of graphs can
+With all of this background, the other representations of graphs can be
 seen as derivations from the canonical incidence matrices. The
 Laplacian, which is usually introduced either in terms of
 ajacency/degree, or as the gram matrix for oriented edge vectors, is
@@ -1341,9 +1487,9 @@ flexibly growing when new nodes arrive.\footnote{ For instance, say
 \section{Node activation, bipartite graphs, and
 hypergraphs}\label{node-activation-bipartite-graphs-and-hypergraphs}
 
-What if an incidence structure allows for more than 2 incidences for the
-``line'' set? In our binary design matrix, we might consider each
-observation its own ``line'', such that it is incidence to all the
+What if an incidence structure allows for more than two incidences for
+the ``line'' set? In our binary design matrix, we might consider each
+observation its own ``line'', such that it is incident to all the
 activated nodes. This is no longer a graph of edges and nodes, but
 rather a more general object.
 
@@ -1363,7 +1509,7 @@ X & 0_{m,m}
 
 The graph having this adjacency structure has two sets of nodes that do
 not intraconnect (ergo, ``bipartite''). The resulting structure for our
-toy example is shown next to the incidence matrix in fig
+toy example is shown next to the incidence matrix in
 Figure~\ref{fig-incidence-struct}.
 
 \begin{figure}
@@ -1416,9 +1562,9 @@ points and lines form a \emph{hypergraph}. Hypergraphs are usually
 thought of as graphs where edges can connect more than two nodes, which
 again can be made into an incidence structure in the same way our graphs
 are. This isomorphism lets many of the familiar ideas on graphs
-(e.g.~walks, paths, laplacians, etc.) be reformulated in terms of
-hypergraphs. For a more in-depth elaboration on algebraic graph theory
-on graphs, see \textcite{orientedhypergraphicapproach_Reff2012}.
+(\emph{e.g.}, walks, paths, laplacians, etc.) be reformulated in terms
+of hypergraphs. For a more in-depth elaboration on algebraic graph
+theory on graphs, see \textcite{orientedhypergraphicapproach_Reff2012}.
 
 \subsection{Inner product on
 Hyperedges}\label{inner-product-on-hyperedges}
@@ -1456,7 +1602,7 @@ and Commute-time kernels, see
 kernel is said to generate a ``generalized euclidean distance'', and
 using an adjacency matrix kernel before normalization by marginals gives
 what is known as ``soft cosine'' measures, which incorporate prior
-knowledge e.g.~for semantic similarities between words.
+knowledge \emph{e.g.}, for semantic similarities between words.
 
 Importantly, each of these methods assume that a network structure is
 already available. What can often happen in practice, however, is the
@@ -1474,6 +1620,22 @@ recovery. Reliably recovering this structure would then allow for less
 biased use of these graph kernels in real-life application.
 
 \chapter{Roads to Network Recovery}\label{sec-lit-review}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``Network data cleaning is thus the lovechild of network
+backboning and link prediction, but that's a rather barren marriage --
+as far as I know.''}
+
+\hfill -- Michele Coscia\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 Here we give a brief overview of the key approaches to backboning and
 dependency recovery for networks through binary activations. We organize
@@ -1518,21 +1680,23 @@ that looks. Others instead provide clear normative constraints on the
 overall network topology, or emission mechanism, but this allows for
 flexibility in how data is individually handled.
 
-This idea could be thought of as similar to pooling in bayesian
-inference. Do individuals all have fundamentally separate distributions,
-so that global behavior (and by extension, uncertainty) is an aggregate
-phenomena? Or do individuals inherit parameters from a global
-distribution shared by all, and anything outside that structural
-assumption must be ``noise''? In between the extremes, some other
-assumption as to how the global and local scales mitigate information
-between them is required, i.e.~\emph{partial pooling}. In this domain,
-what we often see are attempts to perform noise corrections through the
-way information is thought to travel between nodes, generally.
+This distinction could be thought of as a scale, which serves a role
+similar to pooling in bayesian inference. Do individuals (observations)
+all have fundamentally separate distributions, so that global behavior
+(and by extension, uncertainty) is an aggregate phenomena? Or do
+individuals (observations) inherit parameters from a global distribution
+shared by all, and anything outside that structural assumption must be
+``noise''? In between the extremes, some other assumption as to how the
+global and local scales mitigate information between them is required,
+\emph{i.e.}, \emph{partial pooling}. In this domain, what we often see
+are attempts to perform noise corrections through the way information is
+thought to travel between nodes, generally.
 
-For each, we provide examples to illustrate modeling patterns and
-highlight common practice, though for a deeper assessment of the broad
-space of backboning and edge prediction in general a reader may see the
-overview in \textcite{atlasaspiringnetwork_Coscia2021}.
+For each of the above three groups we provide examples to illustrate
+modeling patterns and highlight common practice.\footnote{ For a deeper
+  assessment of the broad space of backboning and edge prediction in
+  general a reader may be interested to see the overview in
+  \textcite{atlasaspiringnetwork_Coscia2021}.}
 
 \subsection{Local Structure \& Additivity
 Assumptions}\label{local-structure-additivity-assumptions}
@@ -1555,7 +1719,7 @@ for very rare co-occurrences, we need to correct for rate-imbalance of
 the nodes in much the same way correlation normalizes covariance. This
 idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1582,7 +1746,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-or} 
 
@@ -1608,16 +1772,16 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-mi} 
 
 \vspace{-3mm}\textbf{Note \ref*{nte-mi}: Mutual information}\vspace{3mm}
 
-An estimate for the mutual information (i.e.~between the sample
+An estimate for the mutual information (\emph{i.e.}, between the sample
 distributions) can be derived from the marginals, as above, though it is
 more compactly represented as a pairwise sum over the domains of each
-distribution being compared{[}CITE?{]}: \[
+distribution being compared: \[
 \text{MI}(A,B)\approx \sum_{i,j\in[0,1]} p_{ij} \log \left( \frac{p_{ij}}{p_{i\bullet}p_{\bullet j}} \right) 
 \]
 
@@ -1633,7 +1797,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1671,7 +1835,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1686,7 +1850,7 @@ re-allocated by observational unit.
 \end{tcolorbox}
 
 Interestingly, we could see this as a two-step random-walk normalization
-of the bipartite adjacency matrix First \(X\) is row-normalized, then
+of the bipartite adjacency matrix. First \(X\) is row-normalized, then
 column-normalized. The final matrix is asymmetric, so a symmetric edge
 strength estimate is often retrieved by mean, max, or min reduction
 operations.
@@ -1696,7 +1860,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1723,7 +1887,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1749,13 +1913,14 @@ Observations are thought of as emissions from a set of node
 distributions, where edges are representations of dependency
 relationship between them. To provide a foundation to formalize this
 notion, one framework is that of Markov Random Fields, which are
-undirected generalizations of bayes nets {[}CITE?{]} that use edges to
-encode \emph{conditional dependence} between node distributions.
+undirected generalizations of bayes nets
+\autocite{Markovrandomfields_Kindermann1980} that use edges to encode
+\emph{conditional dependence} between node distributions.
 
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -1791,7 +1956,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, arc=.35mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, breakable, opacityback=0, bottomrule=.15mm, colback=white, rightrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -1819,8 +1984,8 @@ returned by the GLASSO program. In effect (for the purpose of recovery
 from binary node activations) using GLASSO assumes either multivariate
 gaussian structure, or at the very least that all clique-separator sets
 are single-node. In practice, GLASSO is used for more than just this,
-but with theoretical miss-specification we must rely more on empirical
-validation\footnote{something that this work attempts to begin
+but with theoretical misspecification we must rely more on empirical
+validation.\footnote{ something that this work attempts to begin
   addressing through standard reference datasets like MENDR, more on
   which is discussed in Section~\ref{sec-FP-experiments}}
 
@@ -1862,7 +2027,7 @@ Recall from Section~\ref{sec-lin-ops}: an operator takes our model
 parameters and maps them to data space. The implication for inverse
 problems is a need to \emph{remove the effect} of the operator, because
 we cannot directly observe phenomena in a way compatible with our model
-(e.g.~which might model underlying causal effects).
+(\emph{e.g.}, which might model underlying causal effects).
 
 This is a core point of view in
 \textcite{Statisticalinferencelinks_Peel2022}, where those authors
@@ -1885,7 +2050,7 @@ discretization of distances (such as a k-nearest neighbors
 approximation) for computational efficiency. The co-occurrence measures
 can be thought of as estimators of node-node distances, especially with
 appropriate smoothing to remove zero-valued distances from
-undersampling. \footnote{ See Section~\ref{sec-steiner} for an
+undersampling.\footnote{ See Section~\ref{sec-steiner} for an
   elaboration of this connection via the ``forest kernel''.} In
 otherwords, if an analyst wishes to discretize distances as incidences
 in a complex network, they are effectively using ``high-pass'' filter to
@@ -1898,11 +2063,22 @@ example of this exact network-as-discretization idea being used for
 state-of-the-art clustering performance, see HDBSCAN in
 \textcite{HybridApproachHierarchical_Malzer2020}.
 
-The most important is for algorithm creators to transparently describe
-their technique's data-space assumption: are observations already in
-\emph{model space}, perhaps with with alleatoric noise to be removed? Or
-are they in \emph{data space} and require solving some form of inverse
-problem to recover a model specification? As stated in the same paper:
+Because it is difficult to know a priori what a domain will require of
+network analysts, our main recommendation is for algorithm creators to
+transparently describe their technique's data-space assumption:
+
+\begin{itemize}
+\tightlist
+\item
+  are observations already in \emph{model space}, perhaps with with
+  alleatoric noise to be removed?, or,
+\item
+  are they in \emph{data space} and require solving some form of inverse
+  problem to recover a model specification?
+\end{itemize}
+
+Once again from the \textcite{Statisticalinferencelinks_Peel2022}
+review:
 
 \begin{quote}
 Surprisingly, the development of theory and domain-specific applications
@@ -1913,9 +2089,10 @@ employed in practice.
 Peel et al. \autocite{Statisticalinferencelinks_Peel2022}
 \end{quote}
 
-This is a community and technology transfer problem, which
-standardization and community toolkit support can hopefully work toward
-fixing.
+In a similar vein, we believe that a large amount of metrological
+inconsistency and struggle has at its heart a communication and
+technology transfer problem, which standardization and community toolkit
+support can hopefully work toward fixing.
 
 \subsection{Filling the local+data
 ``gap''}\label{filling-the-localdata-gap}
@@ -1948,7 +2125,7 @@ To add to the point, the last column in Table~\ref{tbl-roads} shows
 whether the full bipartite representation is even needed to perform the
 technique, or if it is possible with the gram matrix or marginal values
 alone.\footnote{note that any of these could make use of the bipartite
-  ``design matrix'', e.g.~to estimate the edge support with
+  ``design matrix'', \emph{e.g.}, to estimate the edge support with
   \emph{stability
   selection}\autocite{StabilitySelection_Meinshausen2010} by subsampling
   it multiple times and repeating the algorithm accordingly.}
@@ -1957,22 +2134,39 @@ In the next sections, we focus on filling a gap for models that only
 make local assumptions and preserve additivity, but \emph{assumes that
 data is not represented directly in the network model-space}. Much like
 the role that nonparametric estimators like KDE/Nadarya-Watson play in
-regression, or Kaplan-Meier estimators in survival analysis,{[}CITE?{]}
-additive models that only make assumptions about local structure can
-provide critical insight into data and its structure, and push analysts
-to make regular ``sanity checks'' when results or assumptions conflict.
+regression, or Kaplan-Meier estimators in survival
+analysis,\autocite{Topicsadvancedeconometrics_Bierens1996,NonparametricEstimationIncomplete_Kaplan1958}
+additive models only make assumptions about local structure. But from
+these assumptions, they can provide critical insight into data and its
+structure, and push analysts to make regular ``sanity checks'' when
+results or assumptions conflict.
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
-\chapter{Latent Graphs with Desire
-Paths}\label{latent-graphs-with-desire-paths}
+\chapter{Latent Graphs with Desire Paths}\label{sec-desirepath}
 
-Addressing gaps discussed in the previous section to reach a generative
-model for network recovery requires careful attention to the generation
-mechanism for node activations. While there are many ways we might
-imagine bipartite data to be be generated, presuming the existence of a
-dependency graph that \emph{causes} activation patterns will give us
-useful ways to narrow down the generative specification.
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``A desire path is no more than the trace of a decision---less
+than that, an impulse---to find a new way to join what we know with what
+we have yet to discover.''}
+
+\hfill -- David Farrier\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
+
+Addressing gaps discussed in Chapter~\ref{sec-lit-review} to reach a
+generative model for network recovery requires careful attention to the
+generation mechanism for node activations. While there are many ways we
+might imagine bipartite data to be be generated, presuming the existence
+of a dependency graph that \emph{causes} activation patterns will give
+us useful ways to narrow down the generative specification.
 
 First, we will investigate the common assumption that pairwise
 co-occurrences can serve as proxies for measuring relatedness, and how
@@ -1993,9 +2187,11 @@ Path Density} estimate of the global graph structure.
 As we saw repeatedly in Chapter~\ref{sec-lit-review}, networks are
 regularly assumed to arise from co-occurrences, whether directly as
 counts or weighted in some way. This assumption can be a significant a
-source of bias in the measurement of edges. \emph{Why} a flat count of
-co-occurrence leads to ``hairballs'' and bias for dense clusters can be
-related to the use of inner products on node activation vectors.
+source of bias in the measurement of edges. In this section we provide
+an intuitive understanding for \emph{why} a flat count of co-occurrence
+leads to ``hairballs'' (specifically, a bias for dense clusters and
+cliques), related to the use of matrix products on node activation
+design matrices.
 
 \subsection{Gambit of the Group}\label{gambit-of-the-group}
 
@@ -2006,15 +2202,17 @@ inference, if we don't have a good reason to employ a fully-connected
 co-occurrence prior on interaction dependencies, we are adding
 systematic bias to our inference. Whether co-occurrence observations can
 be used to infer interaction networks directly was discussed at length
-in \textcite{Techniquesanalyzingvertebrate_Whitehead1999}, where
-Whitehead and Dufault call this the \emph{gambit of the group}.
+in \textcite{Techniquesanalyzingvertebrate_Whitehead1999}, where they
+call this the \emph{gambit of the group}.
 
 \begin{quote}
-So, consiously or unconsciously, many ethnologists studying social
-organization makr what might be called the ``gambit of the group'': the
+``So, consiously or unconsciously, many ethnologists studying social
+organization makr what might be called the `gambit of the group': they
 assume that animals which are clustered {[}\ldots{]} are interacting
 with one another and then use membership of the same cluster
-{[}\ldots{]} to define association.
+{[}\ldots{]} to define association.''
+
+\textcite{Techniquesanalyzingvertebrate_Whitehead1999}
 \end{quote}
 
 This work was rediscovered in the context of measuring assortativity for
@@ -2025,24 +2223,27 @@ that ``group-based methods'' can introduce sampling bias to the
 calculation of assortativity, namely, systematic overestimation when the
 sample count is low.
 
-The general problems with failing to specify a model of what ``edges''
-actually \emph{are} get analyzed in more depth in
-\textcite{Statisticalinferencelinks_Peel2022}. They include a warning
-not to naively use correlational measures with a threshold, since even
-simple 3-node systems will easily yield false positives edges. Still, it
-would be helpful for practitioners to have a more explicit mental model
-of \emph{why} co-occurence-based models yield systematic bias,
+A reader can analyze general problems with failing to specify a model of
+what ``edges'' actually \emph{are} more in-depth in
+\textcite{Statisticalinferencelinks_Peel2022}. They also include a
+warning not to naively use correlational measures with a threshold,
+since even simple 3-node systems will easily yield false positives
+edges. Still, it would be helpful for practitioners to have a more
+explicit mental model of \emph{why} co-occurence-based models yield
+systematic bias, and use that to build an alternative having some of the
+same benefits (speed, interpretability, uncertainty quantification,
+etc.)
 
-\subsection{Inner-Product Projections and ``Clique
-Bias''}\label{inner-product-projections-and-clique-bias}
+\subsection{Inner-Product projections and ``clique
+bias''}\label{inner-product-projections-and-clique-bias}
 
 Underlying correlation and co-occurrence models for edge strength is a
-reliance on inner products between node occurrence vectors. They all use
-gram matrices (or centered/scaled versions of them), which were brought
-up in Section~\ref{sec-products}. The matrix multiplication performed
-represents inner products between all pairs of feature vectors. For
-\(X(i,j)\in\mathbb{B}\), these inner products sum together the times in
-each observation that two nodes were activated together.
+reliance on matrices of inner products between node occurrence vectors.
+They all use gram matrices (or centered/scaled versions of them), which
+were brought up in Section~\ref{sec-products}. The matrix multiplication
+performed represents inner products between all pairs of feature
+vectors. For \(X(i,j)\in\mathbb{B}\), these inner products sum together
+the times in each observation that two nodes were activated together.
 
 \begin{figure}
 
@@ -2103,6 +2304,13 @@ cliques illustrating ``clique bias''.}
 
 \end{figure}%
 
+If every observation of node activations leads to an implied clique, we
+can reframe much of the ``hairball'' effect as a systematic bias
+(i.e.~measurement error in the sense of\_trueness\_. We call this
+\emph{clique bias}: the inferred graph will inherently include more and
+more cliques of node subsets as data arrives (assumed to themselves be
+cliques).
+
 For many modeling scenarios, this paradigm allows practitioners to make
 a more straight-forward intuition-check: do clique observations
 \emph{make sense} here? When a list of authors for a paper is finished,
@@ -2110,11 +2318,22 @@ does that imply that all authors mutually interacted with all others
 directly to equally arrive at the decision to publish? This would be
 similar to assuming the authors might simultaneously enter the same
 room, look at a number of others (who all look exclusively at each
-other, as well), and \emph{all at once} decide to publish together. In
-our introduction, we described a more likely scenario we could expect
-from an observer on the ground: a researcher asks a colleague or two to
-collaborate, who might know a couple more with relevant expertise, and
-so on.
+other, as well), and \emph{all at once} decide to publish together.
+
+Or, from the standpoint of scaling: does each extra node activation
+impart an amount of information that depends on the number of activated
+nodes? Put another way, if we knew our observations were on a ``grid
+graph'', each node might require two (or so) new edges. A tree or path
+adds one new edge for each new node. But a clique assumption means that
+each extra node activation adds edges quadratically in the number of
+already-activated nodes. Does this make sense? In our introduction, we
+described a more likely scenario we could expect from an observer on the
+ground: a researcher asks a colleague or two to collaborate, who might
+know a couple more with relevant expertise, and so on. From purely a
+logistical standpoint, it quickly becomes unfeasible for authors to
+mutually collaborate with all other co-authors equally: 10 coauthors
+already implies the 10th had to equally split interaction among 9 others
+to satisfy our model.
 
 \section{Networks as Desire Path Density
 Estimates}\label{networks-as-desire-path-density-estimates}
@@ -2122,10 +2341,10 @@ Estimates}\label{networks-as-desire-path-density-estimates}
 Unfortunately, methods based on inner-product thresholding are still
 incredibly common, in no small part due to how \emph{easy} it is to
 create them from occurrence data, regardless of this ``clique-bias''.
-The ability to map an operation onto every observation, e.g.~in
+The ability to map an operation onto every observation, \emph{e.g.}, in
 parallel, and then reduce all the observations into an aggregate edge
 estimate is a highly desirable algorithmic trait. This may be a reason
-so many projection and backboning techniques attempt two re-weight (but
+so many projection and backboning techniques attempt to re-weight (but
 retain) the same basic structure, time and again.
 
 What we need is a way to maintain the ease-of-use of inner-product
@@ -2146,17 +2365,19 @@ non-clique classes of graphs we might believe local interactions occur
 on: path-graphs, trees, or any number of graphs that reflect the topolgy
 or mechanism of local interactions in our domain of interest. Authors
 have proposed classes of graphs that mirror human perception of set
-shapes {[}RELATIVE NEIGHBORHOOD{]}\footnote{ e.g.~for dependencies based
-  on perception, such as human decision making tendencies, or causes
-  based on color names.}, or graphs whose modeled dependencies are
-strictly planar {[}planar maximally filtered graps{]}\footnote{
-  e.g.~when interactions are limited to planar dependencies, like
-  inferring ancient geographic borders.}. Alternatively, the
+shapes \autocite{Relativeneighborhoodgraphs_Jaromczyk1992}\footnote{
+  \emph{e.g.}, for dependencies based on perception, such as human
+  decision making tendencies, or causes based on color names.}, or
+graphs whose modeled dependencies are strictly planar
+\autocite{toolfilteringinformation_Tumminello2005}\footnote{
+  \emph{e.g.}, when interactions are limited to planar dependencies,
+  like inferring ancient geographic borders.}. Alternatively, the
 interactions might be scale free, small-world, trees, or samples from
-stochastic block models.{[}CITE{]} In any case, these assumptions
-provide an explicit way to describe the set of \emph{possible}
-interaction graphs we believe our individual observations are sampled
-from.
+stochastic block
+models.\autocite{StochasticblockmodelsFirst_Holland1983} In any case,
+these assumptions provide an explicit way to describe the set of
+\emph{possible} interaction graphs we believe our individual
+observations are sampled from.
 
 \subsection{Subgraph Distributions}\label{sec-subgraph-dists}
 
@@ -2170,16 +2391,16 @@ that node activation is noiseless: any activated nodes were truly
 activated, and unactivated nodes were truly inactive (no false negative
 or false positive activations).\footnote{ Hidden nodes (unobserved nodes
   beyond the \(n\)) are outside the scope of this work, though could
-  potentially be implied for certain structures e.g.~when the metric is
-  known to be tree-like. \textcite{TreeIam_Sonthalia2020} use a greedy
-  embedding that minimizes distortion to estimate the need for added
-  \emph{Steiner} nodes.} So, each \(\mathbf{x}_i\) will induce a
+  potentially be implied for certain structures \emph{e.g.}, when the
+  metric is known to be tree-like. \textcite{TreeIam_Sonthalia2020} use
+  a greedy embedding that minimizes distortion to estimate the need for
+  added \emph{Steiner} nodes.} So, each \(\mathbf{x}_i\) will induce a
 subgraph \(g_i = G^*[V_i]\), where
 \(V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}\). Then, our domain
 knowledge takes the form of a constraint on edges within that subgraph,
 which will induce a family of subgraphs on \(g_i\). This family
 \(\mathcal{C}_i\) belongs to the relevant class of graphs
-\(\mathcal{C}\), limited to nodes \(V_i\), i.e.
+\(\mathcal{C}\), limited to nodes \(V_i\), \emph{i.e.},
 
 \begin{equation}\phantomsection\label{eq-subgraph-family}{
 \begin{gathered}
@@ -2188,15 +2409,15 @@ E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
 V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
 \end{gathered}
 }\end{equation}\footnote{\(\mathcal{P}(A)\) is the \emph{powerset} of
-  \(A\), i.e.~the set of all subsets of \(A\).}
+  \(A\), \emph{i.e.}, the set of all subsets of \(A\).}
 
 In other words, the edges that ``caused'' to the node activations in a
 given observation must \emph{together} belong to a graph that, in turn,
 belongs to our desired class, which must occur on the nodes that were
 activated.
 
-Assuming we can define an associated measure \(\mu_i(c)\) onfor each
-\(c\in\mathcal{C}_i\), we are able to define a probability distribution
+Assuming we can define an associated measure \(\mu_i(c)\) (one for each
+\(c\in\mathcal{C}_i\)) we are able to define a probability distribution
 over subgraphs in the class.\footnote{ This is certainly not a trivial
   assumption, and might either be ill-defined or require techniques like
   the Gumbel trick\autocite{GradientEstimationStochastic_Paulus2020} to
@@ -2206,9 +2427,11 @@ over subgraphs in the class.\footnote{ This is certainly not a trivial
   \(\mathcal{C}\) are known for a handful of graph classes, such as the
   space of spanning trees, \(\mathcal{C}=\mathcal{T}\). However, another
   way this might be accomplished is through random geometric
-  graphs{[}CITE{]}, or geometric spanners like Urqhart{[}CITE{]} and
-  Relative Neighborhood {[}CITE{]} graphs on a ``sprinkling'' of points
-  that preserves their observed pairwise distances.\\
+  graphs\autocite{RandomPlaneNetworks_Gilbert1961}, or geometric
+  spanners like the Relative Neighborhood
+  \autocite{Relativeneighborhoodgraphs_Jaromczyk1992} graphs on a
+  ``sprinkling'' of points that preserves their observed pairwise
+  distances.\\
   This is further discussed in Section~\ref{sec-future-hyperbolic}.}
 Using notation similar to distributions over spanning trees in
 \textcite{EfficientComputationExpectations_Zmigrod2021}:
@@ -2233,8 +2456,8 @@ specify a family of edge vectors that could be responsible. With
 \(p_i(c)\), we also have a mechanism to sample them when a partition
 function is available (or able to be approximated).
 
-With these mechanics in place, we see the choice of a clique (implied by
-the inner product) is a trivial application of
+With these mechanics in place, we see that choosing ``cliques'' (implied
+by the inner product) is a trivial application of
 Equation~\ref{eq-edgevec-prob}, since that is equivalent to selecting
 the class of cliques on \(V_i\) nodes. This has only one element
 (\(\|\mathcal{C}_{\text{clique}}\|=1\)), there is only 1 possible
@@ -2244,7 +2467,7 @@ selection, with probability \(p_i(K^{V_i})=1\).
 Paths}\label{graph-unions-as-desire-paths}
 
 With a distribution over subgraphs each observation, we are potentially
-able to sambple from them for bootstrap or Monte Carlo estimation
+able to sample from them for bootstrap or Monte Carlo estimation
 purposes, or simply find a maximum likelihood estimate for each
 distribution. Assuming this is true, we may now sample or approximate a
 matrix \(R(i,e):I\times E \rightarrow \mathbb{B}\).\\
@@ -2263,13 +2486,13 @@ existence depends on other edges existing (or not). But nothing is
 inherently self-inconsistent with a model that assumes the
 traversability of individual edges will be independent of one another.
 
-let P(e) be the probability that an edge is traversed (in any
+Let P(e) be the probability that an edge is traversed (in any
 observation), and P(u,v) the probability that nodes \(u,v\) co-occur. To
 approximate the overall traversability of an edge, we can calculate an
 empirical estimate for the conditional probability
 \(P(e|(u,v))=\frac{P(e)\cap P(u,v)}{P(u,v)}\) that an edge is traversed,
 given that the two incident nodes are activated. This estimate can use
-the same beta-bernoulli distribution from
+the same Beta-Bernoulli distribution from
 Equation~\ref{eq-beta-binomial}.
 
 Still, how do we ensure our estimate is approximating traversability, so
@@ -2277,25 +2500,33 @@ that the probability that an edge probability converges toward 1 as long
 as it \emph{has to be possible} for \(e\) to be traversed? Recall from
 the introduction that, from a measurement perspective, the underlying
 networks rarely ``exist'' in the sense that we never truly find the
-underlying network, but only samples from (or caused by) it. Imagine
-that the ``real'' network is a set of paved sidewalks: our procedure is
+underlying network, but only observations sampled from it. Imagine that
+the ``real'' network is a set of paved sidewalks: our procedure is
 similar to watching people walk along paths between locations, and
 wanting to estimate which of the paths would be tread ``enough'' to be
 paved. This is where we build on an intuition based on the popular idea
 of \emph{desire paths} which is a colloquial name for paths that form
 when individuals walk over grass or dirt enough to carve a trail. In
-network analysis and recovery, we usually are only allowed to see the
-desire paths that might have formed from our data, never the actual
-``pavement''.
+network analysis and recovery from activations, then, we are only
+allowed to see lists of visited locations. If we can add a
+domain-informed assumption on what the \emph{trajectories} of
+individuals could have been, based on those locations, then we can
+estimate the desire paths that might have formed from them. Importantly,
+we can use this framing to ``reset'' the trueness of our uncertainty:
+given a trajectory assumption, the desire path uncertainty becomes one
+of precision due to lack of knowledge about which path was taken. As
+\textcite{Statisticalinferencelinks_Peel2022} recommend, desire paths
+are \emph{inferred}, and we never rely on needing to guess the actual
+``pavement''---only beliefs about ``future paving''.
 
-If presented with two equivalent paths, an individual is likely to
-choose the one that has been tread more often before i.e.~the ``more
-beaten'' path. So, we don't want a probability that an edge has been
-traversed, but a probability over fractions of the time we expect an
-edge to have been traversed \emph{more often than not}: how likely it is
-to ``be beaten''. This is accomplished by forcing \(\alpha, \beta < 1\).
-For the case where \(\alpha=\beta=0.5\), we call this special case an
-\emph{arcsine} distribution.
+If presented with two equal-length desire paths, an individual is likely
+to choose the one that has been tread more often before \emph{i.e.}, the
+``more beaten'' path. So, we don't want a probability that an edge has
+been traversed, but a probability over fractions of the time we expect
+an edge to have been traversed \emph{more often than not}: how likely it
+is to ``be beaten''. This is accomplished by forcing
+\(\alpha, \beta < 1\). For the case where \(\alpha=\beta=0.5\), we call
+this special case an \emph{arcsine} distribution.
 
 In a coin tossing game where each ``heads'' gives a point to player A
 and ``tails'' to player B, then the point differential is modeled as a
@@ -2333,8 +2564,8 @@ Important to note is that \(k\) is measured over the
 \emph{co-occurrences} \((u,v)\), and successes are the traversals \(e\)
 derived from our samples in \(R\). This lets us formulate a likelihood
 model for each edge's traversibility in the global network \(G\)
-(i.e.~whether \(B(e,v)>0\) for any \(v\)), which is i.i.d. Bernoulli.
-\begin{equation}\phantomsection\label{eq-empirical-model}{
+(\emph{i.e.}, whether \(B(e,v)>0\) for any \(v\)), which is i.i.d.
+Bernoulli. \begin{equation}\phantomsection\label{eq-empirical-model}{
 \begin{gathered}
 \pi_e \sim \text{Beta}(\alpha, 1-\alpha), e\in E\\ 
 E \sim \text{Bernoulli}(\pi_e), e \in E
@@ -2354,12 +2585,30 @@ each edge \emph{given} a node subset, without needing to consider a
 prior distribution for each \(\mathbf{x_i}\).
 
 The nonparametric approach, in cases that merit the use of spanning
-trees, will be central to accurate, scalable estimation of \(B\) through
-our proposed method, Forest Pursuit.
+trees, will be central to accurate and scalable estimation of \(B\)
+through our proposed method covered in the next chapter, \emph{Forest
+Pursuit}.
 
 \chapter{\texorpdfstring{Approximate Recovery in Near-linear Time by
 \emph{Forest
-Pursuit}}{Approximate Recovery in Near-linear Time by Forest Pursuit}}\label{approximate-recovery-in-near-linear-time-by-forest-pursuit}
+Pursuit}}{Approximate Recovery in Near-linear Time by Forest Pursuit}}\label{sec-fp}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``Does the pursuit of truth give you as much pleasure as before?
+Surely it is not the knowing but the learning, not the possessing but
+the acquiring, not the being-there but the getting there that afford the
+greatest satisfaction.''}
+
+\hfill -- Carl Friedrich Gauss\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 In this chapter, we build on the notion of ``Desire Path'' estimation of
 a dependency network from node activations --- sampling from a class of
@@ -2386,9 +2635,9 @@ loss function modeled after the Chow Liu representation for joint
 probability distributions. The approximate complexity for FP is linear
 in the spreading rate of the modeled random walks, and linear in dataset
 size, while running in \(O(1)\) time with respect to the network size.
-This departs dramatically from other methods in the space, all of which
-assume to scale in the number of nodes. We then test FP against an array
-of alternative methods (including GLASSO) with MENDR, a newly-developed
+This departs dramatically from other methods in the space, all of scale
+in the number of nodes in the entire network. We then test FP against an
+array of alternative methods (including GLASSO) with MENDR, our proposed
 standard reference dataset and testbench for network recovery. FP
 outperforms other tested algorithms in nearly every case, and
 empirically confirms its complexity scaling for sub-thousand network
@@ -2412,33 +2661,35 @@ processes on networks. If a network consists of locations, states,
 agents, etc. as ``nodes'', and relationships between nodes as ``edges'',
 then random walks consist of a stochastic process that ``visits'' nodes
 by randomly ``walking'' between them along connecting edges.
-Epidemiological models, cognitive search in semantic networks, stock
-price influences, website traffic routing, social and information
-cascades, and many other domains also involving complex systems, have
-used the statistical framework of random walks to describe, alter, and
-predict their behaviors. {[}CITE\ldots lots?{]}
+Epidemiological models, cognitive search in semantic networks, website
+traffic routing, social and information cascades, and many other domains
+also involving complex systems, have used the statistical framework of
+random walks to describe, alter, and predict their behaviors.
+\autocite{effectivenessrandomwalks_Kim2023,RobustCascadeReconstruction_Xiao2018,Humanmemorysearch_Jun2015,RandomWalksElectric_Doyle2000,MarkovPerspectiveDevelopment_Mane2011}
 
 When network structure is known, the dynamics of random-walks are used
-to capture the network structure via sampling {[}LITTLEBALLOFFUR,
-etc{]}, estimate node importance's{[}PAGERANK{]}, or predict
-phase-changes in node states (e.g.~infected vs.~uninfected){[}SIR I
-think{]}. In our case, Since we have been encoding the activations as
-binary activation vectors, the ``jump'' information is
-lost---activations are ``emitted'' for observation only upon the random
-walker's initial visit.\autocite{Humanmemorysearch_Jun2015} Further, the
-ordering of emissions has been removed in our binary vector
-representation, leaving only co-occurrence groups in each
-\(\mathbf{x}_i\).\footnote{For a brief treatment of the case that INVITE
-  emission order is preserved, see Chapter~\ref{sec-ordered}} In many
-cases, however, the existence of relationships is not known already, and
-analysts might \emph{assume} their data was generated by
-random-walk-like processes, and want to use that knowledge to estimate
-the underlying structure of the relationships between nodes.
+to capture the network structure via sampling
+\autocite{LittleBallFur_Rozemberczki2020}, estimate node
+importance's{[}Mathematicsnetworks\_Newman2018{]}, or predict
+phase-changes in node states (\emph{e.g.}, infected
+vs.~uninfected)\autocite{StructureFunctionComplex_Newman2003}. In our
+case, since we have been encoding the activations as binary activation
+vectors, the ``jump'' information is lost---activations are ``emitted''
+for observation only upon the random walker's initial
+visit.\autocite{Humanmemorysearch_Jun2015} Further, the ordering of
+emissions has been removed in our binary vector representation, leaving
+only co-occurrence groups in each \(\mathbf{x}_i\).\footnote{For a brief
+  treatment of the case that INVITE emission order is preserved, see
+  Chapter~\ref{sec-ordered}} In many cases, however, the existence of
+relationships is not known already, and analysts might \emph{assume}
+their data was generated by random-walk-like processes, and want to use
+that knowledge to estimate the underlying structure of the relationships
+between nodes.
 
 \subsection{Activations in a Forest}\label{activations-in-a-forest}
 
-As a general setting, the number of node activations (e.g.~for datasets
-like co-authorship) is much smaller than the set of nodes
+As a general setting, the number of node activations (\emph{e.g.}, for
+datasets like co-authorship) is much smaller than the set of nodes
 (\(\|\mathbf{x}_i\in\mathbb{S}^n\|_0 \ll n\))\footnote{ \(\|\cdot\|_0\)
   is the \(\ell_0\) ``pseudonorm'', counting non-zero elements (the
   support) of its argument.}\\
@@ -2446,7 +2697,7 @@ like co-authorship) is much smaller than the set of nodes
 describing discrete- and continuous-time random walk models that can
 give rise to binary activation vectors like our
 \(X(i,j):I\times J\rightarrow \mathbb{B}\). The \emph{regularized
-laplacian} (or \emph{forest})kernel of a
+laplacian} (or \emph{forest}) kernel of a
 graph\autocite{SimilaritiesgraphsKernels_Avrachenkov2019} plays a
 central role in their analysis, as it will in our discussion going
 forward.
@@ -2462,7 +2713,7 @@ this.\autocite{GraphLaplacianRegularization_Pang2017,Countingrootedforests_Knill
 \(Q\) generalizes the so-called ``heat kernel'' \(\exp{(-t\tilde{L})}\),
 in the sense that it solves a lagrangian relaxation of a loss function
 based on the heat equation. This can be related to the PageRank
-(\(\exp{(-tL^{\text{rw}})}\)) kernel as well, which is explicitly based
+(\(\exp{(-tL_{\text{rw}})}\)) kernel as well, which is explicitly based
 on random walk transition probabilities.
 
 In fact, \(Q\) can be viewed as a transition matrix for a random walk
@@ -2471,10 +2722,11 @@ expected support for \(\mathbf{x}_i\), as needed.\footnote{\(Q\) can
   also be interpreted as a continuous-time random walk location
   probability, after exponentially distributed time, if spending
   exponentially-distributed time in each node.} However we interpret
-\(Q\), a remarkable fact emerges due to a theorem by Chebotarev: each
-entry \(q=Q(u,v)\) is equal to the probability\footnote{edge weights
-  scaled by \beta} that nodes \(u,v\) are connected in a randomly
-sampled \emph{spanning rooted forest}
+\(Q\), a remarkable fact emerges due to a theorem by
+Chebotarev\autocite{MatrixForestTheorem_Chebotarev2006,Countingrootedforests_Knill2013}:
+each entry \(q=Q(u,v)\) is equal to the probability\footnote{edge
+  weights scaled by \beta} that nodes \(u,v\) are connected in a
+randomly sampled \emph{spanning rooted forest}
 
 In other words, co-occurring node activations due to a random walk or
 heat kernel are deeply tied to the chance that those nodes find
@@ -2482,19 +2734,6 @@ themselves \emph{on the same tree in a forest}.
 
 \subsection{Spreading Dependencies as
 Trees}\label{spreading-dependencies-as-trees}
-
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
-
-}
-
-\caption{\label{fig-stack-tree}Edge Measurements with true (tree)
-dependencies known}
-
-\end{figure}%
 
 With the overt link from spreading processes to counts of trees made,
 there's room for a more intuitive bridge.
@@ -2505,20 +2744,20 @@ observation/spread/random walk \emph{must be a tree}. With a single
 cause (the ``root''), which is the starting position of a random walker,
 a node can only be reached (activated) by another currently activated
 node. If the random walk jumps from one visited node to another,
-previously visited one, that transition did not result in an activation
-, so the \emph{dependency} count for that edge should not increase. This
+previously visited one, that transition did not result in an activation,
+so the \emph{dependency} count for that edge should not increase. This
 description of a random walk, where subsequent visits do not ``store''
 the incoming transition, is roughly equivalent to one more commonly
 described as a \emph{Loop-Erased} random walk. It is precisely used to
 uniformly sample the space of spanning trees on a
 graph.\autocite{Generatingrandomspanning_Wilson1996}
 
-Much like a reluctant co-author ``worn down'' by multiple requests, we
-can even include random walks that ``receive'' activation potential from
-more than one source. Say a node is activated when some fraction of its
-neighbors have all originated a random walk transition to it, or a node
-activates on its second visit, or similar. We simply count (as
-dependency evidence) the ultimate transition that precipitated
+Much like a reluctant co-author ``worn down'' by multiple collaboration
+requests, we can even include random walks that ``receive'' activation
+potential from more than one source. Say a node is activated when some
+fraction of its neighbors have all originated a random walk transition
+to it, or a node activates on its second visit, or similar. We simply
+count (as dependency evidence) the ultimate transition that precipitated
 activation. This could be justified from an empirical perspective as
 well: say we observe an author turn down requests for one paper from two
 individuals, but accept a third. We could actually infer a
@@ -2538,6 +2777,19 @@ to avoid data loss. The possibility for multi-way interactions would
 necessitate the use of either a simplicial complex or a hypergraph as
 the carrier structure, \emph{not a graph}.
 
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-stack-tree}Edge Measurements with true (tree)
+dependencies known}
+
+\end{figure}%
+
 Figure~\ref{fig-stack-tree} demonstrates the use of trees as the
 distribution for subgraphs, instead of outer-products/cliques.
 
@@ -2553,7 +2805,7 @@ the interactions are unweighted, undirected, simple graphs, then for any
 family of subgraphs we will be selecting from at most
 \(\omega\leq {n\choose 2}\) edges.
 
-Representing a vector as sparse combination of a known set of vectors
+Representing a vector as a sparse combination of a known set of vectors
 (also known as ``atoms'') is called \emph{sparse approximation}.
 
 \subsection{Problem Specification}\label{sec-fp-problem}
@@ -2566,9 +2818,9 @@ specified more concretely as
 where \(N\) serves as a sparsity constraint (at most \(N\) non-zero
 entries). This is known to be NP-hard, though a number of efficient
 methods to approximate a solution are well-studies and widely used.
-Solving the lagrangian form of Equation~\ref{eq-sparse-approx}, with an
-\(\ell_1\)-norm in place of \(\ell_0\), is known as \_Basis
-Pursuit\autocite{SparseApproximateSolutions_Natarajan1995}, while
+Solving the Lagrangian form of Equation~\ref{eq-sparse-approx}, with an
+\(\ell_1\)-norm in place of \(\ell_0\), is known as \emph{Basis
+Pursuit}\autocite{SparseApproximateSolutions_Natarajan1995}, while
 greedily solving for the non-zeros of \(\mathbf{r}\) one-at-a-time is
 called \emph{matching
 pursuit}\autocite{Matchingpursuitstime_Mallat1993}. In that work, each
@@ -2600,31 +2852,32 @@ subsequently fail to remove the effect of \(B^T\) on the edge vectors.
 
 It might be possible to utilize a specific semiring, such as
 \((\min,+)\), to enforce inner products (see Section~\ref{sec-products})
-that take us back to a binary vector.\footnote{ This is more than a
-  simple hack, and belies a great depth of possible connection to the
-  problem at hand. It is known that ``lines'' (arising from equations of
-  the inner product) in tropical projective space \emph{are
-  trees}.\autocite{tropicalGrassmannian_2004} In addition, the tropical
-  equivalent to Kirchoff's polynomial (which counts over all possible
-  spanning trees), is the direct computation of the minimum spanning
-  tree.\autocite{TropicalKirchhoffsformula_Jukna2021} For treatment of
-  sparse approximation using tropical matrix factorization, see
-  \textcite{Sparsedataembedding_Omanovic2021}} Instead, we will take an
-empirical bayes approach to the estimation of sparse
-vectors.\autocite{EmpiricalBayesianStrategy_Wipf2007} As a probabilistic
-graphical model, we assume each observation is emitted from a
-(tree-structured) MRF {[}explained?{]} on the activated nodes. This is
-underdetermined (any spanning tree could equally emit the observed
-activations), so we use an empirical prior as a form of shrinkage: the
-co-occurrences of nodes across all observed activation patterns. This
-let's us optimize a likelihood from Equation~\ref{eq-edgevec-prob}, for
-the distribution of spanning trees on the subgraph of \(G^*\) inducted
-by \(\mathbf{x}\).
+that take us back to a binary vector. This would be more than a simple
+hack, and belies a great depth of possible connection to the problem at
+hand. It is known that ``lines'' (arising from equations of the inner
+product) in tropical projective space \emph{are
+trees}.\autocite{tropicalGrassmannian_2004} In addition, the tropical
+equivalent to Kirchoff's polynomial (which counts over all possible
+spanning trees), is the direct computation of the minimum spanning
+tree.\autocite{TropicalKirchhoffsformula_Jukna2021} For treatment of
+sparse approximation using tropical matrix factorization, see
+\textcite{Sparsedataembedding_Omanovic2021}
+
+Instead, we will take an empirical bayes approach to the estimation of
+sparse vectors.\autocite{EmpiricalBayesianStrategy_Wipf2007} As a
+probabilistic graphical model, we assume each observation is emitted
+from a (tree-structured) Markov Random Field \emph{only defined on the
+activated nodes}. This is underdetermined (any spanning tree could
+equally emit the observed activations), so we use an empirical prior as
+a form of shrinkage: the co-occurrences of nodes across all observed
+activation patterns. This let's us optimize a likelihood from
+Equation~\ref{eq-edgevec-prob}, for the distribution of spanning trees
+on the subgraph of \(G^*\) inducted by \(\mathbf{x}\).
 \begin{equation}\phantomsection\label{eq-sparse-approx-tree}{
 \mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
 }\end{equation}
 
-\subsection{Max. Spanning (Steiner) Trees}\label{sec-steiner}
+\subsection{Maximum Spanning (Steiner) Trees}\label{sec-steiner}
 
 The point estimate \(\hat{\mathbf{r}}\) is therefore the mode of a
 distribution over trees, which is precisely the maximum spanning
@@ -2633,12 +2886,12 @@ the use of all observations \(X\) to find an empirical prior for
 \(\mathbf{r}\), then we can calculate a value for the mutual information
 for the activated nodes, and use this to directly calculate the Chow-Liu
 estimate. One algorithm for finding a maximum spanning tree is
-Prim's{[}CITE?{]}, which effectively performs the matching pursuit
-technique of greedily adding an edge (i.e.~non-zero entry in our vector)
-one-by-one. In this way, we effectively \emph{do} perform matching
-pursuit, but minimizing the KL-divergence between observed node
-activations and a tree-structured MRF limited to those nodes, alone
-(rather than the mean-square-error).
+Prim's\autocite{Datastructuresnetwork_Tarjan1983}, which effectively
+performs the matching pursuit technique of greedily adding an edge
+(\emph{i.e.}, non-zero entry in our vector) one-by-one. In this way, we
+effectively \emph{do} perform matching pursuit, but minimizing the
+KL-divergence between observed node activations and a tree-structured
+MRF limited to those nodes, alone (rather than the mean-square-error).
 
 However, the mode of the tree distribution is not strictly the one that
 uses mutual information as edge weights. There is reason to believe that
@@ -2678,13 +2931,16 @@ random spanning forest!
 All this is to say that node co-occurrence measures are more similar to
 node-node distances in the underlying graph, \emph{not estimators of
 edge existence}. But we can use this as an empirical prior to
-approximate Steiner trees that \emph{are on the true graph}.
+approximate Steiner trees that \emph{are on the true graph}. For another
+recent application of sampling steiner trees to reconstruct node
+dependencies (though not for global network reconstruction), see
+\textcite{RobustCascadeReconstruction_Xiao2018}.
 
 \section{Forest Pursuit}\label{sec-FP}
 
 Instantiating the above, we propose \emph{Forest Pursuit}, an relatively
 simple algorithm for correction of clique-bias under a spreading process
-assumption
+assumption.
 
 \subsection{Algorithm Summary}\label{algorithm-summary}
 
@@ -2705,11 +2961,14 @@ For each observation, the provided distances serve to approximate the
 metric closure of the underlying subgraph induced by \(\mathbf{x}\).
 This is passed to an algorithm for finding the minimum spanning tree.
 Given a metric closure, the MST in turn would be an approximation of the
-desired Steiner tree within \(2-\tfrac{2}{\|\mathbf{x}\|_0}\) of
-optimal.\autocite{fastalgorithmSteiner_Kou1981} For
-\(\|\mathbf{x}\|_0 \ll n\), this error bound will often be close to 1,
-and approaching 2 as the expected number of activations-per-observation
-grows.
+desired Steiner tree that has a total weight that will be a factor of at
+most \(2-\tfrac{2}{\|\mathbf{x}\|_0}\) worse than the optimal
+tree.\autocite{fastalgorithmSteiner_Kou1981} For
+\(\|\mathbf{x}\|_0 \ll n\) (\emph{i.e.}, many fewer authors-per paper
+than total authors), this error bound will be close to 1 (perfect
+reconstruction). The error factor bound approaches double the weight (in
+the worst-case) of the optimal tree as the expected number of
+authors-per-paper grows to infinity.
 
 After the point estimates for \(\mathbf{r}\) have been calculated as
 trees, we can use the desire-path beta-binomial model
@@ -2748,7 +3007,7 @@ for \(\text{Beta}(\alpha^*,1-\alpha^*)\).
   \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$
   \Comment{\textit{activated nodes}}
   \State $T \gets$\Call{MST}{$d[V,V]$}
-  \Comment{\textit{e.g. Prim's Algorithm}}
+  \Comment{\textit{e.g., Prim's Algorithm}}
   \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$
   \State $\mathbf{r} \gets e_n(\mathbf{u,v})$
   \Comment{\textit{unroll tree adjacency}}
@@ -2785,16 +3044,17 @@ bayesian update for \(\hat{\alpha}_m\) can be performed in a streaming
 manner, as well.
 
 Each observation requires a call to ``PursueTree'', which involves an
-MST call for the pre-computed subset of distances onnodes activated for
-that observation. Note the use of MST algorithm could apply Prim's or Kr
-uskal's algorithm, or similar. It is recommended to utilize Prims in
-this case, however, since Prim's on a sufficiently dense graph can be
-made to run in \(O(n)\) time for \(n\) activated nodes by using a
-\emph{d}-tree for its heap queue.{[}CITE{]} Since we are always using
-the metric closure, Prim's will always run on a complete graph.
+MST call for the pre-computed subset of distances on nodes activated for
+that observation. Note the use of ``MST'' here requires any minimum
+spanning tree algorithm, \emph{e.g.}, Prim's, Kruskal's, or similar. It
+is recommended to utilize Prim's in this case, however, since Prim's on
+a sufficiently dense graph can be made to run in \(O(n)\) time for \(n\)
+activated nodes by using a \emph{d}-tree for its heap
+queue.\autocite{Datastructuresnetwork_Tarjan1983} Since we are always
+using the metric closure, Prim's will always run on a complete graph.
 
-Importantly, this means that FP does not scale with the the size of the
-network, but only the worst-case activation count of a given
+Importantly, this means that FP's complexity does not scale with the
+size of the network, but only the worst-case activation count of a given
 observation, \(O(s_{\text{max}})\), where
 \(s_{\text{max}}=\max_i{(\|X(i,\cdot)\|_0)}\) We say this is
 \emph{approximately} constant in node size:
@@ -2802,12 +3062,12 @@ observation, \(O(s_{\text{max}})\), where
 \begin{itemize}
 \tightlist
 \item
-  the total number of nodes is typically a \emph{given} for a single
+  The total number of nodes is typically a \emph{given} for a single
   problem setting
 \item
-  in many domains, the basic \emph{spreading} rate of diffusion model
-  (e.g.~\(R_0\), or heat conductivity), does not scale with the total
-  size of an observation
+  In many domains, the basic \emph{spreading} rate of diffusion model
+  (\emph{e.g.}, \(R_0\), or heat conductivity), does not scale with the
+  total size of an observation
 \end{itemize}
 
 That last point means that constant scaling with network size is
@@ -2817,16 +3077,17 @@ a different conductivity over a larger area; conductivity is a material
 property. Similarly, a virus might have a particular basic reproduction
 rate, or a set of authors might have a static distribution over how many
 collaborators they wish to work with. The former is down to viral load
-generation, and the latter a sociological limit: more a bigger
-department usually doesnt imply more co-authors.
+generation, and the latter a sociological limit: a bigger department
+usually does not imply more authors-per-paper by itself.
 
 Similar to Equation~\ref{eq-min-connect}, we might reasonably assume
 that the expected degree of nodes is roughly constant with network size
-i.e.~a property of domain. So, the the density of activation vectors (as
-a fraction of all possible edges) is going go scale with the inverse of
-\(n\). This makes a process linear in activation count to be constant in
-network size. Then, if \(\bar{s}\) is the expected non-zero count of
-each row of \(X\), the final approximate complexity of FP is
+\emph{i.e.}, an inherent property of the domain. So, the density of
+activation vectors (as a fraction of all possible edges) is going go
+scale with the inverse of \(n\). This makes our process, which is linear
+in activation count, out to be \emph{constant} \(O(1)\) in network size.
+Then, if \(\bar{s}\) is the expected non-zero count of each row of
+\(X\), the final approximate complexity of FP is
 \(O(m\bar{s})\).\footnote{ In our reference implementation, which uses
   Kruskal's algorithm, the theoretical complexity is likewise
   \(O(m\bar{s}^2\log{\bar{s}})\), though in our experience the values of
@@ -2856,41 +3117,19 @@ between different reports and publications over time.
 For each algorithm shown in Table~\ref{tbl-methods}, every combination
 of the parameters in Table~\ref{tbl-mendr} was tested. 30 random graphs
 for each of nodes were tested, which was repeated again for each of
-Tree, Block, and scale-free types.
-
-\begin{longtable}[]{@{}
-  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.4000}}
-  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6000}}@{}}
-\caption{Experiment Settings (MENDR
-Dataset)}\label{tbl-mendr}\tabularnewline
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-parameters
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-values
-\end{minipage} \\
-\midrule\noalign{}
-\endfirsthead
-\toprule\noalign{}
-\begin{minipage}[b]{\linewidth}\raggedright
-parameters
-\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
-values
-\end{minipage} \\
-\midrule\noalign{}
-\endhead
-\bottomrule\noalign{}
-\endlastfoot
-random graph \textbf{kind} & Tree, Block, BA\((m\in\{1,2\}\)) \\
-network \textbf{\(n\)-nodes} & 10,30,100,300 \\
-random \textbf{walks} & 1 sample
-\(m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10\) \\
-random walk \textbf{jumps} & 1 sample
-\(j\sim\text{Geometric}(\tfrac{1}{n})+5\) \\
-random walk \textbf{root} & 1 sample
-\(n_0 \sim \text{Multinomial}(\textbf{n},1)\) \\
-random \textbf{seed} & 1, 2, \ldots{} , 30 \\
-\end{longtable}
+three separate kinds of global graph structure. Every algorithm that
+could be supplied a prior via additive smoothing is shown in
+Table~\ref{tbl-methods} as ``\(\alpha\)?: Yes'', and a minimum-connected
+(tree) sparsity prior was supplied \(\alpha=\tfrac{2}{n}\). The others,
+esp.~GLASSO, do not have a \(\tfrac{\text{count}}{\text{exposure}}\)
+form, and could not be easily interpreted in a way that allowed for
+additive smoothing. However, since the regularizaiton parameter for
+GLASSO is often critical for finding good solutions, a 5-fold cross
+validation was performed for each experiment to select a ``best'' value,
+with the final result run using that value. While this does have a
+constant-time penalty for each experiment, the reconstruction accuracy
+is significantly improved with this technique, and would reflect common
+practice in using GLASSO for this reason.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.3729}}
@@ -2945,20 +3184,6 @@ Resource Allocation & RP & Yes & Transport &
 \autocite{Bipartitenetworkprojection_Zhou2007} \\
 \end{longtable}
 
-For each algorithm that could be supplied a prior via additive
-smoothing, seen in Table~\ref{tbl-methods} as ``\(\alpha\)?: Yes'', a
-minimum connected (tree) level of sparsity wasy supplied
-\(\alpha=\tfrac{2}{n}\). The others, esp.~GLASSO, do not have a
-\(\tfrac{\text{count}}{\text{exposure}}\) form, and could not be easily
-interpreted in a way that allowed for additive smoothing. However, since
-the regularizaiton parameter for GLASSO is often critical for finding
-good solutions, a 5-fold cross validation was performed for each
-experiment to select a ``best'' value, with the final result run using
-that value. While this does have a constant-time penalty for each
-experiment, the reconstruction accuracy is significantly improved with
-this technique, and would reflect common practice in using GLASSO for
-this reason.
-
 The three classes of random graphs represent common use cases in sparse
 graph recovery. In addition, the block and tree graphs are types we
 expect GLASSO to correctly recover in this binary
@@ -2966,11 +3191,46 @@ setting.\autocite{Structureestimationdiscrete_Loh2012} The block graphs
 of size \(n\) were formed by taking the line-graph of randomly generated
 trees of size \(n+1\).\\
 Trees were randomly generated using Prüfer sequences as impelmented in
-NetworkX {[}CITE{]}. To simulate possible social networks and other
-complex systems that show evidence of preferential attachment,
-scale-free graphs were sampled through the Barabási--Albert (BA) model,
-which was randomly seeded with a re-attachment paramenter \(m\) of
-either 1 or 2.
+NetworkX \autocite{ExploringNetworkStructure_Hagberg2008}. To simulate
+possible social networks and other complex systems that show evidence of
+preferential attachment, scale-free graphs were sampled through the
+Barabási--Albert (BA) model, which was randomly seeded with a
+re-attachment parameter
+\(m\in\{1,2\}\)\autocite{EmergenceScalingRandom_Barabasi1999}.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.4000}}
+  >{\centering\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6000}}@{}}
+\caption{Experiment Settings (\texttt{MENDR}
+Dataset)}\label{tbl-mendr}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+parameters
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+values
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+parameters
+\end{minipage} & \begin{minipage}[b]{\linewidth}\centering
+values
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+random graph \textbf{kind} & Tree, Block, BA\((m\in\{1,2\}\)) \\
+network \textbf{\(n\)-nodes} & 10,30,100,300 \\
+random \textbf{walks} & 1 sample
+\(m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10\) \\
+random walk \textbf{jumps} & 1 sample
+\(j\sim\text{Geometric}(\tfrac{1}{n})+5\) \\
+random walk \textbf{root} & 1 sample
+\(n_0 \sim \text{Multinomial}(\textbf{n},1)\) \\
+random \textbf{seed} & 1, 2, \ldots{} , 30 \\
+\end{longtable}
 
 Every graph has a static ID provided by MENDR, along with generation and
 retrieval code for public review. New graphs kinds and sizes are simple
@@ -2983,27 +3243,55 @@ have been included in the MENDR testbench. They are all functions of the
 True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN)
 values.
 
-\begin{description}
-\tightlist
-\item[Precision (P)]
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+
+\quartocalloutnte{nte-precision} 
+
+\vspace{-3mm}\textbf{Note \ref*{nte-precision}: Precision (P)}\vspace{3mm}
+
 Fraction of positive predictions that are true, also called ``positive
 predictive value'' (PPV) \[P= \frac{TP}{TP+FP}\]
-\item[Recall (R)]
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+
+\quartocalloutnte{nte-recall} 
+
+\vspace{-3mm}\textbf{Note \ref*{nte-recall}: Recall (R)}\vspace{3mm}
+
 Fraction of true values that were returned as positive. Also called the
 TP-rate (TPR), and has an inherent trade-off with precision.
 \[R=\frac{TP}{TP+FN} \]
-\item[Matthews Correlation Coefficient (MCC)]
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+
+\quartocalloutnte{nte-mcc} 
+
+\vspace{-3mm}\textbf{Note \ref*{nte-mcc}: Matthews Correlation Coefficient (MCC)}\vspace{3mm}
+
 Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems
 (like sparse recovery)
 \autocite{statisticalcomparisonMatthews_Chicco2023}
 \[\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}\]
-\item[Fowlkes-Mallows (F-M)]
-Geometric mean of Precision and Recall, as opposed to the F-Measure that
-returns the harmonic mean. Also known to be the limit of the MCC as TN
-approaches infinity\autocite{MCCapproachesgeometric_Crall2023}, which is
-useful as TN grows with \(n^2\) but TP only with \(n\).
+
+\end{tcolorbox}
+
+\begin{tcolorbox}[enhanced jigsaw, colframe=quarto-callout-note-color-frame, colback=white, bottomrule=.15mm, breakable, arc=.35mm, opacityback=0, rightrule=.15mm, toprule=.15mm, leftrule=.75mm, left=2mm]
+
+\quartocalloutnte{nte-fm} 
+
+\vspace{-3mm}\textbf{Note \ref*{nte-fm}: Fowlkes-Mallows (F-M)}\vspace{3mm}
+
+: Geometric mean of Precision and Recall, as opposed to the F-Measure
+that returns the harmonic mean. Also known to be the limit of the MCC as
+TN approaches infinity\autocite{MCCapproachesgeometric_Crall2023}, which
+is useful as TN grows with \(n^2\) but TP only with \(n\).
 \[\sqrt{P\cdot R}\]
-\end{description}
+
+\end{tcolorbox}
 
 Because this work is focused on unsupervised performance, specifically
 for the use of these algorithms by analysts investigating dependencies,
@@ -3125,7 +3413,7 @@ FP and GLASSO) show the same trend.
 However, because the graph sampling protocol includes \(n\) in the
 distributions for the observation count and random-walk length, we
 additionally performed a linear regression on the (log) parameters. The
-\emph{partial resitual} plots are shown in
+\emph{partial residual} plots are shown in
 Figure~\ref{fig-partials-mcc}, which shows the trends of each variable
 after controlling for the others.
 
@@ -3212,7 +3500,7 @@ length, alone: the coefficient on network size shows constant-time
 scaling. Similarly, the scaling with observation count is very nearly
 linear time, as predicted. The residuals show non-linear behavior for
 the random-walk length parameter, which would make sense, due to the
-theoretical \(\|E\|\log\|V\|\) scaling of kruskal's algorithm. At this
+theoretical \(\|E\|\log\|V\|\) scaling of Kruskal's algorithm. At this
 scale, \(n\log n\) and \(n^2\log n\) complexity might appear smaller
 than linear time, due to the log factor. GLASSO hardly scales with
 random walk length, and only marginally with observation count. In
@@ -3224,7 +3512,22 @@ GLASSO scaling in significantly superlinear time---almost \(O(n^2)\).
 This is usually the limiting factor for analyst use of such an algorithm
 in network analysis more generally.
 
-\chapter{Modifications \& Extensions}\label{modifications-extensions}
+\chapter{Modifications \& Extensions}\label{sec-extend}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``Sure, we could include all the of variables in the analysis, but
+do-calculus (or similar) will usually tell us that we don't have to.''}
+
+\hfill -- Richard McElreath\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 \emph{Forest Pursuit} is a flexible base for adding or modifying
 behavior as needed. In this chapter we demonstrate two ways to extend
@@ -3511,9 +3814,10 @@ Spanning Tree} distribution from
 been resampled, the overall estimate for the desire path network can be
 updated, and sampling can continue. This would be very similar to the
 way collapsed Gibbs sampling works for Latent Dirichlet
-Allocation{[}CITE{]}, but with edges selected from a spanning forest
-distribution instead of ``topics'' from a multinomial. Derivations and
-implementation of such a scheme is left for future work.
+Allocation\autocite{Latentdirichletallocation_Blei2003}, but with edges
+selected from a spanning forest distribution instead of ``topics'' from
+a multinomial. Derivations and implementation of such a scheme is left
+for future work.
 
 \section{Expected Forest
 Maximization}\label{expected-forest-maximization}
@@ -3683,7 +3987,22 @@ on computation time)}
 \part{Applications \& Case Studies}
 
 \chapter{Qualitative Application of Relationship
-Recovery}\label{qualitative-application-of-relationship-recovery}
+Recovery}\label{sec-qual}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``Please tell me what this is all about, papa. Please, please tell
+me what this is. Please, what is it?''}
+
+\hfill -- Cosette, Les Misérables (1998)\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 A more realistic test of \emph{Forest Pursuit's} behavior is in
 unsupervised, qualitative analysis of complex systems and networks. In
@@ -3709,22 +4028,26 @@ Network}\label{network-science-collaboration-network}
 Following in the steps of
 \textcite{Findingevaluatingcommunity_Newman2004}, we recreate a network
 from co-authorships in works cited by two literature review papers,
-\textcite{StructureFunctionComplex_Newman2003} and {[}CITE{]}. The list
-of all cited papers was reconstructed via web-of-science queries, and
-these were used to construct author ``activation''
-observations.\footnote{ An additional paper
-  (\textcite{Coherentnoisescale_Sneppen1997}) was added to ensure the
-  the largest connected component contained necessary communities that
-  were originally missing compared to
-  \textcite{Findingevaluatingcommunity_Newman2004}.} A baseline
-co-authorship network was initially constructed using the largest
-connected component, and a modularity-maximizing community detection
-algorithm
+\textcite{StructureFunctionComplex_Newman2003} and
+\textcite{ComplexnetworksStructure_BOCCALETTI2006}. The list of all
+cited papers was reconstructed via web-of-science queries, and these
+were used to construct author ``activation'' observations.\footnote{ An
+  additional paper (\textcite{Coherentnoisescale_Sneppen1997}) was added
+  to ensure the the largest connected component contained necessary
+  communities that were originally missing compared to
+  \textcite{Findingevaluatingcommunity_Newman2004}.} Nodes and papers
+were retained only if they had two or more papers and authors listed,
+respectively. A baseline co-authorship network was initially constructed
+using the largest connected component, and a modularity-maximizing
+community detection algorithm
 {[}\textcite{Findingcommunitystructure_Clauset2004};Findingevaluatingcommunity\_Newman2004{]}
-was used to highlight community structure. Nodes and papers were
-retained if they had two or more papers and authors listed,
-respectively. This baseline network can be seen in
-Figure~\ref{fig-netsci-cooc}, where (to keep with the treatment in
+was used to highlight community structure. As recommended in
+\textcite{Findingevaluatingcommunity_Newman2004}, we also show a reduced
+course-grained ``quotient'' graph of the communities and their
+interconnection to help visualize and understand the large-scale
+structure each network presents.\\
+This baseline network can be seen in Figure~\ref{fig-netsci-cooc}, where
+(to keep with the treatment in
 \textcite{Findingevaluatingcommunity_Newman2004}) we have added a
 quotient network of the communities themselves.
 
@@ -3741,14 +4064,27 @@ co-authorship}
 
 \end{figure}%
 
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
+
+}
+
+\caption{\label{fig-netsci-tree}Chow-Liu tree of NetSci collaborator
+dependency relationships}
+
+\end{figure}%
+
 The detected assortativity \(r=0.059\) is small, but positive. As
 expected, each community tends to have a dominant ``clique'', since many
 members of these groups tend to mutually author papers together
 (simultaneously).
 
 However, if we are after a ``social network'' that describes social
-influence of individuals w.r.t. others, then we are hoping to recover
-collaborative \emph{dependency relationships}.
+influence of individuals with respect to others, then we are hoping to
+recover collaborative \emph{dependency relationships}.
 
 \begin{itemize}
 \tightlist
@@ -3766,19 +4102,6 @@ writing of every other member. So, to estimate a dependency network of
 collaboration relationships, we could turn to a Chow-Liu tree, which is
 shown in Figure~\ref{fig-netsci-tree}.
 
-\begin{figure}
-
-\centering{
-
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
-
-}
-
-\caption{\label{fig-netsci-tree}Chow-Liu tree of NetSci collaborator
-dependency relationships}
-
-\end{figure}%
-
 This dependency is much more sparse, and indeed the assortativity
 coefficient has dropped to \(r=-0.251\). In academic writing, we might
 even expect a lowered assortativity, since students that may not go on
@@ -3793,11 +4116,6 @@ distance between community hubs (in the same field) to be upwards of
 9-10 jumps, which goes against the scale-free/small-world nature we
 expect from social systems.
 
-With \emph{Forest Pursuit}, we can attempt to correct for ``clique
-bias'' in the measurement of dependency relationships, while allowing
-for flexibility in the global network structure. The FP recovered
-collaborator graph is shown in Figure~\ref{fig-netsci-fp}.
-
 \begin{figure}
 
 \centering{
@@ -3810,6 +4128,11 @@ collaborator graph is shown in Figure~\ref{fig-netsci-fp}.
 collaborator dependency relationships}
 
 \end{figure}%
+
+With \emph{Forest Pursuit}, we can attempt to correct for ``clique
+bias'' in the measurement of dependency relationships, while allowing
+for flexibility in the global network structure. The FP recovered
+collaborator graph is shown in Figure~\ref{fig-netsci-fp}.
 
 The communities from the co-occurrence network are entirely preserved,
 with a nearly identical community structure in the graph quotient
@@ -3853,8 +4176,26 @@ network derived from literature review paper citations, not exhaustive
 inventories of each author's work, so every influential relationship
 should not be shown in this sample.
 
-\section{Les Miserables Character
-Network}\label{les-miserables-character-network}
+So, which network is preferable? It depends.
+
+The premise of FP is to find a max. likelihood network \emph{such that}
+the observed activations (authors on a paper) arise from a random walk
+along dependencies (author relationships of \emph{influence} causing
+others to join). If influential (dependency) relationships are being
+measured, then the logistics of maintaining 2-3 of them seems more
+realistic than 5-10 (especially only from the sampled papers).
+Additionally, we expect students having few influential relationships
+would attach preferentially to advisors with more, so a positive
+assortativity might be problematic. FP agrees with these conclusions,
+making it \emph{consistent} with that set of a priori domain beliefs
+vs.~the co-occurrence network alone. These kinds of qualitative
+assessments are not rigorous, but the modeling questions required to
+choose FP (or not) go a long way to reducing error in \emph{trueness}.
+They help modelers validate whether the recovered network was made in a
+consistent way with their domain knowledge.
+
+\section{Les Misérables Character
+Network}\label{les-misuxe9rables-character-network}
 
 Another famous network derives from
 \textcite{StanfordGraphBaseplatform_Knuth1993} via mining character
@@ -3924,33 +4265,56 @@ network (Forest Pursuit)}
 
 \end{figure}%
 
-The network has been filtered to only include necessary edges to retain
-overall connectivity. As before, our community structure shown in the
-quotient graph has been preserved, even with the significant edge
-density reduction.
+The network edge probabilities have been thresholded in the same manner
+as the DS (minimum connectivity) filter, only including necessary edges
+to still retain overall connectivity. As before, our community structure
+shown in the quotient graph has been preserved, even with the
+significant edge density reduction.
 
 Applying these networks, we might wish to distinguish through them which
 characters are ``main'' and which are ``supporting'', though more on a
 gradient than in a binary/classification sense. One way to do this is
-through centrality measures {[}CITE{]}, which estimate the
-``importance'' of nodes in various ways. Eigenvector centrality,
-specifically, finds the importance of nodes relative to the importance
-of each node's neighbors\footnote{ Regularized eigenvector centrality is
-  equivalent to PageRank centrality, \emph{i.e.} the seminal work from
-  {[}CITE{]}, of Google fame.}
+through centrality measures
+\autocite{Mathematicsnetworks_Newman2018,atlasaspiringnetwork_Coscia2021},
+which estimate the ``importance'' of nodes in various ways. Eigenvector
+centrality, specifically, finds the importance of nodes relative to the
+importance of each node's neighbors\footnote{ Regularized eigenvector
+  centrality is equivalent to PageRank centrality, \emph{i.e.} the
+  seminal work from \autocite{PageRankCitationRanking_Page1999}, of
+  Google fame.} It does this by estimating the stationary distribution
+of a random walk on the network (what is the probability after many
+jumps of ending up in each node?)
 
 The topology of a network greatly impacts the centrality measure
-recovered. In Figure~\ref{fig-lesmis-centrality} we show a bump-plot of
-the ranks of the top 15 most central nodes for both the original
-co-occurrence network and the FP network estimate. In the original
-network, centrality rewards characters appearing in mutual cliques as
-being central, especially the ``revolutionary'' group (shown in orange
-in Figure~\ref{fig-lesmis-fp} and Figure~\ref{fig-lesmis-cooc}). Are
-these really the most important characters? Even Javert, though being an
-important recurring character, largely plays the role of generic law
-enforcement throughout, while characters like Marius play central
-motivating roles across several distinct social groups throughout the
-novel.
+recovered. In fact, a well-known result shows that much of the variance
+in eigenvector/PageRank centrality values can be explained with node
+in-degree alone.\autocite{ApproximatingPageRankDegree_Fortunato} Of
+course, we \emph{do} tend to see nodes with high-degree as \emph{hubs},
+and more important for it---that is, we \emph{would} if we weren't so
+concerned with having to deal with clique bias in the network. The
+tendency of eigenvector centrality to rely on degree (and therefore
+reward densely-connected cliques with high importance) prevents us from
+using it over more expensive methods like \emph{betweenness centrality}.
+Instead, we might be able to differentiate between high-degree nodes in
+cliques and ``actual'' hubs by controlling for clique bias ahead of time
+with \emph{Forest Pursuit}.
+
+In Figure~\ref{fig-lesmis-centrality} we show a bump-plot of the ranks
+of the top 15 most central nodes for both the original co-occurrence
+network and the FP network estimate. In the original network, centrality
+rewards characters appearing in mutual cliques as being central,
+especially the ``revolutionary'' group (shown in orange in
+Figure~\ref{fig-lesmis-fp} and Figure~\ref{fig-lesmis-cooc}). Are these
+really the most important characters? Important characters like Cosette
+and Fantine are nowhere near the top. We wish to find important
+characters in the sense that they have influence over the appearance of
+many other characters. In that case, even Javert (though being an
+important recurring character) largely plays the role of generic law
+enforcement throughout, not necessarily pulling other characters in or
+out of scenes with him as much as others like Marius. More than Javert,
+Marius plays central motivating roles across several distinct social
+groups throughout the novel. All of these problems are corrected to some
+degree in the FP estimate.
 
 \begin{figure}
 
@@ -3965,19 +4329,28 @@ ranking for FP vs co-occurrence}
 
 \end{figure}%
 
-This brings up another benefit of correcting clique-bias: estimating
-character importance \emph{despite} systematic interaction-reduction
-bias from authors. As made famous by the so-called ``Bechdel test''
-{[}CITE{]}, authors historically tend to systematically reduce the
-agency and interaction rates of women in
-literature\autocite{genderagencygap_Stuhler2024}. We highlight every
-female character in Figure~\ref{fig-lesmis-centrality}, and which shows
-that the co-occurrence network had a single female character in the top
-15 most central (Eponine, ranked 14th). By correcting for clique-bias,
-\emph{every} female character significantly increases in centrality
-ranking. In context, titles of entire books and volumes of \emph{Les
-Misérables} are named after women we would consider crucial to the plot
-(\emph{e.g.} Fantine, Cosette, and Eponine).\\
+Why are the centrality levels for Fantine, Eponine, and Cosette so much
+higher in FP? Why were they so low in the first place? This brings up
+another benefit of correcting clique-bias: estimating character
+importance \emph{despite} systematic interaction-reduction bias from
+authors. As made famous by the so-called ``Bechdel test''
+\autocite{MediaMarginsPopular_Savigny2015}, authors tend to
+systematically reduce the agency and interaction rates of female
+characters, an effect that has been studied from many angles covering
+multiple centuries \autocite{genderagencygap_Stuhler2024}. We highlight
+every female character in Figure~\ref{fig-lesmis-centrality}
+(bold/thicker paths), which shows that the co-occurrence network had one
+single female character in the top 15 most central (Eponine, ranked
+14th). This is because their degrees are overshadowed by large cliques!
+By correcting for clique-bias, \emph{every} female character
+significantly increases in centrality ranking This way, the occurrence
+of many characters can be explained \emph{through} these female
+characters, rather than assuming each character separately connects with
+every other, biasing importances toward large groups of men.
+
+In context, titles of entire books and volumes of \emph{Les Misérables}
+are named after women we would consider crucial to the plot (\emph{e.g.}
+Fantine, Cosette, and Eponine).\\
 As \textcite{genderagencygap_Stuhler2024} indicates, however, authors
 are likely to under-represent their agency and interactions with other
 characters throughout the story, so networks based primarily on
@@ -3986,6 +4359,23 @@ importance.
 
 \chapter{Recovery from Working Memory \& Partial
 Orders}\label{sec-ordered}
+
+\begin{flushright}
+
+\begin{minipage}{.8\linewidth}
+
+\begin{quote}
+\emph{``So an analytically astute observer would find that a salmon is
+more closely related to a camel than it is to a hagfish. On what basis,
+then, do we justify grouping salmon under the label fish, but not
+camels?''}
+
+\hfill -- Samuel Beswick (sarcastically)\\
+\end{quote}
+
+\end{minipage}
+
+\end{flushright}
 
 This whole time we have assumed that the ordering of nodes was unknown,
 or at the very least unreliable. However, there are frequently cases,
@@ -4004,7 +4394,23 @@ incomparable. We don't know if (i) asked (f) before or after (j) asked
   \textcite{Inferringnetworksdiffusion_GomezRodriguez2012} derive an
   algorithm called \emph{NetInf}. It utilizes sums over minimum spanning
   trees that satisfy time constraints, similar to a special case of
-  Forest Pursuit where all activations have a total ordering.}
+  Forest Pursuit where all activations have a total ordering.} We have
+updated the original example with explicit partial orders in
+Figure~\ref{fig-obs-cascade}. Note that nodes in some lists could be
+re-arranged while keeping the partial order the same (keeping all arrows
+pointing to the right).
+
+\begin{figure}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-fig-obs-cascade-output-1.pdf}}
+
+}
+
+\caption{\label{fig-obs-cascade}Observations as partially-ordered sets}
+
+\end{figure}%
 
 Sadly our co-authorship example does not often include the (partial)
 order of author additions,\footnote{though some domains do imbue special
@@ -4076,10 +4482,15 @@ Whether entered directly or generated from text by keyword extraction,
 the tags will tend to have ordering information readily available. A
 traditional way to model this kind of text is through either
 bag-of-words (the co-occurrence node activation data already discussed)
-or as a sequence of order-n markov model emissions. Unlike the clique
-bias from before, assuming markov jumps for each observation leads to a
-different kind of bias, with higher precision but reduced recall as
-shown in Figure~\ref{fig-stack-markov}.
+or as a sequence of order-n markov model emissions. An order-n markov
+model \(\text{MC}n\) estimates the probability of observing the \(i\)th
+item \(t_i\) in a sequence \(T\) as \[
+P(t_i|T) \approx P(t_i | t_{i-1}, \cdots,t_{i-n})
+\]
+
+Unlike the clique bias from before, assuming markov jumps for each
+observation leads to a different kind of bias, with higher precision but
+reduced recall as shown in Figure~\ref{fig-stack-markov}.
 
 \begin{figure}
 
@@ -4227,12 +4638,8 @@ for the excavator dataset thanks to
 of each network to capture the human annotator's internal/cognitive tag
 relationship structure.
 
-\begin{quote}
-\emph{Which network assigns tags to subsystems most like a domain
-expert?}
-\end{quote}
-
-\subsection{Results}\label{results}
+\subsection{Which network assigns tags to subsystems most like a domain
+expert?}\label{which-network-assigns-tags-to-subsystems-most-like-a-domain-expert}
 
 To test the ability of the similarity measures to accomplish this, the
 top three most common subsystems in the data were used as classes,
@@ -4254,7 +4661,7 @@ To perform semi-supervised classification on the recovered relationship
 graphs, we use a label-spreading algorithm described
 in~\autocite{Learninglocalglobal_Zhou2004}, which itself was inspired by
 spreading activation networks in experimental
-psychology~\autocite[@Observationphasetransitions\_Shrager1987]{architecturecognition_Anderson2013}.
+psychology~\autocite{architecturecognition_Anderson2013,Observationphasetransitions_Shrager1987}.
 The result of this algorithm is tags having a score for each class, with
 the classification being the maximally scored class for that tag. These
 class assignments can then be compared to the ground-truth labels, which
@@ -4344,7 +4751,7 @@ distance to reach each node, the two methods should be equivalent. While
 this isn't happening much individually, the effect of \emph{many} random
 walks will average out to this MST, precisely because \emph{it is the
 tree distribution mode} from which we assume node activations sample
-under RSFm.
+under \emph{marked Random Spanning Forests}.
 
 To illustrate FP's efficacy in network estimation despite ignoring
 partial order information, we turn to a classic network recovery problem
@@ -4726,7 +5133,7 @@ activated.
 Because the entries are now integer counts, FP preprocessing might also
 give a better path to using distribution-based embedding and clustering
 techniques, such as Hellinger distances between multinomial sample
-counts This goes for many other techniques from text processing that
+counts. This goes for many other techniques from text processing that
 rely on multinomial assumptions (i.e.~techniques otherwise inapplicable
 to binary data).\\
 FP Preprocessing, with further empirical and theoretical validation,
@@ -4735,7 +5142,7 @@ and analyse their networks with a variety of new techniques.
 
 \bookmarksetup{startatroot}
 
-\chapter{Conclusion \& Future Work}\label{conclusion-future-work}
+\chapter{Conclusion \& Future Work}\label{sec-conclusion}
 
 We showed\ldots{}
 
