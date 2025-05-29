@@ -168,7 +168,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Foreward</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -542,7 +542,7 @@ Note&nbsp;4.9: GLASSO
 <p>This is a core point of view in <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span>, where those authors describe nearly all of network analysis as <em>inferring hidden structure</em>:</p>
 <div class="no-row-height column-margin column-container"></div><div class="page-columns page-full"><blockquote class="blockquote">
 <p>“Here we argue that the most appropriate stance to take is to frame network analysis as a problem of inference, where the actual network abstraction is hidden from view, and needs to be reconstructed given indirect data.”</p>
-<p>Peel et al., <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span></p>
+<p>– Peel et al., <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span></p>
 </blockquote><div class="no-row-height column-margin column-container"></div></div>
 <p>We note that this isn’t strictly true, <em>assuming</em> that the “network” is intended to represent something measured by the direct observation. For instance, if a network is intended to represent a discretization of distances (such as a k-nearest neighbors approximation) for computational efficiency. The co-occurrence measures can be thought of as estimators of node-node distances, especially with appropriate smoothing to remove zero-valued distances from undersampling.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> In otherwords, if an analyst wishes to discretize distances as incidences in a complex network, they are effectively using “high-pass” filter to remove low-similarity entries, which is an effective way to assess community structure—exactly like clustering for continuous data.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> In fact, for an example of this exact network-as-discretization idea being used for state-of-the-art clustering performance, see HDBSCAN in <span class="citation" data-cites="HybridApproachHierarchical_Malzer2020"><a href="#ref-HybridApproachHierarchical_Malzer2020" role="doc-biblioref">[22]</a></span>.</p>
 <div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp; See <a href="../part2/2-05-forest-pursuit.html#sec-steiner" class="quarto-xref"><span>Maximum Spanning (Steiner) Trees</span></a> for an elaboration of this connection via the “forest kernel”. </p></div><div id="fn6"><p><sup>6</sup>&nbsp; Or, at a slight risk of reductionism, drawing a world atlas with two colors for “above and below sea-level”: useful simplification for rapid assessment of shapes. </p></div><div id="ref-HybridApproachHierarchical_Malzer2020" class="csl-entry" role="listitem">
@@ -555,7 +555,7 @@ Note&nbsp;4.9: GLASSO
 <p>Once again from the <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span> review:</p>
 <div class="no-row-height column-margin column-container"></div><div class="page-columns page-full"><blockquote class="blockquote">
 <p>Surprisingly, the development of theory and domain-specific applications often occur in isolation, risking an effective disconnect between theoretical and methodological advances and the way network science is employed in practice.</p>
-<p>Peel et al. <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span></p>
+<p>– Peel et al. <span class="citation" data-cites="Statisticalinferencelinks_Peel2022"><a href="#ref-Statisticalinferencelinks_Peel2022" role="doc-biblioref">[21]</a></span></p>
 </blockquote><div class="no-row-height column-margin column-container"><div id="ref-Statisticalinferencelinks_Peel2022" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[21] </div><div class="csl-right-inline">L. Peel, T. P. Peixoto, and M. De Domenico, <span>“Statistical inference links data and theory in network science,”</span> <em>Nature Communications</em>, vol. 13, no. 1, Nov. 2022, doi: <a href="https://doi.org/10.1038/s41467-022-34267-9">10.1038/s41467-022-34267-9</a>.</div>
 </div></div></div>
@@ -565,8 +565,8 @@ Note&nbsp;4.9: GLASSO
 <h3 class="anchored" data-anchor-id="filling-the-localdata-gap">Filling the local+data “gap”</h3>
 <p>With this in mind, we show in <a href="#tbl-roads" class="quarto-xref">Table&nbsp;<span>4.1</span></a> an overview of the covered approaches, and whether the method presumes operation on observations in the same space as the <em>model</em>, or if some inverse problem is needed.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-tbl-roads">
-<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="18">
-<div id="tbl-roads" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="18" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-editable="true">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="19">
+<div id="tbl-roads" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="19">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-roads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;4.1: Organizing recovery methods by representation space and level

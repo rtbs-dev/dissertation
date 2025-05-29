@@ -168,7 +168,7 @@ window.Quarto = {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Foreward</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -416,7 +416,7 @@ d_{\tilde{K}}(j,j') &amp;= -\log{\tilde{K}(j,j')}
 </div></div><p>Representing these as matrices will be further explored in <a href="1-02-graph-obs.html#sec-incidence-vec" class="quarto-xref"><span>Graphs as incidence structures</span></a>. But, the discrete nature of these incidence sets makes it clear that estimating the size and elements of <span class="math inline">\(\mathfrak{I}\)</span>, is a very different question from estimating the similarity/distance between two entities in a vector space.</p>
 <p>In statistics, such discrete structures usually arise when we wish to distinguish direct dependence from indirect. Take as an example a set of masses connected together by springs. If we shake one mass, all masses will also shake some amount, depending on the spring constants of the springs each mass is “transmitted” force through, and the losses due to friction or air resistance. While the amount of movement over time depends on how “close” in this spring network two masses are, the movement itself can only be transmitted through springs that the masses are <em>incident</em> to. Movement could be modeled through similarity/distance measurements like correlation, since none of the masses are independent (all move when any do), but incidence in terms of spring force transmission is modeled in terms of conditional (in)dependence. If we hold all but two masses still, and moving one doesn’t move the other, then we know they are conditionally independent: no spring connects them!</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-springs">
-<div id="cell-fig-springs" class="cell" data-execution_count="25">
+<div id="cell-fig-springs" class="cell" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div id="fig-springs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">

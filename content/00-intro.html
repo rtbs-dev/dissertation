@@ -139,7 +139,7 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Preface</span></a>
+ <span class="menu-text">Foreward</span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -284,7 +284,7 @@ div.csl-indent {
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">M. Girvan and M. E. J. Newman, <span>“Community structure in social and biological networks,”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 99, no. 12, pp. 7821–7826, Jun. 2002, doi: <a href="https://doi.org/10.1073/pnas.122653799">10.1073/pnas.122653799</a>.</div>
 </div></div><p>Note, however, that we could have just as easily taken note of the instigating student for each interaction (<em>i.e.</em>, which student initiated conversation, or invited the other to socialize, etc.). If that relational asymmetry is available, our “edges” are now <em>directed</em>, and we might be able to ask questions about the rates that certain students are asked vs.&nbsp;do the asking, and what that implies about group cohesion. Additionally, the time span is assumed to be “for the duration of observation” (did the students <em>ever</em> interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split. This is now a “dynamic” graph; or, if we only measure relative to the time of separation, at the very least a “weighted” one.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-karate-club">
-<div id="cell-fig-karate-club" class="cell" data-execution_count="7">
+<div id="cell-fig-karate-club" class="cell" data-execution_count="8">
 <div class="cell-output cell-output-display">
 <div id="fig-karate-club" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -316,7 +316,7 @@ Figure&nbsp;1.1: Zachary’s Karate Club, with ambiguously extant edge 78 highli
 <p>Instead, edges are often measured <em>indirectly</em>, and instead we are given lists of node co-ocurrences. Networks connecting movies as being “similar” might be derived from data that lists sets of movies watched by each user; networks of disease spread pathways might be implied from patient infection records; famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together.</p>
 <p>Such networks are derived from what we will call <em>node activation</em> data, <em>i.e.</em>, records of what entities happened “together”, whether contemporaneously, or in some other context or artifact. For this class, <em>precision</em> might be easy to assess, having oft-repeated activations.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-obs-set">
-<div id="cell-fig-obs-set" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="10">
+<div id="cell-fig-obs-set" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="11">
 <div class="cell-output cell-output-display">
 <div id="fig-obs-set" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -339,7 +339,7 @@ Figure&nbsp;1.2: Observations as activation sets
 <div aria-describedby="fig-toy-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
 <div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-collab" data-ref-parent="fig-toy" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="cell-fig-collab" class="cell quarto-layout-cell-subref" data-execution_count="16" data-ref-parent="fig-toy">
+<div id="cell-fig-collab" class="cell quarto-layout-cell-subref" data-execution_count="17" data-ref-parent="fig-toy">
 <div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-toy">
 <div id="fig-collab" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
@@ -355,7 +355,7 @@ Figure&nbsp;1.2: Observations as activation sets
 </div>
 </div>
 <div class="quarto-embed-nb-cell quarto-layout-cell-subref quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-colleague" data-ref-parent="fig-toy" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="cell-fig-colleague" class="cell quarto-layout-cell-subref" data-execution_count="9" data-ref-parent="fig-toy">
+<div id="cell-fig-colleague" class="cell quarto-layout-cell-subref" data-execution_count="10" data-ref-parent="fig-toy">
 <div class="cell-output cell-output-display quarto-layout-cell-subref" data-ref-parent="fig-toy">
 <div id="fig-colleague" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-subfloat-fig figure">
@@ -386,7 +386,7 @@ Figure&nbsp;1.3: Co-authorship vs.&nbsp;collaborator network
 <p>Each time two colleagues had an opportunity to work together <em>and it was seized upon</em> we might conclude that evidence of their relationship strengthened. With data like this, we could be more confident in claiming our collaboration network can serve as “ground truth,” as far as empirically confirmed collaborations go. However, even if the underlying “activations” are identical, our new, directly measured graph looks very different.</p>
 <p>Fundamentally, the network in <a href="#fig-colleague" class="quarto-xref">Figure&nbsp;<span>1.3 (b)</span></a> shows which relationships the authors <em>depend</em> on to accomplish their publishing activity. When causal relations between nodes are being modeled as edges, we call such a graph a <em>dependency network</em>. We will investigate this idea further later on, but ultimately, if a network of dependencies is desired (or implied, based on analysis needs), then the critical problem remaining is <em>how do we recover dependency networks from node activations?</em> What is missing, once again, is any sense of <em>reference value</em> to base our assessment of <em>trueness</em> on. This thesis is primarily concerned with a metrological need within the network analysis community to have terms and techniques for describing and dealing with this problem. What goes wrong when we use co-occurrence/activation data to estimate the dependency network? What goes wrong when we wish to use co-occurrences for metrics like centrality and assortativity, or for exploratory analyses like building relationship type inventories?</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-recover">
-<div id="cell-fig-recover" class="cell" data-execution_count="17">
+<div id="cell-fig-recover" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div id="fig-recover" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -852,8 +852,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="../index.html" class="pagination-link" aria-label="Foreward">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Foreward</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
