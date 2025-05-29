@@ -93,6 +93,11 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<style>
+.flushright {
+   text-align: right;
+}
+</style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
 
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
@@ -269,7 +274,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#optimizing-absorbing-state-probabilities" id="toc-optimizing-absorbing-state-probabilities" class="nav-link" data-scroll-target="#optimizing-absorbing-state-probabilities">Optimizing absorbing-state probabilities</a></li>
   <li><a href="#application-mining-excavator-mwos" id="toc-application-mining-excavator-mwos" class="nav-link" data-scroll-target="#application-mining-excavator-mwos">Application: Mining Excavator MWOs</a></li>
-  <li><a href="#results" id="toc-results" class="nav-link" data-scroll-target="#results">Results</a></li>
+  <li><a href="#which-network-assigns-tags-to-subsystems-most-like-a-domain-expert" id="toc-which-network-assigns-tags-to-subsystems-most-like-a-domain-expert" class="nav-link" data-scroll-target="#which-network-assigns-tags-to-subsystems-most-like-a-domain-expert">Which network assigns tags to subsystems most like a domain expert?</a></li>
   </ul></li>
   <li><a href="#forest-pursuit-animal-network" id="toc-forest-pursuit-animal-network" class="nav-link" data-scroll-target="#forest-pursuit-animal-network">Forest Pursuit Animal Network</a>
   <ul class="collapse">
@@ -303,31 +308,56 @@ window.Quarto = {
 </header>
 
 
+<div class="flushright">
+<div class="minipage">
+<blockquote class="blockquote">
+<p><em>“So an analytically astute observer would find that a salmon is more closely related to a camel than it is to a hagfish. On what basis, then, do we justify grouping salmon under the label fish, but not camels?”</em></p>
+<p>– Samuel Beswick (sarcastically)<br>
+</p>
+</blockquote>
+</div>
+</div>
 <p>This whole time we have assumed that the ordering of nodes was unknown, or at the very least unreliable. However, there are frequently cases, especially in text processing applications, where we have some sense of an ordering on activations. By <em>partial order</em> on a set (a “poset”), we mean that all elements are either comparable as greater (before) or less (after), or incomparable. The set of posets is therefore precisely isomorphic to the set of <em>directed acyclic graphs</em>, based on reachability.</p>
-<p>Our original example with authors might be thought of as a poset: (i) precedes/asks (f) and (j), (j) precedes/asks (b), but (b) and (f) are incomparable. We don’t know if (i) asked (f) before or after (j) asked (b).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>Our original example with authors might be thought of as a poset: (i) precedes/asks (f) and (j), (j) precedes/asks (b), but (b) and (f) are incomparable. We don’t know if (i) asked (f) before or after (j) asked (b).<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> We have updated the original example with explicit partial orders in <a href="#fig-obs-cascade" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right).</p>
 <div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp; Interestingly, in the case where the node activations <em>are</em> given a total order (in the form of <em>timestamps</em>), <span class="citation" data-cites="Inferringnetworksdiffusion_GomezRodriguez2012"><a href="#ref-Inferringnetworksdiffusion_GomezRodriguez2012" role="doc-biblioref">[1]</a></span> derive an algorithm called <em>NetInf</em>. It utilizes sums over minimum spanning trees that satisfy time constraints, similar to a special case of Forest Pursuit where all activations have a total ordering.</p><div id="ref-Inferringnetworksdiffusion_GomezRodriguez2012" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[1] </div><div class="csl-right-inline">M. Gomez-Rodriguez, J. Leskovec, and A. Krause, <span>“Inferring networks of diffusion and influence,”</span> <em>ACM Transactions on Knowledge Discovery from Data (TKDD)</em>, vol. 5, no. 4, pp. 1–37, 2012, doi: <a href="https://doi.org/10.1145/2086737.2086741">10.1145/2086737.2086741</a>.</div>
-</div></div><div id="fn2"><p><sup>2</sup>&nbsp;though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!</p></div><div id="ref-ForagingSemanticFields_Hills2015" class="csl-entry" role="listitem">
+</div></div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-obs-cascade">
+<div id="cell-fig-obs-cascade" class="cell" data-execution_count="11">
+<div class="cell-output cell-output-display">
+<div id="fig-obs-cascade" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-obs-cascade-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="3-08-ordered_files/figure-html/..-codefigs-graphs-fig-obs-cascade-output-1.svg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-obs-cascade-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Observations as partially-ordered sets
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>Sadly our co-authorship example does not often include the (partial) order of author additions,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> but other common network recovery problems do have an inherent order to them. A very common need is to recover concept association networks, whether from lists of tags or directly from a corpus of written language. What’s needed is an assumption on how the observed partial order of concepts is generated. <span class="citation" data-cites="ForagingSemanticFields_Hills2015"><a href="#ref-ForagingSemanticFields_Hills2015" role="doc-biblioref">[2]</a></span> proposes a “foraging” mechanism, so that concepts get sequentially recalled from “semantic patches” of nearby concepts in memory. The partial order comes from our ability to maintain more than one concept in working memory, so that the next concept can be “foraged” from any of the other recently recalled ones<span class="citation" data-cites="magicalnumberseven_Miller1956 Dynamicsearchworking_Hills2012"><a href="#ref-magicalnumberseven_Miller1956" role="doc-biblioref">[3]</a>, <a href="#ref-Dynamicsearchworking_Hills2012" role="doc-biblioref">[4]</a></span>.</p>
+<div class="no-row-height column-margin column-container"><div id="fn2"><p><sup>2</sup>&nbsp;though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!</p></div><div id="ref-ForagingSemanticFields_Hills2015" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[2] </div><div class="csl-right-inline">T. T. Hills, P. M. Todd, and M. N. Jones, <span>“Foraging in semantic fields: How we search through memory,”</span> <em>Topics in Cognitive Science</em>, vol. 7, no. 3, pp. 513–534, Jun. 2015, doi: <a href="https://doi.org/10.1111/tops.12151">10.1111/tops.12151</a>.</div>
 </div><div id="ref-Dynamicsearchworking_Hills2012" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[4] </div><div class="csl-right-inline">T. T. Hills and T. Pachur, <span>“Dynamic search and working memory in social recall.”</span> <em>Journal of Experimental Psychology: Learning, Memory, and Cognition</em>, vol. 38, no. 1, pp. 218–228, 2012, doi: <a href="https://doi.org/10.1037/a0025161">10.1037/a0025161</a>.</div>
-</div></div><p>Sadly our co-authorship example does not often include the (partial) order of author additions,<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> but other common network recovery problems do have an inherent order to them. A very common need is to recover concept association networks, whether from lists of tags or directly from a corpus of written language. What’s needed is an assumption on how the observed partial order of concepts is generated. <span class="citation" data-cites="ForagingSemanticFields_Hills2015"><a href="#ref-ForagingSemanticFields_Hills2015" role="doc-biblioref">[2]</a></span> proposes a “foraging” mechanism, so that concepts get sequentially recalled from “semantic patches” of nearby concepts in memory. The partial order comes from our ability to maintain more than one concept in working memory, so that the next concept can be “foraged” from any of the other recently recalled ones<span class="citation" data-cites="magicalnumberseven_Miller1956 Dynamicsearchworking_Hills2012"><a href="#ref-magicalnumberseven_Miller1956" role="doc-biblioref">[3]</a>, <a href="#ref-Dynamicsearchworking_Hills2012" role="doc-biblioref">[4]</a></span>.</p>
-<p>In this section, we briefly cover a method for network inference by <span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[5]</a></span> that utilizes partial order information from ordered lists of concepts, called INVITE. We use it to demonstrate improvement over bag-of-words and markov assumptions for downstream technical language processing <span class="citation" data-cites="Technicallanguageprocessing_Brundage2021"><a href="#ref-Technicallanguageprocessing_Brundage2021" role="doc-biblioref">[6]</a></span> tasks, as originally demonstrated in <span class="citation" data-cites="UsingSemanticFluency_Sexton2019 OrganizingTaggedKnowledge_Sexton2020"><a href="#ref-UsingSemanticFluency_Sexton2019" role="doc-biblioref">[7]</a>, and <a href="#ref-OrganizingTaggedKnowledge_Sexton2020" role="doc-biblioref">[8]</a></span></p>
-<div class="no-row-height column-margin column-container"><div id="ref-Technicallanguageprocessing_Brundage2021" class="csl-entry" role="listitem">
+</div><div id="ref-Technicallanguageprocessing_Brundage2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[6] </div><div class="csl-right-inline">M. P. Brundage, R. Sexton, M. Hodkiewicz, A. Dima, and S. Lukens, <span>“Technical language processing: Unlocking maintenance knowledge,”</span> <em>Manufacturing Letters</em>, vol. 27, pp. 42–46, Jan. 2021, doi: <a href="https://doi.org/10.1016/j.mfglet.2020.11.001">10.1016/j.mfglet.2020.11.001</a>.</div>
 </div><div id="ref-UsingSemanticFluency_Sexton2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[7] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Using semantic fluency models improves network reconstruction accuracy of tacit engineering knowledge,”</span> in <em>Volume 2A: 45th design automation conference</em>, American Society of Mechanical Engineers, Aug. 2019. doi: <a href="https://doi.org/10.1115/detc2019-98429">10.1115/detc2019-98429</a>.</div>
 </div><div id="ref-OrganizingTaggedKnowledge_Sexton2020" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[8] </div><div class="csl-right-inline">R. Sexton and M. Fuge, <span>“Organizing tagged knowledge: Similarity measures and semantic fluency in structure mining,”</span> <em>Journal of Mechanical Design</em>, vol. 142, no. 3, Jan. 2020, doi: <a href="https://doi.org/10.1115/1.4045686">10.1115/1.4045686</a>.</div>
-</div></div><p>Finally, we show that using <em>Forest Pursuit</em> for partially ordered data can still be quite useful for network backboning, and for a fraction of the computational cost. We investigate a network recovery task from verbal/semantic fluency data <span class="citation" data-cites="Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a></span>, which involves recovery of a network of animal relationships from memory and recall experiments. Even without directly using partial order information, proper data preparation along with previously-discussed (un-ordered) recovery methods can lead to significantly improved network backboning and analysis capability</p>
-<section id="technical-language-processing-with-invite" class="level2 page-columns page-full">
+</div></div><p>In this section, we briefly cover a method for network inference by <span class="citation" data-cites="Humanmemorysearch_Jun2015"><a href="#ref-Humanmemorysearch_Jun2015" role="doc-biblioref">[5]</a></span> that utilizes partial order information from ordered lists of concepts, called INVITE. We use it to demonstrate improvement over bag-of-words and markov assumptions for downstream technical language processing <span class="citation" data-cites="Technicallanguageprocessing_Brundage2021"><a href="#ref-Technicallanguageprocessing_Brundage2021" role="doc-biblioref">[6]</a></span> tasks, as originally demonstrated in <span class="citation" data-cites="UsingSemanticFluency_Sexton2019 OrganizingTaggedKnowledge_Sexton2020"><a href="#ref-UsingSemanticFluency_Sexton2019" role="doc-biblioref">[7]</a>, and <a href="#ref-OrganizingTaggedKnowledge_Sexton2020" role="doc-biblioref">[8]</a></span></p>
+<p>Finally, we show that using <em>Forest Pursuit</em> for partially ordered data can still be quite useful for network backboning, and for a fraction of the computational cost. We investigate a network recovery task from verbal/semantic fluency data <span class="citation" data-cites="Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a></span>, which involves recovery of a network of animal relationships from memory and recall experiments. Even without directly using partial order information, proper data preparation along with previously-discussed (un-ordered) recovery methods can lead to significantly improved network backboning and analysis capability</p>
+<div class="no-row-height column-margin column-container"></div><section id="technical-language-processing-with-invite" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="technical-language-processing-with-invite">Technical Language Processing with INVITE</h2>
 <p>Maintenance work orders are often represented as categorized data, though increasingly quantitative use of a technician’s descriptions is being pursued by maintenance management operations <span class="citation" data-cites="BenchmarkingKeywordExtraction_Sexton2018 CategorizationErrorsData_Sexton2019"><a href="#ref-BenchmarkingKeywordExtraction_Sexton2018" role="doc-biblioref">[10]</a>, <a href="#ref-CategorizationErrorsData_Sexton2019" role="doc-biblioref">[11]</a></span>. Tags are another way to flexibly structure this otherwise “unstructured” data, which <a href="#tbl-mwo" class="quarto-xref">Table&nbsp;<span>9.1</span></a> shows in comparison to more traditional categorization.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-CategorizationErrorsData_Sexton2019" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[11] </div><div class="csl-right-inline">R. Sexton, M. Hodkiewicz, and M. P. Brundage, <span>“Categorization errors for data entry in maintenance work-orders,”</span> <em>Annual Conference of the <span>PHM</span> Society</em>, vol. 11, no. 1, Sep. 2019, doi: <a href="https://doi.org/10.36001/phmconf.2019.v11i1.790">10.36001/phmconf.2019.v11i1.790</a>.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-tbl-mwo">
-<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="26">
-<div id="tbl-mwo" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="26">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="27">
+<div id="tbl-mwo" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="27" data-editable="true">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-mwo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;9.1: Maintenance Work Order as categorized vs.&nbsp;tagged data
@@ -350,9 +380,12 @@ Table&nbsp;9.1: Maintenance Work Order as categorized vs.&nbsp;tagged data
 </div>
 </div>
 </div>
-<p>Whether entered directly or generated from text by keyword extraction, the tags will tend to have ordering information readily available. A traditional way to model this kind of text is through either bag-of-words (the co-occurrence node activation data already discussed) or as a sequence of order-n markov model emissions. Unlike the clique bias from before, assuming markov jumps for each observation leads to a different kind of bias, with higher precision but reduced recall as shown in <a href="#fig-stack-markov" class="quarto-xref">Figure&nbsp;<span>9.1</span></a>.</p>
+<p>Whether entered directly or generated from text by keyword extraction, the tags will tend to have ordering information readily available. A traditional way to model this kind of text is through either bag-of-words (the co-occurrence node activation data already discussed) or as a sequence of order-n markov model emissions. An order-n markov model <span class="math inline">\(\text{MC}n\)</span> estimates the probability of observing the <span class="math inline">\(i\)</span>th item <span class="math inline">\(t_i\)</span> in a sequence <span class="math inline">\(T\)</span> as <span class="math display">\[
+P(t_i|T) \approx P(t_i | t_{i-1}, \cdots,t_{i-n})
+\]</span></p>
+<p>Unlike the clique bias from before, assuming markov jumps for each observation leads to a different kind of bias, with higher precision but reduced recall as shown in <a href="#fig-stack-markov" class="quarto-xref">Figure&nbsp;<span>9.2</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-markov">
-<div id="cell-fig-stack-markov" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="25">
+<div id="cell-fig-stack-markov" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="26">
 <div class="cell-output cell-output-display">
 <div id="fig-stack-markov" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -360,7 +393,7 @@ Table&nbsp;9.1: Maintenance Work Order as categorized vs.&nbsp;tagged data
 <img src="3-08-ordered_files/figure-html/..-codefigs-graphs-fig-stack-markov-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stack-markov-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: Partial-order edge measurements with Markov assumption
+Figure&nbsp;9.2: Partial-order edge measurements with Markov assumption
 </figcaption>
 </figure>
 </div>
@@ -426,16 +459,15 @@ Figure&nbsp;9.1: Partial-order edge measurements with Markov assumption
 </div><div id="ref-sharedreliabilitydatabase_Ho2015" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[19] </div><div class="csl-right-inline">M. Ho, <span>“A shared reliability database for mobile mining equipment,”</span> PhD thesis, University of Western Australia, 2015.</div>
 </div></div><p>Then, if we can compare the semi-supervised tag classifications to a ground-truth classification by a human annotator (which are available for the excavator dataset thanks to <span class="citation" data-cites="sharedreliabilitydatabase_Ho2015"><a href="#ref-sharedreliabilitydatabase_Ho2015" role="doc-biblioref">[19]</a></span>), we can assess the ability of each network to capture the human annotator’s internal/cognitive tag relationship structure.</p>
-<blockquote class="blockquote">
-<p><em>Which network assigns tags to subsystems most like a domain expert?</em></p>
-</blockquote>
 </section>
-<section id="results" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="results">Results</h3>
+<section id="which-network-assigns-tags-to-subsystems-most-like-a-domain-expert" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="which-network-assigns-tags-to-subsystems-most-like-a-domain-expert">Which network assigns tags to subsystems most like a domain expert?</h3>
 <p>To test the ability of the similarity measures to accomplish this, the top three most common subsystems in the data were used as classes, namely, Hydraulic System, Engine, and Bucket. The tags “hydraulic”, “engine”, and “bucket” were assigned to those subsystems as known labels, respectively. Tags were filtered to only include ones of high-importance and sufficient information: only work orders containing at least 3 unique tags, and only tags that occurred at least 10 unique times within the those work orders, were included for this analysis (<span class="math inline">\(C=263\)</span> MWOs, <span class="math inline">\(N=40\)</span> tags). Then the number of occurrences for every tag can be compared across subsystems, giving each tag a ground-truth multinomial (categorical) probability distribution for occurring within each subsystem. We determine ground-truth classification labels as subsystems that account for <span class="math inline">\(\geq60\%\)</span> of each tag’s occurrences. Tags more balanced than that are considered “unknown subsystem”.</p>
-<p>To perform semi-supervised classification on the recovered relationship graphs, we use a label-spreading algorithm described in&nbsp;<span class="citation" data-cites="Learninglocalglobal_Zhou2004"><a href="#ref-Learninglocalglobal_Zhou2004" role="doc-biblioref">[20]</a></span>, which itself was inspired by spreading activation networks in experimental psychology&nbsp;<span class="citation" data-cites="architecturecognition_Anderson2013"><a href="#ref-Observationphasetransitions_Shrager1987" role="doc-biblioref">[22]</a></span>. The result of this algorithm is tags having a score for each class, with the classification being the maximally scored class for that tag. These class assignments can then be compared to the ground-truth labels, which we have done by weighted macro-averaging of the <span class="math inline">\(F_1\)</span>-score (see <a href="#fig-excavate-f1kl" class="quarto-xref">Figure&nbsp;<span>9.2 (a)</span></a>).</p>
+<p>To perform semi-supervised classification on the recovered relationship graphs, we use a label-spreading algorithm described in&nbsp;<span class="citation" data-cites="Learninglocalglobal_Zhou2004"><a href="#ref-Learninglocalglobal_Zhou2004" role="doc-biblioref">[20]</a></span>, which itself was inspired by spreading activation networks in experimental psychology&nbsp;<span class="citation" data-cites="architecturecognition_Anderson2013 Observationphasetransitions_Shrager1987"><a href="#ref-architecturecognition_Anderson2013" role="doc-biblioref">[21]</a>, <a href="#ref-Observationphasetransitions_Shrager1987" role="doc-biblioref">[22]</a></span>. The result of this algorithm is tags having a score for each class, with the classification being the maximally scored class for that tag. These class assignments can then be compared to the ground-truth labels, which we have done by weighted macro-averaging of the <span class="math inline">\(F_1\)</span>-score (see <a href="#fig-excavate-f1kl" class="quarto-xref">Figure&nbsp;<span>9.3 (a)</span></a>).</p>
 <div class="no-row-height column-margin column-container"><div id="ref-Learninglocalglobal_Zhou2004" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[20] </div><div class="csl-right-inline">D. Zhou, O. Bousquet, T. N. Lal, J. Weston, and B. Schölkopf, <span>“Learning with local and global consistency,”</span> in <em>Advances in neural information processing systems</em>, 2004, pp. 321–328.</div>
+</div><div id="ref-architecturecognition_Anderson2013" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[21] </div><div class="csl-right-inline">J. R. Anderson, <em>The architecture of cognition</em>. Psychology Press, 2013.</div>
 </div><div id="ref-Observationphasetransitions_Shrager1987" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[22] </div><div class="csl-right-inline">J. Shrager, T. Hogg, and B. A. Huberman, <span>“Observation of phase transitions in spreading activation networks,”</span> <em>Science</em>, vol. 236, no. 4805, pp. 1092–1094, 1987.</div>
 </div></div><div id="fig-excavate-results" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -463,12 +495,12 @@ Figure&nbsp;9.1: Partial-order edge measurements with Markov assumption
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-excavate-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.2: Semisupervised MWO Tag Classification with Network Label Propagation
+Figure&nbsp;9.3: Semisupervised MWO Tag Classification with Network Label Propagation
 </figcaption>
 </figure>
 </div>
 <p>The classification of the INVITE-based similarity measure far outperforms the other measures as a preprocessor for label-spreading, when measured by average <span class="math inline">\(F_1\)</span>-score. However, since these “classifications” are actually thresholded multinomial distributions (with some tags regularly occurring across multiple subsystems), how do we know if an underlying structure has actually been recovered, rather than simply a black-box classifier that happens to perform well at this setting?</p>
-<p>To begin answering this question, we might ask whether the relative scores returned by label-spreading are similar to the original multinomial distributions themselves, rather than the overall classification. To find out, we use softmax normalization<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> to transform each tag’s scores into a “predicted multinomial", before finally calculating the Kullback-Leibler divergence (KLD) between the true and predicted multinomials for every tag. The total KLD, summed over all tags, is also shown in <a href="#fig-excavate-ternary" class="quarto-xref">Figure&nbsp;<span>9.2 (b)</span></a>, along with positions of each tag’s multinomial as projected onto the 2-simplex for the true and <span class="math inline">\(F_1\)</span>-optimal predicted distributions. Once again, the INVITE performs much better at this task, over a wide range of <span class="math inline">\(\sigma\)</span> (lower is better).</p>
+<p>To begin answering this question, we might ask whether the relative scores returned by label-spreading are similar to the original multinomial distributions themselves, rather than the overall classification. To find out, we use softmax normalization<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> to transform each tag’s scores into a “predicted multinomial", before finally calculating the Kullback-Leibler divergence (KLD) between the true and predicted multinomials for every tag. The total KLD, summed over all tags, is also shown in <a href="#fig-excavate-ternary" class="quarto-xref">Figure&nbsp;<span>9.3 (b)</span></a>, along with positions of each tag’s multinomial as projected onto the 2-simplex for the true and <span class="math inline">\(F_1\)</span>-optimal predicted distributions. Once again, the INVITE performs much better at this task, over a wide range of <span class="math inline">\(\sigma\)</span> (lower is better).</p>
 <div class="no-row-height column-margin column-container"><div id="fn5"><p><sup>5</sup>&nbsp;For visualization, a temperature parameter was added to softmax, and this was optimized for minimum KLD via Brent’s method&nbsp;<span class="citation" data-cites="algorithmguaranteedconvergence_Brent1971"><a href="#ref-algorithmguaranteedconvergence_Brent1971" role="doc-biblioref">[23]</a></span> for each similarity measure independently to provide an equal footing for comparison.</p><div id="ref-algorithmguaranteedconvergence_Brent1971" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[23] </div><div class="csl-right-inline">R. P. Brent, <span>“An algorithm with guaranteed convergence for finding a zero of a function,”</span> <em>The Computer Journal</em>, vol. 14, no. 4, pp. 422–425, 1971.</div>
 </div></div></div><p>A reason for the performance disparity can be seen in the simplex projections: recovered topology via INVITE-similarity does a much better job of separating the three classes, while not letting any single tag overcompensate by dominating a subsystem’s area. Even the “unknown” tags are correctly placed roughly between Bucket and Hydraulic System regions, reflecting the true topology of the system.</p>
@@ -477,7 +509,7 @@ Figure&nbsp;9.2: Semisupervised MWO Tag Classification with Network Label Propag
 <section id="forest-pursuit-animal-network" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="forest-pursuit-animal-network">Forest Pursuit Animal Network</h2>
 <p>For our last case study, we return to Forest Pursuit as a useful tool for analysis even when that might mean ignoring partial ordering information. Note that <a href="#eq-absorb" class="quarto-xref">Equation&nbsp;<span>9.2</span></a> is effectively the same as a (<span class="math inline">\(\beta=1\)</span>) forest matrix if the transition (normalized adjacency) matrix was replaced by a (sub-)graph laplacian. Intuitively, the INVITE loss function is summing up over absorption (log-)probabilities at each new node activation: i.e.&nbsp;each step of a tree’s creation. Because the probability of a sampled tree is precisely proportional to the product of its edge weights, then weighing a tree by its absorption probabilities and running INVITE should have a mathematically similar effect as the FP estimate. The similarity would be exact whenever the tree that set of nodes traveled along <em>was</em> the mode of the tree distribution: the MST.</p>
-<p>In other words, whenever the random walks <em>did</em> use the minimum distance to reach each node, the two methods should be equivalent. While this isn’t happening much individually, the effect of <em>many</em> random walks will average out to this MST, precisely because <em>it is the tree distribution mode</em> from which we assume node activations sample under RSFm.</p>
+<p>In other words, whenever the random walks <em>did</em> use the minimum distance to reach each node, the two methods should be equivalent. While this isn’t happening much individually, the effect of <em>many</em> random walks will average out to this MST, precisely because <em>it is the tree distribution mode</em> from which we assume node activations sample under <em>marked Random Spanning Forests</em>.</p>
 <p>To illustrate FP’s efficacy in network estimation despite ignoring partial order information, we turn to a classic network recovery problem in this space: <em>semantic networks from fluency data</em><span class="citation" data-cites="newdissimilaritymeasure_Prescott2006 Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a>, <a href="#ref-newdissimilaritymeasure_Prescott2006" role="doc-biblioref">[24]</a></span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-newdissimilaritymeasure_Prescott2006" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[24] </div><div class="csl-right-inline">T. J. Prescott, L. D. Newton, N. U. Mir, P. W. R. Woodruff, and R. W. Parks, <span>“A new dissimilarity measure for finding semantic structure in category fluency data with implications for understanding memory organization in schizophrenia.”</span> <em>Neuropsychology</em>, vol. 20, no. 6, pp. 685–699, Nov. 2006, doi: <a href="https://doi.org/10.1037/0894-4105.20.6.685">10.1037/0894-4105.20.6.685</a>.</div>
@@ -493,9 +525,9 @@ Figure&nbsp;9.2: Semisupervised MWO Tag Classification with Network Label Propag
 <div class="csl-left-margin">[26] </div><div class="csl-right-inline">T. Mikolov, K. Chen, G. Corrado, and J. Dean, <span>“Efficient estimation of word representations in vector space,”</span> <em>arXiv preprint arXiv:1301.3781</em>, 2013.</div>
 </div></div><div id="ref-Estimatingsemanticnetworks_Zemla2018" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[9] </div><div class="csl-right-inline">J. C. Zemla and J. L. Austerweil, <span>“Estimating semantic networks of groups and individuals from fluency data,”</span> <em>Computational brain &amp; behavior</em>, vol. 1, pp. 36–58, 2018, doi: <a href="https://doi.org/10.31234/osf.io/kg45r">10.31234/osf.io/kg45r</a>.</div>
-</div></div><p>For our case study, we use lists of animals submitted by participants as described in <span class="citation" data-cites="semanticorganizationanimal_Goni2011 Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a>, <a href="#ref-semanticorganizationanimal_Goni2011" role="doc-biblioref">[27]</a></span>. We limit the animals under consideration to those that occurred in more than 30 lists for a good sample size, as well as lists with at least two animals. This resulted in 100 animals over 293 fluency lists. However, we ignore this filtering when creating the 10-animal rolling windows, to avoid inclusion of unrelated animals into prematurely filtered windows. After re-applying the filter, 100 animals appear across 8020 working-memory windows. <a href="#fig-fluency-workingmemory" class="quarto-xref">Figure&nbsp;<span>9.3</span></a> shows the effects of this preprocessing on marginal distributions.</p>
+</div></div><p>For our case study, we use lists of animals submitted by participants as described in <span class="citation" data-cites="semanticorganizationanimal_Goni2011 Estimatingsemanticnetworks_Zemla2018"><a href="#ref-Estimatingsemanticnetworks_Zemla2018" role="doc-biblioref">[9]</a>, <a href="#ref-semanticorganizationanimal_Goni2011" role="doc-biblioref">[27]</a></span>. We limit the animals under consideration to those that occurred in more than 30 lists for a good sample size, as well as lists with at least two animals. This resulted in 100 animals over 293 fluency lists. However, we ignore this filtering when creating the 10-animal rolling windows, to avoid inclusion of unrelated animals into prematurely filtered windows. After re-applying the filter, 100 animals appear across 8020 working-memory windows. <a href="#fig-fluency-workingmemory" class="quarto-xref">Figure&nbsp;<span>9.4</span></a> shows the effects of this preprocessing on marginal distributions.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-workingmemory">
-<div id="cell-fig-fluency-workingmemory" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="34">
+<div id="cell-fig-fluency-workingmemory" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="33">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-workingmemory" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -503,7 +535,7 @@ Figure&nbsp;9.2: Semisupervised MWO Tag Classification with Network Label Propag
 <img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-workingmemory-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-workingmemory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.3: Effects of rolling-window activations on observation data
+Figure&nbsp;9.4: Effects of rolling-window activations on observation data
 </figcaption>
 </figure>
 </div>
@@ -526,17 +558,17 @@ e_{\text{max}} = \frac{n(n-1)}{2} \quad e_{\text{min}} = n-1
 <div class="csl-left-margin">[28] </div><div class="csl-right-inline">P. B. Slater, <span>“A two-stage algorithm for extracting the multiscale backbone of complex weighted networks,”</span> <em>Proceedings of the National Academy of Sciences</em>, vol. 106, no. 26, pp. E66–E66, Jun. 2009, doi: <a href="https://doi.org/10.1073/pnas.0904725106">10.1073/pnas.0904725106</a>.</div>
 </div><div id="ref-semanticorganizationanimal_Goni2011" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[27] </div><div class="csl-right-inline">J. Goñi <em>et al.</em>, <span>“The semantic organization of the animal category: Evidence from semantic verbal fluency and network theory,”</span> <em>Cognitive processing</em>, vol. 12, no. 2, pp. 183–196, 2011.</div>
-</div></div><p>The DS animal network is shown in <a href="#fig-fluency-dsmin" class="quarto-xref">Figure&nbsp;<span>9.4</span></a>. With large, deeply connected clusters centered around contexts animals are found in <a href="#fig-fluency-dsmin" class="quarto-xref">Figure&nbsp;<span>9.4</span></a> looks very similar to the network recovered to make Fig. 4 in <span class="citation" data-cites="semanticorganizationanimal_Goni2011"><a href="#ref-semanticorganizationanimal_Goni2011" role="doc-biblioref">[27]</a></span>. Clusters approximate animal types by their location relative to humans: farm/livestock, ocean/water creatures, “African” and jungle animals, small indoor mammals, small outdoor mammals, etc.</p>
+</div></div><p>The DS animal network is shown in <a href="#fig-fluency-dsmin" class="quarto-xref">Figure&nbsp;<span>9.5</span></a>. With large, deeply connected clusters centered around contexts animals are found in <a href="#fig-fluency-dsmin" class="quarto-xref">Figure&nbsp;<span>9.5</span></a> looks very similar to the network recovered to make Fig. 4 in <span class="citation" data-cites="semanticorganizationanimal_Goni2011"><a href="#ref-semanticorganizationanimal_Goni2011" role="doc-biblioref">[27]</a></span>. Clusters approximate animal types by their location relative to humans: farm/livestock, ocean/water creatures, “African” and jungle animals, small indoor mammals, small outdoor mammals, etc.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-dsmin">
-<div id="cell-fig-fluency-dsmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="37">
+<div id="cell-fig-fluency-dsmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="36">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-dsmin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.4: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="img-fluid figure-img"></a>
+<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.5: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-dsmin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-dsmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.4: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
+Figure&nbsp;9.5: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
 </figcaption>
 </figure>
 </div>
@@ -544,17 +576,17 @@ Figure&nbsp;9.4: Verbal Fluency (animals) Network Backbone (Doubly-Stochastic)
 </div>
 </div>
 <p>This is largely how the literature on semantic fluency leaves their network recovery solution, with clusters based on human proximity or physical location. However, there are other ways people might relate animals than simply by location. Additionally, clique bias is quite strong in this network: why must every farm animal be mutually connected if its possible to recall any of them through one or two “hub” animals? This is related to the incredible inefficiency of this backbone, with a <span class="math inline">\(\psi=0.35\)</span> being rather closer to fully connected than sparse. Additionally, the two animals that seem to appear <em>regardless</em> of others are <em>cat</em> and <em>dog</em>, which ironically makes DS penalize their proximity to any of the clusters. Both are ironically clustered with ocean animals due to their tendency to be listed near <em>fish</em>.</p>
-<p>The Chow-Liu tree network is shown in <a href="#fig-fluency-tree" class="quarto-xref">Figure&nbsp;<span>9.5</span></a>, and goes some way to alleviating these issues. Clusters are largely intact, instead represented by large branches/subtrees off the main group. However, some community relationships have been sacrificed to maintain strong individual edges, such as <em>monkey</em>+<em>giraffe</em> for location similarity at the expense of separating two halves of the pink cluster across a wide distance. More alternate paths between creatures (i.e.&nbsp;loops) are needed to better represent our perception of animal relationships.</p>
+<p>The Chow-Liu tree network is shown in <a href="#fig-fluency-tree" class="quarto-xref">Figure&nbsp;<span>9.6</span></a>, and goes some way to alleviating these issues. Clusters are largely intact, instead represented by large branches/subtrees off the main group. However, some community relationships have been sacrificed to maintain strong individual edges, such as <em>monkey</em>+<em>giraffe</em> for location similarity at the expense of separating two halves of the pink cluster across a wide distance. More alternate paths between creatures (i.e.&nbsp;loops) are needed to better represent our perception of animal relationships.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-tree">
-<div id="cell-fig-fluency-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="39">
+<div id="cell-fig-fluency-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="38">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.5: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="img-fluid figure-img"></a>
+<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-tree-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-tree-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.5: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
+Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
 </figcaption>
 </figure>
 </div>
@@ -563,15 +595,15 @@ Figure&nbsp;9.5: Verbal Fluency (animals) Dependency Network (Chow-Liu Tree)
 </div>
 <p>The other dependency network recovery method is GLASSO, which we have similarly thresholded at the minimum-connected point. It only slightly improves on connective efficiency (<span class="math inline">\(\psi=0.44\)</span>), though the cliques are replaced with much more dispersed connections throughout the graph. We also see that reasonable inter-group connections are better represented, such as <em>rabbit</em>+<em>squirrel</em>, though <em>cat</em> and <em>dog</em> are still isolated due to overrepresentation throughout the dataset.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-glassomin">
-<div id="cell-fig-fluency-glassomin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="40">
+<div id="cell-fig-fluency-glassomin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="39">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-glassomin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (GLASSO)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="img-fluid figure-img"></a>
+<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (GLASSO)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-glassomin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-glassomin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (GLASSO)
+Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (GLASSO)
 </figcaption>
 </figure>
 </div>
@@ -579,17 +611,17 @@ Figure&nbsp;9.6: Verbal Fluency (animals) Dependency Network (GLASSO)
 </div>
 </div>
 <p>Subjectively, the GLASSO network is still difficult for an analyst to synthesize into useful knowledge, with so many edges, while the DS network only really managed to communicate one “kind” of knowledge (the context clusters). We would ideally prefer a backbone that provides a wider diversity of important edge “types”, for an analyst to better understand the kinds of animal relationships humans perceive.</p>
-<p>To illustrate this, we show the <em>Forest Pursuit</em>(FP) network in <a href="#fig-fluency-fpmin" class="quarto-xref">Figure&nbsp;<span>9.7</span></a>. It has also been filtered to minimum-connected, like DS and GLASSO, though in this case the connective efficiency to reach that threshold is a staggering <span class="math inline">\(\psi=0.88\)</span>.</p>
+<p>To illustrate this, we show the <em>Forest Pursuit</em>(FP) network in <a href="#fig-fluency-fpmin" class="quarto-xref">Figure&nbsp;<span>9.8</span></a>. It has also been filtered to minimum-connected, like DS and GLASSO, though in this case the connective efficiency to reach that threshold is a staggering <span class="math inline">\(\psi=0.88\)</span>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-fpmin">
-<div id="cell-fig-fluency-fpmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="42">
+<div id="cell-fig-fluency-fpmin" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div id="fig-fluency-fpmin" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="img-fluid figure-img"></a>
+<a href="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="lightbox" data-gallery="fluency" title="Figure&nbsp;9.8: Verbal Fluency (animals) Dependency Network (Forest Pursuit)"><img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-fluency-fpmin-output-1.svg" class="img-fluid figure-img"></a>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-fpmin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
+Figure&nbsp;9.8: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
 </figcaption>
 </figure>
 </div>
@@ -607,9 +639,9 @@ Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
 <li>Related through conservation or public awareness (<em>panda</em>+<em>gorilla</em>)</li>
 <li>etc.</li>
 </ul>
-<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;Note that the dependency-based methods correctly interpred these three as <em>not</em> being mutually connected in a triad, but specifically with this ordering (<em>tiger</em> in the middle).</p></div></div><p>This is further reflected in how FP alters the way <em>centrality</em> measures behave. Replicating <a href="3-07-qualitative.html#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a> for these graphs, <a href="#fig-animal-centrality" class="quarto-xref">Figure&nbsp;<span>9.8</span></a> shows the change in rank across the top 15 animals for the DS, GLASSO, and FP networks.</p>
+<div class="no-row-height column-margin column-container"><div id="fn7"><p><sup>7</sup>&nbsp;Note that the dependency-based methods correctly interpred these three as <em>not</em> being mutually connected in a triad, but specifically with this ordering (<em>tiger</em> in the middle).</p></div></div><p>This is further reflected in how FP alters the way <em>centrality</em> measures behave. Replicating <a href="3-07-qualitative.html#fig-lesmis-centrality" class="quarto-xref">Figure&nbsp;<span>8.7</span></a> for these graphs, <a href="#fig-animal-centrality" class="quarto-xref">Figure&nbsp;<span>9.9</span></a> shows the change in rank across the top 15 animals for the DS, GLASSO, and FP networks.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-animal-centrality">
-<div id="cell-fig-animal-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="45">
+<div id="cell-fig-animal-centrality" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div id="fig-animal-centrality" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -617,7 +649,7 @@ Figure&nbsp;9.7: Verbal Fluency (animals) Dependency Network (Forest Pursuit)
 <img src="3-08-ordered_files/figure-html/..-codefigs-qualitative-fig-animal-centrality-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-animal-centrality-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.8: Changes in animal centrality ranking for FP vs co-occurrence,GLASSO
+Figure&nbsp;9.9: Changes in animal centrality ranking for FP vs co-occurrence,GLASSO
 </figcaption>
 </figure>
 </div>
@@ -629,10 +661,10 @@ Figure&nbsp;9.8: Changes in animal centrality ranking for FP vs co-occurrence,GL
 With the primary community structures being what they are (context/location-based), it seems that humans tend to put dogs in a category all their own.</p></div></div></section>
 <section id="thresholded-structure-preservation" class="level3">
 <h3 class="anchored" data-anchor-id="thresholded-structure-preservation">Thresholded Structure Preservation</h3>
-<p>Another beneficial feature of <em>Forest Pursuit</em> is how it fares under increased thresholding. Because co-occurrence methods prioritize cliques, those cliques will remain connected as other edges are removed, effectively destroying the global structure of the animal network past a certain threshold. As seen in <a href="#fig-fluency-preservation" class="quarto-xref">Figure&nbsp;<span>9.9</span></a>, in keeping only the top 2% of edges, they are used to connect separated islands of animal communities.</p>
+<p>Another beneficial feature of <em>Forest Pursuit</em> is how it fares under increased thresholding. Because co-occurrence methods prioritize cliques, those cliques will remain connected as other edges are removed, effectively destroying the global structure of the animal network past a certain threshold. As seen in <a href="#fig-fluency-preservation" class="quarto-xref">Figure&nbsp;<span>9.10</span></a>, in keeping only the top 2% of edges, they are used to connect separated islands of animal communities.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preservation">
-<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="46">
-<div id="fig-fluency-preservation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="46">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="45">
+<div id="fig-fluency-preservation" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="45" data-editable="true">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -661,7 +693,7 @@ With the primary community structures being what they are (context/location-base
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preservation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.9: Differences in structural preservation with over-thresholding.
+Figure&nbsp;9.10: Differences in structural preservation with over-thresholding.
 </figcaption>
 </figure>
 </div>
@@ -673,10 +705,10 @@ Figure&nbsp;9.9: Differences in structural preservation with over-thresholding.
 <section id="sec-fp-preprocess" class="level3">
 <h3 class="anchored" data-anchor-id="sec-fp-preprocess">Forest Pursuit as Preprocessing</h3>
 <p>Because <em>Forest Pursuit</em> creates a representation of the observed data in <em>edge space</em>, we can use <a href="../part2/2-05-forest-pursuit.html#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> in the forward direction, creating a “new”design matrix <span class="math inline">\(X\gets BR\)</span>. As discussed in <a href="../part2/2-05-forest-pursuit.html#sec-fp-problem" class="quarto-xref"><span>Problem Specification</span></a>, <a href="../part2/2-05-forest-pursuit.html#eq-sparse-approx-tree" class="quarto-xref">Equation&nbsp;<span>6.4</span></a> will create a design matrix of interaction counts for each node (its degree in the steiner tree approximation), rather than a binary “on/off” indicator.</p>
-<p>By supplying <em>other algorithms</em> with this new estimate for <span class="math inline">\(X\)</span>, this makes FP a kind of preprocessing on the data itself. We can do this to bias the other methods toward greater sparsity in the backbone, without explicitly relying on point estimates for each observation (any tree with those node degrees would do the same). As shown in <a href="#fig-fluency-preprocess" class="quarto-xref">Figure&nbsp;<span>9.10</span></a>, GLASSO and DS both increase their connective efficiency under FP preprocessing.</p>
+<p>By supplying <em>other algorithms</em> with this new estimate for <span class="math inline">\(X\)</span>, this makes FP a kind of preprocessing on the data itself. We can do this to bias the other methods toward greater sparsity in the backbone, without explicitly relying on point estimates for each observation (any tree with those node degrees would do the same). As shown in <a href="#fig-fluency-preprocess" class="quarto-xref">Figure&nbsp;<span>9.11</span></a>, GLASSO and DS both increase their connective efficiency under FP preprocessing.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/qualitative.qmd" data-notebook-title="Source for Case Studies" data-notebook-cellid="cell-fig-fluency-preprocess">
-<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="48">
-<div id="fig-fluency-preprocess" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="48">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="47">
+<div id="fig-fluency-preprocess" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="47" data-editable="true">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -705,14 +737,14 @@ Figure&nbsp;9.9: Differences in structural preservation with over-thresholding.
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fluency-preprocess-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.10: Forest Pursuit preprocessing for Doubly-Stochastic and GLASSO recovered networks
+Figure&nbsp;9.11: Forest Pursuit preprocessing for Doubly-Stochastic and GLASSO recovered networks
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>This is likely due to the increase in “signal-to-noise” ratio for each datapoint, since observations are only similar when they have a node interacting the same “amount”, not merely when similar nodes are activated.</p>
-<p>Because the entries are now integer counts, FP preprocessing might also give a better path to using distribution-based embedding and clustering techniques, such as Hellinger distances between multinomial sample counts This goes for many other techniques from text processing that rely on multinomial assumptions (i.e.&nbsp;techniques otherwise inapplicable to binary data).<br>
+<p>Because the entries are now integer counts, FP preprocessing might also give a better path to using distribution-based embedding and clustering techniques, such as Hellinger distances between multinomial sample counts. This goes for many other techniques from text processing that rely on multinomial assumptions (i.e.&nbsp;techniques otherwise inapplicable to binary data).<br>
 FP Preprocessing, with further empirical and theoretical validation, might prove to be a powerful tool for practitioners to flexibly backbone and analyse their networks with a variety of new techniques.</p>
 
 
