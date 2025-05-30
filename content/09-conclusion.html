@@ -263,21 +263,12 @@ window.Quarto = {
     <h2 id="toc-title">Contents</h2>
    
   <ul>
-  <li><a href="#sec-future-fp" id="toc-sec-future-fp" class="nav-link active" data-scroll-target="#sec-future-fp">Modifications and Extensions to Forest Pursuit</a>
+  <li><a href="#summary-of-contributions" id="toc-summary-of-contributions" class="nav-link active" data-scroll-target="#summary-of-contributions">Summary of contributions</a></li>
+  <li><a href="#sec-future-fp" id="toc-sec-future-fp" class="nav-link" data-scroll-target="#sec-future-fp">Modifications and extensions to Forest Pursuit</a>
   <ul class="collapse">
-  <li><a href="#multi-source-spreading" id="toc-multi-source-spreading" class="nav-link" data-scroll-target="#multi-source-spreading">Multi-source Spreading</a></li>
-  <li><a href="#hidden-node-discovery" id="toc-hidden-node-discovery" class="nav-link" data-scroll-target="#hidden-node-discovery">Hidden Node Discovery</a></li>
-  <li><a href="#mcmc-and-gibbs-sampling" id="toc-mcmc-and-gibbs-sampling" class="nav-link" data-scroll-target="#mcmc-and-gibbs-sampling">MCMC and Gibbs Sampling</a></li>
-  </ul></li>
-  <li><a href="#sec-future-hyperbolic" id="toc-sec-future-hyperbolic" class="nav-link" data-scroll-target="#sec-future-hyperbolic">Generalizing Inner Products on Incidences</a>
-  <ul class="collapse">
-  <li><a href="#special-orthogonal-group" id="toc-special-orthogonal-group" class="nav-link" data-scroll-target="#special-orthogonal-group">special orthogonal group</a></li>
-  <li><a href="#mathcalh_2-embedding-and-beltrami-voronoi" id="toc-mathcalh_2-embedding-and-beltrami-voronoi" class="nav-link" data-scroll-target="#mathcalh_2-embedding-and-beltrami-voronoi"><span class="math inline">\(\mathcal{H}_2\)</span> embedding and beltrami voronoi</a></li>
-  </ul></li>
-  <li><a href="#potential-applications-and-case-studies" id="toc-potential-applications-and-case-studies" class="nav-link" data-scroll-target="#potential-applications-and-case-studies">Potential Applications and Case Studies</a>
-  <ul class="collapse">
-  <li><a href="#topology-dependent-graph-application" id="toc-topology-dependent-graph-application" class="nav-link" data-scroll-target="#topology-dependent-graph-application">Topology-Dependent Graph Application</a></li>
-  <li><a href="#human-in-the-loop-for-exploratory-relational-analysis" id="toc-human-in-the-loop-for-exploratory-relational-analysis" class="nav-link" data-scroll-target="#human-in-the-loop-for-exploratory-relational-analysis">Human-in-the-loop for Exploratory Relational Analysis</a></li>
+  <li><a href="#multiple-sources-and-hidden-nodes" id="toc-multiple-sources-and-hidden-nodes" class="nav-link" data-scroll-target="#multiple-sources-and-hidden-nodes">Multiple sources and hidden nodes</a></li>
+  <li><a href="#sec-future-hyperbolic" id="toc-sec-future-hyperbolic" class="nav-link" data-scroll-target="#sec-future-hyperbolic">Generalizing inner products on incidences</a></li>
+  <li><a href="#application-areas-and-case-studies" id="toc-application-areas-and-case-studies" class="nav-link" data-scroll-target="#application-areas-and-case-studies">Application areas and case studies</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -304,62 +295,111 @@ window.Quarto = {
 </header>
 
 
-<p>Practitioners have long struggled with a lack of techniques for metrological quantification and measurement error handling in network science. There is an ongoing need to specify valid network recovery models—ones that are not only assessed for precision, but designed for <em>trueness</em>.</p>
-<p>We showed…</p>
+<p>Practitioners have long struggled with a lack of techniques for metrological quantification and measurement error handling in network science. There is an ongoing need to specify valid network recovery models—ones that are not only assessed for precision, but designed for <em>trueness</em>. <span class="citation" data-cites="Measurementerrornetwork_Wang2012"><a href="#ref-Measurementerrornetwork_Wang2012" role="doc-biblioref">[1]</a></span> provides a “reclassification” of measurement error in networks, focusing on the true/false positive/negative dichotomies for both edge and node reporting. This implicitly assumes that, like the karate-club graph <span class="citation" data-cites="InformationFlowModel_Zachary1977"><a href="#ref-InformationFlowModel_Zachary1977" role="doc-biblioref">[2]</a></span>, our observations are of network components (edges/nodes). When the object to be measured is not directly observable (as is the case for recovery from node activations), measurement error can also arise both from model noise sensitivity (lack of precision) and misspecification (lack of trueness). Because of this:</p>
+<div class="no-row-height column-margin column-container"><div id="ref-Measurementerrornetwork_Wang2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. J. Wang, X. Shi, D. A. McFarland, and J. Leskovec, <span>“Measurement error in network data: A re-classification,”</span> <em>Social Networks</em>, vol. 34, no. 4, pp. 396–409, Oct. 2012, doi: <a href="https://doi.org/10.1016/j.socnet.2012.01.003">10.1016/j.socnet.2012.01.003</a>.</div>
+</div><div id="ref-InformationFlowModel_Zachary1977" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">W. W. Zachary, <span>“An information flow model for conflict and fission in small groups,”</span> <em>Journal of Anthropological Research</em>, vol. 33, no. 4, pp. 452–473, Dec. 1977, doi: <a href="https://doi.org/10.1086/jar.33.4.3629752">10.1086/jar.33.4.3629752</a>.</div>
+</div></div><div class="page-columns page-full"><blockquote class="blockquote">
+<p>The practice of ignoring measurement error is still mainstream, and robust methods to take it into account are underdeveloped.</p>
+<p>– Tiago Peixoto <span class="citation" data-cites="ReconstructingNetworksUnknown_Peixoto2018"><a href="#ref-ReconstructingNetworksUnknown_Peixoto2018" role="doc-biblioref">[3]</a></span></p>
+</blockquote><div class="no-row-height column-margin column-container"><div id="ref-ReconstructingNetworksUnknown_Peixoto2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">T. P. Peixoto, <span>“Reconstructing networks with unknown and heterogeneous errors,”</span> <em>Phys. Rev. X</em>, vol. 8, no. 4, p. 041011, Oct. 2018, doi: <a href="https://doi.org/10.1103/PhysRevX.8.041011">10.1103/PhysRevX.8.041011</a>.</div>
+</div></div></div>
+<section id="summary-of-contributions" class="level2">
+<h2 class="anchored" data-anchor-id="summary-of-contributions">Summary of contributions</h2>
+<p>To develop the practice of taking measurement error into account, we have proposed a combination of problem framing, measurement aggregation techniques, and methods for bias correction when recovering network structure from observed random walk visits.</p>
+<p>This thesis provides:</p>
+<ul>
+<li>An interpretation of network recovery as an <em>inverse problem</em> comparable to sparse approximation, with concise definitions of data, edge, and node vector spaces from an underlying incidence-structure formalism.</li>
+<li>A taxonomy of structural assumptions used in literature to make network inference tractable:
+<ol type="1">
+<li>Local, global, or resource/information-flow structural constraints;</li>
+<li>Inverse-problem status (direct or indirect edge observation); and</li>
+<li>Whether activation observations are pre-aggregated before estimation.</li>
+</ol></li>
+<li>A method, <em>Forest Pursuit</em>, to address the need for a model with:
+<ol type="1">
+<li><em>Local</em> observation constraints,</li>
+<li>An inverse-problem assumption for indirect edge observation, and</li>
+<li>Dependence on the bipartite nature of node observations.<br>
+</li>
+</ol></li>
+<li>A dataset and benchmarking toolkit (MENDR) to reproducibly compare algorithmic ability to recover network structure from random walk activations, which has been applied to demonstrate the scaling and accuracy of <em>Forest Pursuit</em> over other methods.</li>
+<li>Generalization of Forest Pursuit by developing a probabilistic model for it as a sparse dictionary learning technique, for which we provide an expectation maximization scheme to estimate.<br>
+</li>
+<li>Application of <em>Forest Pursuit</em> as case studies in scientific collaboration networks, classic literature analysis, technical language processing, and semantic verbal fluency tests.</li>
+</ul>
+<p>We lay this foundation in the hope of further improving the ability of practitioners to explore the structure of their data in a principled manner.</p>
 <!-- ## Limitations of _Forest Pursuit_ {#sec-issues} -->
 <!-- ## Future Work -->
+</section>
 <section id="sec-future-fp" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="sec-future-fp">Modifications and Extensions to Forest Pursuit</h2>
-<section id="multi-source-spreading" class="level3">
-<h3 class="anchored" data-anchor-id="multi-source-spreading">Multi-source Spreading</h3>
-<p>include the root, independent bernoulli injections.</p>
-</section>
-<section id="hidden-node-discovery" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="hidden-node-discovery">Hidden Node Discovery</h3>
-<p>Adding steiner nodes to improve hyperbolicity of metric <span class="citation" data-cites="TreeIam_Sonthalia2020"><a href="#ref-TreeIam_Sonthalia2020" role="doc-biblioref">[1]</a></span></p>
+<h2 class="anchored" data-anchor-id="sec-future-fp">Modifications and extensions to Forest Pursuit</h2>
+<p><em>Desire Path Densities</em> and <em>Forest Pursuit</em> are designed to be adaptable to several modalities of use<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. However, there are key limitations of the model that could be addressed going forward, as well as future research directions inspired by our modeling paradigm.</p>
+<div class="no-row-height column-margin column-container"><div id="fn1"><p><sup>1</sup>&nbsp;see for instance <a href="part3/3-08-ordered.html#sec-fp-preprocess" class="quarto-xref"><span>Forest Pursuit as Preprocessing</span></a></p></div></div><section id="multiple-sources-and-hidden-nodes" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="multiple-sources-and-hidden-nodes">Multiple sources and hidden nodes</h3>
+<p>One of the key assumptions to make the likelihood of the (marked) Random Spanning Forest tractable is to allow only one “source” node (the random walk starting node), and to sample it from a uniform categorical distribution. However, by explicitly adding a “root” node that is implied by the random forest distribution (see <a href="part2/2-06-latent-forest-alloc.html#fig-inject-plan" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>), we would immediately achieve the possibility for multiple sources. A source would become any node incident to the root in a sampled spanning tree. To prevent every node from being activated, the spanning tree could be “pruned” at some depth away from the root (which is a parameter that we could model with <em>e.g.</em> a Geometric distribution. How many sources get selected in a minimum spanning tree could be controlled through the weights given to edges incident to the root (which, if the reader recalls, is already represented by <span class="math inline">\(\beta\)</span>). Also possible could be the use of independent Bernoulli activations of nodes as sources (rather than a categorical selector) though heavy regularization would be required to avoid each node always becoming its own source.</p>
+<p>Another assumption is that there were no <em>hidden nodes</em>. This is different from false negative nodes, in the sense that here we did not know a node <em>existed</em> at all, but it is a source of dependency nonetheless. This might be explained as seeing a need to <em>add</em> a node so that observed distances between nodes are maximally tree-like. <span class="citation" data-cites="TreeIam_Sonthalia2020"><a href="#ref-TreeIam_Sonthalia2020" role="doc-biblioref">[4]</a></span> uses a greedy algorithm (TreeRep) to learn a tree structure (hyperbolic metric) that has minimum distortion to a given distance metric. If the distortion is too great, they add a Steiner node and continue. Automatically building a tree and simultaneously adding Steiner nodes that reduce distortion would effectively result in recommendations for adding new nodes to the graph. An analyst might be able to review these suggestions, interactively, to find “hidden” nodes.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-TreeIam_Sonthalia2020" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[1] </div><div class="csl-right-inline">R. Sonthalia and A. C. Gilbert, <span>“Tree! I am no tree! I am a low dimensional hyperbolic embedding,”</span> <span>arXiv</span>; arXiv, <span>arXiv</span>:2005.03847, Oct. 2020. doi: <a href="https://doi.org/10.48550/arXiv.2005.03847">10.48550/arXiv.2005.03847</a>.</div>
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">R. Sonthalia and A. C. Gilbert, <span>“Tree! I am no tree! I am a low dimensional hyperbolic embedding,”</span> <span>arXiv</span>; arXiv, <span>arXiv</span>:2005.03847, Oct. 2020. doi: <a href="https://doi.org/10.48550/arXiv.2005.03847">10.48550/arXiv.2005.03847</a>.</div>
 </div></div></section>
-<section id="mcmc-and-gibbs-sampling" class="level3">
-<h3 class="anchored" data-anchor-id="mcmc-and-gibbs-sampling">MCMC and Gibbs Sampling</h3>
-</section>
-</section>
-<section id="sec-future-hyperbolic" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="sec-future-hyperbolic">Generalizing Inner Products on Incidences</h2>
-<section id="special-orthogonal-group" class="level3">
-<h3 class="anchored" data-anchor-id="special-orthogonal-group">special orthogonal group</h3>
-<p>the “root” node affects a time-like dimension</p>
-</section>
-<section id="mathcalh_2-embedding-and-beltrami-voronoi" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="mathcalh_2-embedding-and-beltrami-voronoi"><span class="math inline">\(\mathcal{H}_2\)</span> embedding and beltrami voronoi</h3>
-<p>hyperbolic version of <span class="citation" data-cites="SemiDiscreteNormalizing_Chen2022"><a href="#ref-SemiDiscreteNormalizing_Chen2022" role="doc-biblioref">[2]</a></span></p>
-<div class="no-row-height column-margin column-container"><div id="ref-SemiDiscreteNormalizing_Chen2022" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[2] </div><div class="csl-right-inline">R. T. Q. Chen, B. Amos, and M. Nickel, <span>“Semi-discrete normalizing flows through differentiable tessellation,”</span> in <em>Advances in neural information processing systems</em>, S. Koyejo, S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, and A. Oh, Eds., Curran Associates, Inc., 2022, pp. 14878–14889. Available:<a href="
+<section id="sec-future-hyperbolic" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="sec-future-hyperbolic">Generalizing inner products on incidences</h3>
+<p>Speaking of hyperbolic, many authors have recently investigated the usefulness of hyperbolic space for embedding graphs (as vectors) in a way that preserves hierarchies and sparsity <em>naturally</em> <span class="citation" data-cites="TreesContinuousEmbeddings_Chami2020 HyperbolicEntailmentCones_Ganea2018 LearningContinuousHierarchies_Nickel2018 RepresentationTradeoffsHyperbolic_Sala2018 Socialcentralizationsemantic_Linzhuo2020"><a href="#ref-TreesContinuousEmbeddings_Chami2020" role="doc-biblioref">[5]</a>, <a href="#ref-HyperbolicEntailmentCones_Ganea2018" role="doc-biblioref">[6]</a>, <a href="#ref-LearningContinuousHierarchies_Nickel2018" role="doc-biblioref">[7]</a>, <a href="#ref-RepresentationTradeoffsHyperbolic_Sala2018" role="doc-biblioref">[8]</a>, <a href="#ref-Socialcentralizationsemantic_Linzhuo2020" role="doc-biblioref">[9]</a></span>. If trees can be embedded losslessly <span class="citation" data-cites="LowDistortionDelaunay_Sarkar2012"><a href="#ref-LowDistortionDelaunay_Sarkar2012" role="doc-biblioref">[10]</a></span> into <span class="math inline">\(\mathcal{H}^2\)</span><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>, then traversing a tree as a random walker could be represented as a trajectory in an <span class="math inline">\(\mathcal{H}^{2+1}\)</span> de-Sitter space. Various techniques exist for finding embeddings of graphs as “causal-sets” in a Lorentzian spacetime <span class="citation" data-cites="EmbeddinggraphsLorentzian_Clough2017"><a href="#ref-EmbeddinggraphsLorentzian_Clough2017" role="doc-biblioref">[11]</a></span>, and this approach could be combined with a way to smoothly sample a discretized space with (hyperbolic) Voronoi cells <span class="citation" data-cites="HyperbolicVoronoiDiagrams_Nielsen2010 SemiDiscreteNormalizing_Chen2022"><a href="#ref-HyperbolicVoronoiDiagrams_Nielsen2010" role="doc-biblioref">[12]</a>, <a href="#ref-SemiDiscreteNormalizing_Chen2022" role="doc-biblioref">[13]</a></span></p>
+<div class="no-row-height column-margin column-container"><div id="ref-TreesContinuousEmbeddings_Chami2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">I. Chami, A. Gu, V. Chatziafratis, and C. Ré, <span>“From trees to continuous embeddings and back: Hyperbolic hierarchical clustering,”</span> in <em>Advances in neural information processing systems</em>, Curran Associates, Inc., 2020, pp. 15065–15076. Accessed: Jul. 19, 2022. [Online]. Available:<a href="
+	       https://proceedings.neurips.cc/paper/2020/hash/ac10ec1ace51b2d973cd87973a98d3ab-Abstract.html
+	       "> https://proceedings.neurips.cc/paper/2020/hash/ac10ec1ace51b2d973cd87973a98d3ab-Abstract.html </a></div>
+</div><div id="ref-HyperbolicEntailmentCones_Ganea2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">O. Ganea, G. Becigneul, and T. Hofmann, <span>“Hyperbolic entailment cones for learning hierarchical embeddings,”</span> presented at the International conference on machine learning, <span>PMLR</span>, Jul. 2018, pp. 1646–1655. Accessed: Feb. 01, 2023. [Online]. Available: <a href="https://proceedings.mlr.press/v80/ganea18a.html">https://proceedings.mlr.press/v80/ganea18a.html</a></div>
+</div><div id="ref-LearningContinuousHierarchies_Nickel2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">M. Nickel and D. Kiela, <span>“Learning continuous hierarchies in the lorentz model of hyperbolic geometry,”</span> presented at the International conference on machine learning, <span>PMLR</span>, Jul. 2018, pp. 3779–3788. Accessed: Feb. 01, 2023. [Online]. Available: <a href="https://proceedings.mlr.press/v80/nickel18a.html">https://proceedings.mlr.press/v80/nickel18a.html</a></div>
+</div><div id="ref-RepresentationTradeoffsHyperbolic_Sala2018" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">F. Sala, C. D. Sa, A. Gu, and C. Re, <span>“Representation tradeoffs for hyperbolic embeddings,”</span> presented at the International conference on machine learning, <span>PMLR</span>, Jul. 2018, pp. 4460–4469. Accessed: Feb. 01, 2023. [Online]. Available: <a href="https://proceedings.mlr.press/v80/sala18a.html">https://proceedings.mlr.press/v80/sala18a.html</a></div>
+</div><div id="ref-Socialcentralizationsemantic_Linzhuo2020" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">L. Linzhuo, W. Lingfei, and E. James, <span>“Social centralization and semantic collapse: Hyperbolic embeddings of networks and text,”</span> <em>Poetics</em>, vol. 78, p. 101428, Feb. 2020, doi: <a href="https://doi.org/10.1016/j.poetic.2019.101428">10.1016/j.poetic.2019.101428</a>.</div>
+</div><div id="ref-LowDistortionDelaunay_Sarkar2012" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">R. Sarkar, <span>“Low distortion delaunay embedding of trees in hyperbolic plane,”</span> in <em>Graph drawing</em>, M. van Kreveld and B. Speckmann, Eds., in Lecture notes in computer science. Berlin, Heidelberg: Springer, 2012, pp. 355–366. doi: <a href="https://doi.org/10.1007/978-3-642-25878-7_34">10.1007/978-3-642-25878-7_34</a>.</div>
+</div><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(\mathcal{H}^2\)</span> is the 2D hyperbolic manifold, embedded in a 3D Euclidean space.</p></div><div id="ref-EmbeddinggraphsLorentzian_Clough2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">J. R. Clough and T. S. Evans, <span>“Embedding graphs in lorentzian spacetime,”</span> <em>PLOS ONE</em>, vol. 12, no. 11, p. e0187301, Nov. 2017, doi: <a href="https://doi.org/10.1371/journal.pone.0187301">10.1371/journal.pone.0187301</a>.</div>
+</div><div id="ref-HyperbolicVoronoiDiagrams_Nielsen2010" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">F. Nielsen and R. Nock, <span>“Hyperbolic voronoi diagrams made easy,”</span> in <em>2010 international conference on computational science and its applications</em>, Mar. 2010, pp. 74–80. doi: <a href="https://doi.org/10.1109/ICCSA.2010.37">10.1109/ICCSA.2010.37</a>.</div>
+</div><div id="ref-SemiDiscreteNormalizing_Chen2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">R. T. Q. Chen, B. Amos, and M. Nickel, <span>“Semi-discrete normalizing flows through differentiable tessellation,”</span> in <em>Advances in neural information processing systems</em>, S. Koyejo, S. Mohamed, A. Agarwal, D. Belgrave, K. Cho, and A. Oh, Eds., Curran Associates, Inc., 2022, pp. 14878–14889. Available:<a href="
 	       https://proceedings.neurips.cc/paper_files/paper/2022/file/5f61939af1699c82dab00ed36c887968-Paper-Conference.pdf
 	       "> https://proceedings.neurips.cc/paper_files/paper/2022/file/5f61939af1699c82dab00ed36c887968-Paper-Conference.pdf </a></div>
 </div></div></section>
-</section>
-<section id="potential-applications-and-case-studies" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="potential-applications-and-case-studies">Potential Applications and Case Studies</h2>
-<section id="topology-dependent-graph-application" class="level3">
-<h3 class="anchored" data-anchor-id="topology-dependent-graph-application">Topology-Dependent Graph Application</h3>
+<section id="application-areas-and-case-studies" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="application-areas-and-case-studies">Application areas and case studies</h3>
+<p>Lastly, a critical test of <em>Forest Pursuit</em> will be its application to a wider variety of domains under the scrutiny of each domain’s experts. From the network community itself, for instance, recent interest has been shown in assessing the methodological reasons for observed assortativity <span class="citation" data-cites="PerceivedAssortativitySocial_Fisher2017"><a href="#ref-PerceivedAssortativitySocial_Fisher2017" role="doc-biblioref">[14]</a></span>. The conditions under which controlling for clique-bias <em>also</em> reduces assortativity would be a useful tool when deciding to use different network cleaning techniques.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-PerceivedAssortativitySocial_Fisher2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">D. N. Fisher, M. J. Silk, and D. W. Franks, <span>“The perceived assortativity of social networks: Methodological problems and solutions,”</span> in <em>Trends in social network analysis</em>, Springer International Publishing, 2017, pp. 1–19. doi: <a href="https://doi.org/10.1007/978-3-319-53420-6_1">10.1007/978-3-319-53420-6_1</a>.</div>
+</div><div id="ref-newdissimilaritymeasure_Prescott2006" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[15] </div><div class="csl-right-inline">T. J. Prescott, L. D. Newton, N. U. Mir, P. W. R. Woodruff, and R. W. Parks, <span>“A new dissimilarity measure for finding semantic structure in category fluency data with implications for understanding memory organization in schizophrenia.”</span> <em>Neuropsychology</em>, vol. 20, no. 6, pp. 685–699, Nov. 2006, doi: <a href="https://doi.org/10.1037/0894-4105.20.6.685">10.1037/0894-4105.20.6.685</a>.</div>
+</div><div id="ref-Semanticverbalfluency_AriasTrejo2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[16] </div><div class="csl-right-inline">N. Arias-Trejo <em>et al.</em>, <span>“Semantic verbal fluency: Network analysis in alzheimer’s and parkinson’s disease,”</span> <em>Journal of Cognitive Psychology</em>, vol. 33, no. 5, pp. 557–567, Jun. 2021, doi: <a href="https://doi.org/10.1080/20445911.2021.1943414">10.1080/20445911.2021.1943414</a>.</div>
+</div></div><p>Further afield, semantic Verbal Fluency tests discussed in <a href="part3/3-08-ordered.html#sec-animal-fluency" class="quarto-xref"><span>Forest Pursuit Animal Network</span></a> are often administered for the purposes of assisting in diagnosis of Alzheimer’s and Schizophrenia patients. While experiments using inferred network structures <span class="citation" data-cites="newdissimilaritymeasure_Prescott2006 Semanticverbalfluency_AriasTrejo2021"><a href="#ref-newdissimilaritymeasure_Prescott2006" role="doc-biblioref">[15]</a>, <a href="#ref-Semanticverbalfluency_AriasTrejo2021" role="doc-biblioref">[16]</a></span> have been used to detecting early-onset neurological disease from topological differences, it could be useful to re-assess these outcomes when clique-bias has been better accounted for.</p>
+<p>All of these applications would be further assisted by <em>Forest Pursuit</em>’s ability to</p>
 <ul>
-<li>reinventory of assortativity estimates for spreading process graphs</li>
-<li>re-examine semantic network diagnoses for Alzheimers/Schizophrenia</li>
+<li>Infer network estimates <em>quickly</em>, on streaming data, and</li>
+<li>Incorporate prior (and incoming) knowledge from domain experts on edges.</li>
 </ul>
-</section>
-<section id="human-in-the-loop-for-exploratory-relational-analysis" class="level3 page-columns page-full">
-<h3 class="anchored" data-anchor-id="human-in-the-loop-for-exploratory-relational-analysis">Human-in-the-loop for Exploratory Relational Analysis</h3>
-<p>Update <span class="citation" data-cites="CollaborativeCreationCommunal_Heymann2006"><a href="#ref-CollaborativeCreationCommunal_Heymann2006" role="doc-biblioref">[3]</a></span>, especially for doing grounded coding <span class="citation" data-cites="codingmanualqualitative_Saldana2021"><a href="#ref-codingmanualqualitative_Saldana2021" role="doc-biblioref">[4]</a></span>.</p>
+<p>Together, these properties should make for an ideal <em>human-in-the-loop</em> analysis tool. Indeed, for any qualitative study on nodes and discovering relationships between them, decreasing the annotation load (number of edges to assess)—<em>while</em> increasing edge diversity—will be critical to correctly inventory the important categories of relationships or dependencies<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>. Building tools that enable practitioners and researchers to undertake complex grounded coding <span class="citation" data-cites="codingmanualqualitative_Saldana2021"><a href="#ref-codingmanualqualitative_Saldana2021" role="doc-biblioref">[17]</a></span> tasks like this is a rich area for possible Human-Systems Integration efforts going forward <span class="citation" data-cites="Humanlooptechnical_Fung2024 AIInformedApproaches_Harper2022"><a href="#ref-Humanlooptechnical_Fung2024" role="doc-biblioref">[18]</a>, <a href="#ref-AIInformedApproaches_Harper2022" role="doc-biblioref">[19]</a></span>.</p>
 
 
-<div class="no-row-height column-margin column-container"><div id="ref-CollaborativeCreationCommunal_Heymann2006" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[3] </div><div class="csl-right-inline">P. Heymann and H. Garcia-Molina, <span>“Collaborative creation of communal hierarchical taxonomies in social tagging systems,”</span> Stanford InfoLab; Stanford, Technical Report 2006-10, Apr. 2006. Available: <a href="http://ilpubs.stanford.edu:8090/775/">http://ilpubs.stanford.edu:8090/775/</a></div>
-</div><div id="ref-codingmanualqualitative_Saldana2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline">J. Saldaña, <span>“The coding manual for qualitative researchers,”</span> 2021.</div>
+<div class="no-row-height column-margin column-container"><div id="fn3"><p><sup>3</sup>&nbsp;see <a href="part3/3-08-ordered.html#sec-edge-diversity" class="quarto-xref"><span>Edge Connective Efficiency and Diversity</span></a></p></div><div id="ref-codingmanualqualitative_Saldana2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[17] </div><div class="csl-right-inline">J. Saldaña, <span>“The coding manual for qualitative researchers,”</span> 2021.</div>
+</div><div id="ref-Humanlooptechnical_Fung2024" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[18] </div><div class="csl-right-inline">J. F. Fung <em>et al.</em>, <em>Human-in-the-loop technical document annotation :: Developing and validating a system to provide machine-assistance for domain-specific text analysis</em>. National Institute of Standards; Technology (U.S.), 2024. doi: <a href="https://doi.org/10.6028/nist.tn.2287">10.6028/nist.tn.2287</a>.</div>
+</div><div id="ref-AIInformedApproaches_Harper2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[19] </div><div class="csl-right-inline">C. Harper, A. Kumer, S. Stuart, and E. Meszaros, <span>“<span>AI-Informed Approaches</span> to <span>Metadata Tagging</span> for <span>Improved Resource Discovery</span>,”</span> in <em>The <span>Rise</span> of <span>AI</span>: <span>Implications</span> and <span>Applications</span> of <span>Artificial Intelligence</span> in <span>Academic Libraries</span></em>, in <span>PIL</span>, no. 78., ACRL, 2022. Accessed: Mar. 08, 2024. [Online]. Available:<a href="
+	       https://www.choice360.org/libtech-insight/using-ai-for-metadata-tagging-to-improve-resource-discovery/
+	       "> https://www.choice360.org/libtech-insight/using-ai-for-metadata-tagging-to-improve-resource-discovery/ </a></div>
 </div></div>
 </section>
 </section>
+
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
