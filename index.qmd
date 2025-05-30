@@ -3,9 +3,6 @@
 \pagenumbering{roman}
 ```
 
-# Preface {-}
-
-
 # Foreward {-}
 
 > DISCLAIMER FOR PRIOR WORK
@@ -22,8 +19,6 @@ Portions of @sec-ordered involving INVITE and recovery from partially ordered no
 ```{=latex}
 \includepdf[pages=-]{resource/prev-pub-letter.pdf}
 ```
-
-# Acknowledgements {-}
 
 {{< include resource/_toc.qmd >}}
 

@@ -1,10 +1,11 @@
 ```{=latex}
 \addcontentsline{toc}{chapter}{Table of Contents}
     \renewcommand{\contentsname}{Table of Contents}
-\renewcommand{\baselinestretch}{1}
-\small\normalsize
 \tableofcontents %(required, lower-case Roman)
 \newpage
+
+\singlespacing
+\small\normalsize
 
 \phantomsection %create the correct anchor for the bookmark
 \addcontentsline{toc}{chapter}{List of Tables}
@@ -26,6 +27,6 @@
 
 \newpage
 \setlength{\parskip}{0em}
-\renewcommand{\baselinestretch}{2}
+\doublespacing
 \small\normalsize
 ```

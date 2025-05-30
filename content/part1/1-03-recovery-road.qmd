@@ -2,11 +2,12 @@
 
 ::::{.flushright data-latex=""}
 
-::: {.minipage data-latex="{.8\linewidth}"}
-
+::: {.minipage data-latex="{.7\linewidth}"}
+\singlespacing
 > _“Network data cleaning is thus the lovechild of network backboning and link prediction, but that’s a rather barren marriage – as far as I know.”_
 > 
 > \hfill -- Michele Coscia \
+\doublespacing
 :::
 ::::
 
@@ -221,9 +222,14 @@ The implication for inverse problems is a need to _remove the effect_ of the ope
 
 This is a core point of view in @Statisticalinferencelinks_Peel2022, where those authors describe nearly all of network analysis as _inferring hidden structure_:
 
+\singlespacing
+
 > "Here we argue that the most appropriate stance to take is to frame network analysis as a problem of inference, where the actual network abstraction is hidden from view, and needs to be reconstructed given indirect data."
 >
-> Peel et al., [@Statisticalinferencelinks_Peel2022]
+> \hfill -- Peel et al., [@Statisticalinferencelinks_Peel2022]
+
+\doublespacing
+
 
 We note that this isn't strictly true, _assuming_ that the "network" is intended to represent something measured by the direct observation.
 For instance, if a network is intended to represent a discretization of distances (such as a k-nearest neighbors approximation) for computational efficiency.
@@ -242,9 +248,13 @@ Because it is difficult to know a priori what a domain will require of network a
 
 Once again from the @Statisticalinferencelinks_Peel2022 review:
 
+\singlespacing
+
 > Surprisingly, the development of theory and domain-specific applications often occur in isolation, risking an effective disconnect between theoretical and methodological advances and the way network science is employed in practice.
 >
-> Peel et al. [@Statisticalinferencelinks_Peel2022]
+> \hfill -- Peel et al. [@Statisticalinferencelinks_Peel2022]
+
+\doublespacing
 
 In a similar vein, we believe that a large amount of metrological inconsistency and struggle has at its heart a communication and technology transfer problem, which standardization and community toolkit support can hopefully work toward fixing.
 

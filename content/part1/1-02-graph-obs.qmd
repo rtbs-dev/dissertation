@@ -3,12 +3,14 @@
 <!-- …the dimensionality of many data sets is only artificially high; though each data point consists of perhaps thousands of features, it may be described as a function of only a few underlying parameters. -->
 ::::{.flushright data-latex=""}
 
-::: {.minipage data-latex="{.8\linewidth}"}
-
+::: {.minipage data-latex="{.7\linewidth}"}
+\singlespacing
 > _“By stripping away all the extra baggage of distance, length, angle, continuity, betweenness, etc. and retaining only the notion of incidence, we find that what remains is still quite fascinating and highly nontrivial.”_
 > 
 > \hfill -- G. Eric Moorehouse \
+\doublespacing 
 :::
+
 ::::
 
 

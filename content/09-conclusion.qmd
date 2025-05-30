@@ -1,40 +1,92 @@
 # Conclusion & Future Work {#sec-conclusion}
 
+Practitioners have long struggled with a lack of techniques for metrological quantification and measurement error handling in network science.
+There is an ongoing need to specify valid network recovery models---ones that are not only assessed for precision, but designed for _trueness_.
+@Measurementerrornetwork_Wang2012 provides a "reclassification" of measurement error in networks, focusing on the true/false positive/negative dichotomies for both edge and node reporting.
+This implicitly assumes that, like the karate-club graph [@InformationFlowModel_Zachary1977], our observations are of network components (edges/nodes).
+When the object to be measured is not directly observable (as is the case for recovery from node activations), measurement error can also arise both from model noise sensitivity (lack of precision) and misspecification (lack of trueness).
+Because of this:
 
-We showed...
+\singlespacing
+
+> The practice of ignoring measurement error is still mainstream, and robust methods to take it into account are underdeveloped.
+>
+> \hfill -- Tiago Peixoto [@ReconstructingNetworksUnknown_Peixoto2018]
+
+\doublespacing 
+
+## Summary of contributions
+
+To develop the practice of taking measurement error into account, we have proposed a combination of problem framing, measurement aggregation techniques, and methods for bias correction when recovering network structure from observed random walk visits. 
+
+This thesis provides:
+
+- An interpretation of network recovery as an _inverse problem_ comparable to sparse approximation, with concise definitions of data, edge, and node vector spaces from an underlying incidence-structure formalism. 
+- A taxonomy of structural assumptions used in literature to make network inference tractable:
+  1) Local, global, or resource/information-flow structural constraints;
+  2) Inverse-problem status (direct or indirect edge observation); and
+  3) Whether activation observations are pre-aggregated before estimation. 
+- A method, _Forest Pursuit_, to address the need for a model with:
+  1) _Local_ observation constraints,
+  2) An inverse-problem assumption for indirect edge observation, and
+  3) Dependence on the bipartite nature of node observations.   
+- A dataset and benchmarking toolkit (MENDR) to reproducibly compare algorithmic ability to recover network structure from random walk activations, which has been applied to demonstrate the scaling and accuracy of _Forest Pursuit_ over other methods. 
+- Generalization of Forest Pursuit by developing a probabilistic model for it as a sparse dictionary learning technique, for which we provide an expectation maximization scheme to estimate.  
+- Application of _Forest Pursuit_ as case studies in scientific collaboration networks, classic literature analysis, technical language processing, and semantic verbal fluency tests.   
+
+We lay this foundation in the hope of further improving the ability of practitioners to explore the structure of their data in a principled manner.
 
 <!-- ## Limitations of _Forest Pursuit_ {#sec-issues} -->
 
 <!-- ## Future Work -->
 
-## Modifications and Extensions to Forest Pursuit{#sec-future-fp}
+## Modifications and extensions to Forest Pursuit{#sec-future-fp}
+
+_Desire Path Densities_ and _Forest Pursuit_ are designed to be adaptable to several modalities of use^[see for instance @sec-fp-preprocess].
+However, there are key limitations of the model that could be addressed going forward, as well as future research directions inspired by our modeling paradigm.  
+
+### Multiple sources and hidden nodes
+
+One of the key assumptions to make the likelihood of the (marked) Random Spanning Forest tractable is to allow only one "source" node (the random walk starting node), and to sample it from a uniform categorical distribution.
+However, by explicitly adding a "root" node that is implied by the random forest distribution (see @fig-inject-plan), we would immediately achieve the possibility for multiple sources.
+A source would become any node incident to the root in a sampled spanning tree.
+To prevent every node from being activated, the spanning tree could be "pruned" at some depth away from the root (which is a parameter that we could model with _e.g._ a Geometric distribution.
+How many sources get selected in a minimum spanning tree could be controlled through the weights given to edges incident to the root (which, if the reader recalls, is already represented by $\beta$).
+Also possible could be the use of independent Bernoulli activations of nodes as sources (rather than a categorical selector) though heavy regularization would be required to avoid each node always becoming its own source. 
+
+Another assumption is that there were no _hidden nodes_.
+This is different from false negative nodes, in the sense that here we did not know a node _existed_ at all, but it is a source of dependency nonetheless. 
+This might be explained as seeing a need to _add_ a node so that observed distances between nodes are maximally tree-like.
+[@TreeIam_Sonthalia2020] uses a greedy algorithm (TreeRep) to learn a tree structure (hyperbolic metric) that has minimum distortion to a given distance metric.
+If the distortion is too great, they add a Steiner node and continue.
+Automatically building a tree and simultaneously adding Steiner nodes that reduce distortion would effectively result in recommendations for adding new nodes to the graph.
+An analyst might be able to review these suggestions, interactively, to find "hidden" nodes. 
+
+### Generalizing inner products on incidences {#sec-future-hyperbolic}
+
+Speaking of hyperbolic, many authors have recently investigated the usefulness of hyperbolic space for embedding graphs (as vectors) in a way that preserves hierarchies and sparsity _naturally_ [@TreesContinuousEmbeddings_Chami2020;@HyperbolicEntailmentCones_Ganea2018;@LearningContinuousHierarchies_Nickel2018;@RepresentationTradeoffsHyperbolic_Sala2018;@Socialcentralizationsemantic_Linzhuo2020]. 
+If trees can be embedded losslessly [@LowDistortionDelaunay_Sarkar2012] into $\mathcal{H}^2$^[
+  $\mathcal{H}^2$ is the 2D hyperbolic manifold, embedded in a 3D Euclidean space.
+], then traversing a tree as a random walker could be represented as a trajectory in an $\mathcal{H}^{2+1}$ de-Sitter space.
+Various techniques exist for finding embeddings of graphs as "causal-sets" in a Lorentzian spacetime [@EmbeddinggraphsLorentzian_Clough2017], and this approach could be combined with a way to smoothly sample a discretized space with (hyperbolic) Voronoi cells [@HyperbolicVoronoiDiagrams_Nielsen2010; @SemiDiscreteNormalizing_Chen2022]
 
 
-### Multi-source Spreading
-include the root, independent bernoulli injections. 
+### Application areas and case studies
 
-### Hidden Node Discovery
-Adding steiner nodes to improve hyperbolicity of metric [@TreeIam_Sonthalia2020]
+Lastly, a critical test of _Forest Pursuit_ will be its application to a wider variety of domains under the scrutiny of each domain's experts. 
+From the network community itself, for instance, recent interest has been shown in assessing the methodological reasons for observed assortativity [@PerceivedAssortativitySocial_Fisher2017].
+The conditions under which controlling for clique-bias _also_ reduces assortativity would be a useful tool when deciding to use different network cleaning techniques. 
 
-### MCMC and Gibbs Sampling
+Further afield, semantic Verbal Fluency tests discussed in @sec-animal-fluency are often administered for the purposes of assisting in diagnosis of Alzheimer's and Schizophrenia patients.
+While experiments using inferred network structures [@newdissimilaritymeasure_Prescott2006;@Semanticverbalfluency_AriasTrejo2021] have been used to detecting early-onset neurological disease from topological differences, it could be useful to re-assess these outcomes when clique-bias has been better accounted for. 
 
-## Generalizing Inner Products on Incidences {#sec-future-hyperbolic}
+All of these applications would be further assisted by _Forest Pursuit_'s ability to
 
-### special orthogonal group
-the "root" node affects a time-like dimension
+- Infer network estimates _quickly_, on streaming data, and
+- Incorporate prior (and incoming) knowledge from domain experts on edges.
 
-### $\mathcal{H}_2$ embedding and beltrami voronoi
-hyperbolic version of [@SemiDiscreteNormalizing_Chen2022]
-
-## Potential Applications and Case Studies
-
-
-### Topology-Dependent Graph Application
-
-- reinventory of assortativity estimates for spreading process graphs
-- re-examine semantic network diagnoses for Alzheimers/Schizophrenia
+Together, these properties should make for an ideal _human-in-the-loop_ analysis tool.
+Indeed, for any qualitative study on nodes and discovering relationships between them, decreasing the annotation load (number of edges to assess)---_while_ increasing edge diversity---will be critical to correctly inventory the important categories of relationships or dependencies^[see @sec-edge-diversity].
+Building tools that enable practitioners and researchers to undertake complex grounded coding [@codingmanualqualitative_Saldana2021] tasks like this is a rich area for possible Human-Systems Integration efforts going forward [@Humanlooptechnical_Fung2024;@AIInformedApproaches_Harper2022].
 
 
-### Human-in-the-loop for Exploratory Relational Analysis
-
-Update [@CollaborativeCreationCommunal_Heymann2006], especially for doing grounded coding [@codingmanualqualitative_Saldana2021].

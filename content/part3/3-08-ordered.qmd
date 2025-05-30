@@ -3,11 +3,14 @@
 
 ::::{.flushright data-latex=""}
 
-::: {.minipage data-latex="{.8\linewidth}"}
+::: {.minipage data-latex="{.7\linewidth}"}
+\singlespacing
 
 > _"So an analytically astute observer would find that a salmon is more closely related to a camel than it is to a hagfish. On what basis, then, do we justify grouping salmon under the label fish, but not camels?"_
 > 
 > \hfill -- Samuel Beswick (sarcastically) \
+
+\doublespacing
 :::
 ::::
 
@@ -22,6 +25,7 @@ We don't know if (i) asked (f) before or after (j) asked (b).^[
   It utilizes sums over minimum spanning trees that satisfy time constraints, similar to a special case of Forest Pursuit where all activations have a total ordering.
 ]
 We have updated the original example with explicit partial orders in @fig-obs-cascade. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right). 
+
 {{< embed ../codefigs/graphs.qmd#fig-obs-cascade >}}
 
 Sadly our co-authorship example does not often include the (partial) order of author additions,^[though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!
@@ -159,7 +163,7 @@ However, since these "classifications" are actually thresholded multinomial dist
 
 To begin answering this question, we might ask whether the relative scores returned by label-spreading are similar to the original multinomial distributions themselves, rather than the overall classification.
 To find out, we use softmax normalization[^2]
-to transform each tag's scores into a "predicted multinomial\", before finally calculating the Kullback-Leibler divergence (KLD) between the true and predicted multinomials for every tag.
+to transform each tag's scores into a "predicted multinomial", before finally calculating the Kullback-Leibler divergence (KLD) between the true and predicted multinomials for every tag.
 The total KLD, summed over all tags, is also shown in @fig-excavate-ternary, along with positions of each tag's multinomial as projected onto the 2-simplex for the true and $F_1$-optimal predicted distributions.
 Once again, the INVITE performs much better at this task, over a wide range of $\sigma$ (lower is better).
 
@@ -169,7 +173,7 @@ Even the "unknown" tags are correctly placed roughly between Bucket and Hydrauli
 [^2]: For visualization, a temperature parameter was added to softmax, and this was optimized for minimum KLD via Brent's method [@algorithmguaranteedconvergence_Brent1971] for each similarity measure independently to provide an equal footing for comparison.
 
 
-## Forest Pursuit Animal Network
+## Forest Pursuit Animal Network {#sec-animal-fluency}
 
 For our last case study, we return to Forest Pursuit as a useful tool for analysis even when that might mean ignoring partial ordering information. 
 Note that @eq-absorb is effectively the same as a ($\beta=1$) forest matrix if the transition (normalized adjacency) matrix was replaced by a (sub-)graph laplacian.
@@ -180,7 +184,7 @@ The similarity would be exact whenever the tree that set of nodes traveled along
 In other words, whenever the random walks _did_ use the minimum distance to reach each node, the two methods should be equivalent.
 While this isn't happening much individually, the effect of _many_ random walks will average out to this MST, precisely because _it is the tree distribution mode_ from which we assume node activations sample under _marked Random Spanning Forests_. 
 
-To illustrate FP's efficacy in network estimation despite ignoring partial order information, we turn to a classic network recovery problem in this space: _semantic networks from fluency data_[@newdissimilaritymeasure_Prescott2006;@Estimatingsemanticnetworks_Zemla2018].
+To illustrate FP's efficacy in network estimation despite ignoring partial order information, we turn to a classic network recovery problem in this space: _semantic networks from fluency data_[@newdissimilaritymeasure_Prescott2006;@Estimatingsemanticnetworks_Zemla2018;@semanticorganizationanimal_Goni2011].
 
 ### Domain-aware preprocessing
 Verbal (semantic) fluency tests involve asking participants to list as many items belonging to a prompted category in their available time.
@@ -209,7 +213,7 @@ As desired, the pairwise cosine similarity of all vectors $\mathbf{x}'_{j'},
 \mathbf{x}'_{j}$ is significantly reduced.
 While many participants might cover similar animals _overall_, we want to investigate animal dependencies locally, and we don't expect individuals to always recall animals in the same memory "area" the whole time. 
 
-### Edge Connective Effiency and Diversity
+### Edge Connective Efficiency and Diversity {#sec-edge-diversity}
 
 To compare the results of different backboning techniques, we introduce a new simple measure to quantify a network's sparsity, in terms of how many edges more than $n-1$ (the minimum number needed to connect all $n$ nodes) are being used.
 $$
