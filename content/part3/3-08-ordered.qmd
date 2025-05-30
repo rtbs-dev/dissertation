@@ -24,9 +24,9 @@ We don't know if (i) asked (f) before or after (j) asked (b).^[
   Interestingly, in the case where the node activations _are_ given a total order (in the form of _timestamps_), @Inferringnetworksdiffusion_GomezRodriguez2012 derive an algorithm called _NetInf_.
   It utilizes sums over minimum spanning trees that satisfy time constraints, similar to a special case of Forest Pursuit where all activations have a total ordering.
 ]
-We have updated the original example with explicit partial orders in @fig-obs-cascade. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right). 
+We have updated the original example with explicit partial orders in @fig-obs-tree. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right). 
 
-{{< embed ../codefigs/graphs.qmd#fig-obs-cascade >}}
+{{< embed ../codefigs/graphs.qmd#fig-obs-tree >}}
 
 Sadly our co-authorship example does not often include the (partial) order of author additions,^[though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!
 ] but other common network recovery problems do have an inherent order to them.

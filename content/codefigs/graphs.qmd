@@ -225,7 +225,7 @@ fig
 ```
 
 ```{python}
-#| label: fig-obs-cascade
+#| label: fig-obs-tree
 #| fig-cap: Observations as partially-ordered sets
 
 with open('obs-cascade.tex') as f: 

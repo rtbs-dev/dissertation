@@ -50,7 +50,7 @@ However, there are key limitations of the model that could be addressed going fo
 One of the key assumptions to make the likelihood of the (marked) Random Spanning Forest tractable is to allow only one "source" node (the random walk starting node), and to sample it from a uniform categorical distribution.
 However, by explicitly adding a "root" node that is implied by the random forest distribution (see @fig-inject-plan), we would immediately achieve the possibility for multiple sources.
 A source would become any node incident to the root in a sampled spanning tree.
-To prevent every node from being activated, the spanning tree could be "pruned" at some depth away from the root (which is a parameter that we could model with _e.g._ a Geometric distribution.
+To prevent every node from being activated, the spanning tree could be "pruned" at some depth away from the root (which is a parameter that we could model with _e.g._ a Geometric distribution).
 How many sources get selected in a minimum spanning tree could be controlled through the weights given to edges incident to the root (which, if the reader recalls, is already represented by $\beta$).
 Also possible could be the use of independent Bernoulli activations of nodes as sources (rather than a categorical selector) though heavy regularization would be required to avoid each node always becoming its own source. 
 
