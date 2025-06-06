@@ -1,0 +1,35 @@
+---
+filters:
+  - pseudocode
+---
+
+```pseudocode
+#| label: alg-efm
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+#| pdf-placement: "htb!"
+#| pdf-line-number: true
+
+\begin{algorithm}
+\caption{Expected Forest Maximization (EFM)}
+\begin{algorithmic}
+\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
+\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
+\Procedure{EFM}{$X, d_K, \alpha, \beta, \epsilon$}
+  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+	\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
+	\While {$\|\hat{\alpha}-\alpha\|_{\infty}>\epsilon$}
+		\State $\alpha_m \gets \hat{\alpha}_m$
+		\State $Q \gets (I+\beta L_{\text{sym}}(\alpha_m))^{-1}$
+		\State $d_K \gets d_Q$
+ 	 	\State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+		\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha_m$}
+	\EndWhile
+  \State \textbf{return} $\hat{\alpha}_m$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```

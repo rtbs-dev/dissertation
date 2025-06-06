@@ -34,11 +34,11 @@ import matplotlib as m
 ```
 
 ```{python}
+
 m.rcParams['font.family']=['serif']
 m.rcParams['font.serif']=['Bitstream Charter']
 figsize = m.rcParams['figure.figsize']
 
-%config InlineBackend.figure_formats = ['svg']
 plot_palette=sns.color_palette(['dodgerblue','xkcd:rust','#e6acca']) ##9d6784
 sns_theme_kws = dict(
     font='serif',
@@ -47,6 +47,12 @@ sns_theme_kws = dict(
     style='ticks'
 )
 sns.set_theme(**sns_theme_kws)
+
+m.rcParams['savefig.transparent'] = True
+m.rcParams["figure.facecolor"] = (1.0, 1.0, 1.0, 0.0) 
+m.rcParams["axes.facecolor"] = (1.0, 1.0, 1.0, 0.0) 
+
+%config InlineBackend.figure_formats = ['svg']
 # list(Path('../results').glob('*.jsonl'))
 my_orange=(231., 195., 138.)  # "#e7c38a"
 my_green =(141., 203., 160.)  # "#8dcba0"
@@ -453,7 +459,8 @@ theme_config = {**sns.axes_style('ticks')}|{
     "axes.spines.top": False, 
     "axes.spines.right": False,
     'font.family': 'serif',
-    'font.serif': 'Bitstream Charter'
+    'font.serif': 'Bitstream Charter',
+    'axes.facecolor': (1.,1.,1.,0.),
 }
 
 # med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct'
@@ -825,9 +832,18 @@ fpi_tbl = pd.concat([
 # from IPython.display import Markdown
 
 # Markdown(tabulate(fpi_tbl, tablefmt='github', headers=metric_order))
-GT(fpi_tbl,rowname_col="metric", groupname_col="kind").opt_table_font(
+tab = GT(fpi_tbl,rowname_col="metric", groupname_col="kind")
+tab.opt_table_font(
     font='Bitstream Charter'
-).show()
+).tab_style(
+        style=
+            [ style.fill(color="rgba(0, 0, 0, 0)")], locations=loc.body()
+).tab_options(
+    table_background_color='white',
+    table_body_vlines_color='white',
+    table_body_hlines_color='white',
+).opt_vertical_padding(scale=0.6).show();
+
 # fpi_tbl
 # pd.DataFrame.to_markdown
 # fpi_tbl.to_markdown()
@@ -967,7 +983,8 @@ theme_config = {**sns.axes_style('ticks')}|{
     "axes.spines.top": False, 
     "axes.spines.right": False,
     'font.family': 'serif',
-    'font.serif': 'Bitstream Charter'
+    'font.serif': 'Bitstream Charter',
+    'axes.facecolor': (1.,1.,1.,0.),
 }
 
 # med-node-ct','iqr-node-ct','med-actv-ct','iqr-actv-ct'
@@ -1015,6 +1032,7 @@ p = (so.Plot(tidy, y='seconds',color='name',marker='failed', pointsize='failed',
 )
 f.legends.pop(0)
 # f.legends[0].get_bbox_to_anchor()#set_bbox_to_anchor((0.9,0.5)).
+
 p
 ```
 
@@ -1025,3 +1043,4 @@ f = plt.figure(figsize=(figsize[0], figsize[1]/1.8))
 
 f=log_partial_residuals(df, ['FP','GL','EFM'], 'seconds', ['n-jumps', 'n-nodes','n-walks'], fig=f)
 ```
+

@@ -1,0 +1,34 @@
+color:
+  palette:
+    dark-grey: "#212529"
+    blue: "#ddeaf1"
+    white: "#ffffff"
+    foreground: "#33474b"
+
+  background: white
+  foreground: dark-grey
+  # primary: black
+
+typography:
+  fonts:
+    - family: Bitstream Charter
+      source: file
+      files:
+        - resource/fonts/Bitstream-Charter-master/*.otf
+    - family: Cooper Hewitt
+      source: file
+      files:
+        - resource/fonts/cooper-hewitt-fixed/*.ttf 
+    - family: Source Sans Pro
+      source: google
+  base:
+    family: Source Sans Pro
+    #family: Bitstream Charter
+    # color: foreground
+    # size: 1rem
+  headings:
+    family: Cooper Hewitt
+    color: foreground
+
+
+

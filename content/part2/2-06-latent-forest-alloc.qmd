@@ -176,37 +176,7 @@ Then, new steiner tree estimates will approximate the modes of each spanning tre
 Probabilistically, we are finding the expectation over spanning forests (collapsing over uniform $\phi$) in the form of calculating $Q$, and then maximizing the likelihood of each observation through _Forest Pursuit_.
 The proposed algorithm _Expected Forest Maximization_ is outlined in @alg-efm.  
 
-```pseudocode
-#| label: alg-efm
-#| html-indent-size: "1.2em"
-#| html-comment-delimiter: "//"
-#| html-line-number: true
-#| html-line-number-punc: ":"
-#| html-no-end: false
-#| pdf-placement: "htb!"
-#| pdf-line-number: true
-
-\begin{algorithm}
-\caption{Expected Forest Maximization (EFM)}
-\begin{algorithmic}
-\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
-\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
-\Procedure{EFM}{$X, d_K, \alpha, \beta, \epsilon$}
-  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
-	\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
-	\While {$\|\hat{\alpha}-\alpha\|_{\infty}>\epsilon$}
-		\State $\alpha_m \gets \hat{\alpha}_m$
-		\State $Q \gets (I+\beta L_{\text{sym}}(\alpha_m))^{-1}$
-		\State $d_K \gets d_Q$
- 	 	\State $R \gets $\Call{ForestPursuit}{$X, d_K$}
-		\State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha_m$}
-	\EndWhile
-  \State \textbf{return} $\hat{\alpha}_m$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-```
-
+{{< include alg-efm.qmd >}}
 In practice, we limit iterations to less than 100, though that limit is not reached in our testing.
 We use a small $\beta=10^{-3}$ to approximate shortest path distances, and we can do so _within_ the forest pursuit loop to avoid inverting large matrices.
 Instead of $d_K$, the graph structure itself (once an initial estimate is made) can be passed to _Forest Pursuit_, where each subgraph can estimate $d_{Ki}$ independently. 

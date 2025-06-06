@@ -44,7 +44,7 @@ While the karate club graph has unquantified edge uncertainty derived from ambig
 Regardless of how the data was collected, it is de facto reported as a list of pairs, which lends itself to treatment as a reference artefact.
 In many cases, we simply do not have such luxury.
 
-Instead, edges are often measured _indirectly_, and instead we are given lists of node co-ocurrences.
+Instead, edges are often measured _indirectly_, and instead we are given lists of node co-occurrences.
 Networks connecting movies as being "similar" might be derived from data that lists sets of movies watched by each user;
 networks of disease spread pathways might be implied from patient infection records;
 famously, we might build a network of collaboration strength between academic authors by mining datasets of the papers they co-author together. 
@@ -107,7 +107,7 @@ We give special focus to binary activations that occur due to spreading processe
 Recovering the carrier, or, "dependency" network from node activations is of great interest to the network backboning and causal modeling communities, but often involves either unspoken sources of epistemic and aleatory error, or  high computation costs (or both). 
 To begin addressing these issues, Part I of this thesis presents a guide and review of current practices, some of their pitfalls, and how common statistical tools apply to the network recovery problem: a _Practitioner's Guide to Network Recovery_.
 We will cover what "measurement" means in our context, and specifically the ways we encode observations, operations, and uncertainties numerically.
-Clarifying what different versions of what "relation" means (whether proximity or incidence) is critical, since network structure is intended to encode such relations as mathematical objects (), despite common ambiguities and confusion around what practitioners intend on communicating through them.
+Clarifying what different versions of what "relation" means (whether proximity or incidence) is critical, since network structure is intended to encode such relations as mathematical objects (despite common ambiguities and confusion around what practitioners intend on communicating through them).
 Then we organize a literature review to present a cohesive framework for assessing network recovery techniques, based on the assumptions and compromises being made to make the network inference problem tractable. 
 
 Next, building on a gap found in the first part, Part II presents a novel method, _Forest Pursuit_, to extract dependency networks when we know a _spreading process_ causes node activation (e.g. paper co-authorship caused by collaboration requests).

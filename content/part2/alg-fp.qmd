@@ -1,0 +1,55 @@
+---
+filters:
+  - pseudocode
+---
+
+```pseudocode
+#| label: alg-fp
+#| html-indent-size: "1.2em"
+#| html-comment-delimiter: "//"
+#| html-line-number: true
+#| html-line-number-punc: ":"
+#| html-no-end: false
+#| pdf-placement: "htb!"
+#| pdf-line-number: true
+
+\begin{algorithm}
+\caption{Forest Pursuit}
+\begin{algorithmic}
+\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
+\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
+\Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$}
+  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
+  \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
+  \State \textbf{return} $\hat{\alpha}_m$
+\EndProcedure
+\Procedure{ForestPursuit}{$X, d_K$}
+  \State $R(\cdot,\cdot) \gets 0$
+  \For{$i\gets 1, m$}\Comment{\textit{each observation}}
+    \State $\mathbf{x}_i \gets X(i,\cdot)$
+    \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} 
+  \EndFor
+  \State \textbf{return} $R$
+\EndProcedure
+\Procedure{PursueTree}{$\mathbf{x}, d$}
+\Comment{\textit{Approximate Steiner Tree}}
+  \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$
+  \Comment{\textit{activated nodes}}
+  \State $T \gets$\Call{MST}{$d[V,V]$}
+  \Comment{\textit{e.g., Prim's Algorithm}}
+  \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$
+  \State $\mathbf{r} \gets e_n(\mathbf{u,v})$
+  \Comment{\textit{unroll tree adjacency}}
+  \State \textbf{return} $\mathbf{r}$ 
+\EndProcedure
+\Procedure{DesirePathBeta}{$X,R, \alpha$}
+  \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$
+  \State $\sigma \gets \sum_{i=1}^m X(i,j)$
+  \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$
+  \Comment{\textit{co-occurrence counts}}
+  \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$
+  \State \textbf{return} $\hat{\alpha}_m$
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+```

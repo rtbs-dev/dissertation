@@ -119,7 +119,7 @@ In that work, each iteration selects the atom with the largest inner product $\l
 We take an approach similar to this, but with the insight that the inner product will not result in desired sparsity (namely, a tree).
 Our dictionary in this case will be the set of edges given by $B$ (see @sec-subgraph-dists), while our sparsity is given by the relationship of the numbers of nodes and edges in a tree:
 $$
-\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.}\quad \|\mathbf{r}\|_0 = \|\mathbf{x}\|_0 - 1
 $${#eq-sparse-approx-tree}
 
 There are some oddities to take into account here.
@@ -198,56 +198,7 @@ $$
 $${#eq-min-connect}
 which we can use as a sparsity-promoting initial value for $\text{Beta}(\alpha^*,1-\alpha^*)$.
 
-```pseudocode
-#| label: alg-fp
-#| html-indent-size: "1.2em"
-#| html-comment-delimiter: "//"
-#| html-line-number: true
-#| html-line-number-punc: ":"
-#| html-no-end: false
-#| pdf-placement: "htb!"
-#| pdf-line-number: true
-
-\begin{algorithm}
-\caption{Forest Pursuit}
-\begin{algorithmic}
-\Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0<\alpha<1$
-\Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$
-\Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$}
-  \State $R \gets $\Call{ForestPursuit}{$X, d_K$}
-  \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$}
-  \State \textbf{return} $\hat{\alpha}_m$
-\EndProcedure
-\Procedure{ForestPursuit}{$X, d_K$}
-  \State $R(\cdot,\cdot) \gets 0$
-  \For{$i\gets 1, m$}\Comment{\textit{each observation}}
-    \State $\mathbf{x}_i \gets X(i,\cdot)$
-    \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} 
-  \EndFor
-  \State \textbf{return} $R$
-\EndProcedure
-\Procedure{PursueTree}{$\mathbf{x}, d$}
-\Comment{\textit{Approximate Steiner Tree}}
-  \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$
-  \Comment{\textit{activated nodes}}
-  \State $T \gets$\Call{MST}{$d[V,V]$}
-  \Comment{\textit{e.g., Prim's Algorithm}}
-  \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$
-  \State $\mathbf{r} \gets e_n(\mathbf{u,v})$
-  \Comment{\textit{unroll tree adjacency}}
-  \State \textbf{return} $\mathbf{r}$ 
-\EndProcedure
-\Procedure{DesirePathBeta}{$X,R, \alpha$}
-  \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$
-  \State $\sigma \gets \sum_{i=1}^m X(i,j)$
-  \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$
-  \Comment{\textit{co-occurrence counts}}
-  \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$
-  \State \textbf{return} $\hat{\alpha}_m$
-\EndProcedure
-\end{algorithmic}
-\end{algorithm}
-```
+{{< include alg-fp.qmd >}}
 
 @alg-fp outlines the algorithm in pseudocode for reproducibility.
 
@@ -304,17 +255,7 @@ However, since the regularizaiton parameter for GLASSO is often critical for fin
 While  this does have a constant-time penalty for each experiment, the reconstruction accuracy is significantly improved with this technique, and would reflect common practice in using GLASSO for this reason. 
 
 
-| Algorithm            | abbrev. | $\alpha$? | class    | source                                                                     |   
-|:---------------------|:-------:|:--------: |:--------:|-------:                                                                    |
-|Forest Pursuit        | FP      | Yes       |hybrid    |-                                                                           |
-|GLASSO                | GL      | No        |MRF       |[@Sparseinversecovariance_Friedman2008;@Structureestimationdiscrete_Loh2012]|
-|Ochiai Coef.          | CS      | Yes       |Counts    |[@Measuresecologicalassociation_Janson1981]                                 |
-|Hyperbolic Projection | HYP     | No        |Counts    |[@Scientificcollaborationnetworks._Newman2001]                              |
-|Doubly-Stochastic     | eOT     | Yes       |Transport |[@twostagealgorithm_Slater2009;@Sinkhorndistanceslightspeed_Cuturi2013]     |
-|High-Salience Skeleton| HSS     | Yes       |Transport |[@Robustclassificationsalient_Grady2012]                                    |
-|Resource Allocation   | RP      | Yes       |Transport |[@Bipartitenetworkprojection_Zhou2007]                                      |
-
-: Summary of algorithms compared {#tbl-methods}
+{{< include tbl-methods.qmd >}}
 
 
 The three classes of random graphs represent common use cases in sparse graph recovery.
@@ -323,16 +264,7 @@ The block graphs of size $n$ were formed by taking the line-graph of randomly ge
 Trees were randomly generated using Prüfer sequences as impelmented in NetworkX [@ExploringNetworkStructure_Hagberg2008].
 To simulate possible social networks and other complex systems that show evidence of preferential attachment, scale-free graphs were sampled through the Barabási–Albert (BA) model, which was randomly seeded with a re-attachment parameter $m\in\{1,2\}$[@EmergenceScalingRandom_Barabasi1999].
 
-|parameters             | values                           |
-| :-                    |:-:                               | 
-| random graph **kind** | Tree, Block, BA$(m\in\{1,2\}$)                |
-| network **$n$-nodes** | 10,30,100,300                    |
-| random **walks**      | 1 sample $m\sim\text{NegBinomial}(2,\tfrac{1}{n})+10$|
-| random walk **jumps** | 1 sample $j\sim\text{Geometric}(\tfrac{1}{n})+5$     | 
-| random walk **root**  | 1 sample $n_0 \sim \text{Multinomial}(\textbf{n},1)$|
-| random **seed**       |  1, 2, ... ,  30                 |
-
-: Experiment Settings (`MENDR` Dataset) {#tbl-mendr}
+{{< include tbl-mendr.qmd >}}
 
 Every graph has a static ID provided by MENDR, along with generation and retrieval code for public review.
 New graphs kinds and sizes are simple to add for future benchmarking capability.  
@@ -360,7 +292,7 @@ Balances all of TP,TN,FP,FN.
 
 
 :::{#nte-fm .callout-note title="Fowlkes-Mallows (F-M)"}
-: Geometric mean of Precision and Recall, as opposed to the F-Measure that returns the harmonic mean.
+Geometric mean of Precision and Recall, as opposed to the F-Measure that returns the harmonic mean.
   Also known to be the limit of the MCC as TN approaches infinity[@MCCapproachesgeometric_Crall2023], which is useful as TN grows with $n^2$ but TP only with $n$.
   $$\sqrt{P\cdot R}$$
 :::
@@ -419,7 +351,7 @@ For both Forest Pursuit and GLASSO, runtime efficiency is critical if these algo
 For similar sized networks, FP is consistently taking 10-100x less time to reach a result than GLASSO does.
 Additionally, many of the experiments led to ill-conditioned matrices that failed to converge for GLASSO under any of the regularization parameters tests (the "x" markers in @fig-runtime).
 As expected, the number of observations plot shows a clear limit in terms of controlling the lower-bound of FPs runtime, since in this serial version every observation runs one more call to MST.
-On the other hand, GLASSO appears to have signiicant banding for walk length and observation counts, likely indicating dominance of network size for its runtime. 
+On the other hand, GLASSO appears to have significant banding for walk length and observation counts, likely indicating dominance of network size for its runtime. 
 
 {{< embed ../codefigs/results.qmd#fig-runtime >}}
 

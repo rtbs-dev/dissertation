@@ -1,3 +1,12 @@
+title: "Measuring Network Dependencies from Node Activations"
+author:
+  - name: "Rachael T.B. Sexton"
+    id: rtbs-dev
+    orchid: 0000-0001-5904-2887
+    affiliation: 
+      - name: NIST
+        department: Engineering Laboratory
+    email: rachael.sexton@nist.gov
 department: Mechanical Engineering
 committee:
   - name: Mark D. Fuge
@@ -12,6 +21,14 @@ committee:
     title: Professor
   - name: Vincent P. Lyzinski
     title: Professor
+
+bibliography: resource/pubs.bib  
+csl: resource/ieee.csl
+callout-appearance: minimal
+callout-icon: false
+filters:
+  - pseudocode
+
 # prelim:
 #   Acknowledgements: |
 #     I would like to acknowledge...

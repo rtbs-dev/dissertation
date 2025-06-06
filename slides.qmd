@@ -1,0 +1,685 @@
+---
+subtitle: Graduate Thesis Defense
+format:
+  metropolis-beamer-revealjs:
+    autostretch: false
+    chalkboard: true
+    multiplex: true
+    #theme: resource/slides.scss
+    include-in-header:
+      text: |
+        <script>
+        MathJax = {
+          loader: {
+            load: ['[tex]/boldsymbol']
+          },
+          tex: {
+            tags: "all",
+            inlineMath: [['$','$'], ['\\(','\\)']],
+            displayMath: [['$$','$$'], ['\\[','\\]']],
+            processEscapes: true,
+            processEnvironments: true,
+            packages: {
+              '[+]': ['boldsymbol']
+            }
+          }
+        };
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+embed-resources: false
+revealjs-plugins:
+  - attribution
+filters:
+  - pseudocode
+---
+
+### About me
+
+
+
+# Background
+
+## Imagine...
+
+You work at an institution where lots of people author publications...
+
+. . .
+
+_...sometimes together..._
+
+. . .
+
+> What can patterns of co-authorship tell you about the social network of you colleagues? 
+
+. . .
+
+Being a well-adjusted network scientist, your mind immediately turns to modeling them as a _network_!
+After all, networks are a tool-of-choice when things are ... related...to each other.
+
+. . .
+
+But how good of a job did you do? There's no "ground truth" network. And what exactly are you after? 
+
+> How will you trust what your answer is?
+
+
+ 
+## A Need for Network Metrology
+
+
+
+> [...] the practice of ignoring measurement error is still mainstream, and robust methods
+to take it into account are underdeveloped.
+>
+> -- [Tiago Peixoto (2018) [@ReconstructingNetworksUnknown_Peixoto2018]]{.cite}
+
+. . .
+
+
+> Surprisingly, the development of theory and domain-specific applications often occur in isolation, risking an effective disconnect between theoretical and methodological advances and the way network science is employed in practice.
+> 
+> -- [Peel et al. (2022) [@Statisticalinferencelinks_Peel2022]]{.cite}
+
+---
+
+
+## Network "Metrology" -- What is it?
+
+Metrology is more than just "units". In our context, we want to: 
+
+- Quantify a network
+- Consider the trueness of that quantification
+- Consider the precision of that quantification.
+
+![ISO 5725-1 Accuracy (trueness & precision) [@Accuracytruenessprecision_ISO1994]](https://upload.wikimedia.org/wikipedia/commons/9/92/Accuracy_%28trueness_and_precision%29.svg){width=100px}
+
+
+::: {.attribution}
+SV1XV, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons
+:::
+
+
+---
+
+Example: measurement Error for _Zachary's Karate Club_
+
+:::: {.columns align=center .onlytextwidth}
+
+:::{.column}
+
+Trueness
+: 
+  - Actual "edges" are provided as a list [@InformationFlowModel_Zachary1977]
+  - What they _mean_ (quantitatively) is ambiguous, so it's _underspecified_.  
+
+Precision
+: 
+  - edge 78 simultaneously _exists_ and _doesn't_, depending on which section you believe
+  - Any false negatives? No way to know...
+
+
+
+:::
+
+
+:::{.column }
+
+{{< embed content/codefigs/graphs.qmd#fig-karate-club >}}
+
+:::
+::::
+
+. . .
+
+_It's effectively a "calibration artefact"_ $\rightarrow$ defined as true, with some precision uncertainty.
+
+---
+
+
+## Indirect Network Measurement
+
+Edges are often measured _indirectly_ --- _i.e._ lists of co-occurrences (bipartite!) 
+
+{{< embed content/codefigs/graphs.qmd#fig-obs-set >}}
+
+. . .
+
+::::{.columns}
+:::{.column }
+What if...
+
+- co-occurrence $\rightarrow$ "acquaintance"?
+- more papers $\rightarrow$ more acquainted?
+
+So let's do a bipartite projection?
+
+:::
+:::{.column}
+
+{{< embed content/codefigs/graphs.qmd#fig-collab >}}
+
+:::
+::::
+
+. . .
+
+...profit?
+
+## Dependencies Wanted
+
+Have you ever had someone added to a paper by _someone else_? 
+
+> Almost all paper authors were "asked" by one current author (not cornered by a mob).
+
+. . .
+
+::::{.columns}
+:::{.column }
+
+A social scientist "on the ground" would likely measure things differently.
+
+> - _Author (g) asked (e), (h), and (c) to co-author a paper, all of whom agreed_
+> - _(i) asked (f) and (j), but (j) wanted to add (b)'s expertise before writing one of the sections_
+> - etc. 
+
+
+:::
+:::{.column}
+
+{{< embed content/codefigs/graphs.qmd#fig-colleague >}}
+:::
+::::
+
+This is a network of _who depends on who_!
+
+:::{.notes}
+Kinda like sardine tag, each new person is confronted by a mob? Not...usually.
+:::
+
+## Scope of Work
+
+_We're not "on the ground"...what can we do?_
+
+{{< embed content/codefigs/graphs.qmd#fig-recover >}}
+
+:::{.callout-important title="This work:"}
+
+1. Organize current approaches by theoretical application to identify metrological and useability gaps. 
+2. Presents _Forest Pursuit_:
+    a) Scalable, accurate method to recover dependencies from random-walk node activations.
+    b) Includes a Bayesian extension and inference scheme.
+3. Provides `MENDR`, a community testbench for comparing network dependency reconstruction.
+4. Illustrates use of _Forest Pursuit_ by practitioners with several realistic case studies.
+
+:::
+
+# Roads to Network Recovery
+
+## Observation & Feature Spaces 
+
+## Models & Operators
+
+## Measurement Quantification & Error
+
+## Distance or Incidence?
+
+
+## Graphs As Incidence Structures
+
+---
+
+embed
+
+---
+
+edge vectors
+
+
+## Node Activation, Bipartite Graphs, & Hypergraphs
+
+## Organizing Recovery Methods
+
+## A "Path" Forward
+
+{{< embed content/codefigs/graphs.qmd#tbl-roads >}}
+
+
+# Latent Graphs with Desire Paths
+
+## Gambit of the Inner Product
+
+{{< embed content/codefigs/graphs.qmd#fig-stack-outerprod >}}
+
+---
+
+
+:::{#fig-stacked-graphs layout="[[1,2]]"  layout-valign="center"}
+
+{{< embed content/codefigs/graphs.qmd#fig-obs-set >}}
+{{< embed content/codefigs/graphs.qmd#fig-stack-bow >}}
+
+Inner-product projections as sums of cliques illustrating "clique bias". 
+:::
+
+## Networks as Desire Path Density Estimates
+
+
+# Forest Pursuit
+Approximate Recovery in Near-linear Time
+
+## Random walk activations
+
+Random walk model of node activation:
+
+> Visiting a node leads to its activation
+
+- Spreading and diffusive processes
+- Infectious disease, cognitive search, information cascades, etc. 
+
+. . .
+
+In our case two pieces of information would have been censored:
+
+  - Individual jumps hidden (only visited nodes)
+  - order of visits hidden (only binary activation)
+
+What do we know? 
+
+## Random walk dependencies are trees
+
+Assume:
+
+- Single-cause _(only one colleague's request preceded your joining)_
+- Single-root _(only one colleague originated the "asking")_
+
+. . . 
+
+The network might not be a tree, but ...
+
+. . .
+
+The _activation dependencies_ for each random walk must be.
+
+- Each new activation comes from a single activated node
+- Dependencies are connected with no loops
+
+:::{.notes}
+This could be justified from an empirical perspective as well: say we observe an author turn down requests for one paper from two individuals, but accept a third.
+We could actually infer a _lowered_ dependency on the first two, _despite_ the eventual coauthorship.
+Only the interaction that was observed as successful necessarily counts toward  success-dependency, barring any contradicting information.
+:::
+
+## Spanning Forest Distribution - Regularized Laplacian
+
+Spanning forest
+: a collection of disjointed trees covering every vertex
+
+
+
+::: {.callout-note}
+### Matrix-Forest Theorem[@MatrixForestTheorem_Chebotarev2006; @Countingrootedforests_Knill2013; @Semisupervisedlearning_Avrachenkov2017]
+
+The regularized Laplacian $Q=(I+\beta L)^{-1}$
+
+- Is always PD (provably on Birkhoff Polytope of doubly-stochastic matrices)
+- for various $\beta$: 
+  - $\beta=1$, $Q(j,j')$ encodes the fraction of spanning forests in which $j,j'$ share a tree (i.e. visited by the same walk i.e. **co-occurred**)
+  - $\beta\rightarrow 0$ encodes shortest-path kernel
+  - $\beta\rightarrow \infty$ encodes commute-time kernel (i.e. $L^+$)
+- $Q(j,j)$ encodes an "isolation" measure (probability of not sharing a cascade)
+:::
+
+::: notes
+similar form to CAR kernel (for GPR/Cov prior), gaussian copula, etc. 
+:::
+
+. . .
+
+**IDEA**: our data is measuring $\lim_{n\rightarrow \infty} X^TX \propto Q$, s.t. each $\mathbf{x}$ comes from a _tree_
+
+
+:::{.notes}
+It's important to add here that _mutual convincing_ by multiple collaborators simultaneously (or over time) is expressly left out.
+In other words, only pairwise interactions are permitted.
+This is not an additional assumption, but a key limitation of our use of graphs in the first place!
+As Torres et al. go to great lengths elaborating in [@WhyHowWhen_Torres2021], it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss.
+The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, _not a graph_. 
+:::
+
+---
+
+{{< embed content/codefigs/graphs.qmd#fig-stack-tree >}}
+
+## Sparse Approximation
+
+What are we doing here? ... _Sparse Approximation_?
+
+$$
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \quad \|\mathbf{r}\|_0 = \|\mathbf{x}\|_0 - 1
+$${#eq-sparse-approx-tree}
+
+. . .
+
+Usually solve with _matching pursuit_[@Matchingpursuitstime_Mallat1993].
+
+> Each iteration selects the atom with the largest inner product $\langle \mathbf{b}_{i'},\mathbf{x}\rangle$.
+
+. . .
+
+But this doesn't work (in the standard plus-times ring, see tropical factorization [@Sparsedataembedding_Omanovic2021]).
+
+> $B^TR$ has the shape and sparsity of $X$, where each entry is the node's degree in its tree.  
+
+## Forest Pursuit -- Sums of Steiner Trees
+
+Instead, we will take an _Empirical Bayes_ approach: 
+
+- assume each observation is emitted from its own MRF, _only connected on the activated nodes_.
+- That's under-determined (any spanning tree could equally emit the observed activations),
+- SO use an empirical prior as shrinkage for a Max. Likelihood estimate.
+
+. . .
+
+$$
+\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
+$${#eq-sparse-approx-tree}
+
+Our point estimate for every observation is the mode of the spanning tree distribution on activated nodes...i.e. the Maximum Spanning Tree (MST)
+
+> Prim's: each iteration selects the edge with the smallest distance to the current tree 
+
+. . .
+
+- Essentially the Chow-Liu tree for each observation
+- _Technically_ a "Steiner Tree"[@fastalgorithmSteiner_Kou1981] $\rightarrow$ _use $X^TX \propto Q$ for the metric closure of the true graph!_
+
+
+## Forest Pursuit -- Algorithm {.scrollable}
+
+{{< include content/part2/alg-fp.qmd >}}
+
+# MENDR
+
+**M**easurement **E**rror in **N**etwork **D**ependency **R**econstruction
+
+Simulation Study & Test-bench
+
+## Synthetic Dataset
+
+{{< include content/part2/tbl-mendr.qmd >}}
+
+## Compared Methods
+
+{{< include content/part2/tbl-methods.qmd >}}
+
+## Metrics 
+:::::{.columns}
+::::{.column}
+
+![](https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg){height=500px}
+
+:::{.attribution}
+Walber, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+:::
+
+::::
+::::{.column}
+
+Various goals when balancing true/false-positives and true/false-negatives: 
+
+:::{#nte-precision .callout-note title="Precision (P)"}
+Fraction of positive predictions that are true:
+ $$P= \frac{TP}{TP+FP}$$
+
+also called "positive predictive value" (PPV)
+:::
+
+:::{#nte-recall .callout-note title="Recall (R)"}
+Fraction of true values that were returned as positive.
+$$R=\frac{TP}{TP+FN} $$
+
+_Inherent trade-off with precision._
+
+Also called the TP-rate (TPR)
+
+:::
+::::
+:::::
+
+## Metric -- Aggregation
+
+:::::{.columns}
+::::{.column}
+Each metric compares a (binary) prediction to the (binary) ground truth.
+
+- Class probabilities $\rightarrow$ _families_ of metric results 
+- How can we pick one threshold in an unsupervised setting?
+
+
+Let's find the "expected value" over all thresholds!
+
+- Normalize all outputs to $[\epsilon,1-\epsilon]$
+- "average" metric is what a practitioner expects if thresholding at random
+- APS is more traditional, but is high if at least one threshold is good...
+
+::::
+::::{.column}
+
+:::{#nte-mcc .callout-note title="Matthews Correlation Coefficient (MCC)"}
+Balances all of TP,TN,FP,FN.
+
+  $$\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}$$
+  
+Preferred for class-imbalanced problems (like sparse recovery) [@statisticalcomparisonMatthews_Chicco2023]
+:::
+
+:::{#nte-fm .callout-note title="Fowlkes-Mallows (F-M)"}
+Geometric mean of Precision and Recall
+
+  $$\sqrt{P\cdot R}$$
+
+Limit of the MCC as TN approaches infinity[@MCCapproachesgeometric_Crall2023]
+
+:::
+
+:::{#nte-aps .callout-note title="Average Precision Score (APS)"}
+Expected precision over the possible recall values 
+$$\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))$$
+_approximates the integral under the parametric P-R curve_
+:::
+::::
+:::::
+
+
+## Results -- overall
+
+
+{{< embed content/codefigs/results.qmd#fig-fp-overall >}}
+
+- FP is the only approach with greater than 0.5 expected score over _all_ thresholds!
+- _By a large margin..._ 
+- GLASSO Has a good APS (but so does plain Cosine Similarity?) 
+
+## Results -- by graph type 
+
+::::{.columns }
+:::{.column width="40%"}
+
+- FP appears to have best APS for Trees
+- GLASSO is not much better than CS for scale-free _or_ block graphs (despite theory)
+- Scale-free networks are _hard_ to infer...but FP is a significant improvement. 
+
+More to come on APS "discrepancy"...
+
+:::
+
+:::{.column width="60%"}
+{{< embed content/codefigs/results.qmd#fig-fp-compare >}}
+
+:::
+::::
+
+## Results -- trends {.scrollable}
+
+{{< embed content/codefigs/results.qmd#fig-mendr-trends >}}
+
+
+## Results -- partial residuals
+
+How does "more data" impact the network estimate quality? 
+
+Because of how MENDR samples random walks, we need to de-correlate those trends
+
+{{< embed content/codefigs/results.qmd#fig-partials-mcc >}}
+
+- CS Struggles with longer walks (more activations); FP unaffected.
+- GLASSO & FP (less-so) struggle as network size gets bigger (more edges).
+- FP benefits the _most_ from more observations. 
+
+## Runtime Performance
+
+::::{.columns }
+:::{.column width="40%"}
+
+_How fast is it?_
+
+- FP consistently at the lower-bound of GLASSO runtime
+- 1 - 3 orders of magnitude faster
+- Ill-conditioned matrices lead to many convergence failures for GLASSO 
+
+:::
+
+:::{.column width="60%"}
+{{< embed content/codefigs/results.qmd#fig-runtime >}}
+:::
+::::
+
+
+## Runtime Performance -- partial residuals
+Theoretically, _Forest Pursuit_ is:  
+
+- _Linear_ (and parallel!) in observation count $n$
+- Linear in expected walk-length $\|\textbf{x}_i\|_0$ (row-density) via Prim's
+- _Constant_ in network size (given walk-length, i.e. diffusion-rate is known)
+
+. . .
+
+Empirically:
+
+{{< embed content/codefigs/results.qmd#fig-partials-runtime >}}
+
+:::{.notes}
+scaling in n-jumps looks more like $O(n\log n)$ because we use kruskal's (NEED PRIM's in PARALLEL)
+:::
+
+# Forest Pursuit Modifications & Extensions
+
+## FPi (Interaction Probability)
+
+:::::{.columns}
+::::{.column}
+
+::::
+
+::::{.column .fragment}
+::: {layout-ncol=2}
+
+{{< embed content/codefigs/results.qmd#tbl-fpi >}}
+
+{{< embed content/codefigs/results.qmd#fig-fpi >}}
+
+:::
+::::
+:::::
+---
+
+
+![P-R curves for two experiments](content/images/PR.svg){#fig-pr-curves}
+
+
+## Generative Model
+
+::::{.columns}
+:::{.column}
+Random spanning trees on an augmented graph are precisely the random spanning forests on the original. 
+
+Marking a single node can "root" a tree in the forest. 
+:::
+:::{.column}
+{{< embed content/codefigs/graphs.qmd#fig-inject-plan >}}
+:::
+::::
+
+Leads to generative model for multi-output binary activations on a graph: 
+
+- Generate random spanning trees on $G_{+R}$, given the edge weights $z_E$.
+- Uniformly sample a marked node $\phi$.
+- Activate all nodes connected to $\phi$ in the induced spanning forest.
+
+
+## Generative Model -- Specification 
+
+$$
+\begin{aligned}
+\pi_{e\in E} &\sim \operatorname{Beta}_E(\alpha, 1-\alpha)     \\
+z_{e\in E} &\sim \operatorname{Bernoulli}_E(\pi_e)             \\
+\phi_{i\in I, j\in J} &\sim \operatorname{Categorical}_I(\theta) \\
+x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
+\end{aligned}
+$$ 
+
+
+## Generative model -- Forests
+
+
+$$
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+$$
+
+Is the same as:
+
+$$
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
+$$
+
+
+$$
+\begin{gathered}
+P(F|z_E) = \frac{1}{Z_\mathcal{F}} \mu(F)\\
+Z_\mathcal{F} = \det{(I+\beta L)}
+\end{gathered}
+$$
+
+
+Likelihood: $\sum_\mathcal{F} P(x_{ij}|F,\phi_{ij})$ is the probability a node occurs on the same subtree as a "marked" on
+
+## Expected Forest Maximization
+
+{{< include content/part2/alg-efm.qmd >}}
+
+# Qualitative Application
+
+## NetSci Community
+
+## Les Miserables
+
+
+---
+
+---
+
+# Recovery from Working Memory & Partial Orders
+
+## TLP with INVITE
+
+## Forest Pursuit in INVITE
+
+# Conclusion
+
+---
+
+
+
+
+## References
