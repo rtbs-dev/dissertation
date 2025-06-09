@@ -28,27 +28,17 @@ from jupyter_tikz import TexFragment, TexDocument
 from numpyarray_to_latex import to_ltx as np2tex
 import pandas as pd
 
+import os
+tex = os.getenv('QUARTO_PDFLATEX')
+
 matplotlib.rcParams['font.family']=['serif']
 matplotlib.rcParams['font.serif']=['Bitstream Charter']
+figsize = matplotlib.rcParams['figure.figsize']
 
 %config InlineBackend.figure_formats = ['svg']
 # %load_ext jupyter_tikz
 # fm = matplotlib.font_manager
 # sorted(fm.get_font_names())
-```
-
-```{python}
-figsize = matplotlib.rcParams['figure.figsize']
-```
-
-```{python}
-# preamble = r"""
-# \usepackage{tikz}
-# \usepackage{tikz-network}
-# """
-
-import os
-tex = os.getenv('QUARTO_PDFLATEX')
 ```
 
 ```{python}

@@ -59,10 +59,10 @@ However, another (equivalent) way to view matrix multiplication is as a sum of o
 $$
 G(j,j') = X^T X = \sum_{i=1}^m X(i,j)X(i,j')= \sum_{i=1}^m \mathbf{x}_i\mathbf{x}_i^T
 $$
-Those outer products of binary vectors create $m\times m$ matrices that have a 1 in every $i,j$ entry where nodes $i,j$ both occurred, shown in @fig-stack-outerprod.
+Those outer products of binary vectors create $m\times m$ matrices that have a 1 in every $j,j'$ entry where nodes $j,j'$ both occurred, shown in @fig-stack-outerprod.
 Each outer product is effectively operating as a $D_i+A_i$ with degrees normalized to 1.
 If the off-diagonals can be seen as adjacency matrices, they would strictly represent a clique on nodes activated in the $i$th observation
-In this sense, any method that involves transforming or re-weighting a gram matrix, is implicitly believing that the $k$th observation was a _complete graph_.
+In this sense, any method that involves transforming or re-weighting a gram matrix, is implicitly believing that the $i$th observation is a _complete graph_ for all $i$.
 This is illustrated in @fig-stacked-graphs. 
 
 :::{#fig-stacked-graphs layout="[[1,2]]"  layout-valign="center"}
@@ -73,7 +73,7 @@ This is illustrated in @fig-stacked-graphs.
 Inner-product projections as sums of cliques illustrating "clique bias". 
 :::
 
-If every observation of node activations leads to an implied clique, we can reframe much of the "hairball" effect as a systematic bias (i.e. measurement error in the sense of_trueness_.
+If every observation of node activations leads to an implied clique, we can reframe much of the "hairball" effect as a systematic bias (i.e. measurement error in the sense of_trueness_).
 We call this _clique bias_: the inferred graph will inherently include more and more cliques of node subsets as data arrives (assumed to themselves be cliques).
 
 For many modeling scenarios, this paradigm allows practitioners to make a more straight-forward intuition-check: do clique observations _make sense_ here?
@@ -81,7 +81,7 @@ When a list of authors for a paper is finished, does that imply that all authors
 This would be similar to assuming the authors might simultaneously enter the same room, look at a number of others (who all look exclusively at each other, as well), and _all at once_ decide to publish together.
 
 Or, from the standpoint of scaling: does each extra node activation impart an amount of information that depends on the number of activated nodes?
-Put another way, if we knew our observations were on a "grid graph", each node might require two (or so) new edges.
+Put another way, if we knew our observations were on a planar graph, each node might require around 3 new edges.^[Triangulations are worst-case, so $|E|\leq 3|V|-6$ due to Euler's formula]
 A tree or path adds one new edge for each new node.
 But a clique assumption means that each extra node activation adds edges quadratically in the number of already-activated nodes. 
 Does this make sense?
@@ -97,8 +97,8 @@ This may be a reason so many projection and backboning techniques attempt to re-
 
 What we need is a way to maintain the ease-of-use of inner-product network creation:
 
-- map an operation onto each observation
-- reduce to an aggregate edge guess over all observations
+- Map an operation onto each observation
+- Reduce to an aggregate edge guess over all observations
 
 but with a more domain-appropriate operator at the observation level. 
 

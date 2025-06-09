@@ -49,7 +49,7 @@ These are, together, typically called "association" measures.
 While they are sometimes presented as functions of the entire dataset, they nearly always find a basis in the inner-product operation, and have definitions in terms of _contractions_ along the data/observation dimension.
 By relying on the (Euclidean) inner product, even with various re-weighting or normalization schemes, an analyst is making strong assumptions about their ability to reliably take measurements from linear combinations of observed activation vectors.
 
-Essentially, if a measure relies on marginal counts or summation over the data axis, then the main assumptions are at the _local_ level, about whether what we are adding together estimates our target correctly.
+Essentially, if a measure relies on marginal counts or summation over the data axis ($\mathbf{s}$), then the main assumptions are at the _local_ level, about whether what we are adding together estimates our target correctly.
 The most basic would be to count co-occurrences, and consequently the co-occurrence probability $p_{11}=P(A,B)$.
 However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance.
 This idea leads to "cosine similarity" 
@@ -110,7 +110,7 @@ This was brought up with respect to the normalized Laplacian before, but we coul
 :::{#nte-hyp .callout-note title="Hyperbolic Projection"}
 Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs. rarer ones.[@Scientificcollaborationnetworks._Newman2001]
 $$ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}$$
-This reweights each observation by its degree in the original biartite graph.  
+This re-weights each observation by its degree in the original bipartite graph.  
 :::
 
 So far this is the first measure that re-weights observations _before_ contraction, so that it depends on having the individual observations available (rather than only the gram matrix).

@@ -522,7 +522,7 @@ facto reported as a list of pairs, which lends itself to treatment as a
 reference artefact. In many cases, we simply do not have such luxury.
 
 Instead, edges are often measured \emph{indirectly}, and instead we are
-given lists of node co-ocurrences. Networks connecting movies as being
+given lists of node co-occurrences. Networks connecting movies as being
 ``similar'' might be derived from data that lists sets of movies watched
 by each user; networks of disease spread pathways might be implied from
 patient infection records; famously, we might build a network of
@@ -694,8 +694,8 @@ specifically the ways we encode observations, operations, and
 uncertainties numerically. Clarifying what different versions of what
 ``relation'' means (whether proximity or incidence) is critical, since
 network structure is intended to encode such relations as mathematical
-objects (), despite common ambiguities and confusion around what
-practitioners intend on communicating through them. Then we organize a
+objects (despite common ambiguities and confusion around what
+practitioners intend on communicating through them). Then we organize a
 literature review to present a cohesive framework for assessing network
 recovery techniques, based on the assumptions and compromises being made
 to make the network inference problem tractable.
@@ -1758,15 +1758,15 @@ strong assumptions about their ability to reliably take measurements
 from linear combinations of observed activation vectors.
 
 Essentially, if a measure relies on marginal counts or summation over
-the data axis, then the main assumptions are at the \emph{local} level,
-about whether what we are adding together estimates our target
-correctly. The most basic would be to count co-occurrences, and
-consequently the co-occurrence probability \(p_{11}=P(A,B)\). However,
-for very rare co-occurrences, we need to correct for rate-imbalance of
-the nodes in much the same way correlation normalizes covariance. This
-idea leads to ``cosine similarity''
+the data axis (\(\mathbf{s}\)), then the main assumptions are at the
+\emph{local} level, about whether what we are adding together estimates
+our target correctly. The most basic would be to count co-occurrences,
+and consequently the co-occurrence probability \(p_{11}=P(A,B)\).
+However, for very rare co-occurrences, we need to correct for
+rate-imbalance of the nodes in much the same way correlation normalizes
+covariance. This idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1793,7 +1793,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-or} 
 
@@ -1819,7 +1819,7 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1844,7 +1844,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1854,7 +1854,7 @@ Attempts to account for the overcounting of co-occurrences on frequently
 occurring nodes, vs.~rarer
 ones.\autocite{Scientificcollaborationnetworks._Newman2001}
 \[ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}\]
-This reweights each observation by its degree in the original biartite
+This re-weights each observation by its degree in the original bipartite
 graph.
 
 \end{tcolorbox}
@@ -1882,7 +1882,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1907,7 +1907,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1934,7 +1934,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1967,7 +1967,7 @@ undirected generalizations of bayes nets
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -2003,7 +2003,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -2320,15 +2320,15 @@ However, another (equivalent) way to view matrix multiplication is as a
 sum of outer products \[
 G(j,j') = X^T X = \sum_{i=1}^m X(i,j)X(i,j')= \sum_{i=1}^m \mathbf{x}_i\mathbf{x}_i^T
 \] Those outer products of binary vectors create \(m\times m\) matrices
-that have a 1 in every \(i,j\) entry where nodes \(i,j\) both occurred,
-shown in Figure~\ref{fig-stack-outerprod}. Each outer product is
-effectively operating as a \(D_i+A_i\) with degrees normalized to 1. If
-the off-diagonals can be seen as adjacency matrices, they would strictly
-represent a clique on nodes activated in the \(i\)th observation In this
-sense, any method that involves transforming or re-weighting a gram
-matrix, is implicitly believing that the \(k\)th observation was a
-\emph{complete graph}. This is illustrated in
-Figure~\ref{fig-stacked-graphs}.
+that have a 1 in every \(j,j'\) entry where nodes \(j,j'\) both
+occurred, shown in Figure~\ref{fig-stack-outerprod}. Each outer product
+is effectively operating as a \(D_i+A_i\) with degrees normalized to 1.
+If the off-diagonals can be seen as adjacency matrices, they would
+strictly represent a clique on nodes activated in the \(i\)th
+observation In this sense, any method that involves transforming or
+re-weighting a gram matrix, is implicitly believing that the \(i\)th
+observation is a \emph{complete graph} for all \(i\). This is
+illustrated in Figure~\ref{fig-stacked-graphs}.
 
 \begin{figure}
 
@@ -2364,7 +2364,7 @@ cliques illustrating ``clique bias''.}
 
 If every observation of node activations leads to an implied clique, we
 can reframe much of the ``hairball'' effect as a systematic bias
-(i.e.~measurement error in the sense of\_trueness\_. We call this
+(i.e.~measurement error in the sense of\_trueness\_). We call this
 \emph{clique bias}: the inferred graph will inherently include more and
 more cliques of node subsets as data arrives (assumed to themselves be
 cliques).
@@ -2380,18 +2380,19 @@ other, as well), and \emph{all at once} decide to publish together.
 
 Or, from the standpoint of scaling: does each extra node activation
 impart an amount of information that depends on the number of activated
-nodes? Put another way, if we knew our observations were on a ``grid
-graph'', each node might require two (or so) new edges. A tree or path
-adds one new edge for each new node. But a clique assumption means that
-each extra node activation adds edges quadratically in the number of
-already-activated nodes. Does this make sense? In our introduction, we
-described a more likely scenario we could expect from an observer on the
-ground: a researcher asks a colleague or two to collaborate, who might
-know a couple more with relevant expertise, and so on. From purely a
-logistical standpoint, it quickly becomes unfeasible for authors to
-mutually collaborate with all other co-authors equally: 10 coauthors
-already implies the 10th had to equally split interaction among 9 others
-to satisfy our model.
+nodes? Put another way, if we knew our observations were on a planar
+graph, each node might require around 3 new edges.\footnote{Triangulations
+  are worst-case, so \(|E|\leq 3|V|-6\) due to Euler's formula} A tree
+or path adds one new edge for each new node. But a clique assumption
+means that each extra node activation adds edges quadratically in the
+number of already-activated nodes. Does this make sense? In our
+introduction, we described a more likely scenario we could expect from
+an observer on the ground: a researcher asks a colleague or two to
+collaborate, who might know a couple more with relevant expertise, and
+so on. From purely a logistical standpoint, it quickly becomes
+unfeasible for authors to mutually collaborate with all other co-authors
+equally: 10 coauthors already implies the 10th had to equally split
+interaction among 9 others to satisfy our model.
 
 \section{Networks as Desire Path Density
 Estimates}\label{networks-as-desire-path-density-estimates}
@@ -2411,9 +2412,9 @@ network creation:
 \begin{itemize}
 \tightlist
 \item
-  map an operation onto each observation
+  Map an operation onto each observation
 \item
-  reduce to an aggregate edge guess over all observations
+  Reduce to an aggregate edge guess over all observations
 \end{itemize}
 
 but with a more domain-appropriate operator at the observation level.
@@ -2894,7 +2895,7 @@ dictionary in this case will be the set of edges given by \(B\) (see
 Section~\ref{sec-subgraph-dists}), while our sparsity is given by the
 relationship of the numbers of nodes and edges in a tree:
 \begin{equation}\phantomsection\label{eq-sparse-approx-tree}{
-\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.} \|\mathbf{r}\|_0\leq \|\mathbf{x}\|_0 - 1
+\mathbf{\hat{r}} = \operatorname*{argmin}_{\mathbf{r}}{\|\mathbf{x}-B^T\mathbf{r} \|_2^2} \quad \text{s.t.}\quad \|\mathbf{r}\|_0 = \|\mathbf{x}\|_0 - 1
 }\end{equation}
 
 There are some oddities to take into account here. As a linear operator
@@ -3230,18 +3231,18 @@ source
 \endhead
 \bottomrule\noalign{}
 \endlastfoot
-Forest Pursuit & FP & Yes & hybrid & - \\
-GLASSO & GL & No & MRF &
+Forest Pursuit & FP & Yes & local & - \\
+GLASSO & GL & No & global &
 \autocite{Sparseinversecovariance_Friedman2008,Structureestimationdiscrete_Loh2012} \\
-Ochiai Coef. & CS & Yes & Counts &
+Ochiai Coef. & CS & Yes & local &
 \autocite{Measuresecologicalassociation_Janson1981} \\
-Hyperbolic Projection & HYP & No & Counts &
+Hyperbolic Projection & HYP & No & local &
 \autocite{Scientificcollaborationnetworks._Newman2001} \\
-Doubly-Stochastic & eOT & Yes & Transport &
+Doubly-Stochastic & eOT & Yes & resource &
 \autocite{twostagealgorithm_Slater2009,Sinkhorndistanceslightspeed_Cuturi2013} \\
-High-Salience Skeleton & HSS & Yes & Transport &
+High-Salience Skeleton & HSS & Yes & resource &
 \autocite{Robustclassificationsalient_Grady2012} \\
-Resource Allocation & RP & Yes & Transport &
+Resource Allocation & RP & Yes & resource &
 \autocite{Bipartitenetworkprojection_Zhou2007} \\
 \end{longtable}
 
@@ -3304,7 +3305,7 @@ have been included in the MENDR testbench. They are all functions of the
 True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN)
 values.
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-precision} 
 
@@ -3315,7 +3316,7 @@ predictive value'' (PPV) \[P= \frac{TP}{TP+FP}\]
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-recall} 
 
@@ -3327,7 +3328,7 @@ TP-rate (TPR), and has an inherent trade-off with precision.
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-mcc} 
 
@@ -3340,16 +3341,16 @@ Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, breakable, bottomrule=.15mm, colframe=quarto-callout-note-color-frame, rightrule=.15mm, toprule=.15mm, arc=.35mm, left=2mm, leftrule=.75mm, colback=white, opacityback=0]
+\begin{tcolorbox}[enhanced jigsaw, colback=white, left=2mm, opacityback=0, leftrule=.75mm, rightrule=.15mm, arc=.35mm, bottomrule=.15mm, toprule=.15mm, colframe=quarto-callout-note-color-frame, breakable]
 
 \quartocalloutnte{nte-fm} 
 
 \vspace{-3mm}\textbf{Note \ref*{nte-fm}: Fowlkes-Mallows (F-M)}\vspace{3mm}
 
-: Geometric mean of Precision and Recall, as opposed to the F-Measure
-that returns the harmonic mean. Also known to be the limit of the MCC as
-TN approaches infinity\autocite{MCCapproachesgeometric_Crall2023}, which
-is useful as TN grows with \(n^2\) but TP only with \(n\).
+Geometric mean of Precision and Recall, as opposed to the F-Measure that
+returns the harmonic mean. Also known to be the limit of the MCC as TN
+approaches infinity\autocite{MCCapproachesgeometric_Crall2023}, which is
+useful as TN grows with \(n^2\) but TP only with \(n\).
 \[\sqrt{P\cdot R}\]
 
 \end{tcolorbox}
@@ -3517,7 +3518,7 @@ regularization parameters tests (the ``x'' markers in
 Figure~\ref{fig-runtime}). As expected, the number of observations plot
 shows a clear limit in terms of controlling the lower-bound of FPs
 runtime, since in this serial version every observation runs one more
-call to MST. On the other hand, GLASSO appears to have signiicant
+call to MST. On the other hand, GLASSO appears to have significant
 banding for walk length and observation counts, likely indicating
 dominance of network size for its runtime.
 
@@ -3710,7 +3711,8 @@ In the second, \texttt{SC-N300S01} is a 300-node scale-free network with
 281 walks. Both FP and FPi show significantly better recovery
 capability, since enough walks have visited a variety of nodes to give
 FP better edge coverage. In this graph, no algorithm comes within 0.25
-of FP's impressive 0.88 APS for 300 nodes fewer than that many walks.
+of FP's impressive 0.88 APS, especially with 300 nodes and fewer than
+that many walks.
 
 \begin{figure}
 

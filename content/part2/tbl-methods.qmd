@@ -1,12 +1,12 @@
 
 | Algorithm            | abbrev. | $\alpha$? | class    | source                                                                     |   
 |:---------------------|:-------:|:--------: |:--------:|-------:                                                                    |
-|Forest Pursuit        | FP      | Yes       |hybrid    |-                                                                           |
-|GLASSO                | GL      | No        |MRF       |[@Sparseinversecovariance_Friedman2008;@Structureestimationdiscrete_Loh2012]|
-|Ochiai Coef.          | CS      | Yes       |Counts    |[@Measuresecologicalassociation_Janson1981]                                 |
-|Hyperbolic Projection | HYP     | No        |Counts    |[@Scientificcollaborationnetworks._Newman2001]                              |
-|Doubly-Stochastic     | eOT     | Yes       |Transport |[@twostagealgorithm_Slater2009;@Sinkhorndistanceslightspeed_Cuturi2013]     |
-|High-Salience Skeleton| HSS     | Yes       |Transport |[@Robustclassificationsalient_Grady2012]                                    |
-|Resource Allocation   | RP      | Yes       |Transport |[@Bipartitenetworkprojection_Zhou2007]                                      |
+|Forest Pursuit        | FP      | Yes       |local    |-                                                                           |
+|GLASSO                | GL      | No        |global       |[@Sparseinversecovariance_Friedman2008;@Structureestimationdiscrete_Loh2012]|
+|Ochiai Coef.          | CS      | Yes       |local    |[@Measuresecologicalassociation_Janson1981]                                 |
+|Hyperbolic Projection | HYP     | No        |local    |[@Scientificcollaborationnetworks._Newman2001]                              |
+|Doubly-Stochastic     | eOT     | Yes       |resource |[@twostagealgorithm_Slater2009;@Sinkhorndistanceslightspeed_Cuturi2013]     |
+|High-Salience Skeleton| HSS     | Yes       |resource |[@Robustclassificationsalient_Grady2012]                                    |
+|Resource Allocation   | RP      | Yes       |resource |[@Bipartitenetworkprojection_Zhou2007]                                      |
 
 : Summary of algorithms compared {#tbl-methods}

@@ -49,7 +49,7 @@ However, FPi rescaling makes rarer edges fall off earlier in the thresholding, l
 
 In the second, `SC-N300S01` is a 300-node scale-free network with 281 walks.
 Both FP and FPi show significantly better recovery capability, since enough walks have visited a variety of nodes to give FP better edge coverage.
-In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS for 300 nodes fewer than that many walks. 
+In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS, especially with 300 nodes and fewer than that many walks. 
 
 ![P-R curves for two experiments](../images/PR.svg){#fig-pr-curves}
 
