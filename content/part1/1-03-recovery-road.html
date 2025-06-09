@@ -330,7 +330,7 @@ window.Quarto = {
 </div></div></div><section id="local-structure-additivity-assumptions" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="local-structure-additivity-assumptions">Local Structure &amp; Additivity Assumptions</h3>
 <p>These are, together, typically called “association” measures. While they are sometimes presented as functions of the entire dataset, they nearly always find a basis in the inner-product operation, and have definitions in terms of <em>contractions</em> along the data/observation dimension. By relying on the (Euclidean) inner product, even with various re-weighting or normalization schemes, an analyst is making strong assumptions about their ability to reliably take measurements from linear combinations of observed activation vectors.</p>
-<p>Essentially, if a measure relies on marginal counts or summation over the data axis, then the main assumptions are at the <em>local</em> level, about whether what we are adding together estimates our target correctly. The most basic would be to count co-occurrences, and consequently the co-occurrence probability <span class="math inline">\(p_{11}=P(A,B)\)</span>. However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance. This idea leads to “cosine similarity”</p>
+<p>Essentially, if a measure relies on marginal counts or summation over the data axis (<span class="math inline">\(\mathbf{s}\)</span>), then the main assumptions are at the <em>local</em> level, about whether what we are adding together estimates our target correctly. The most basic would be to count co-occurrences, and consequently the co-occurrence probability <span class="math inline">\(p_{11}=P(A,B)\)</span>. However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance. This idea leads to “cosine similarity”</p>
 <div id="nte-cs" class="callout callout-style-simple callout-note no-icon callout-titled" title="Ochiai Coefficient (Cosine)">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -405,7 +405,7 @@ Note&nbsp;4.4: Hyperbolic Projection
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs.&nbsp;rarer ones.<span class="citation" data-cites="Scientificcollaborationnetworks._Newman2001"><a href="#ref-Scientificcollaborationnetworks._Newman2001" role="doc-biblioref">[6]</a></span> <span class="math display">\[ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}\]</span> This reweights each observation by its degree in the original biartite graph.</p>
+<p>Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs.&nbsp;rarer ones.<span class="citation" data-cites="Scientificcollaborationnetworks._Newman2001"><a href="#ref-Scientificcollaborationnetworks._Newman2001" role="doc-biblioref">[6]</a></span> <span class="math display">\[ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}\]</span> This re-weights each observation by its degree in the original bipartite graph.</p>
 </div>
 </div>
 <div class="no-row-height column-margin column-container"><div id="ref-Scientificcollaborationnetworks._Newman2001" class="csl-entry" role="listitem">
@@ -566,8 +566,8 @@ Note&nbsp;4.9: GLASSO
 <h3 class="anchored" data-anchor-id="filling-the-localdata-gap">Filling the local+data “gap”</h3>
 <p>With this in mind, we show in <a href="#tbl-roads" class="quarto-xref">Table&nbsp;<span>4.1</span></a> an overview of the covered approaches, and whether the method presumes operation on observations in the same space as the <em>model</em>, or if some inverse problem is needed.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-tbl-roads">
-<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="19">
-<div id="tbl-roads" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="19" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}">
+<div class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="16">
+<div id="tbl-roads" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="16" data-editable="true">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-roads-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;4.1: Organizing recovery methods by representation space and level
