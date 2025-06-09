@@ -1,7 +1,7 @@
 project:
   type: book
   output-dir: _book
-  resources: ['slides.html','slides_files']
+  resources: ['slides.html','slides_files', 'resource/fonts','content/images/slides-link-screenshot.png']
 
 book:
   title: "Measuring Network Dependencies from Node Activations"
@@ -91,10 +91,11 @@ format:
       - pandoc
       - resource/custom.scss
     sansfont: Cooper Hewitt
-    mainfont: Charter
+    mainfont: Bitstream Charter
+    fontsize: 1.1em
     linkcolor: maroon
     # fontsize: 0.9rem
-    linestretch: 1.3
+    linestretch: 1.2
     # max-width: 80rem
     page-layout: full
     toc-location: right
