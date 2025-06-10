@@ -3,6 +3,7 @@ subtitle: Graduate Thesis Defense
 format:
   metropolis-beamer-revealjs:
     slide-number: true
+    history: false
     transition: slide
     margin: 0.1
     navigation-mode: vertical
@@ -313,116 +314,22 @@ Roughly three types structural assumptions, on a sliding scale:
 
 Local Structure/additivity
 : We could rely on linear combinations of observations having assumed edge representations. \
-  Generally called _association measures_.\
+  Generally called _association measures_ (Cosine Sim./Hyperbolic Projection/Mutual Info.)\
   Built on (marginal) counts $\mathbf{s}$ via inner product (Gram matrix $X^TX$) e.g. co-occurrences.
 
 . . .
 
 Global Structure Constraints
 : We could assume the _whole network_ belongs to a class of graphs.\
-  e.g. Tree, block, SBM, etc.; common for MRF inference. 
+  e.g. Tree/block (MRF/Chow-Liu/GLASSO), Stochastic Block Model, etc.;
 
 . . .
 
 Resource and Information Flow
 : We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
+  E.g. Optimal Transport (Doubly Stochastic/Sinkhorn eOT), Resource Allocation, Geodesics (HSS)
   Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
 
-
-## Taxonomy of Modeling Assumptions -- I {transition="fade"}
-
-
-Local Structure/additivity
-: We could rely on linear combinations of observations having assumed edge representations. \
-  Generally called _association measures_.\
-  Built on (marginal) counts $\mathbf{s}$ via inner product (Gram matrix $X^TX$) e.g. co-occurrences.
-
-. . .
-
-:::{#nte-cs .callout-note title="Ochiai Coefficient (Cosine)"}
-Effectively an uncentered correlation, but for binary observations the "cosine similarity" is also called the _Ochiai Coefficient_ between two sets $A,B$, where binary "1" stands for an element belonging to the set.[@Measuresecologicalassociation_Janson1981]
-$$
-\frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
-$$  
-:::
-
-:::{#nte-hyp .callout-note title="Hyperbolic Projection"}
-Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs. rarer ones.[@Scientificcollaborationnetworks._Newman2001]
-$$ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}$$
-This re-weights each observation by its degree in the original bipartite graph.  
-:::
-
-See also: _Yule's Q/Y_, _Mutual Information_, _odds ratios_, etc.  
-
-
-  
-## Taxonomy of Modeling Assumptions -- II {transition="fade"}
-
-
-Global Structure Constraints
-: We could assume the _whole network_ belongs to a class of graphs.\
-  e.g. Tree, block, SBM, etc.; common for MRF inference. 
-
-. . .
-
-
-:::{#nte-chowliu .callout-note title="Chow-Liu Spanning Tree"}
-Enforces tree structure globally.
-Approximates a joint probability
-$$
-P\left(\bigcap_{i=1}^n v_i\right) \approx P' = \prod_{e\in T} P(u_n(e)|v_n(e)) \quad T\in \mathcal{T}
-$$
-where $\mathcal{T}$ is the set of spanning trees for the nodes.
-The Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence $\text{KL}(P \| P')$ by finding the minimum spanning tree over pairwise mutual information weights.[@Approximatingdiscreteprobability_Chow1968]
-:::
-
-:::{#nte-glasso .callout-note title="GLASSO"}
-
-Semidefinite program to find (regularized) maximum likelihood precision of graph-structured multivariate Normal distribution using $\ell_1$ ("LASSO") penalty [@Sparseinversecovariance_Friedman2008]
-
-$$
-\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
-  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1
-$$ {#eq-glasso}
-
-In the binary case @eq-glasso is still guaranteed to find the structure of the generating MRF, but _only for graphs with singleton separators_, as shown in @Structureestimationdiscrete_Loh2012.
-:::
-
-## Taxonomy of Modeling Assumptions -- III {transition="fade"}
-
-Resource and Information Flow
-: We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
-  Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
-
-. . .
-
-:::{#nte-rp .callout-note title="Resource Allocation"}
-Goes one step further than hyperbolic projection, by viewing each node as having some "amount" of a resource to spend, which gets re-allocated by observational unit. [@Bipartitenetworkprojection_Zhou2007]
-$$ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X $$
-_i.e._ two-step random-walk normalization of the bipartite adjacency matrix.\
-First $X$ is row-normalized, then column-normalized.
-:::
-
-
-:::{#nte-ot .callout-note title="Doubly Stochastic"}
-If $A\in \mathbb{S}^{n\times n}$ is positive, then there exists $d_1,d_2$ such that $$W=\text{diag}(d_1)A\text{diag}(d_2)$$ is doubly-stochastic, and $W(u,v)$ is the _optimal transport plan_ between $u$ and $v$ with regularized Euclidean distance between them on a graph.[@RobustInferenceManifold_Landa2023;@Sinkhorndistanceslightspeed_Cuturi2013]
-
-The doubly-stochastic filter [@twostagealgorithm_Slater2009] removes edges from $W$ until just before the graph would become disconnected.
-:::
-
-## Taxonomy of Modeling Assumptions -- III {transition="fade"}
-
-Resource and Information Flow
-: We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
-  Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
-
-:::{#nte-hss .callout-note title="High-Salience Skeleton"}
-Count the number of shortest-path trees an edge participates in, out of all the shortest-path-trees (one for every node).
-$$ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) $$
-where $\mathcal{T}_{\text{sp}}(n)$ is the shortest-path tree rooted at $n$ 
-[@Robustclassificationsalient_Grady2012]
-
-:::
 
 ## Taxonomy of Modeling Assumptions -- what "space" are we in?  
 
@@ -783,83 +690,14 @@ Community tooling for community problem-solving
 
 {{< include content/part2/tbl-methods.qmd >}}
 
-## Metrics 
-:::::{.columns}
-::::{.column}
+. . .
 
-![](https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg){height=500px}
+Metrics:
+: - Expectation over thresholds $E[\text{score}]$
+  - Matthew's Correlation Coefficient (MCC)
+  - Fowlkes-Mallows (F-M)
+- Average Precision Score (APS)
 
-:::{.attribution}
-Walber, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
-:::
-
-::::
-::::{.column}
-
-Various goals when balancing true/false-positives and true/false-negatives: 
-
-:::{#nte-precision .callout-note title="Precision (P)"}
-Fraction of positive predictions that are true:
- $$P= \frac{TP}{TP+FP}$$
-
-also called "positive predictive value" (PPV)
-:::
-
-:::{#nte-recall .callout-note title="Recall (R)"}
-Fraction of true values that were returned as positive.
-$$R=\frac{TP}{TP+FN} $$
-
-_Inherent trade-off with precision._
-
-Also called the TP-rate (TPR)
-
-:::
-::::
-:::::
-
-## Metric -- Aggregation
-
-:::::{.columns}
-::::{.column}
-Each metric compares a (binary) prediction to the (binary) ground truth.
-
-- Class probabilities $\rightarrow$ _families_ of metric results 
-- How can we pick one threshold in an unsupervised setting?
-
-
-Let's find the "expected value" over all thresholds!
-
-- Normalize all outputs to $[\epsilon,1-\epsilon]$
-- "average" metric is what a practitioner expects if thresholding at random
-- APS is more traditional, but is high if at least one threshold is good...
-
-::::
-::::{.column}
-
-:::{#nte-mcc .callout-note title="Matthews Correlation Coefficient (MCC)"}
-Balances all of TP,TN,FP,FN.
-
-  $$\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}$$
-  
-Preferred for class-imbalanced problems (like sparse recovery) [@statisticalcomparisonMatthews_Chicco2023]
-:::
-
-:::{#nte-fm .callout-note title="Fowlkes-Mallows (F-M)"}
-Geometric mean of Precision and Recall
-
-  $$\sqrt{P\cdot R}$$
-
-Limit of the MCC as TN approaches infinity[@MCCapproachesgeometric_Crall2023]
-
-:::
-
-:::{#nte-aps .callout-note title="Average Precision Score (APS)"}
-Expected precision over the possible recall values 
-$$\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))$$
-_approximates the integral under the parametric P-R curve_
-:::
-::::
-:::::
 
 
 ## Results -- overall
@@ -870,8 +708,9 @@ _approximates the integral under the parametric P-R curve_
 - FP is the only approach with greater than 0.5 expected score over _all_ thresholds!
 - _By a large margin..._ 
 - GLASSO Has a good APS (but so does plain Cosine Similarity?) 
+- By graph-type, better than GLASSO even where it is known to be accurate (trees, blocks)
 
-## Results -- by graph type 
+## Results -- by graph type {visibility="hidden"}
 
 ::::{.columns }
 :::{.column width="40%"}
@@ -889,6 +728,7 @@ More to come on APS "discrepancy"...
 
 :::
 ::::
+
 
 ## Results -- trends {.scrollable}
 
@@ -942,187 +782,29 @@ Empirically:
 {{< embed content/codefigs/results.qmd#fig-partials-runtime >}}
 
 :::{.notes}
-scaling in n-jumps looks more like $O(n\log n)$ because we use kruskal's (NEED PRIM's in PARALLEL)
+scaling in n-jumps looks more like $O(n\log n)$ because we had to use Kruskal's 
 :::
 
-# Forest Pursuit Modifications & Extensions
+## Modifications to Forest Pursuit
 
-## FPi (Interaction Probability)
+- Re-weight by Interaction-rate (FPi) 
 
-:::::{.columns}
-::::{.column}
-Let's fix our APS performance!
+  - scale edge probability by co-occurrence rate
+  - APS differential w/GLASSO is _gone_
+  - Sacrifices stability, and $E[\text{score}]$
+- Expected Forest Maximization (EFM)
+  - Generative/Bayesian Formulation
+  - root node spanning trees
+  - Iteration: (very) slight improvement, high compute cost
 
-- GLASSO is estimating edge strength, not "existence"
-- We can too: probability of edge traversal (i.e. rescale by co-occurrence probability)
-- This gives "FPi", an estimate for the rate of direct interaction 
+> See full document for more detail :) 
 
-> Completely closes the APS gap, while sacrificing MCC/F-M!
 
-::::
 
-::::{.column .fragment}
-::: {layout-ncol=2}
 
-{{< embed content/codefigs/results.qmd#tbl-fpi >}}
+# Case Study
+_Les Misérables_
 
-{{< embed content/codefigs/results.qmd#fig-fpi >}}
-
-:::
-::::
-:::::
----
-
-
-![P-R curves for two experiments](content/images/PR.svg){#fig-pr-curves}
-
-
-## Generative Model
-
-::::{.columns}
-:::{.column}
-Random spanning trees on an augmented graph are precisely the random spanning forests on the original. 
-
-Marking a single node can "root" a tree in the forest. 
-:::
-:::{.column}
-{{< embed content/codefigs/graphs.qmd#fig-inject-plan >}}
-:::
-::::
-
-Leads to generative model for multi-output binary activations on a graph: 
-
-
-
-## Generative Model -- Specification 
-
-- Generate random spanning trees on $G_{+R}$, given the edge weights $z_E$.
-- Uniformly sample a marked node $\phi$.
-- Activate all nodes connected to $\phi$ in the induced spanning forest.
-
-. . .
-
-$$
-\begin{aligned}
-\pi_{e\in E} &\sim \operatorname{Beta}_E(\alpha, 1-\alpha)     \\
-z_{e\in E} &\sim \operatorname{Bernoulli}_E(\pi_e)             \\
-\phi_{i\in I, j\in J} &\sim \operatorname{Categorical}_I(\theta) \\
-x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
-\end{aligned}
-$$ 
-
-
-## Generative model -- Forests
-
-
-$$
-P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
-$$
-
-Is the same as:
-
-$$
-P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
-$$
-
-
-$$
-\begin{gathered}
-P(F|z_E) = \frac{1}{Z_\mathcal{F}} \mu(F)\\
-Z_\mathcal{F} = \det{(I+\beta L)}
-\end{gathered}
-$$
-
-
-Likelihood: $\sum_\mathcal{F} P(x_{ij}|F,\phi_{ij})$ is the probability a node occurs on the same subtree as a "marked" on
-
-## Expected Forest Maximization
-Alternate between estimating recovered network $B$ and representation of data in edge-space $R$:
-
-1. _Forest Pursuit_ estimate $\hat{B}$
-2. Estimate $d_Q$ via _Forest Kernel_ $\hat{Q} \gets (I+\beta B^TB)^{-1}$
-3. Use $d_Q$ for Steiner tree approximation on metric closure ()
-4. ...etc. 
-
----
-
-{{< include content/part2/alg-efm.qmd >}}
-
-:::{.notes}
-1. small $\beta$ to approximate shortest paths closure
-2. symmetric norm-Laplacian to avoid degree-bias when inverting for $Q$ _locally_
-:::
-
-## EFM Results
-
-- Small but consistent improvement in reconstruction performance across MENDR dataset. 
-- On a per-edge basis, (heavily CV-regularized) logistic regression study shows
-
-  - Slightly positive odds ratio for a correct prediction. 
-  - Improvement is agnostic to graph type. 
-
-:::{#fig-efm-results layout="[[1,2]]"  layout-valign="center"}
-
-{{< embed content/codefigs/results.qmd#fig-efm-mcc  >}}
-
-{{< embed content/codefigs/results.qmd#fig-efm-logits  >}}
-
-:::
-
-## EFM Runtime
-::::{.columns}
-:::{.column width="30%"}
-- EFM still competitive with GLASSO, outperforming it in most cases
-- Trend appears to have a fairly consistent multiplicative factor ($\approx10$), at all scales
-:::
-:::{.column width="70%"}
-{{< embed content/codefigs/results.qmd#fig-efm-runtime >}}
-:::
-::::
----
-
-{{< embed content/codefigs/results.qmd#fig-efm-partials-runtime >}}
-
-Most of the runtime penalty appears to occur from network size (perhaps the $\|\cdot\|_{\infty}$ norm?) 
-
-
-# Case Studies
-
-## NetSci Community
-
-Recreating dataset from Newman & Girvan (2004) @Findingevaluatingcommunity_Newman2004
-
-- Web of Science queries for all authors/papers from literature reviews on Network Science
-  - Newman (2003) @StructureFunctionComplex_Newman2003
-  - Boccaletti et al (2006) @ComplexnetworksStructure_BOCCALETTI2006
-  - Additional paper by Sneppen & Newman (1997) @Coherentnoisescale_Sneppen1997 to retain connected component. 
-- Initial coloring of detected communities from co-occurrence network
-  - Modularity-based community detection (greedy algorithm)
-  - Inset shows community (quotient) graph
-
-> How does _degree distribution_ and _assortativity_ (node-neighbor-degree correlation) change?  
-
-## NetSci Community -- Co-Occurrence {transition="fade"}
-
-{{< embed content/codefigs/qualitative.qmd#fig-netsci-cooc >}}
-
-## NetSci Community -- Chow-Liu {transition="fade"}
-
-{{< embed content/codefigs/qualitative.qmd#fig-netsci-tree >}}
-
-
-## NetSci Community -- Forest Pursuit {transition="fade"}
-
-{{< embed content/codefigs/qualitative.qmd#fig-netsci-fp >}}
-
-
-## NetSci Community -- Summary {transition="fade"}
-
-- Forest Pursuit preserves the original community structure
-- Balances co-occurrence and tree properties (less dense, no long chains)
-- Tends to reduce assortativity and avg. degree (makes sense here?) 
-
-{{< embed content/codefigs/qualitative.qmd#fig-netsci-degree >}}
 
 ## Les Misérables Character Network
 
@@ -1158,54 +840,8 @@ Network of character co-occurrence _by chapter_.
 
 It's _still_ easier to explain the occurrence of many characters _because of_ key female characters, despite their overall lower co-occurrence. 
 
-# Working Memory & Partial Orders
-
-## Partially Ordered Set
-_Directed Acyclic Graphs_
-
-Even our original data, if observed by the social scientist, is a "poset"
-
-{{< embed content/codefigs/graphs.qmd#fig-obs-tree >}}
-
-In that case we did not ultimately get orderings from the papers, _but_ other domains do!
-
-> Technical Language Processing
-
-Word order in sentences, tagging, etc. 
-
-
-## TLP with initial-visit emitting random-walks 
-
-::::{.columns}
-:::{.column}
-We want to organize tags/concepts _using_ the way they occur in, say, Maintenance Work Orders (MWOs)
-
-Other than Bag-of-Words (co-occurrence), common tool is order-$n$ _Markov Language Model
-
-- assume the order-of-observation _is_ the order-of-activation
-- use up to $n$ previous activations to help predict the next. 
-
-$$
-P_{MC}(t_i|T) \approx P(t_i | t_{i-1}, \cdots,t_{i-n})
-$$
-
-However, evidence points to memore recall being more like a random walk that reports initial-visits _only_.
-
-:::
-:::{.column}
-
-{{< embed content/codefigs/graphs.qmd#fig-stack-markov >}}
-:::
-::::
-
----
-In Sexton & Fuge (2020)[@UsingSemanticFluency_Sexton2019; and @OrganizingTaggedKnowledge_Sexton2020] we demonstrate the usefulness of accounting for this. \
-Compare label propagation on each network vs expert subsystem annotation in Excavator MWOs [@Cleaninghistoricalmaintenance_Hodkiewicz2016] 
-
-
-![Semisupervised MWO Tag Classification with Network Label Propagation](content/images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-ternary}
-
-Still, nested stochastic gradient descent is _slow_. Can we use Forest Pursuit in a similar case?
+# Case Study
+_Animal Concept Map_
 
 ## Verbal Fluency Networks
 
@@ -1322,4 +958,424 @@ An analyst would also have an easier job of creating "edge-type inventories", ma
 # Thank You 
 
 
-## References
+
+# Literature Review  {visibility="uncounted"}
+
+## Taxonomy of Modeling Assumptions -- I {transition="fade" visibility="uncounted"}
+
+
+Local Structure/additivity
+: We could rely on linear combinations of observations having assumed edge representations. \
+  Generally called _association measures_.\
+  Built on (marginal) counts $\mathbf{s}$ via inner product (Gram matrix $X^TX$) e.g. co-occurrences.
+
+. . .
+
+:::{#nte-cs .callout-note title="Ochiai Coefficient (Cosine)"}
+Effectively an uncentered correlation, but for binary observations the "cosine similarity" is also called the _Ochiai Coefficient_ between two sets $A,B$, where binary "1" stands for an element belonging to the set.[@Measuresecologicalassociation_Janson1981]
+$$
+\frac{|A \cap B |}{\sqrt{|A||B|}}=\sqrt{p_{1\bullet}p_{\bullet 1}} \rightarrow  \frac{X^TX}{\sqrt{\mathbf{s}_i\mathbf{s}_i^T}}\quad \mathbf{s}_i = \sum_i \mathbf{x}_i
+$$  
+:::
+
+:::{#nte-hyp .callout-note title="Hyperbolic Projection"}
+Attempts to account for the overcounting of co-occurrences on frequently occurring nodes, vs. rarer ones.[@Scientificcollaborationnetworks._Newman2001]
+$$ X^T\text{diag}(1+\mathbf{s}_j)^{-1}X \quad \mathbf{s}_j = \sum_j{\mathbf{x}_j'}$$
+This re-weights each observation by its degree in the original bipartite graph.  
+:::
+
+See also: _Yule's Q/Y_, _Mutual Information_, _odds ratios_, etc.  
+
+
+  
+## Taxonomy of Modeling Assumptions -- II {transition="fade" visibility="uncounted"}
+
+
+Global Structure Constraints
+: We could assume the _whole network_ belongs to a class of graphs.\
+  e.g. Tree, block, SBM, etc.; common for MRF inference. 
+
+. . .
+
+
+:::{#nte-chowliu .callout-note title="Chow-Liu Spanning Tree"}
+Enforces tree structure globally.
+Approximates a joint probability
+$$
+P\left(\bigcap_{i=1}^n v_i\right) \approx P' = \prod_{e\in T} P(u_n(e)|v_n(e)) \quad T\in \mathcal{T}
+$$
+where $\mathcal{T}$ is the set of spanning trees for the nodes.
+The Chow-Liu tree minimizes the Kullback-Leibler (KL) Divergence $\text{KL}(P \| P')$ by finding the minimum spanning tree over pairwise mutual information weights.[@Approximatingdiscreteprobability_Chow1968]
+:::
+
+:::{#nte-glasso .callout-note title="GLASSO"}
+
+Semidefinite program to find (regularized) maximum likelihood precision of graph-structured multivariate Normal distribution using $\ell_1$ ("LASSO") penalty [@Sparseinversecovariance_Friedman2008]
+
+$$
+\operatorname*{argmax} \mathcal{L}(\Theta|\hat{\Sigma})
+  = \operatorname*{argmin}_{\Theta \prec 0}\ \text{tr}(\hat{\Sigma} \Theta) - \log |\Theta|+ \rho\|\Theta\|_1
+$$ {#eq-glasso}
+
+In the binary case @eq-glasso is still guaranteed to find the structure of the generating MRF, but _only for graphs with singleton separators_, as shown in @Structureestimationdiscrete_Loh2012.
+:::
+
+## Taxonomy of Modeling Assumptions -- III {transition="fade" visibility="uncounted"}
+
+Resource and Information Flow
+: We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
+  Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
+
+. . .
+
+:::{#nte-rp .callout-note title="Resource Allocation"}
+Goes one step further than hyperbolic projection, by viewing each node as having some "amount" of a resource to spend, which gets re-allocated by observational unit. [@Bipartitenetworkprojection_Zhou2007]
+$$ \text{diag}(\mathbf{s}_i)^{-1}X^T\text{diag}(\mathbf{s}_j)^{-1}X $$
+_i.e._ two-step random-walk normalization of the bipartite adjacency matrix.\
+First $X$ is row-normalized, then column-normalized.
+:::
+
+
+:::{#nte-ot .callout-note title="Doubly Stochastic"}
+If $A\in \mathbb{S}^{n\times n}$ is positive, then there exists $d_1,d_2$ such that $$W=\text{diag}(d_1)A\text{diag}(d_2)$$ is doubly-stochastic, and $W(u,v)$ is the _optimal transport plan_ between $u$ and $v$ with regularized Euclidean distance between them on a graph.[@RobustInferenceManifold_Landa2023;@Sinkhorndistanceslightspeed_Cuturi2013]
+
+The doubly-stochastic filter [@twostagealgorithm_Slater2009] removes edges from $W$ until just before the graph would become disconnected.
+:::
+
+## Taxonomy of Modeling Assumptions -- III {transition="fade" visibility="uncounted"}
+
+Resource and Information Flow
+: We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
+  Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
+
+:::{#nte-hss .callout-note title="High-Salience Skeleton"}
+Count the number of shortest-path trees an edge participates in, out of all the shortest-path-trees (one for every node).
+$$ \frac{1}{n}\sum_{i=1}^n \mathcal{T}_{\text{sp}}(i) $$
+where $\mathcal{T}_{\text{sp}}(n)$ is the shortest-path tree rooted at $n$ 
+[@Robustclassificationsalient_Grady2012]
+
+:::
+
+
+
+# Forest Pursuit Modifications & Extensions {visibility="uncounted"}
+
+
+## FPi (Interaction Probability){visibility="uncounted"}
+
+:::::{.columns}
+::::{.column}
+Let's fix our APS performance!
+
+- GLASSO is estimating edge strength, not "existence"
+- We can too: probability of edge traversal (i.e. rescale by co-occurrence probability)
+- This gives "FPi", an estimate for the rate of direct interaction 
+
+> Completely closes the APS gap, while sacrificing MCC/F-M!
+
+::::
+
+::::{.column .fragment}
+::: {layout-ncol=2}
+
+{{< embed content/codefigs/results.qmd#tbl-fpi >}}
+
+{{< embed content/codefigs/results.qmd#fig-fpi >}}
+
+:::
+::::
+:::::
+
+## {visibility="uncounted"}
+
+
+![P-R curves for two experiments](content/images/PR.svg){#fig-pr-curves}
+
+
+## Generative Model {visibility="uncounted"}
+
+::::{.columns}
+:::{.column}
+Random spanning trees on an augmented graph are precisely the random spanning forests on the original. 
+
+Marking a single node can "root" a tree in the forest. 
+:::
+:::{.column}
+{{< embed content/codefigs/graphs.qmd#fig-inject-plan >}}
+:::
+::::
+
+Leads to generative model for multi-output binary activations on a graph: 
+
+
+
+## Generative Model -- Specification {visibility="uncounted"} 
+
+- Generate random spanning trees on $G_{+R}$, given the edge weights $z_E$.
+- Uniformly sample a marked node $\phi$.
+- Activate all nodes connected to $\phi$ in the induced spanning forest.
+
+. . .
+
+$$
+\begin{aligned}
+\pi_{e\in E} &\sim \operatorname{Beta}_E(\alpha, 1-\alpha)     \\
+z_{e\in E} &\sim \operatorname{Bernoulli}_E(\pi_e)             \\
+\phi_{i\in I, j\in J} &\sim \operatorname{Categorical}_I(\theta) \\
+x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
+\end{aligned}
+$$ 
+
+
+## Generative model -- Forests {visibility="uncounted"}
+
+
+$$
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
+$$
+
+Is the same as:
+
+$$
+P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
+$$
+
+
+$$
+\begin{gathered}
+P(F|z_E) = \frac{1}{Z_\mathcal{F}} \mu(F)\\
+Z_\mathcal{F} = \det{(I+\beta L)}
+\end{gathered}
+$$
+
+
+Likelihood: $\sum_\mathcal{F} P(x_{ij}|F,\phi_{ij})$ is the probability a node occurs on the same subtree as a "marked" on
+
+## Expected Forest Maximization {visibility="uncounted"}
+Alternate between estimating recovered network $B$ and representation of data in edge-space $R$:
+
+1. _Forest Pursuit_ estimate $\hat{B}$
+2. Estimate $d_Q$ via _Forest Kernel_ $\hat{Q} \gets (I+\beta B^TB)^{-1}$
+3. Use $d_Q$ for Steiner tree approximation on metric closure ()
+4. ...etc. 
+
+## {visibility="uncounted"}
+
+{{< include content/part2/alg-efm.qmd >}}
+
+:::{.notes}
+1. small $\beta$ to approximate shortest paths closure
+2. symmetric norm-Laplacian to avoid degree-bias when inverting for $Q$ _locally_
+:::
+
+## EFM Results {visibility="uncounted"}
+
+- Small but consistent improvement in reconstruction performance across MENDR dataset. 
+- On a per-edge basis, (heavily CV-regularized) logistic regression study shows
+
+  - Slightly positive odds ratio for a correct prediction. 
+  - Improvement is agnostic to graph type. 
+
+:::{#fig-efm-results layout="[[1,2]]"  layout-valign="center"}
+
+{{< embed content/codefigs/results.qmd#fig-efm-mcc  >}}
+
+{{< embed content/codefigs/results.qmd#fig-efm-logits  >}}
+
+:::
+
+## EFM Runtime {visibility="uncounted"}
+
+::::{.columns}
+:::{.column width="30%"}
+- EFM still competitive with GLASSO, outperforming it in most cases
+- Trend appears to have a fairly consistent multiplicative factor ($\approx10$), at all scales
+:::
+:::{.column width="70%"}
+{{< embed content/codefigs/results.qmd#fig-efm-runtime >}}
+:::
+::::
+
+## {visibility="uncounted"}
+
+{{< embed content/codefigs/results.qmd#fig-efm-partials-runtime >}}
+
+Most of the runtime penalty appears to occur from network size (perhaps the $\|\cdot\|_{\infty}$ norm?) 
+
+
+# Metrics {visibility="uncounted"}
+
+## Metrics -- Precision and Recall {visibility="uncounted"}
+:::::{.columns}
+::::{.column}
+
+![](https://upload.wikimedia.org/wikipedia/commons/2/26/Precisionrecall.svg){height=500px}
+
+:::{.attribution}
+Walber, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons
+:::
+
+::::
+::::{.column}
+
+Various goals when balancing true/false-positives and true/false-negatives: 
+
+:::{#nte-precision .callout-note title="Precision (P)"}
+Fraction of positive predictions that are true:
+ $$P= \frac{TP}{TP+FP}$$
+
+also called "positive predictive value" (PPV)
+:::
+
+:::{#nte-recall .callout-note title="Recall (R)"}
+Fraction of true values that were returned as positive.
+$$R=\frac{TP}{TP+FN} $$
+
+_Inherent trade-off with precision._
+
+Also called the TP-rate (TPR)
+
+:::
+::::
+:::::
+
+## Metric -- Aggregation{visibility="uncounted"}
+
+:::::{.columns}
+::::{.column}
+Each metric compares a (binary) prediction to the (binary) ground truth.
+
+- Class probabilities $\rightarrow$ _families_ of metric results 
+- How can we pick one threshold in an unsupervised setting?
+
+
+Let's find the "expected value" over all thresholds!
+
+- Normalize all outputs to $[\epsilon,1-\epsilon]$
+- "average" metric is what a practitioner expects if thresholding at random
+- APS is more traditional, but is high if at least one threshold is good...
+
+::::
+::::{.column}
+
+:::{#nte-mcc .callout-note title="Matthews Correlation Coefficient (MCC)"}
+Balances all of TP,TN,FP,FN.
+
+  $$\frac{TP\cdot TN - FP\cdot FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}$$
+  
+Preferred for class-imbalanced problems (like sparse recovery) [@statisticalcomparisonMatthews_Chicco2023]
+:::
+
+:::{#nte-fm .callout-note title="Fowlkes-Mallows (F-M)"}
+Geometric mean of Precision and Recall
+
+  $$\sqrt{P\cdot R}$$
+
+Limit of the MCC as TN approaches infinity[@MCCapproachesgeometric_Crall2023]
+
+:::
+
+:::{#nte-aps .callout-note title="Average Precision Score (APS)"}
+Expected precision over the possible recall values 
+$$\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))$$
+_approximates the integral under the parametric P-R curve_
+:::
+::::
+:::::
+
+
+# NetSci Community{visibility="uncounted"}
+
+## NetSci Dataset{visibility="uncounted"}
+
+Recreating dataset from Newman & Girvan (2004) @Findingevaluatingcommunity_Newman2004
+
+- Web of Science queries for all authors/papers from literature reviews on Network Science
+  - Newman (2003) @StructureFunctionComplex_Newman2003
+  - Boccaletti et al (2006) @ComplexnetworksStructure_BOCCALETTI2006
+  - Additional paper by Sneppen & Newman (1997) @Coherentnoisescale_Sneppen1997 to retain connected component. 
+- Initial coloring of detected communities from co-occurrence network
+  - Modularity-based community detection (greedy algorithm)
+  - Inset shows community (quotient) graph
+
+> How does _degree distribution_ and _assortativity_ (node-neighbor-degree correlation) change?  
+
+## NetSci Community -- Co-Occurrence {transition="fade" visibility="uncounted"}
+
+{{< embed content/codefigs/qualitative.qmd#fig-netsci-cooc >}}
+
+## NetSci Community -- Chow-Liu {transition="fade" visibility="uncounted"}
+
+{{< embed content/codefigs/qualitative.qmd#fig-netsci-tree >}}
+
+
+## NetSci Community -- Forest Pursuit {transition="fade" visibility="uncounted"}
+
+{{< embed content/codefigs/qualitative.qmd#fig-netsci-fp >}}
+
+
+## NetSci Community -- Summary {transition="fade" visibility="uncounted"}
+
+- Forest Pursuit preserves the original community structure
+- Balances co-occurrence and tree properties (less dense, no long chains)
+- Tends to reduce assortativity and avg. degree (makes sense here?) 
+
+{{< embed content/codefigs/qualitative.qmd#fig-netsci-degree >}}
+
+
+# Working Memory & Partial Orders {visibility="uncounted"}
+
+## Partially Ordered Set {visibility="uncounted"}
+_Directed Acyclic Graphs_
+
+Even our original data, if observed by the social scientist, is a "poset"
+
+{{< embed content/codefigs/graphs.qmd#fig-obs-tree >}}
+
+In that case we did not ultimately get orderings from the papers, _but_ other domains do!
+
+> Technical Language Processing
+
+Word order in sentences, tagging, etc. 
+
+
+## TLP with initial-visit emitting random-walks{visibility="uncounted"} 
+
+::::{.columns}
+:::{.column}
+We want to organize tags/concepts _using_ the way they occur in, say, Maintenance Work Orders (MWOs)
+
+Other than Bag-of-Words (co-occurrence), common tool is order-$n$ _Markov Language Model
+
+- assume the order-of-observation _is_ the order-of-activation
+- use up to $n$ previous activations to help predict the next. 
+
+$$
+P_{MC}(t_i|T) \approx P(t_i | t_{i-1}, \cdots,t_{i-n})
+$$
+
+However, evidence points to memore recall being more like a random walk that reports initial-visits _only_.
+
+:::
+:::{.column}
+
+{{< embed content/codefigs/graphs.qmd#fig-stack-markov >}}
+:::
+::::
+
+## {visibility="uncounted"}
+
+{visibility="uncounted"}
+
+In Sexton & Fuge (2020)[@UsingSemanticFluency_Sexton2019; and @OrganizingTaggedKnowledge_Sexton2020] we demonstrate the usefulness of accounting for this. \
+Compare label propagation on each network vs expert subsystem annotation in Excavator MWOs [@Cleaninghistoricalmaintenance_Hodkiewicz2016] 
+
+
+![Semisupervised MWO Tag Classification with Network Label Propagation](content/images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-ternary}
+
+Still, nested stochastic gradient descent is _slow_. Can we use Forest Pursuit in a similar case?
+
+
+# References {visibility="uncounted"}
+
+## {visibility="uncounted"}
