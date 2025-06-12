@@ -60,7 +60,7 @@ div.csl-indent {
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-988570c0a70d7980909207ecf3fa8baa.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-4dc29b23d4f30288a9c18b6eeca51034.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -382,7 +382,7 @@ Q_{\beta} = (I+\beta L)^{-1}
 <div class="no-row-height column-margin column-container"><div id="ref-WhyHowWhen_Torres2021" class="csl-entry" role="listitem">
 <div class="csl-left-margin">[14] </div><div class="csl-right-inline">L. Torres, A. S. Blevins, D. Bassett, and T. Eliassi-Rad, <span>“The why, how, and when of representations for complex systems,”</span> <em><span>SIAM</span> Rev.</em>, vol. 63, no. 3, pp. 435–485, Jan. 2021, doi: <a href="https://doi.org/10.1137/20M1355896">10.1137/20M1355896</a>.</div>
 </div></div><div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-stack-tree">
-<div id="cell-fig-stack-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="18">
+<div id="cell-fig-stack-tree" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div id="fig-stack-tree" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -461,7 +461,7 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 <p>After the point estimates for <span class="math inline">\(\mathbf{r}\)</span> have been calculated as trees, we can use the desire-path beta-binomial model (<a href="2-04-rand-sf.html#eq-desirepath-binom" class="quarto-xref">Equation&nbsp;<span>5.4</span></a>) to calculate the overall empirical Bayes estimate for <span class="math inline">\(\hat{G}\)</span>. As a prior for <span class="math inline">\(\alpha\)</span>, instead of a Jeffrey’s or Laplace prior, we bias the network toward maximal sparsity, while still retaining connectivity. In other words, we assume that <span class="math inline">\(n\)</span> nodes only need about <span class="math inline">\(n-1\)</span> edges to be fully connected, which implies a prior expected sparsity of <span id="eq-min-connect"><span class="math display">\[
 \alpha^*=\frac{n-1}{\tfrac{1}{2}n(n-1)} = \frac{2}{n}
 \tag{6.5}\]</span></span> which we can use as a sparsity-promoting initial value for <span class="math inline">\(\text{Beta}(\alpha^*,1-\alpha^*)\)</span>.</p>
-<div id="alg-fp" class="pseudocode-container quarto-float" data-line-number-punc=":" data-pseudocode-number="1" data-no-end="false" data-comment-delimiter="//" data-line-number="true" data-indent-size="1.2em" data-caption-prefix="Algorithm">
+<div id="alg-fp" class="pseudocode-container quarto-float" data-comment-delimiter="//" data-line-number="true" data-no-end="false" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-pseudocode-number="1" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{Forest Pursuit} \begin{algorithmic} \Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0&lt;\alpha&lt;1$ \Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$ \Procedure{ForestPursuitEdgeProb}{$X, d_K, \alpha$} \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$} \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \Procedure{ForestPursuit}{$X, d_K$} \State $R(\cdot,\cdot) \gets 0$ \For{$i\gets 1, m$}\Comment{\textit{each observation}} \State $\mathbf{x}_i \gets X(i,\cdot)$ \State $R(i,\cdot) \gets $\Call{PursueTree}{$\mathbf{x}_i, d_K$} \EndFor \State \textbf{return} $R$ \EndProcedure \Procedure{PursueTree}{$\mathbf{x}, d$} \Comment{\textit{Approximate Steiner Tree}} \State $V \gets \{v\in \mathcal{V} | \mathbf{x}(\mathcal{V})=1\}$ \Comment{\textit{activated nodes}} \State $T \gets$\Call{MST}{$d[V,V]$} \Comment{\textit{e.g., Prim's Algorithm}} \State $\mathbf{u,v}\gets \{(j,j')\in J\times J | T(j,j')\neq 0\}$ \State $\mathbf{r} \gets e_n(\mathbf{u,v})$ \Comment{\textit{unroll tree adjacency}} \State \textbf{return} $\mathbf{r}$ \EndProcedure \Procedure{DesirePathBeta}{$X,R, \alpha$} \State $\mathbf{s} \gets \sum_{i=1}^m R(i,e)$ \State $\sigma \gets \sum_{i=1}^m X(i,j)$ \State $\mathbf{k} \gets e_n(\sigma\sigma^T)$ \Comment{\textit{co-occurrence counts}} \State $\hat{\alpha}_m \gets \alpha + \frac{\mathbf{s}-\alpha \mathbf{k}}{\mathbf{k}+1}$ \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -485,7 +485,7 @@ Figure&nbsp;6.1: Edge Measurements with true (tree) dependencies known
 </section>
 <section id="sec-FP-experiments" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="sec-FP-experiments">Simulation Study</h2>
-<p>To test the performance of FP against other backboning and recovery methods, we have developed a public repository <a href="https://github.com/rtbs-dev/affinis"><code>affinis</code></a> containing reference implementations for FP, along with many co-occurrence and backboning techniques. The library contains source code and examples for many of the presented methods, and more. [UPDATE w/ DOI?]</p>
+<p>To test the performance of FP against other backboning and recovery methods, we have developed a public repository <a href="https://github.com/rtbs-dev/affinis"><code>affinis</code></a> containing reference implementations for FP, along with many co-occurrence and backboning techniques. The library contains source code and examples for many of the presented methods, and more.</p>
 <p>In addition, to support the community and provide for a standard set of benchmarks for network recovery from activations, the <a href="https://github.com/rtbs-dev/mendr"><code>MENDR</code></a> reference dataset and testbench was developed. To make reproducible comparison of recovery algorithms easier, <code>MENDR</code> includes hundreds of randomly generated networks in several classes, along with random walks sampled <em>on those networks</em>. It can also be extended through community contribution, using data versioning to allow consistent comparison between different reports and publications over time.</p>
 <section id="experimental-method" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="experimental-method">Experimental Method</h3>
@@ -705,7 +705,7 @@ Note&nbsp;6.4: Fowlkes-Mallows (F-M)
 <h3 class="anchored" data-anchor-id="results---scoring">Results - Scoring</h3>
 <p>The results over every experiment are shown in <a href="#fig-fp-overall" class="quarto-xref">Figure&nbsp;<span>6.2</span></a>. Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8. GLASSO is clearly the second-best at recovery in these experiments, though for scale-free networks the improvement over simply thresholding the Ochiai coefficient is negligible. For APS, both GLASSO and Ochiai are equally able to return high scores, indicating at least one threshold for each that performed well. A simple mechanism for FP to perform equally well at APS is discussed in <a href="2-06-latent-forest-alloc.html#sec-fpi" class="quarto-xref"><span>Forest Pursuit Interaction Probability</span></a>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-overall">
-<div id="cell-fig-fp-overall" class="cell" data-execution_count="11">
+<div id="cell-fig-fp-overall" class="cell" data-execution_count="12">
 <div class="cell-output cell-output-display">
 <div id="fig-fp-overall" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -722,7 +722,7 @@ Figure&nbsp;6.2: Comparison of MENDR recovery scores
 </div>
 <p>Breaking down the results by graph kind in <a href="#fig-fp-compare" class="quarto-xref">Figure&nbsp;<span>6.3</span></a>, we see the remarkable ability of FP to dramatically outperform every other algorithm in MCC and F-M, showing remarkable accuracy <em>together with stability</em> over the set of threshold values. This is indicative of FP’s ability to more directly estimate the support of each edge, with lower values occurring only when co-occurrences aren’t being consistently explained with the same set of incidences.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fp-compare">
-<div id="cell-fig-fp-compare" class="cell" data-execution_count="13">
+<div id="cell-fig-fp-compare" class="cell" data-execution_count="14">
 <div class="cell-output cell-output-display">
 <div id="fig-fp-compare" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -739,8 +739,8 @@ Figure&nbsp;6.3: Comparison of MENDR Recovery Scores by Graph Type
 </div>
 <p>Another important capability of any recovery algorithm is to improve its estimate when provided with more data. Of course, this also will depend on other factors, such as the dimensionality of the problem (network size), and specifically for us, whether <em>longer</em> random walks makes network inference better or worse.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-mendr-trends">
-<div class="cell" data-execution_count="16">
-<div id="fig-mendr-trends" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="16">
+<div class="cell" data-execution_count="17">
+<div id="fig-mendr-trends" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="17">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-mendr-trends-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
@@ -790,7 +790,7 @@ Figure&nbsp;6.4: Score trends vs problem scaling
 <p>As <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a> shows, FP is positively correlated with <em>all three</em>. Most importantly, the trend for FP is strongest as the number of observations increases, which is not a phenomenon seen in the other methods. In fact, it appears that count-based methods’ scores are negatively correlated with added random walk length and added observations. Only HYP and CS scores are shown in <a href="#fig-mendr-trends" class="quarto-xref">Figure&nbsp;<span>6.4</span></a>, but all other tested methods (other than FP and GLASSO) show the same trend.</p>
 <p>However, because the graph sampling protocol includes <span class="math inline">\(n\)</span> in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The <em>partial residual</em> plots are shown in <a href="#fig-partials-mcc" class="quarto-xref">Figure&nbsp;<span>6.5</span></a>, which shows the trends of each variable after controlling for the others.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-mcc">
-<div id="cell-fig-partials-mcc" class="cell" data-execution_count="17">
+<div id="cell-fig-partials-mcc" class="cell" data-execution_count="18">
 <div class="cell-output cell-output-display">
 <div id="fig-partials-mcc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -811,7 +811,7 @@ Figure&nbsp;6.5: Partial Residuals (regression on E[MCC])
 <h3 class="anchored" data-anchor-id="results---runtime-performance">Results - Runtime Performance</h3>
 <p>For both Forest Pursuit and GLASSO, runtime efficiency is critical if these algorithms are going to be adopted by analysts for backboning and recovery. <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a> shows the (log-)seconds against the same parameters from before. For similar sized networks, FP is consistently taking 10-100x less time to reach a result than GLASSO does. Additionally, many of the experiments led to ill-conditioned matrices that failed to converge for GLASSO under any of the regularization parameters tests (the “x” markers in <a href="#fig-runtime" class="quarto-xref">Figure&nbsp;<span>6.6</span></a>). As expected, the number of observations plot shows a clear limit in terms of controlling the lower-bound of FPs runtime, since in this serial version every observation runs one more call to MST. On the other hand, GLASSO appears to have significant banding for walk length and observation counts, likely indicating dominance of network size for its runtime.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-runtime">
-<div id="cell-fig-runtime" class="cell" data-execution_count="20">
+<div id="cell-fig-runtime" class="cell" data-execution_count="21">
 <div class="cell-output cell-output-display">
 <div id="fig-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -828,7 +828,7 @@ Figure&nbsp;6.6: Runtime Scaling (Forest-Pursuit vs GLASSO)
 </div>
 <p>To control for each of the variables, and to empirically validate the theoretical analysis in <a href="#sec-fp-complexity" class="quarto-xref"><span>Approximate Complexity</span></a>}, a regression of the same three (log-)parametwers was performed against (log-)seconds. The slopes in <a href="#fig-partials-runtime" class="quarto-xref">Figure&nbsp;<span>6.7</span></a>, which are plotted on a log-log scale, correspond roughly to polynomial powers in linear scale. In regression terms, we are fitting the log of <span class="math display">\[y_{\text{sec}} = ax_{\text{param}}^\gamma\]</span> so that the slope in a log-log plot is <span class="math inline">\(\gamma\)</span>.</p>
 <div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-partials-runtime">
-<div id="cell-fig-partials-runtime" class="cell" data-execution_count="22">
+<div id="cell-fig-partials-runtime" class="cell" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div id="fig-partials-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
