@@ -34,7 +34,6 @@ import matplotlib as m
 ```
 
 ```{python}
-
 m.rcParams['font.family']=['serif']
 m.rcParams['font.serif']=['Bitstream Charter']
 figsize = m.rcParams['figure.figsize']
@@ -1043,4 +1042,3 @@ f = plt.figure(figsize=(figsize[0], figsize[1]/1.8))
 
 f=log_partial_residuals(df, ['FP','GL','EFM'], 'seconds', ['n-jumps', 'n-nodes','n-walks'], fig=f)
 ```
-

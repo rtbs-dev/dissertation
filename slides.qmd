@@ -1,5 +1,7 @@
 ---
-subtitle: Graduate Thesis Defense
+subtitle: |
+  Graduate Thesis Defense \
+  [`dissertation.rtbs.dev`](https://dissertation.rtbs.dev)
 format:
   metropolis-beamer-revealjs:
     slide-number: true
@@ -8,8 +10,8 @@ format:
     margin: 0.1
     navigation-mode: vertical
     autostretch: false
-    chalkboard: true
-    multiplex: true
+    #chalkboard: true
+    #multiplex: true
     #theme: resource/slides.scss
     include-in-header:
       text: |
@@ -35,45 +37,88 @@ format:
 embed-resources: false
 revealjs-plugins:
   - attribution
+auto-agenda:
+  bullets: numbered
+  heading: Agenda
 filters:
   - pseudocode
+  - reveal-auto-agenda
 ---
 
-### Follow Along!
 
-Go to [`dissertation.rtbs.dev`](http://dissertation.rtbs.dev) for source document and slides. 
 
-![](content/images/slides-link-screenshot.png)
-
-Slides will automatically sync with presentation!
 
 
 # Background
 
+---
+
+1. **Background** 
+2. Organizing Current Approaches
+3. Desire Path Density Networks
+4. Forest Pursuit
+5. Experimental Comparison
+6. Case Studies
+7. Conclusion
+
 ## Imagine...
 
-You work at an institution where lots of people author publications...
+
+
+::::{.columns align="center"}
+:::{.column}
+> You work at an institution where lots of people author publications...
+> 
+> _...sometimes together..._
+
+Co-authorship $\rightarrow$ relationships of colleagues? 
+
+
+> Build a network!
+
+How good of a job did you do?
+
+- There's no "ground truth" network...
+- What does "related" mean? 
+- How will you trust your answer?
+:::
+:::{.column}
+![](content/images/papers-colleagues.svg)
+:::
+::::
+
+## Problem & Scope
+
+Assume
+: We want _networks of dependence_ (influence, causation, etc.)
 
 . . .
 
-_...sometimes together..._
+Research Question
+: Can we _recover_ dependency relationships _from co-occurrences_?\
 
 . . .
 
-> What can patterns of co-authorship tell you about the social network of you colleagues? 
+\
+\
+
+:::{.callout-warning title="Conditions"}
+
+- Without forcing the (social, etc.) network to have a certain shape? \
+- While retaining easily-interpretable metrological properties? \
+- Fast and flexible enough for practitioners: rapid iteration and exploratory analysis? 
+:::
 
 . . .
 
-Being a well-adjusted network scientist, your mind immediately turns to modeling them as a _network_!
+:::{.callout-important title="This work:"}
 
-After all, networks are a tool-of-choice when things are ... related...to each other.
+1. _Organizes_ current approaches to identify **metrological** and **useability** gaps. 
+2. Presents **Forest Pursuit**: method to recover dependencies that is **scalable** and **accurate** .
+3. Provides **MENDR**, a community **testbench** and **dataset** for comparing network dependency reconstruction.
+4. Application to common **case studies**.
 
-. . .
-
-But how good of a job did you do? There's no "ground truth" network. And what exactly are you after? 
-
-> How will you trust your answer?
-
+:::
 
  
 ## A Need for Network Metrology
@@ -163,7 +208,9 @@ What if...
 - co-occurrence $\rightarrow$ "acquaintance"?
 - more papers $\rightarrow$ more acquainted?
 
-So let's do a bipartite projection?
+So let's do a bipartite projection...
+
+...done?
 
 :::
 :::{.column}
@@ -175,7 +222,6 @@ So let's do a bipartite projection?
 
 . . .
 
-...profit?
 
 :::{.notes}
 notorious for leading to hairballs... already starting to look pretty dense at 4 papers... 
@@ -194,8 +240,8 @@ Have you ever had someone added to a paper by _someone else_?
 
 A social scientist "on the ground" would likely measure things differently.
 
-> - _Author (g) asked (e), (h), and (c) to co-author a paper, all of whom agreed_
-> - _(i) asked (f) and (j), but (j) wanted to add (b)'s expertise before writing one of the sections_
+> - Author **(g)** asked **(e, h, and c)** to co-author a paper, _all of whom agreed_
+> - Author **(i)** asked **(f and j)**, but **(j)** wanted to _add_ **(b)**'s expertise before writing one of the sections. 
 > - etc. 
 
 
@@ -212,86 +258,109 @@ This is a network of _who depends on who_!
 Kinda like sardine tag, each new person is confronted by a mob? Not...usually.
 :::
 
-## Scope of Work
-
-_We're not "on the ground"...what can we do?_
+## The Goal
 
 {{< embed content/codefigs/graphs.qmd#fig-recover >}}
 
-:::{.callout-important title="This work:"}
-
-1. Organizes current approaches by theoretical application to identify metrological and useability gaps. 
-2. Presents _Forest Pursuit_:
-    a) Scalable, accurate method to recover dependencies from random-walk node activations.
-    b) Includes a Bayesian extension and inference scheme.
-3. Provides `MENDR`, a community testbench for comparing network dependency reconstruction.
-4. Illustrates use of _Forest Pursuit_ by practitioners with several realistic case studies.
-
-:::
 
 # Roads to Network Recovery
+_Organizing current approaches_
+
+---
+
+1. Background 
+2. **Organizing Current Approaches**
+3. Desire Path Density Networks
+4. Forest Pursuit
+5. Experimental Comparison
+6. Case Studies
+7. Conclusion
 
 
-## Basics -- Sample Observations in Feature Space
 
+## Our Data, the Design Matrix
 
-For generality, say a practitioner records their measurements as scalar values, _i.e._, $x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}$.
-Data can be represented as a "design matrix" $X:\mathbb{S}^{m\times n}$
+- Encode "papers" (observations) as rows, "authors" (features) as columns 
 
-- $n$ independent/input variable features
-- over the course of $m$ observations
- 
-$$\begin{gathered}
-x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S} \\
-i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}
-\end{gathered}$$
+::::{#fig-incidence-struct layout="[[1,1]]" layout-valign="bottom"}
 
-. . .
+::: {#fig-biadj-mat}
+$$
+X^{m\times n}=
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \\ x_m\end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
+  .  & .   &  1  & .   &  1  & .   &  1  &  1  & .   & .  \\
+  1  & .   & .   & .   &  1  &  1  & .   & .   & .   & .  \\
+  .  &  1  & .   & .   & .   &  1  & .   & .   &  1  &  1 \\
+  .  & .   & .   &  1  &  1  & .   & .   &  1  & .   & .  \\
+  &&&& \vdots &&&&&
+  \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+$$
 
-observations
-: $\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}$
+: $X$ as a (bi-adjacency) matrix. 
 
-features
-: $\mathbf{x}_j'=X(\cdot,j),\quad \mathbf{x}':I\rightarrow\mathbb{S}$
-
-Marginal sums give co-occurrences, matrix products give co-occurrences, etc.
-
-:::{.callout-important}
-We are interested in the _feature_ relationships (author-author), _i.e._ feature/representation learning when $\mathbb{S} \equiv \mathbb{B}$ 
 :::
 
-## Basics -- Incidence Structures
+{{< embed content/codefigs/graphs.qmd#fig-bipartite >}}
 
-Unifying graphs and design matrices: _edge-centric parameterizations!_^[
-  Closed-form ID manipulation for $\{u_n(e),v_n(e)\}\leftrightarrow e_n(u,v)$ [@ParallelEuclideandistance_Angeletti2019] \
-  Gives an unambiguous encoding for oriented and un-oriented incidence, and with them $L$, $A$, $D$, etc. 
-]
+::::
 
-Graphs via _complete_ incidence matrix $B$: 
-: $$
-  \begin{gathered}
-  G  = (V,E,B) \quad s.t. \quad B : E\times V \rightarrow S\\
-  v \in V = \{1,\cdots, n\}\quad 
-  e \in E = \left\{1,\cdots, {n\choose 2} \right\}
-  \end{gathered}
-  $$ 
+## Graphs as Incidence Matrices
 
-. . .
+::::{#fig-incidence-graph layout="[[1,1]]" layout-valign="center"}
 
-Observations of graphs (as _edges_)
-: $$
-  \begin{gathered}
-  R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\}) \\
-  \quad \textrm{s.t.} \quad R:I\times E \rightarrow \mathbb{S}\\
-  i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
-  n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
-  \end{gathered}
-  $$
+::: {#fig-incidence-mat}
 
+$$
+B^{\omega \times n} =
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } e_1\\e_2\\e_3\\e_4\\e_5\\e_6\\e_7\\e_8\\e_9\\e_{10}\\e_{11}\\ \vdots \\e_\omega\\\end{array} &
+\left[
+\begin{array}{}
+  1  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  . \\
+  1  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  1  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  .  &  . \\
+  .  &  1  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1 \\
+  .  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1 \\
+  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1  &  .  &  . \\
+  .  &  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  . \\
+  &&&& \vdots &&&&&
+  \\
+  &&&& \vdots &&&&&
+   \end{array}
+\right]
+\end{array}
+$$
+
+: Network $G$ as an _incidence matrix_ $B$. 
+
+:::
+{{< embed content/codefigs/graphs.qmd#fig-colleague >}}
+
+::::
+
+
+## The Goal
+$$ \hat{B} \leftarrow f(X)$$ 
+
+{{< embed content/codefigs/graphs.qmd#fig-recover-bipartite >}}
 
 ## Basics -- incidence as (conditional) dependence
 
-What does "incident" mean, statistically? $\rightarrow$ Markov Random Fields
+A _start_: what does "incident" mean, statistically? $\rightarrow$ Markov Random Fields
 
 - random variables $A,B\in J$
 - remaining columns $C=X(\cdot,J\setminus \{A,B\})$
@@ -302,38 +371,39 @@ $$
 
 {{< embed content/codefigs/graphs.qmd#fig-springs >}}
 
-## Taxonomy of Modeling Assumptions {transition="fade"}
+## Taxonomy of Modeling Assumptions -- I
 
-We want to go from an $X$ to an estimate for $B$....
+_Structural Constraint Assumptions_
 
-Modeling assumptions must be made _somewhere_.
-
-. . .
-
-Roughly three types structural assumptions, on a sliding scale: 
-
-Local Structure/additivity
-: We could rely on linear combinations of observations having assumed edge representations. \
-  Generally called _association measures_ (Cosine Sim./Hyperbolic Projection/Mutual Info.)\
-  Built on (marginal) counts $\mathbf{s}$ via inner product (Gram matrix $X^TX$) e.g. co-occurrences.
-
-. . .
-
-Global Structure Constraints
-: We could assume the _whole network_ belongs to a class of graphs.\
-  e.g. Tree/block (MRF/Chow-Liu/GLASSO), Stochastic Block Model, etc.;
-
-. . .
-
-Resource and Information Flow
-: We limit total network activation to a pool of shared "stuff" that gets distributed somehow.\
-  E.g. Optimal Transport (Doubly Stochastic/Sinkhorn eOT), Resource Allocation, Geodesics (HSS)
-  Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
+:::{.fragment}
+### Local Structure/additivity 
+- (Linear) combinations of observations
+- Generally called _association measures_ (Cosine Sim./Hyperbolic Projection/Mutual Info.)\
+- Built on (marginal) counts and reweighting schemes
+:::
 
 
-## Taxonomy of Modeling Assumptions -- what "space" are we in?  
+:::{.fragment}
+### Global Structure Constraints
+- _Whole network_ belongs to a class of graphs (or PGMs).
+- Tree/block (MRF/Chow-Liu/GLASSO), Stochastic Block Model, etc.;
+:::
 
-_Operators_: modeling the observation process!
+
+::::{.fragment}
+### Resource and Information Flow
+- Limit total network activation a shared pool of "stuff"
+- "Stuff" gets distributed somehow.
+- E.g. Optimal Transport (Doubly Stochastic/Sinkhorn eOT)Resource Allocation, Geodesics (HSS)
+
+:::{.callout-note}
+Related to partial pooling in hierarchical bayes, sitting between unpooled and fully pooled priors.  
+:::
+::::
+
+## Taxonomy of Modeling Assumptions -- II  
+
+_Data Sampling Assumption: model vs. data_
 
 . . .
 
@@ -344,34 +414,39 @@ Forward map (model $\rightarrow$ data)
 
 . . .
 
-If we _have_ the data space observations, we would need the _inverse map_ $F^{-1}(\mathbf{x})$, and it's uncertainty is related to _trueness_. 
+_Given_ the data space observations, we would need the _inverse map_ $F^{-1}(\mathbf{x})$,
 
-If we _have_ model space observations, and uncertainty is in _precision_ only. 
+> uncertainty is related to precision and **trueness**. 
 
-> _Are we already in model-space, by assumption? Or are we solving an inverse problem?_
+. . .
+
+If we _have_ model space observations (data assumed to match theoretical process),
+
+> uncertainty is in _precision_ only. 
+
+:::{.callout-important}
+- Are we already in model-space, by assumption?
+- Are we solving an _inverse problem?_
+:::
+
+
+##  Taxonomy of Modeling Assumptions -- III 
+_Data Availability: observations vs. projection_
+
+. . .
+
+Does our method start with the _full_ bipartite dataset? \
+Or is it post-processing from marginal counts alone?
+
+:::{#fig-avail-data layout="[[1,2]]"  layout-valign="center"}
+{{< embed content/codefigs/graphs.qmd#fig-bipartite >}}
+{{< embed content/codefigs/graphs.qmd#fig-collab >}}
+:::
 
 ## Organizing Recovery Methods
 
-::::{.columns}
-:::{.column}
-Finally:
-
-> are we using all of our data?
-
-Does our method work on the _full_ bipartite dataset? \
-Or is it post-processing the marginal counts alone?
-
-\
-\
-\ 
-
-Let's sort everything into groups!
-
-:::
-:::{.column .fragment}
 {{< embed content/codefigs/graphs.qmd#tbl-roads >}}
-:::
-::::
+
 ## A "Path" Forward
 
 We would like a method with:
@@ -381,7 +456,17 @@ We would like a method with:
 - Full usage of bipartite observations _(uncertainty quantification)_
 
 
-# Latent Graphs with Desire Paths
+# **Latent Graphs with Desire Paths**
+
+---
+
+1. Background 
+2. Organizing Current Approaches
+3. **Desire Path Density Networks**
+4. Forest Pursuit
+5. Experimental Comparison
+6. Case Studies
+7. Conclusion
 
 
 ## Gambit of the Group
@@ -398,7 +483,7 @@ Can we use co-occurrence counts for association measures? Are we:
 
 If we're not so explicit, are we:  
 
-> "So, consiously or unconsciously, many ethnologists studying social organization makr what might be called the 'gambit of the group': they assume that animals which are clustered [...] are interacting with one another and then use membership of the same cluster [...] to define association."
+> "So, consiously or unconsciously, many ethnologists studying social organization make what might be called the 'gambit of the group': they assume that animals which are clustered [...] are interacting with one another and then use membership of the same cluster [...] to define association."
 >
 > -- [Whitehead & Dufault (1999) [@Techniquesanalyzingvertebrate_Whitehead1999]]{.cite}
 
@@ -438,20 +523,24 @@ Inner-product projections as sums of cliques illustrating "clique bias".
 
 This framing lets practitioners do a "sanity-check"
 
-> _Do clique observations make sense for my graph_?
+> _Do clique observations make sense for my community_?
 
 . . .
 
 From a scaling standpoint:
 
-- a planar graph adds about 3 edges per new node in an observation 
-- a tree/path graph adds about 1 new edge 
-- cliques add new edges _quadratically_ with currently active number of nodes. 
+- a "planar" community (office layout?) adds ~3 relations per author, per paper;
+- a tree community (organizational structure?) adds ~1 relation 
+- cliques add relationships _quadratically_ w.r.t. authors!
 
 . . .
 
 So...\
-Bigger papers have _quadratically_ more information about connectivity in our social network? Not _less_? 
+Bigger papers have _quadratically_ **more** information about connectivity in our social network?
+
+. . .
+
+Don't bigger papers tell us **less** about who "knows" who?  
 
 ## Networks as Unions of Subgraphs
 
@@ -460,27 +549,55 @@ _IDEA: why limit ourselves to cliques?_
 - Map an operation onto each observation
 - Reduce to an aggregate edge guess over all observations
 
-. . .
 
-So, each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$.
+## Graph Observations as Vectors
 
-- domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on $g_i$.
-- This family  $\mathcal{C}_i$ belongs to a relevant class of graphs $\mathcal{C}$, limited to nodes $V_i$, _i.e._,
+:::{.callout-note title="Recall"}
+If we _were_ a social scientist "on the ground":
 
-$$
-\begin{gathered}
-\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=B^*(e,v)\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\}\\
-E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
-V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
-\end{gathered}
-$$
-
-:::{.callout-important}
-In other words, edges that "caused" to the node activations in a given observation
-
-1. must _together_ belong to a graph that, in turn,
-2. belongs to our desired class, which must occur on the nodes that were activated.
+- _Author (g) asked (e), (h), and (c) to co-author a paper, all of whom agreed_
+- _(i) asked (f) and (j), but (j) wanted to add (b)'s expertise before writing one of the sections_
+- _...etc._ 
 :::
+
+
+::::{#fig-incidence-rep layout="[[1,1]]" layout-valign="center"}
+
+
+{{< embed content/codefigs/graphs.qmd#fig-socsci >}}
+
+::: {#fig-edge-mat}
+$$
+%X(\{1,2,3,4,\cdots\})=\\
+R^{n\times\omega}=
+\begin{array}{c c}\small
+ & \begin{array}{} e_1 & e_2 & e_3 & e_4 & e_5 & e_6 & e_7 & e_8 & e_9 & e_{10} & e_{11}\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\ \vdots \end{array} &
+\left[
+\begin{array}{}
+ \  .\: &  \:. \: &  \:. \: &  \:. \: &  \:1 \: &  \:. \: &  \:. \: &  \:. \: &  \:1 \: &  \:1 \: &  . \ \\
+ \  .\: &  \:. \: &  \:. \: &  \:1 \: &  \:. \: &  \:. \: &  \:1 \: &  \:1 \: &  \:. \: &  \:. \: &  . \ \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+$$
+
+: Observations embedded in "edge space"
+
+:::
+::::
+
+
+## Unions of Constrained Subgraphs
+
+_Idea:_  
+
+- Use domain knowledge to estimate ($\mathbf{r}_i$)
+- Dependencies: **constrain** each paper to it's own distribution of dependencies. 
+- Additive: use marginal counts of $R$ _rather than $X$_
+
+> Principled way to "sum" over $\mathbf{x}_i$? 
 
 
 ---
@@ -494,35 +611,36 @@ dankeck, CC0, via Wikimedia Commons
 
 ## Latent graphs as Desire Path Density Estimates
 
-Rather than viewing a reconstruction as recovering a "true" thing, networks are latent models. [@Measurementerrornetwork_Wang2012] 
+Complex Networks as _latent_ models. [@Measurementerrornetwork_Wang2012; @Statisticalinferencelinks_Peel2022]\
+$\rightarrow$ We can't know if a link is "real", because _"real" is hard to define_!
 
-In our dataset, once we pick a class of graphs, each observation "treads" on certain edges.
+- Is a "friendship" true/false?
+- Is a colleague's influence boolean?
 
--  observing certain paths become "beaten paths" (desire paths, cowpaths, etc.)
-- NOT estimating the probability an edge "exists" (does a friendship "exist"?)
-- INSTEAD likelihood that "today's beaten path is tomorrow's pavement"
+**Instead**: "would some expert reasonably answer YES vs NO?"
 
-> Possible realizations of paved paths, given desire path treads.  
+. . .
 
-Assuming edge "existence" is iid (vs. edge _traversal_), we can use Beta-Bernoulli for "paving" after a number of observed itineraries. 
+Alternate framing: would _paving_ a desire path make more sense than _not paving_? 
+
+- pick a class of graphs to **constrain** dependencies
+- each observation **treads** on certain edges.
+- estimate probability that **paving** ($r=1$) is more likely than **not paving** ($r=0$)
 
 ## DPDE graph reduction: probability of "paving"
 
-Presented with two equal-length desire paths, an individual is likely to choose the one that has been tread more often before ..._i.e._, the "more beaten" path.
+- Assume: edge "paving" given "treading" history is iid.
+- Use Beta-Bernoulli on marginal counts $\sum_i \mathbf{r}_i$
 
-- NOT probability that an edge has been traversed, but
-- INSTEAD probability an edge has been traversed _more often than it wasn't_, given an opportunity...how often it's "in the lead".
+What prior?
 
+. . .
 
-:::{.callout-note}
-In a coin tossing game where each "heads" gives a point to player A and "tails" to player B, then the point differential is modeled as a random walk.
-The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is the fraction of time we expect one player to be "ahead" of the other. [@WhatisArcsine_Ackelsberg2018]  
+Presented with two equal-length desire paths:
 
-> "_Contrary to popular opinion, it is quite likely that in a long coin-tossing game one of the players remains practically the whole time on the winning side, the other on the losing side."_
-> 
-> William Feller[@IntroductionProbabilityTheory_Feller1968, Chapter III]
-
-:::
+- Will choose one tread more often before (the "more beaten" path).
+- Nearly always, even for small difference $\rightarrow$ _bathtub distribution_. 
+- coin-tossing game: "fraction of time **ahead**" $\rightarrow$ _arcsine_ 
 
 $$
 \begin{gathered}
@@ -531,8 +649,36 @@ E \sim \text{Bernoulli}(\pi_e), e \in E
 \end{gathered}
 $$
 
+:::{.notes}
+In a coin tossing game where each "heads" gives a point to player A and "tails" to player B, then the point differential is modeled as a random walk.
+The arcsine distribution $\text{Beta}(\tfrac{1}{2},\tfrac{1}{2})$ is the fraction of time we expect one player to be "ahead" of the other. [@WhatisArcsine_Ackelsberg2018]  
+
+> "_Contrary to popular opinion, it is quite likely that in a long coin-tossing game one of the players remains practically the whole time on the winning side, the other on the losing side."_
+> 
+> William Feller[@IntroductionProbabilityTheory_Feller1968, Chapter III]
+:::
+
+
+---
+
+_what class of subgraphs do we choose for $\mathbf{r}_i$?_
+
+. . .
+
+Trees
+
 # Forest Pursuit
 Recovery from random walks in near-linear time
+
+---
+
+1. Background 
+2. Organizing Current Approaches
+3. Desire Path Density Networks
+4. **Forest Pursuit**
+5. Experimental Comparison
+6. Case Studies
+7. Conclusion
 
 ## Random walk activations
 
@@ -577,47 +723,31 @@ Only the interaction that was observed as successful necessarily counts toward  
 :::
 
 ## Spanning Forest Distribution - Regularized Laplacian
+::::{.columns}
+
+:::{.column}
+**Constrain** papers $\mathbf{r}_i$ to be _dependency trees_
 
 Spanning forest
 : a collection of disjointed trees covering every vertex
 
+In our model, being on the same paper is being on the **same tree** in a forest. 
 
+{{< embed content/codefigs/graphs.qmd#fig-socsci >}}
 
-::: {.callout-note}
-### Matrix-Forest Theorem[@MatrixForestTheorem_Chebotarev2006; @Countingrootedforests_Knill2013; @Semisupervisedlearning_Avrachenkov2017]
-
-The regularized Laplacian $Q=(I+\beta L)^{-1}$
-
-- Is always PD (provably on Birkhoff Polytope of doubly-stochastic matrices)
-- for various $\beta$: 
-  - $\beta=1$, $Q(j,j')$ encodes the fraction of spanning forests in which $j,j'$ share a tree (i.e. visited by the same walk i.e. **co-occurred**)
-  - $\beta\rightarrow 0$ encodes shortest-path kernel
-  - $\beta\rightarrow \infty$ encodes commute-time kernel (i.e. $L^+$)
-- $Q(j,j)$ encodes an "isolation" measure (probability of not sharing a cascade)
 :::
-
-::: notes
-similar form to CAR kernel (for GPR/Cov prior), gaussian copula, etc. 
-:::
-
-. . .
-
-**IDEA**: our data is measuring $\lim_{n\rightarrow \infty} X^TX \propto Q$, s.t. each $\mathbf{x}$ comes from a _tree_
-
-
-:::{.notes}
-It's important to add here that _mutual convincing_ by multiple collaborators simultaneously (or over time) is expressly left out.
-In other words, only pairwise interactions are permitted.
-This is not an additional assumption, but a key limitation of our use of graphs in the first place!
-As Torres et al. go to great lengths elaborating in [@WhyHowWhen_Torres2021], it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss.
-The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, _not a graph_. 
-:::
-
----
+:::{.column}
 
 {{< embed content/codefigs/graphs.qmd#fig-stack-tree >}}
+:::
+::::
+
+
 
 ## Sparse Approximation
+$$\mathbf{r}_i \gets f(\mathbf{x}_i)$$
+
+. . .
 
 What are we doing here? ... _Sparse Approximation_?
 
@@ -641,29 +771,30 @@ But this doesn't work (in the standard plus-times ring, see tropical factorizati
 
 Instead, we will take an _Empirical Bayes_ approach: 
 
-- assume each observation is emitted from its own MRF, _only connected on the activated nodes_.
-- That's under-determined (any spanning tree could equally emit the observed activations),
-- SO use an empirical prior as shrinkage for a Max. Likelihood estimate.
+$$
+\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
+$$
+
+- Want: point estimate for most likely tree (per paper) 
+- Use an empirical prior as shrinkage for a Max. Likelihood estimate.
+- "Number of times authors were on the same tree"
+
 
 . . .
 
-$$
-\mathbf{\hat{r}} = \operatorname*{argmax}_{\mathbf{r}}{\mathcal{L}(\mathbf{r}|\mathbf{x})} \quad \text{s.t.}\quad \mathbf{r}\sim \mathcal{T}(G^*[\mathbf{x}])
-$${#eq-sparse-approx-tree}
 
-Our point estimate for every observation is the mode of the spanning tree distribution on activated nodes...i.e. the Maximum Spanning Tree (MST)
+Our point estimate is the mode of the spanning tree distribution on activated nodes\
+...i.e. the Maximum Spanning Tree (MST)
 
 > Prim's: each iteration selects the edge with the smallest distance to the current tree 
 
 . . .
 
-- Essentially the Chow-Liu tree for each observation
-- _Technically_ a "Steiner Tree"[@fastalgorithmSteiner_Kou1981] $\rightarrow$ _use $X^TX \propto Q$ for the metric closure of the true graph!_
+- Essentially the Chow-Liu tree for each observation (_Technically_ a "Steiner Tree"[@fastalgorithmSteiner_Kou1981])
+- $\rightarrow$ _use Matrix Forest Theorem [@MatrixForestTheorem_Chebotarev2006; @Countingrootedforests_Knill2013; @Semisupervisedlearning_Avrachenkov2017] to link $X^TX$ to a metric closure of the dependency graph_.
 
 
-## Forest Pursuit -- Algorithm {.scrollable}
 
-{{< include content/part2/alg-fp.qmd >}}
 
 ---
 
@@ -674,6 +805,17 @@ Our point estimate for every observation is the mode of the spanning tree distri
 **M**easurement **E**rror in **N**etwork **D**ependency **R**econstruction
 
 Simulation Study & Test-bench
+
+---
+
+1. Background 
+2. Organizing Current Approaches
+3. Desire Path Density Networks
+4. Forest Pursuit
+5. **Experimental Comparison**
+6. Case Studies
+7. Conclusion
+
 
 ## Synthetic Dataset
 
@@ -707,7 +849,7 @@ Metrics:
 
 - FP is the only approach with greater than 0.5 expected score over _all_ thresholds!
 - _By a large margin..._ 
-- GLASSO Has a good APS (but so does plain Cosine Similarity?) 
+- GLASSO has a good APS (but so does plain Cosine Similarity?) 
 - By graph-type, better than GLASSO even where it is known to be accurate (trees, blocks)
 
 ## Results -- by graph type {visibility="hidden"}
@@ -787,15 +929,17 @@ scaling in n-jumps looks more like $O(n\log n)$ because we had to use Kruskal's
 
 ## Modifications to Forest Pursuit
 
-- Re-weight by Interaction-rate (FPi) 
+### Re-weight by Interaction-rate (FPi) 
 
-  - scale edge probability by co-occurrence rate
-  - APS differential w/GLASSO is _gone_
-  - Sacrifices stability, and $E[\text{score}]$
-- Expected Forest Maximization (EFM)
-  - Generative/Bayesian Formulation
-  - root node spanning trees
-  - Iteration: (very) slight improvement, high compute cost
+- Scale edge probability by co-occurrence rate
+- APS differential w/GLASSO is _gone_
+- Sacrifices stability, and $E[\text{score}]$
+
+### Expected Forest Maximization (EFM) 
+
+- Generative/Bayesian Formulation
+- Root node spanning trees
+- E-M Iteration: (very) slight improvement, high compute cost
 
 > See full document for more detail :) 
 
@@ -804,6 +948,18 @@ scaling in n-jumps looks more like $O(n\log n)$ because we had to use Kruskal's
 
 # Case Study
 _Les Misérables_
+
+
+---
+
+1. Background 
+2. Organizing Current Approaches
+3. Desire Path Density Networks
+4. Forest Pursuit
+5. Experimental Comparison
+6. **Case Studies**
+7. Conclusion
+
 
 
 ## Les Misérables Character Network
@@ -830,13 +986,13 @@ Network of character co-occurrence _by chapter_.
 
 ## Les Misérables -- Summary {transition="fade"}
 
-- Centrality for for Fantine, Eponine, and Cosette much higher with FP
+- Centrality for Fantine, Eponine, and Cosette much higher with FP
 - Why were they so low in the first place? See:
 
   - "Bechdel Test"[@MediaMarginsPopular_Savigny2015]
-  - systemic agency reduction in fiction[@genderagencygap_Stuhler2024].
+  - Systemic agency reduction in fiction[@genderagencygap_Stuhler2024].
 
-> estimating character importance _despite_ systematic interaction-reduction bias from authors.
+> Estimating character importance _despite_ systematic interaction-reduction bias from authors.
 
 It's _still_ easier to explain the occurrence of many characters _because of_ key female characters, despite their overall lower co-occurrence. 
 
@@ -845,7 +1001,7 @@ _Animal Concept Map_
 
 ## Verbal Fluency Networks
 
-Study articipants list out members of some category as fast as possible in a time limit: 
+Study participants list out members of some category as fast as possible in a time limit: 
 
 Animals
 : _S.1_ --- dog, cat, sheep, horse, fox, lion, giraffe, rhino... 
@@ -875,6 +1031,10 @@ For each of the following, assume filtering of edges until the graph would other
   <!-- \end{gathered} -->
   <!-- $$ -->
 
+---
+
+
+{{< embed content/codefigs/qualitative.qmd#fig-fluency-combined >}}
 
 
 ## Fluency Animals -- Doubly-Stochastic {transition="fade"}
@@ -925,17 +1085,44 @@ An analyst would also have an easier job of creating "edge-type inventories", ma
 
 # Conclusion
 
+
+---
+
+1. Background 
+2. Organizing Current Approaches
+3. Desire Path Density Networks
+4. Forest Pursuit
+5. Experimental Comparison
+6. Case Studies
+7. **Conclusion**
+
+
 ## Thesis Contributions 
 
-:::{.incremental}
-- An interpretation of network recovery as an _inverse problem_ comparable to sparse approximation, with concise definitions of data, edge, and node vector spaces from an underlying incidence-structure formalism. 
-- A taxonomy of structural assumptions used in literature to make network inference tractable
-- A method, _Forest Pursuit_, to address the need for a model with:
-- A dataset and benchmarking toolkit (MENDR) to reproducibly compare algorithmic ability to recover network structure from random walk activations, which has been applied to demonstrate the scaling and accuracy of _Forest Pursuit_ over other methods. 
-- Generalization of Forest Pursuit by developing a probabilistic model for it as a sparse dictionary learning technique, for which we provide an expectation maximization scheme to estimate.  
-- Application of _Forest Pursuit_ as case studies in scientific collaboration networks, classic literature analysis, technical language processing, and semantic verbal fluency tests.   
 
-:::
+Taxonomy
+: Novel organization of modeling assumptions for network inference to assess theoretical gaps.
+
+. . .
+
+Sparse Approximation
+: Recontextualize network recovery in _edge space_ using Desire Path Density framework. 
+
+. . .
+
+
+Forest Pursuit
+: Scalable and flexible algorithm for dependency recovery from random walks. 
+
+. . .
+
+MENDR
+: Dataset and benchmarking toolkit to compare recovery capability.
+
+. . .
+
+Generative Model
+: Generalization of Forest Pursuit inspired by probabilistic factorization & Dictionary Learning.
 
 ## Future Work
 
@@ -944,10 +1131,14 @@ An analyst would also have an easier job of creating "edge-type inventories", ma
   - Allowing for multi-source random walks by explicitly including the "root" R
   - Allow for adding unseen nodes e.g. with addition of steiner nodes a la [@TreeIam_Sonthalia2020]
 
+. . .
+
 - Generalizing Inner Products
 
   - Non-euclidean metric spaces for Desire Path Densities
   - Causality-preserving Lorentz embedding [@EmbeddinggraphsLorentzian_Clough2017] applied to  voronoi normalizing flows [@HyperbolicVoronoiDiagrams_Nielsen2010; @SemiDiscreteNormalizing_Chen2022]
+
+. . .
 
 - New applications & case studies
 
@@ -960,6 +1151,65 @@ An analyst would also have an easier job of creating "edge-type inventories", ma
 
 
 # Literature Review  {visibility="uncounted"}
+
+## Basics -- Sample Observations in Feature Space {visibility="uncounted"}
+
+
+For generality, say a practitioner records their measurements as scalar values, _i.e._, $x\in\mathbb{S}\in\{\mathbb{R,Z,N},\cdots\}$.
+Data can be represented as a "design matrix" $X:\mathbb{S}^{m\times n}$
+
+- $n$ independent/input variable features
+- over the course of $m$ observations
+ 
+$$\begin{gathered}
+x=X(i,j)\qquad X : I\times J \rightarrow \mathbb{S} \\
+i\in I=\{1,\cdots,m\}, \quad j\in J=\{1,\cdots,n\},\qquad I,J:\mathbb{N}
+\end{gathered}$$
+
+. . .
+
+observations
+: $\mathbf{x}_i=X(i,\cdot),\quad \mathbf{x}:J\rightarrow\mathbb{S}$
+
+features
+: $\mathbf{x}_j'=X(\cdot,j),\quad \mathbf{x}':I\rightarrow\mathbb{S}$
+
+Marginal sums give co-occurrences, matrix products give co-occurrences, etc.
+
+:::{.callout-important}
+We are interested in the _feature_ relationships (author-author), _i.e._ feature/representation learning when $\mathbb{S} \equiv \mathbb{B}$ 
+:::
+
+## Basics -- Incidence Structures {visibility="uncounted"}
+
+Unifying graphs and design matrices: _edge-centric parameterizations!_^[
+  Closed-form ID manipulation for $\{u_n(e),v_n(e)\}\leftrightarrow e_n(u,v)$ [@ParallelEuclideandistance_Angeletti2019] \
+  Gives an unambiguous encoding for oriented and un-oriented incidence, and with them $L$, $A$, $D$, etc. 
+]
+
+Graphs via _complete_ incidence matrix $B$: 
+: $$
+  \begin{gathered}
+  G  = (V,E,B) \quad s.t. \quad B : E\times V \rightarrow S\\
+  v \in V = \{1,\cdots, n\}\quad 
+  e \in E = \left\{1,\cdots, {n\choose 2} \right\}
+  \end{gathered}
+  $$ 
+
+. . .
+
+Observations of graphs (as _edges_)
+: $$
+  \begin{gathered}
+  R(i,e) = \min(\{B_i(e, u_n(e)),B_i(e,v_n(e))\}) \\
+  \quad \textrm{s.t.} \quad R:I\times E \rightarrow \mathbb{S}\\
+  i\in I = \{1,\cdots,m\} \qquad e \in E=\left\{1,\cdots,\omega\right\}\\
+  n=\tfrac{1}{2}(1+\sqrt{8\omega+1})
+  \end{gathered}
+  $$
+
+
+
 
 ## Taxonomy of Modeling Assumptions -- I {transition="fade" visibility="uncounted"}
 
@@ -1056,7 +1306,59 @@ where $\mathcal{T}_{\text{sp}}(n)$ is the shortest-path tree rooted at $n$
 
 :::
 
+## Desire Path Math {visibility="uncounted"}
 
+So, each $\mathbf{x}_i$ will induce a subgraph $g_i = G^*[V_i]$, where $V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}$.
+
+- domain knowledge takes the form of a constraint on edges within that subgraph, which will induce a family of subgraphs on $g_i$.
+- This family  $\mathcal{C}_i$ belongs to a relevant class of graphs $\mathcal{C}$, limited to nodes $V_i$, _i.e._,
+
+$$
+\begin{gathered}
+\mathcal{C}_i = \{(V,E,B_i) \in\mathcal{C}|B_i(e,v)=B^*(e,v)\mathbf{1}_{V_i}(v)\mathbf{1}_{E_i}(e)\}\\
+E_i\in\{\mathcal{E}\in\mathcal{P}(E)| g_i[\mathcal{E}]\in\mathcal{C}\}
+V_i = \{v\in \mathcal{V} | X(i,\mathcal{V})=1\}
+\end{gathered}
+$$
+
+:::{.callout-important}
+In other words, edges that "caused" to the node activations in a given observation
+
+1. must _together_ belong to a graph that, in turn,
+2. belongs to our desired class, which must occur on the nodes that were activated.
+:::
+
+## Matrix-Forest Theorem {visibility="uncounted"}
+
+The regularized Laplacian $Q=(I+\beta L)^{-1}$
+
+- Is always PD (provably on Birkhoff Polytope of doubly-stochastic matrices)
+- for various $\beta$: 
+  - $\beta=1$, $Q(j,j')$ encodes the fraction of spanning forests in which $j,j'$ share a tree (i.e. visited by the same walk i.e. **co-occurred**)
+  - $\beta\rightarrow 0$ encodes shortest-path kernel
+  - $\beta\rightarrow \infty$ encodes commute-time kernel (i.e. $L^+$)
+- $Q(j,j)$ encodes an "isolation" measure (probability of not sharing a cascade)
+
+::: notes
+similar form to CAR kernel (for GPR/Cov prior), gaussian copula, etc. 
+:::
+
+. . .
+
+**IDEA**: our data is measuring $\lim_{n\rightarrow \infty} X^TX \propto Q$, s.t. each $\mathbf{x}$ comes from a _tree_
+
+
+:::{.notes}
+It's important to add here that _mutual convincing_ by multiple collaborators simultaneously (or over time) is expressly left out.
+In other words, only pairwise interactions are permitted.
+This is not an additional assumption, but a key limitation of our use of graphs in the first place!
+As Torres et al. go to great lengths elaborating in [@WhyHowWhen_Torres2021], it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss.
+The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, _not a graph_. 
+:::
+
+## Forest Pursuit -- Algorithm {.scrollable visibility="uncounted"}
+
+{{< include content/part2/alg-fp.qmd >}}
 
 # Forest Pursuit Modifications & Extensions {visibility="uncounted"}
 

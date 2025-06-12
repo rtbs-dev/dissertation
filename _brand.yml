@@ -18,9 +18,12 @@ typography:
     - family: Cooper Hewitt
       source: file
       files:
-        - resource/fonts/cooper-hewitt-fixed/*.ttf 
-    - family: Source Sans Pro
+        - path: resource/fonts/cooper-hewitt-fixed/*.ttf 
+        - path: resource/fonts/cooper-hewitt-fixed/CooperHewitt-Bold.ttf
+          weight: bold
+    - family: Source Sans 3
       source: google
+      # weight: [regular, bold]
   base:
     family: Source Sans Pro
     #family: Bitstream Charter

@@ -1,7 +1,7 @@
 project:
   type: book
   output-dir: _book
-  resources: ['slides.html','slides_files', 'resource/fonts','content/images/slides-link-screenshot.png']
+  resources: ['slides.html','slides_files', 'resource/fonts','content/images/papers-colleagues.svg']
 
 book:
   title: "Measuring Network Dependencies from Node Activations"

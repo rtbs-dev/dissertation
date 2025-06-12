@@ -7,11 +7,11 @@
 $font-family-sans-serif:	"Source Sans Pro", Helvetica, sans-serif !default;
 $font-family-monospace:	"Source Code Pro", monospace !default;
 $presentation-h-font12:	"Cooper Hewitt Heavy", sans-serif !default; 
-$presentation-h-font36: "Cooper Hewitt Book", sans-serif !default; 
+$presentation-h-font36: "Source Sans Pro", sans-serif !default; 
 $presentation-font-size-root:	24px !default;
 $presentation-h1-font-size:	2.5em !default;
 $presentation-h2-font-size:	2em !default;
-$presentation-h3-font-size:	1.2em !default;
+$presentation-h3-font-size:	1.1em !default;
 $presentation-font-smaller:	0.7 !default;
 $presentation-line-height: 1.3 !default;
 $presentation-title-slide-text-align: left !default;
@@ -34,15 +34,22 @@ $link-color: $secondary-color !default;
 
 $titleSlide-line: solid !default;
 $h12-font-weight: 500 !default;
-$h36-font-weight: 400 !default;
+$h36-font-weight: bold !default;
 $cell-code-font-weight: normal !default;
 $body-font-weight: 300 !default;
 $authors-block-gap: 4em !default;
 
 /*-- scss:rules --*/
-
+.center-xy {
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  /* left: 35%; */
+  -ms-transform: translateY(-50%), translateX(-50%);
+  transform: translateY(-50%), translateX(-50%);
+}
 .reveal {
-    font-weight: $body-font-weight !important;
+    /* font-weight: $body-font-weight !important; */
   
 
   .title {
@@ -63,13 +70,12 @@ $authors-block-gap: 4em !default;
     font-weight: $h36-font-weight;
     color: $body-fg-color;
   }
-  
   code {
     font-weight: $cell-code-font-weight;
   }
   
   strong {
-    font-weight: $h12-font-weight;
+    font-weight: bold;
   }
   
   blockquote {
@@ -302,6 +308,10 @@ $authors-block-gap: 4em !default;
     figure>figcaption {
       font-size: 0.80em;
       text-align: center;
+    }
+    ul li, ol li {
+      margin-top: 0.2em !important;
+      margin-bottom: 0.2em !important;
     }
   }
 }

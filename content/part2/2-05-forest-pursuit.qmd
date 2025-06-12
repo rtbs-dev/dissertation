@@ -239,7 +239,7 @@ Then, if $\bar{s}$ is the expected non-zero count of each row of $X$, the final 
 ## Simulation Study {#sec-FP-experiments}
 
 To test the performance of FP against other backboning and recovery methods, we have developed a public repository [`affinis`](https://github.com/rtbs-dev/affinis) containing reference implementations for FP, along with many co-occurrence and backboning techniques.
-The library contains source code and examples for many of the presented methods, and more. [UPDATE w/ DOI?] 
+The library contains source code and examples for many of the presented methods, and more. 
 
 In addition, to support the community and provide for a standard set of benchmarks for network recovery from activations, the [`MENDR`](https://github.com/rtbs-dev/mendr) reference dataset and testbench was developed.
 To make reproducible comparison of recovery algorithms easier, `MENDR` includes hundreds of randomly generated networks in several classes, along with random walks sampled _on those networks_. 

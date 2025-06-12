@@ -59,12 +59,13 @@ nxdraw_kws = {
     "font_color": "0.3",
     "font_family":"Bitstream Charter",
     "font_weight":'bold',
-    "font_size": 8,
+    "font_size": 6,
     "linewidths": 1,
     "width": 2,
 }
 
 tikz_kws =  dict(
+    # canvas=[2.5*figsize[0], 2.5*figsize[1]],
     canvas=figsize,
     standalone=False,
     node_size=0.4,
@@ -84,7 +85,7 @@ tex_kws = dict(
     """,
     # tex_packages="tikz-network",
     # implicit_tikzpicture=True, # If true wraps the template within a tikzpicture
-    scale=1.6,
+    scale=2,
 )
 grphvz_kws = "-Goverlap=false"
 
@@ -181,11 +182,17 @@ base_data = pd.read_csv('resources/vertices_.csv', index_col=0)
 ```
 
 ```{python}
+colleagues = nx.from_pandas_edgelist(pd.read_csv('resources/edges.csv', names=['source','target'], skiprows=1))
+print(np2tex(nx.incidence_matrix(colleagues).toarray().astype(int).T[:,np.argsort(colleagues.nodes)], latexarraytype='array', fmt='{:d}'))
+# np.argsort(colleagues.nodes)
+```
+
+```{python}
 #| label: fig-colleague
 #| fig-cap: graph of mutual collaboration relationships i.e. the "ground truth" social network
 
 base_network = r"""
-\begin{tikzpicture}[scale=1.1]
+\begin{tikzpicture}
     \Vertices[size=0.4, RGB]{resources/vertices_.csv}
     \Edges{resources/edges.csv}
 \end{tikzpicture}
@@ -199,6 +206,33 @@ fig_colleague
 ```
 
 ```{python}
+#| label: fig-socsci
+#| fig-cap: (hypothetical) edge-based observations
+
+incidence_network = r"""
+\begin{tikzpicture}
+    \Vertices[size=0.4, RGB]{resources/vertices_.csv}
+     \Edge[lw=1,Direct,RGB,color={171,215,230}](g)(h)
+     \Edge[lw=1,Direct,RGB,color={171,215,230}](g)(e)
+     \Edge[lw=1,Direct,RGB,color={171,215,230}](g)(c)  
+     
+     \Edge[lw=1,Direct,RGB,color={252,98,142}](i)(f)
+     \Edge[lw=1,Direct,RGB,color={252,98,142}](i)(j)
+     \Edge[lw=1,Direct,RGB,color={252,98,142}](j)(b)  
+     
+
+    
+\end{tikzpicture}
+"""
+
+fig_socsci = TexFragment(
+    incidence_network,
+    **tex_kws
+).run_latex(tex_program=tex)
+fig_socsci
+```
+
+```{python}
 #| label: fig-obs-set
 #| fig-cap: Observations as activation sets
 #| editable: true
@@ -209,7 +243,7 @@ with open('obs-set.tex') as f:
     fig =TexFragment(
         f.read(),
         
-        **(tex_kws|dict(scale=1.5)),
+        **(tex_kws),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -223,7 +257,7 @@ with open('obs-cascade.tex') as f:
     fig =TexFragment(
         f.read(),
         
-        **(tex_kws|dict(scale=1.5)),
+        **(tex_kws),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -406,6 +440,36 @@ with open('collab.tex') as f:
     ).run_latex(tex_program=tex)
 fig
 ```
+```{python}
+#| label: fig-recover-bipartite
+#| fig-cap: Recovering underlying dependency networks from co-occurrence data.
+# display(fig_colleague)
+# display(Latex(r'$\Large\stackrel{?}{\leftarrow}$'))
+# display(fig_collab)
+
+base_net = r"""\end{scope}
+\begin{scope}[local bounding box=scope2,shift={(scope1.base east)},xshift=-200 ]
+    \Vertices[size=0.4, RGB]{resources/vertices_.csv}
+    \Edges{resources/edges.csv}
+\end{scope}
+ \draw [thick,->,black] (scope1.west) -- (scope1.east -| scope2.east) node[midway,above] {?};
+"""
+
+with open('bp.tex') as f: 
+    lines = f.readlines()
+    # print(lines)
+    lines.pop(1)
+    lines.insert(1, '\\begin{scope}[local bounding box=scope1]\n')
+    lines.insert(-1, base_net)
+    # lines.insert(1, r'\clip (0,0) rectangle (15.0,13.5);')
+    # print(r''.join(lines))
+    fig = TexFragment(
+        r''.join(lines),
+        **tex_kws
+        # **(tex_kws|dict(scale=2.1)),
+    ).run_latex(tex_program=tex)
+fig
+```
 
 ```{python}
 #| label: tbl-roads
@@ -445,7 +509,7 @@ tab = r"""
 
 textab = TexFragment(
     tab,
-    **tex_kws
+    **(tex_kws|{'scale':1.5})
 ).run_latex(tex_program=tex)
 textab
 ```
@@ -505,7 +569,7 @@ with open('sum-outer.tex') as f:
     fig = TexFragment(
         f.read(),
         # implicit_tikzpicture=True,
-        **tex_kws,
+        **(tex_kws|{'scale':1.5}),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -623,7 +687,8 @@ mwo=r"""
 """
 texmwo = TexFragment(
     mwo,
-    **tex_kws
+    **(tex_kws|{'scale':1.5})
 ).run_latex(tex_program=tex)
 texmwo
 ```
+

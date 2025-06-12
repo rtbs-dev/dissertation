@@ -219,12 +219,13 @@ def draw_graph_communities(G, pos, colors, ax=None):
         **nxlabel_kws
     )
     #iterate over the labels (key = label, value=matplotlib Text object)
+    ax.margins(0)
     labels=adjust_text(list(labels.values()), ax=ax)
     for t in labels[0]:
         #manipulate indiviual text objects
         # print(t)
         t.set_backgroundcolor(colors[t.get_text()])
-    sns.despine(left=True, bottom=True)
+    sns.despine(ax=ax, left=True, bottom=True)
     return ax
 ```
 
@@ -499,7 +500,7 @@ ax = draw_graph_communities(G,pos_cos,colors)
 cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
 # plt.figure(figsize=(3,4))
 # sns.barplot(cent, orient='h')
-insax = ax.inset_axes([-.05,0.5,0.3,0.3])
+insax = ax.inset_axes([-.1,0.45,0.3,0.3])
 
 QG = nx.quotient_graph(G,commun, relabel=True)
 qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
@@ -846,27 +847,27 @@ A_cooc = pd.DataFrame(
 #     index=roll_df.columns, columns=roll_df.columns
 # )
 
-G = nx.from_pandas_adjacency(A_cooc)
+G_ds = nx.from_pandas_adjacency(A_cooc)
 
 # G = nx.from_pandas_adjacency(A_cooc>30)
-centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centCS=pd.Series(nx.centrality.eigenvector_centrality_numpy(G_ds)).sort_values(ascending=False)#.head(15)
 
-subset = sorted(nx.connected_components(G), key=len, reverse=True)[0]
+subset = sorted(nx.connected_components(G_ds), key=len, reverse=True)[0]
 s_subs=pd.Series(list(subset), dtype=authortype)
 # G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
 # list(nx.neighbors(G, 'newman, m.'))
 # print(len(subset))
 
-pos_cos = nx.kamada_kawai_layout(G)
-pos_cos = nx.spring_layout(G, seed=2, iterations=1000, k=.5)
+# pos_cos = nx.kamada_kawai_layout(G_ds)
+pos_cos = nx.spring_layout(G_ds, seed=2, iterations=1000, k=0.8)
 # G = G.subgraph(subset)
 
-commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
+commun = list(list(i) for i in nx.community.greedy_modularity_communities(G_ds))
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
-plt.figure()
+animalfig_ds = plt.figure()
 
-ax = draw_graph_communities(G,pos_cos,colors)
+ax = draw_graph_communities(G_ds,pos_cos,colors)
 
 # plt.title(
 #     'Verbal Fluency Animals (DS-filtered) Co-Occurrence Graph '
@@ -887,9 +888,9 @@ ax = draw_graph_communities(G,pos_cos,colors)
 # )
 # insax.set_title('Community Block Quotient Graph')
 plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    f'r = {nx.degree_assortativity_coefficient(G_ds):.2f} \t'
     fr'$\psi$ = {connective_efficiency(e_cooc):.2f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
+    (0.5,1.),xycoords='axes fraction', fontsize=12,
     horizontalalignment='center'
 );
 ```
@@ -908,16 +909,16 @@ centCS.head(15)
 #| slideshow: {slide_type: ''}
 
 e_tree = _sq(asc.chow_liu(X, pseudocts=0.5)>0)
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_tree), index=roll_df.columns, columns=roll_df.columns))
-pos_tree = nx.kamada_kawai_layout(G, pos=pos_cos)
+G_tr = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_tree), index=roll_df.columns, columns=roll_df.columns))
+pos_tree = nx.kamada_kawai_layout(G_tr, pos=pos_cos)
 # G = G.subgraph(subset)
 
 # nx.draw_networkx(G, pos=pos_tree, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
-plt.figure()
+animalfig_tr = plt.figure()
 
-ax = draw_graph_communities(G, pos_tree, colors)
-nx.connected.is_connected(G)
+ax = draw_graph_communities(G_tr, pos_tree, colors)
+nx.connected.is_connected(G_tr)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
 # plt.title(
 #     'Verbal Fluency Animal Dependencies (Chow-Liu) Network '
@@ -937,7 +938,7 @@ nx.connected.is_connected(G)
 #     ax=insax,
 # )
 plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    f'r = {nx.degree_assortativity_coefficient(G_tr):.2f} \t'
     fr'$\psi$ = {connective_efficiency(e_tree):.2f}',
     (0.5,0.95),xycoords='axes fraction', fontsize=12,
     horizontalalignment='center'
@@ -968,16 +969,16 @@ glasso = (-(
 )))
 
 
-G = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso).mask), index=animals_list.values, columns=animals_list.values))
+G_gl = nx.from_pandas_adjacency(pd.DataFrame(_sq(e_gl:=~min_connected_filter(glasso).mask), index=animals_list.values, columns=animals_list.values))
 # pos_cos = nx.kamada_kawai_layout(G, dist = pd.DataFrame(-np.log(ochiai(X)), columns=animals.columns, index=animals.columns).to_dict())
-centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centGL=pd.Series(nx.centrality.eigenvector_centrality_numpy(G_gl)).sort_values(ascending=False)#.head(15)
 
-pos = nx.kamada_kawai_layout(G, pos=pos_cos)
+pos_gl = nx.kamada_kawai_layout(G_gl, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.connected.is_connected(G)
-plt.figure()
+animalfig_gl = plt.figure()
 
-ax = draw_graph_communities(G,pos,colors)
+ax = draw_graph_communities(G_gl,pos_gl,colors)
 # plt.title(
 #     'Verbal Fluency Animal Dependencies (GLASSO) Network '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -996,7 +997,7 @@ ax = draw_graph_communities(G,pos,colors)
 # )
 # plt.Text()
 plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    f'r = {nx.degree_assortativity_coefficient(G_gl):.2f} \t'
     fr'$\psi$ = {connective_efficiency(e_gl):.2f}',
     (0.5,0.95),xycoords='axes fraction', fontsize=12,
     horizontalalignment='center'
@@ -1021,20 +1022,20 @@ evd_L_pursuit = _sq(asc.forest_pursuit_edge(X))#[s_subs.cat.codes].T[s_subs.cat.
 # G = nx.from_pandas_adjacency(A_fp>0.01)
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=s_subs, columns=s_subs))
 # G = nx.from_pandas_adjacency(pd.DataFrame(_sq(~min_connected_filter(evd_L_pursuit).mask), index=roll_df.columns, columns=roll_df.columns))
-G = nx.from_pandas_adjacency(pd.DataFrame(
+G_fp = nx.from_pandas_adjacency(pd.DataFrame(
     _sq(e_fp := ~min_connected_filter(evd_L_pursuit).mask),
     # _sq(~np.ma.masked_less_equal(evd_L_pursuit, np.percentile(evd_L_pursuit, 96)).mask),
 
     index=roll_df.columns, columns=roll_df.columns
 ))
-centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G)).sort_values(ascending=False)#.head(15)
+centFP=pd.Series(nx.centrality.eigenvector_centrality_numpy(G_fp)).sort_values(ascending=False)#.head(15)
 
 # G = G.subgraph(subset)
-pos = nx.kamada_kawai_layout(G, pos=pos_cos)
+pos_fp = nx.kamada_kawai_layout(G_fp, pos=pos_cos)
 # pos = nx.spring_layout(G, pos=pos_cos, seed=2, iterations=1000, k=.5)
-plt.figure()
+animalfig_fp = plt.figure()
 
-ax = draw_graph_communities(G,pos,colors)
+ax = draw_graph_communities(G_fp,pos_fp,colors)
 # plt.title(
 #     'Verbal Fluency Animal Dependencies (FP) Network Estimate '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -1056,7 +1057,7 @@ ax = draw_graph_communities(G,pos,colors)
 # )
 
 plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.2f} \t'
+    f'r = {nx.degree_assortativity_coefficient(G_fp):.2f} \t'
     fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
     (0.5,0.95),xycoords='axes fraction', fontsize=12,
     horizontalalignment='center'
@@ -1066,8 +1067,35 @@ plt.annotate(
 ```{python}
 #| editable: true
 #| slideshow: {slide_type: ''}
-nx.eigenvector_centrality_numpy(G)
+nx.eigenvector_centrality_numpy(G_fp)
 centFP.head(15)
+```
+
+```{python}
+#| label: fig-fluency-combined
+
+f = mpl.figure.Figure(figsize=(15,8))
+axs = f.subplots(2, 2)#, height_ratios=(1,1,1,1)
+
+draw_graph_communities(G_ds, pos_cos, colors, ax=axs[0,0])
+axs[0,0].set_title('Doubly-Stochastic Filter')
+
+draw_graph_communities(G_tr, pos_tree, colors, ax=axs[1,1])
+axs[1,1].set_title('Chow-Liu Tree')
+
+draw_graph_communities(G_gl, pos_gl, colors, ax=axs[1,0])
+axs[1,0].set_title('GLASSO (min-connect filter)')
+
+draw_graph_communities(G_fp, pos_fp, colors, ax=axs[0,1])
+axs[0,1].set_title('Forest Pursuit (min-connect filter)')
+
+# sf[0] = animalfig_ds
+# f
+# f.add_subfigure() animalfig_ds
+# animalfig_ds.axes[0]
+plt.tight_layout(pad=-1)
+f
+
 ```
 
 TODO: edge type annotation? 
