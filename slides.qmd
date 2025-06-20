@@ -11,7 +11,7 @@ format:
     navigation-mode: vertical
     autostretch: false
     #chalkboard: true
-    #multiplex: true
+    multiplex: true
     #theme: resource/slides.scss
     include-in-header:
       text: |

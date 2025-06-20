@@ -32,12 +32,16 @@ By doing this simple re-weighting, FPi actually beats GLASSO's median APS for th
 Similarly, the individual breakdown by graph kind in @tbl-fpi shows a similar pattern, with FPi coming close to GLASSO for scale-free networks, but exceeding it for trees and matching for block graphs.
 Still, the difference is small enough, and at such a significant penaly to MCC and F-M scores over a variety of thresholds, that it is hard to recommend the FPi re-weighting unless rate-based edge analysis is desired, e.g. if Poisson or Exponential occurrence models are desired. 
 
-::: {layout-ncol=2}
+::: {layout-ncol=1}
 
 {{< embed ../codefigs/results.qmd#tbl-fpi >}}
 
 {{< embed ../codefigs/results.qmd#fig-fpi >}}
 :::
+
+
+Consistent with the increased APS, however, we also see an improvement in MCC-min and MCC-max.
+If there is a domain-driven reason to select _specific_ thresholds, or if GLASSO is known to provide reasonable results for a given problem, FPi stands a good chance of improving on the optimal or min-connected MCC score. 
 
 ### Simulation Case Study
 
@@ -55,6 +59,7 @@ In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS, espec
 
 ## Generative Model {#sec-lfa-like}
 
+#TODO FIXME what is this
 Symmetry of marked directed and undirected trees (symmetry in $Q$)[@MatrixForestTheorem_Chebotarev2006]
 
 ### Marked Random Spanning Forest (RSFm) distribution
@@ -160,6 +165,8 @@ Derivations and implementation of such a scheme is left for future work.
 
 Another possibility is to approach the problem as a kind of matrix factorization, jointly estimating $B$ and $R$ in an alternating manner.
 Where _Forest Pursuit_ was an empirical Bayes estimate for $R$, alternating from there between $B$ and $R$ leads to a simple Expectation Maximization scheme:
+
+#TODO FIXME make me pretty
 
 > _Alternate embedding the node activations as edge activations and combining these under a desire path model to estimate the graph structure._ 
 

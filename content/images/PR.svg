@@ -25,9 +25,9 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#505050"
      inkscape:document-units="pt"
-     inkscape:zoom="9.7459587"
-     inkscape:cx="623.02747"
-     inkscape:cy="597.01669"
+     inkscape:zoom="1.1047047"
+     inkscape:cx="310.94282"
+     inkscape:cy="348.05681"
      inkscape:window-width="2256"
      inkscape:window-height="1435"
      inkscape:window-x="0"
@@ -55,35 +55,12 @@
     <style
        type="text/css"
        id="style1">*{stroke-linejoin: round; stroke-linecap: butt}</style>
-    <filter
-       inkscape:collect="always"
-       style="color-interpolation-filters:sRGB"
-       id="filter606"
-       x="-0.0010567528"
-       y="-0.0011315176"
-       width="1.0021135"
-       height="1.002263">
-      <feGaussianBlur
-         inkscape:collect="always"
-         stdDeviation="0.22561653"
-         id="feGaussianBlur606" />
-    </filter>
   </defs>
   <g
      id="figure_1">
     <g
        id="patch_1"
-       transform="scale(0.99417927)">
-      <path
-         d="M 3,481.54288 H 515.39954 V 3 H 3 Z"
-         style="mix-blend-mode:normal;fill:#090909;fill-opacity:0.248439;filter:url(#filter606)"
-         id="path606"
-         transform="matrix(0.99691566,0,0,0.99691566,0.79946009,0.74724735)" />
-      <path
-         d="M 0,478.54288 H 512.39954 V 0 H 0 Z"
-         style="fill:#ffffff"
-         id="path1" />
-    </g>
+       transform="scale(0.99417927)" />
     <g
        id="subfigure_1">
       <g

@@ -298,26 +298,43 @@ Geometric mean of Precision and Recall, as opposed to the F-Measure that returns
 :::
 
 Because this work is focused on unsupervised performance, specifically for the use of these algorithms by analysts investigating dependencies, we opt to calculate TP,TN,FP,FN at every unique edge probability/strength value returned by each algorithm.
-Then, because we do not know a priori which threshold level will be selected by an analyst in the unsupervised setting, we take a conservative approach and report the expected values E[MCC] and E[F-M] over all unique threshold values.
+Then, because we do not know a priori which threshold level will be selected by an analyst in the unsupervised setting we need a mechanism to select from or aggregate these values to come up with an overall score.
+In the supervised case we would have access to the ground truth, so the "optimal" threshold can be reported.
+Though this is not a reliable unsupervised scenario, it can give an idea of the upper-limit for an algorithm's performance.
+For this purpose, we report the maximum MCC value as "MCC-max". 
+
+Another common approach was discussed in @nte-ot, where we find the maximum allowable edge sparsity before the graph would otherwise become disconnected.
+This balances the desire to achieve sparsity while also enforcing topological constraints on the graph, so that we cannot improve our precision artificially by isolating components of the overall network.
+This "minumum-connected" threshold was calculated for each network estimate, and reported for MCC as "MCC-min".
+
+Finally, a more interesting approach might be to define a distribution over likely thresholds, and find the expected value over, say, MCC, which incorporates our uncertainty in thresholding.
+In the future this could be informed by domain-specific thresholding tendencies, but for now we will  take a conservative approach and report the expected values E[MCC] and E[F-M] over all unique threshold values (_i.e._ a flat prior over thresholds).
 To consistently compare the expected values, we transform the thresholds for every experiment to the range $[\epsilon, 1-\epsilon]$, to avoid division-by-0 at the extremes. 
 
-Another common approach is to report the Average Precision Score (APS).
+
+Another common approach to score aggregation is the Average Precision Score (APS).
 This is not the average precision over the thresholds however, but instead the expected precision over the possible recall values achievable by the algorithm.
 It is approximating the integral under the parametric P-R curve, instead of the thresholds themselves.
 $$\text{APS} = \sum_{e=1}^{\omega} P(e)(R(e)-R(e-1))$$
 where $P(e)$ and $R(e)$ are the precision and recall at the threshold set by the edge $e$, in rank-order. 
 This is more commonly done for supervised settings, however, and will report a high value as long as _any_ threshold is able to return a both a high precision and a high recall, simultaneously.
 
-
-
 ### Results - Scoring
-The results over every experiment are shown in @fig-fp-overall.
+
+The median results, along with the inter-quartile-range (IQR), are summarized accross all experiments in @tbl-fp. 
+
+{{< embed ../codefigs/results.qmd#tbl-fp >}}
+
+A visualization of these results are shown in @fig-fp-overall, with a specific callout to compare E[MCC], MCC-min, and MCC-max in @fig-thres-MCC.
 Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8.
 GLASSO is clearly the second-best at recovery in these experiments, though for scale-free networks the improvement over simply thresholding the Ochiai coefficient is negligible.
 For APS, both GLASSO and Ochiai are equally able to return high scores, indicating at least one threshold for each that performed well.
-A simple mechanism for FP to perform equally well at APS is discussed in @sec-fpi.
+However, the best-case MCC-max for FP is still marginally better than GLASSO, along with the MCC-min having a better median score _as well as_ a much tighter uncertainty range.  
+To address the APS discrepancy, a simple mechanism for FP to perform equally well is discussed in @sec-fpi.
 
 {{< embed ../codefigs/results.qmd#fig-fp-overall >}}
+
+{{< embed ../codefigs/results.qmd#fig-thres-MCC >}}
 
 Breaking down the results by graph kind in @fig-fp-compare, we see the remarkable ability of FP to dramatically outperform every other algorithm in MCC and F-M, showing remarkable accuracy _together with stability_ over the set of threshold values.
 This is indicative of FP's ability to more directly estimate the support of each edge, with lower values occurring only when co-occurrences aren't being consistently explained with the same set of incidences.
@@ -343,6 +360,9 @@ Interestingly, CS is largely unaffected by network size, compared to FP and GL, 
 However, it is in the random-walk length that we see the benefit of dependency-based algorithms.
 The Ochiai coefficient suffers dramatically as more nodes are activated by the spreading process, since this means the implied clique size grows by the square of the number of activations. 
 FP remains unaffected by walk-length, while (impressively) GLASSO appears to have a marginal boost in performance when walk lengths are high. 
+
+
+
 
 ### Results - Runtime Performance
 
