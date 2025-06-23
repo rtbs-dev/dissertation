@@ -19,7 +19,9 @@ Because of this:
 
 <!-- ## Future Work -->
 
-## Discussion: limitations
+## Discussion and limitations
+
+key assumptions made and where/why they break
 
 ### Validation and Network Dynamics
 
@@ -30,16 +32,23 @@ Because of this:
 
 @METTLEMETamorphicTesting_Xie2020
 
-@dynamictopicmodels_blei2006
+@Dynamictopicmodels_blei2006
 
 ### Spreading process assumption
 
-- prior assumption of spreading
-- leads to forest pursuit
-- test using MENDR (e.g. a MET test)
-- what about other types of generative data? 
+As discussed in @sec-lfa-like, the marked-Random Spanning Forest model was motivated by a need to incorporate prior knowledge about the generating mechanism of our data (namely, _spreading processes_).
+Consequently, our validation through synthetic datasets provided in MENDR used random walks to construct node-activations for inferring structure.
+The results presented here verify Forest Pursuit's ability to recover structure in this setting, which also helps validate our design given the domain-based constraint (spreading-process generation).  
 
-@generationcorrelatedartificial_Leisch1998
+However, other methods do exist for generating (correlated) binary activation data, and adding other types of datasets to the MENDR catalog would provide a mechanism to verify model recovery capability under other generation settings. 
+The addition of thresholded multivariate-normal samples [@generationcorrelatedartificial_Leisch1998] would be a reasonable next-step to increasing the scope of possible verification for thesis algorithms 
+Validation in these cases would need more theoretical work to provide a framework for understanding the expected behavior of Forest Pursuit under non-spreading assumptions.
+However, we also hope to see further development of additive/local Desire Path Density models by the community that estimate relationships under other common generative schemes.
+It is possible that planar graphs and path-graphs are a class that appropriately model MVL (Ising) and Markov (sequential) generation schemes, respectively.
+More work is needed to show the behavior of Desire Path Densities with other graph classes. 
+
+
+
 
 
 

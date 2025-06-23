@@ -57,17 +57,26 @@ In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS, espec
 
 ![P-R curves for two experiments](../images/PR.svg){#fig-pr-curves}
 
-## Generative Model {#sec-lfa-like}
+## Generative Model for Correlated Binary Data {#sec-lfa-like}
 
+Generating multivariate, _correlated_ binary data is of interest across many of the fields discussed in this work, since such models can be used as foundations structural inference (especially if they have a defined likelihood function).
+One of the foundational generative models for correlated binary data makes direct use of the multivariate-normal's precision matrix buy sampling directly from it and thresholding values to be binary [@generationcorrelatedartificial_Leisch1998].
+In a related sense, the multivariate probit (MVP) is used to analyse such data, treating the likelihood of observed binary outcomes as probabilities from the cumulative distribution function of the underlying multivariate normal. 
 
-@generationcorrelatedartificial_Leisch1998
+Another generative model is the _Ising Model_, which has long been used as a tool for modeling particle spins in lattice structures, but in the inverse setting is seeing increased application in data science for recovering network structure [@Inversestatisticalproblems_Nguyen2017]
+While techniques like Gibbs sampling might be used to sample from the Ising distribution, a common technique to estimate the structure of the lattice is to perform logistic regression on each node's activation values using the activation of all other nodes.
+The equivalence of this Multivariate Logit (MVL) to the Ising model is discussed in @Assortmentoptimizationgiven_Vasilyev2025
 
-@Inversestatisticalproblems_Nguyen2017
+As was briefly mentioned in @sec-lit-review, another class of models makes use of the bipartite structures implied by the binary activation data.
+These degree sequence methods can synthesize other bipartite structures (and therefore, generate binary observations) that match a desired degree distribution [@fastballfastalgorithm_Godard2022; @Randomlysamplingbipartite_Neal2023].
+If the case that the true number of nodes is unknown (or should be approximately inferred), a class of models known as the _Indian Buffet Process_ [@IndianBuffetProcess_Griffiths2011] is s distribution over all binary matrices with a finite number of rows.
+It can therefore sample entire datasets, like the degree sequence models, but with more flexibility in inferring the number of necessary nodes.
 
-@IndianBuffetProcess_Griffiths2011
+For all of these generative models, there is a lack of model that takes into account the underlying information available to us when we _know_ that the activation structures arise from a _spreading process_ (like random walk visits).
+Here we propose a compound distribution with a reasonable likelihood that can not only model and generate correlated binary outcomes, but also be inferred using the techniques first discussed for _Forest Pursuit_.
+We accomplish this by exploiting the isometry between distributions over random spanning forests and spanning tree distributions over an augmented graph.
+We are able to derive a simple likelihood and a rapid inference scheme using the Matrix Forest Theorem  of Chebotarev and Shamis [@MatrixForestTheorem_Chebotarev2006]
 
-#TODO FIXME what is this
-Symmetry of marked directed and undirected trees (symmetry in $Q$)[@MatrixForestTheorem_Chebotarev2006]
 
 ### Marked Random Spanning Forest (RSFm) distribution
 
