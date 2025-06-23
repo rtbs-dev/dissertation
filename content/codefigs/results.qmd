@@ -16,6 +16,7 @@ jupyter:
     name: pixi-kernel-python3
 ---
 
+
 ```{python}
 import pandas as pd
 import awkward as ak
@@ -333,8 +334,6 @@ g = compare_algs(tidy, alg_order, graph_order, metric_order,aspect=1.2)
 ```
 
 ```{python}
-#| label: tbl-fp
-#| tbl-cap: Comparing median(IQR) scores for various metrics
 
 
 
@@ -370,6 +369,21 @@ TexFragment(
     tex_tab,
     **tex_kws
 ).run_latex(tex_program=tex)
+```
+
+```{python}
+#| label: tbl-fp
+#| tbl-cap: Comparing median(IQR) scores for various metrics
+
+(tidy
+    .groupby(['metric','name'], observed=True)['score']
+    .agg(MedIQR.from_series)
+    .unstack()[alg_order]
+    .T[metric_order]
+    .rename_axis('method')
+    .style.highlight_max(props='textbf:--rwrap;font-weight: bold;')
+    # .to_latex(hrules=True,column_format='lcccccc')
+)#.to_latex(hrules=True)
 ```
 
 ```{python}
@@ -890,8 +904,6 @@ f
 ```
 
 ```{python}
-
-
 from IPython.display import Markdown
 from tabulate import tabulate
 from great_tables import GT, md, html, style, loc
@@ -993,8 +1005,6 @@ compare_algs(int_tidy, ['FP','FPi','GL'], graph_order, metric_order,height=1.3, 
 ```
 
 ```{python}
-
-
 f,ax = plt.subplots(ncols=3, figsize=((6,2)), sharey=True)
 compare_algs_single(int_tidy, ['FPi','FP','GL','CS'], metric='MCC-min', ax=ax[0])
 # ax[0].set_xlabel('MCC (min-connect)');
@@ -1172,4 +1182,3 @@ f = plt.figure(figsize=(figsize[0]*1.2, figsize[1]))
 
 f=log_partial_residuals(df, ['FP','GL','EFM'], 'seconds', ['n-jumps', 'n-nodes','n-walks'], fig=f)
 ```
-
