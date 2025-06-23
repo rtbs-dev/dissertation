@@ -15,30 +15,34 @@ Because of this:
 
 \doublespacing 
 
-## Summary of contributions
-
-To develop the practice of taking measurement error into account, we have proposed a combination of problem framing, measurement aggregation techniques, and methods for bias correction when recovering network structure from observed random walk visits. 
-
-This thesis provides:
-
-- An interpretation of network recovery as an _inverse problem_ comparable to sparse approximation, with concise definitions of data, edge, and node vector spaces from an underlying incidence-structure formalism. 
-- A taxonomy of structural assumptions used in literature to make network inference tractable:
-  1) Local, global, or resource/information-flow structural constraints;
-  2) Inverse-problem status (direct or indirect edge observation); and
-  3) Whether activation observations are pre-aggregated before estimation. 
-- A method, _Forest Pursuit_, to address the need for a model with:
-  1) _Local_ observation constraints,
-  2) An inverse-problem assumption for indirect edge observation, and
-  3) Dependence on the bipartite nature of node observations.   
-- A dataset and benchmarking toolkit (MENDR) to reproducibly compare algorithmic ability to recover network structure from random walk activations, which has been applied to demonstrate the scaling and accuracy of _Forest Pursuit_ over other methods. 
-- Generalization of Forest Pursuit by developing a probabilistic model for it as a sparse dictionary learning technique, for which we provide an expectation maximization scheme to estimate.  
-- Application of _Forest Pursuit_ as case studies in scientific collaboration networks, classic literature analysis, technical language processing, and semantic verbal fluency tests.   
-
-We lay this foundation in the hope of further improving the ability of practitioners to explore the structure of their data in a principled manner.
-
 <!-- ## Limitations of _Forest Pursuit_ {#sec-issues} -->
 
 <!-- ## Future Work -->
+
+## Discussion: limitations
+
+### Validation and Network Dynamics
+
+- how to validate real-world nets?
+- metamorphic tests?
+- predict links in future
+- issues with dynamic nets, and true-negative/imbalance as network grows. 
+
+@METTLEMETamorphicTesting_Xie2020
+
+@dynamictopicmodels_blei2006
+
+### Spreading process assumption
+
+- prior assumption of spreading
+- leads to forest pursuit
+- test using MENDR (e.g. a MET test)
+- what about other types of generative data? 
+
+@generationcorrelatedartificial_Leisch1998
+
+
+
 
 ## Modifications and extensions to Forest Pursuit{#sec-future-fp}
 
@@ -89,4 +93,25 @@ Together, these properties should make for an ideal _human-in-the-loop_ analysis
 Indeed, for any qualitative study on nodes and discovering relationships between them, decreasing the annotation load (number of edges to assess)---_while_ increasing edge diversity---will be critical to correctly inventory the important categories of relationships or dependencies^[see @sec-edge-diversity].
 Building tools that enable practitioners and researchers to undertake complex grounded coding [@codingmanualqualitative_Saldana2021] tasks like this is a rich area for possible Human-Systems Integration efforts going forward [@Humanlooptechnical_Fung2024;@AIInformedApproaches_Harper2022].
 
+
+## Summary of contributions
+
+To develop the practice of taking measurement error into account, we have proposed a combination of problem framing, measurement aggregation techniques, and methods for bias correction when recovering network structure from observed random walk visits. 
+
+This thesis provides:
+
+- An interpretation of network recovery as an _inverse problem_ comparable to sparse approximation, with concise definitions of data, edge, and node vector spaces from an underlying incidence-structure formalism. 
+- A taxonomy of structural assumptions used in literature to make network inference tractable:
+  1) Local, global, or resource/information-flow structural constraints;
+  2) Inverse-problem status (direct or indirect edge observation); and
+  3) Whether activation observations are pre-aggregated before estimation. 
+- A method, _Forest Pursuit_, to address the need for a model with:
+  1) _Local_ observation constraints,
+  2) An inverse-problem assumption for indirect edge observation, and
+  3) Dependence on the bipartite nature of node observations.   
+- A dataset and benchmarking toolkit (MENDR) to reproducibly compare algorithmic ability to recover network structure from random walk activations, which has been applied to demonstrate the scaling and accuracy of _Forest Pursuit_ over other methods. 
+- Generalization of Forest Pursuit by developing a probabilistic model for it as a sparse dictionary learning technique, for which we provide an expectation maximization scheme to estimate.  
+- Application of _Forest Pursuit_ as case studies in scientific collaboration networks, classic literature analysis, technical language processing, and semantic verbal fluency tests.   
+
+We lay this foundation in the hope of further improving the ability of practitioners to explore the structure of their data in a principled manner.
 

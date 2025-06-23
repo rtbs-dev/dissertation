@@ -59,6 +59,13 @@ In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS, espec
 
 ## Generative Model {#sec-lfa-like}
 
+
+@generationcorrelatedartificial_Leisch1998
+
+@Inversestatisticalproblems_Nguyen2017
+
+@IndianBuffetProcess_Griffiths2011
+
 #TODO FIXME what is this
 Symmetry of marked directed and undirected trees (symmetry in $Q$)[@MatrixForestTheorem_Chebotarev2006]
 
@@ -70,7 +77,7 @@ We can use this fact to create a distribution for node activation sets based on 
 
 A "rooted tree" is a tree with a marked node.
 In @fig-inject-plan we see this illustrated, where a randomly sampled tree on the graph augmented with R leads to many subtrees in the original graph.
-Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to  record $x_1$ back in @fig-obs-set. 
+Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to record $x_1$ back in @fig-obs-set. 
 
 {{< embed ../codefigs/graphs.qmd#fig-inject-plan >}}
 
