@@ -1,14 +1,14 @@
-md5: 7cd7c85b3688f976c7a29261e567a4db
+md5: e794039636cc447e3fdcb4bd7ed7450f
 frozen: true
 deps:
 - path: data/evaluations
   repo:
     url: https://github.com/rtbs-dev/mendr
-    rev_lock: 41bbb1cd5ad6b857001d9d8a0b42e52acd9f6d5d
+    rev_lock: 05b98f6f0a4322e9f0f348eb934695ea2c83a552
     config: .dvc/mendr.local
 outs:
-- md5: 1d0f4070d72b46df8aa5da722a27e539.dir
-  size: 457193497
+- md5: 31d06e6d7e1b05b56d493db2041f23ff.dir
+  size: 457308677
   nfiles: 12
   hash: md5
   path: evaluations
