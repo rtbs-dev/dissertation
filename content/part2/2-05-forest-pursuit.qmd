@@ -325,7 +325,7 @@ The median results, along with the inter-quartile-range (IQR), are summarized ac
 
 {{< embed ../codefigs/results.qmd#tbl-fp >}}
 
-A visualization of these results are shown in @fig-fp-overall, with a specific callout to compare E[MCC], MCC-min, and MCC-max in @fig-thres-MCC.
+A visualization of these results are shown in @fig-fp-overall, with a specific callout to compare E[MCC], MCC-min, and MCC-max in @fig-thres-mcc.
 Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8.
 GLASSO is clearly the second-best at recovery in these experiments, though for scale-free networks the improvement over simply thresholding the Ochiai coefficient is negligible.
 For APS, both GLASSO and Ochiai are equally able to return high scores, indicating at least one threshold for each that performed well.
