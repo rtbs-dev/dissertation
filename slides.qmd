@@ -284,30 +284,7 @@ _Organizing current approaches_
 
 ::::{#fig-incidence-struct layout="[[1,1]]" layout-valign="bottom"}
 
-::: {#fig-biadj-mat}
-$$
-X^{m\times n}=
-%X(\{1,2,3,4,\cdots\})=\\
-\begin{array}{c c}
-& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \\ x_m\end{array} &
-\left[
-\begin{array}{c c c c c c c c c c}
-  .  & .   &  1  & .   &  1  & .   &  1  &  1  & .   & .  \\
-  1  & .   & .   & .   &  1  &  1  & .   & .   & .   & .  \\
-  .  &  1  & .   & .   & .   &  1  & .   & .   &  1  &  1 \\
-  .  & .   & .   &  1  &  1  & .   & .   &  1  & .   & .  \\
-  &&&& \vdots &&&&&
-  \\
-  &&&& \vdots &&&&&
-\end{array}
-\right]
-\end{array}
-$$
-
-: $X$ as a (bi-adjacency) matrix. 
-
-:::
+{{< include /content/part1/fig-biadj.qmd >}}
 
 {{< embed content/codefigs/graphs.qmd#fig-bipartite >}}
 
@@ -317,37 +294,8 @@ $$
 
 ::::{#fig-incidence-graph layout="[[1,1]]" layout-valign="center"}
 
-::: {#fig-incidence-mat}
+{{< include /content/part1/fig-incidence.qmd >}}
 
-$$
-B^{\omega \times n} =
-\begin{array}{c c}
-& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } e_1\\e_2\\e_3\\e_4\\e_5\\e_6\\e_7\\e_8\\e_9\\e_{10}\\e_{11}\\ \vdots \\e_\omega\\\end{array} &
-\left[
-\begin{array}{}
-  1  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  . \\
-  1  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  .  &  . \\
-  .  &  .  &  .  &  .  &  1  &  1  &  .  &  .  &  .  &  . \\
-  .  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  . \\
-  .  &  .  &  .  &  .  &  1  &  .  &  1  &  .  &  .  &  . \\
-  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  .  &  . \\
-  .  &  1  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1 \\
-  .  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1 \\
-  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  .  &  . \\
-  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1  &  .  &  . \\
-  .  &  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  . \\
-  &&&& \vdots &&&&&
-  \\
-  &&&& \vdots &&&&&
-   \end{array}
-\right]
-\end{array}
-$$
-
-: Network $G$ as an _incidence matrix_ $B$. 
-
-:::
 {{< embed content/codefigs/graphs.qmd#fig-colleague >}}
 
 ::::
@@ -563,29 +511,10 @@ If we _were_ a social scientist "on the ground":
 
 ::::{#fig-incidence-rep layout="[[1,1]]" layout-valign="center"}
 
-
 {{< embed content/codefigs/graphs.qmd#fig-socsci >}}
 
-::: {#fig-edge-mat}
-$$
-%X(\{1,2,3,4,\cdots\})=\\
-R^{n\times\omega}=
-\begin{array}{c c}\small
- & \begin{array}{} e_1 & e_2 & e_3 & e_4 & e_5 & e_6 & e_7 & e_8 & e_9 & e_{10} & e_{11}\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\ \vdots \end{array} &
-\left[
-\begin{array}{}
- \  .\: &  \:. \: &  \:. \: &  \:. \: &  \:1 \: &  \:. \: &  \:. \: &  \:. \: &  \:1 \: &  \:1 \: &  . \ \\
- \  .\: &  \:. \: &  \:. \: &  \:1 \: &  \:. \: &  \:. \: &  \:1 \: &  \:1 \: &  \:. \: &  \:. \: &  . \ \\
-  &&&& \vdots &&&&&
-\end{array}
-\right]
-\end{array}
-$$
+{{< include /content/part1/fig-edgespace.qmd >}}
 
-: Observations embedded in "edge space"
-
-:::
 ::::
 
 

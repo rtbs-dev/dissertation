@@ -244,7 +244,7 @@ with open('obs-set.tex') as f:
     fig =TexFragment(
         f.read(),
         
-        **(tex_kws),
+        **(tex_kws|dict(scale=1.5)),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -258,7 +258,7 @@ with open('obs-cascade.tex') as f:
     fig =TexFragment(
         f.read(),
         
-        **(tex_kws),
+        **(tex_kws|dict(scale=1.5)),
     ).run_latex(tex_program=tex)
 fig
 ```
@@ -693,4 +693,3 @@ texmwo = TexFragment(
 ).run_latex(tex_program=tex)
 texmwo
 ```
-

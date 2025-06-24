@@ -1,0 +1,22 @@
+
+::: {#fig-edge-mat}
+$$
+\small
+%X(\{1,2,3,4,\cdots\})=\\
+R^{n\times\omega}=
+\begin{array}{c c}\small
+ & \begin{array}{ccccccccccc} e_1 & e_2 & e_3 & e_4 & e_5 & e_6 & e_7 & e_8 & e_9 & e_{10} & e_{11}\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\ \vdots \end{array} &
+\left[
+\begin{array}{ccccccccccc}
+ \  .\; &  \;. \; &  \;. \; &  \;. \; &  \;1 \; &  \;. \; &  \;. \; &  \;. \; &  \;1 \; &  \;1 \; &  . \ \\
+ \  .\; &  \;. \; &  \;. \; &  \;1 \; &  \;. \; &  \;. \; &  \;1 \; &  \;1 \; &  \;. \; &  \;. \; &  . \ \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+$$
+
+: Observations embedded in "edge space"
+
+:::

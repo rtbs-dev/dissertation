@@ -53,7 +53,7 @@ The matrix multiplication performed represents inner products between all pairs 
 For $X(i,j)\in\mathbb{B}$, these inner products sum together the times in each observation that two nodes were activated together.
 
 
-{{< embed ../codefigs/graphs.qmd#fig-stack-outerprod >}}
+{{< embed /content/codefigs/graphs.qmd#fig-stack-outerprod >}}
 
 However, another (equivalent) way to view matrix multiplication is as a sum of outer products
 $$
@@ -67,8 +67,8 @@ This is illustrated in @fig-stacked-graphs.
 
 :::{#fig-stacked-graphs layout="[[1,2]]"  layout-valign="center"}
 
-{{< embed ../codefigs/graphs.qmd#fig-obs-set >}}
-{{< embed ../codefigs/graphs.qmd#fig-stack-bow >}}
+{{< embed /content/codefigs/graphs.qmd#fig-obs-set >}}
+{{< embed /content/codefigs/graphs.qmd#fig-stack-bow >}}
 
 Inner-product projections as sums of cliques illustrating "clique bias". 
 :::

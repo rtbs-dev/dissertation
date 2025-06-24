@@ -31,9 +31,9 @@ A baseline co-authorship network was initially constructed using the largest con
 As recommended in @Findingevaluatingcommunity_Newman2004, we also show a reduced course-grained "quotient" graph of the communities and their interconnection to help visualize and understand the large-scale structure each network presents.  
 This baseline network can be seen in @fig-netsci-cooc, where (to keep with the treatment in @Findingevaluatingcommunity_Newman2004) we have added a quotient network of the communities themselves.
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-cooc >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-netsci-cooc >}}
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-tree >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-netsci-tree >}}
 
 
 The detected assortativity $r=0.059$ is small, but positive.
@@ -56,7 +56,7 @@ Many of the communities are "unrolled" into long chains of authors, since trees 
 This makes for a shortest-path distance between community hubs (in the same field) to be upwards of 9-10 jumps, which goes against the scale-free/small-world nature we expect from social systems. 
 
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-fp >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-netsci-fp >}}
 
 With _Forest Pursuit_, we can attempt to correct for "clique bias" in the measurement of dependency relationships, while allowing for flexibility in the global network structure.
 The FP recovered collaborator graph is shown in @fig-netsci-fp.  
@@ -69,7 +69,7 @@ This brings the assortativity more in line with the World Wide Web networks, or 
 Relative to the tree network, there are not so many long chains, as many authors have been allowed to "loop-back" and have relationships with nearby colleagues, reducing the path distance between communities in the process.
 Still, like the trees, FP tends to reduce the degree of each node, which is summarized in @fig-netsci-degree. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-netsci-degree >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-netsci-degree >}}
 
 From a domain modeling perspective, it might be reasonable to assume that any given author has 2-3 influential collaboration relationships shown, especially considering students and post-docs are likely to constitute a good number of nodes.
 Even from a logistics perspective (during a given time window working with an advisor) the number of times a student asks/is asked to participate in a paper has to be limited, given average publishing rates.  
@@ -94,7 +94,7 @@ In the original network, an extra count is added to the weight of an edge every 
 Once again, we have only retained characters/chapters that appeared with two or more chapters/characters, respectively.
 In @fig-lesmis-cooc, we run the same community detection scheme to improve the visual understandability of the network, along with inset quotient graphs.
 
-{{< embed ../codefigs/qualitative.qmd#fig-lesmis-cooc >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-lesmis-cooc >}}
 
 Note that the communities demonstrate clear clique-like behavior.
 On one hand, this does make assessment of clusters easier, since characters in roughly the same scenes are densely grouped together.
@@ -110,7 +110,7 @@ Instead, it's likely that the desired appearance of certain characters in a chap
 Because the inclusion of certain characters _leads to_ the inclusion of others (by this model), we can reasonably model the authorial "character inclusion process" as _spreading_ from character to character.
 With this in mind, we apply Forest Pursuit to correct for clique-bias, and show the resulting dependency network (with the original community partition) in @fig-lesmis-fp.
 
-{{< embed ../codefigs/qualitative.qmd#fig-lesmis-fp >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-lesmis-fp >}}
 
 The network edge probabilities have been thresholded in the same manner as the DS (minimum connectivity) filter, only including necessary edges to still retain overall connectivity.
 As before, our community structure shown in the quotient graph has been preserved, even with the significant edge density reduction.
@@ -138,7 +138,7 @@ In that case, even Javert (though being an important recurring character) largel
 More than Javert, Marius plays central motivating roles across several distinct social groups throughout the novel.
 All of these problems are corrected to some degree in the FP estimate. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-lesmis-centrality >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-lesmis-centrality >}}
 
 Why are the centrality levels for Fantine, Eponine, and Cosette so much higher in FP? Why were they so low in the first place? 
 This brings up another benefit of correcting clique-bias: estimating character importance _despite_ systematic interaction-reduction bias from authors. 

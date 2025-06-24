@@ -93,7 +93,7 @@ This is not an additional assumption, but a key limitation of our use of graphs 
 As Torres et al. go to great lengths elaborating in [@WhyHowWhen_Torres2021], it is critical to correctly model dependencies when selecting a structural representation of our problem to avoid data loss.
 The possibility for multi-way interactions would necessitate the use of either a simplicial complex or a hypergraph as the carrier structure, _not a graph_. 
 
-{{< embed ../codefigs/graphs.qmd#fig-stack-tree >}}
+{{< embed /content/codefigs/graphs.qmd#fig-stack-tree >}}
 
 @fig-stack-tree demonstrates the use of trees as the distribution for subgraphs, instead of outer-products/cliques.  
 
@@ -323,7 +323,7 @@ This is more commonly done for supervised settings, however, and will report a h
 
 The median results, along with the inter-quartile-range (IQR), are summarized accross all experiments in @tbl-fp. 
 
-{{< embed ../codefigs/results.qmd#tbl-fp >}}
+{{< embed /content/codefigs/results.qmd#tbl-fp >}}
 
 A visualization of these results are shown in @fig-fp-overall, with a specific callout to compare E[MCC], MCC-min, and MCC-max in @fig-thres-mcc.
 Only FP is able to report MCC and F-M values with medians over about 0.5, regularly reaching over 0.8.
@@ -332,19 +332,19 @@ For APS, both GLASSO and Ochiai are equally able to return high scores, indicati
 However, the best-case MCC-max for FP is still marginally better than GLASSO, along with the MCC-min having a better median score _as well as_ a much tighter uncertainty range.  
 To address the APS discrepancy, a simple mechanism for FP to perform equally well is discussed in @sec-fpi.
 
-{{< embed ../codefigs/results.qmd#fig-fp-overall >}}
+{{< embed /content/codefigs/results.qmd#fig-fp-overall >}}
 
-{{< embed ../codefigs/results.qmd#fig-thres-MCC >}}
+{{< embed /content/codefigs/results.qmd#fig-thres-MCC >}}
 
 Breaking down the results by graph kind in @fig-fp-compare, we see the remarkable ability of FP to dramatically outperform every other algorithm in MCC and F-M, showing remarkable accuracy _together with stability_ over the set of threshold values.
 This is indicative of FP's ability to more directly estimate the support of each edge, with lower values occurring only when co-occurrences aren't being consistently explained with the same set of incidences.
   
-{{< embed ../codefigs/results.qmd#fig-fp-compare >}}
+{{< embed /content/codefigs/results.qmd#fig-fp-compare >}}
 
 Another important capability of any recovery algorithm is to improve its estimate when provided with more data.
 Of course, this also will depend on other factors, such as the dimensionality of the problem (network size), and specifically for us, whether _longer_ random walks makes network inference better or worse.
 
-{{< embed ../codefigs/results.qmd#fig-mendr-trends >}}
+{{< embed /content/codefigs/results.qmd#fig-mendr-trends >}}
 
 As @fig-mendr-trends shows, FP is positively correlated with _all three_.
 Most importantly, the trend for FP is strongest as the number of observations increases, which is not a phenomenon seen in the other methods.
@@ -353,7 +353,7 @@ Only HYP and CS scores are shown in @fig-mendr-trends, but all other tested meth
 
 However, because the graph sampling protocol includes $n$ in the distributions for the observation count and random-walk length, we additionally performed a linear regression on the (log) parameters. The _partial residual_ plots are shown in @fig-partials-mcc, which shows the trends of each variable after controlling for the others. 
 
-{{< embed ../codefigs/results.qmd#fig-partials-mcc >}}
+{{< embed /content/codefigs/results.qmd#fig-partials-mcc >}}
 
 This analysis indicates that _all_ methods should likely increase in their performance when extra observations are added, though FP does this more efficiently than either CS or GLASSO.
 Interestingly, CS is largely unaffected by network size, compared to FP and GL, though GL performs the worst in this regard.
@@ -373,13 +373,13 @@ Additionally, many of the experiments led to ill-conditioned matrices that faile
 As expected, the number of observations plot shows a clear limit in terms of controlling the lower-bound of FPs runtime, since in this serial version every observation runs one more call to MST.
 On the other hand, GLASSO appears to have significant banding for walk length and observation counts, likely indicating dominance of network size for its runtime. 
 
-{{< embed ../codefigs/results.qmd#fig-runtime >}}
+{{< embed /content/codefigs/results.qmd#fig-runtime >}}
 
 To control for each of the variables, and to empirically validate the theoretical analysis in @sec-fp-complexity}, a regression of the same three (log-)parametwers was performed against (log-)seconds.
 The slopes in @fig-partials-runtime, which are plotted on a log-log scale, correspond roughly to polynomial powers in linear scale.
 In regression terms, we are fitting the log of $$y_{\text{sec}} = ax_{\text{param}}^\gamma$$ so that the slope in a log-log plot is $\gamma$. 
 
-{{< embed ../codefigs/results.qmd#fig-partials-runtime >}}
+{{< embed /content/codefigs/results.qmd#fig-partials-runtime >}}
 
 In a very close match to our previous analysis, the scaling of FP is almost entirely explained by the observation count and random-walk length, alone: the coefficient on network size shows constant-time scaling.
 Similarly, the scaling with observation count is very nearly linear time, as predicted.

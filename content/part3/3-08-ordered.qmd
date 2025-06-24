@@ -26,7 +26,7 @@ We don't know if (i) asked (f) before or after (j) asked (b).^[
 ]
 We have updated the original example with explicit partial orders in @fig-obs-tree. Note that nodes in some lists could be re-arranged while keeping the partial order the same (keeping all arrows pointing to the right). 
 
-{{< embed ../codefigs/graphs.qmd#fig-obs-tree >}}
+{{< embed /content/codefigs/graphs.qmd#fig-obs-tree >}}
 
 Sadly our co-authorship example does not often include the (partial) order of author additions,^[though some domains do imbue special meaning to the listed author order, a fact that might be interesting to investigate in future network recovery efforts!
 ] but other common network recovery problems do have an inherent order to them.
@@ -48,7 +48,7 @@ Even without directly using partial order information, proper data preparation a
 Maintenance work orders are often represented as categorized data, though increasingly quantitative use of a technician's descriptions is being pursued by maintenance management operations [@BenchmarkingKeywordExtraction_Sexton2018;@CategorizationErrorsData_Sexton2019].
 Tags are another way to flexibly structure this otherwise "unstructured" data, which @tbl-mwo shows in comparison to more traditional categorization.
 
-{{< embed ../codefigs/graphs.qmd#tbl-mwo >}}
+{{< embed /content/codefigs/graphs.qmd#tbl-mwo >}}
 
 Whether entered directly or generated from text by keyword extraction, the tags will tend to have ordering information readily available. 
 A traditional way to model this kind of text is through either bag-of-words (the co-occurrence node activation data already discussed) or as a sequence of order-n markov model emissions.
@@ -59,7 +59,7 @@ $$
 
 Unlike the clique bias from before, assuming markov jumps for each observation leads to a different kind of bias, with higher precision but reduced recall as shown in @fig-stack-markov. 
 
-{{< embed ../codefigs/graphs.qmd#fig-stack-markov >}}
+{{< embed /content/codefigs/graphs.qmd#fig-stack-markov >}}
 
 Without knowing the underlying dependency relationships, it's difficult to estimate which edges were used by a random-walker, since subsequent visits in memory to a "tag" are not being reported once a technician first adds it.
 [@Humanmemorysearch_Jun2015] call this an "Initial-visit-emitting" random walk, or INVITE for short. 
@@ -151,9 +151,9 @@ To perform semi-supervised classification on the recovered relationship graphs, 
 
 :::{#fig-excavate-results}
 
-![](../images/F1_KL_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-f1kl}
+![](/content/images/F1_KL_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-f1kl}
 
-![](../images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-ternary}
+![](/content/images/ternary_ntags3_freq5_topn50_thres60_saveTrue.svg){#fig-excavate-ternary}
 
 Semisupervised MWO Tag Classification with Network Label Propagation
 :::
@@ -206,7 +206,7 @@ However, we ignore this filtering when creating the 10-animal rolling windows, t
 After re-applying the filter, 100 animals appear across 8020 working-memory windows. 
 @fig-fluency-workingmemory shows the effects of this preprocessing on marginal distributions.
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-workingmemory >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-workingmemory >}}
 
 Doing this preprocessing (for rolling-windows of 10) shifts relative animal frequencies downward (since there are many more "observations" from the rolling window), while also shifting the number of animals-per-observation to be strictly less than 10.
 As desired, the pairwise cosine similarity of all vectors $\mathbf{x}'_{j'},
@@ -231,7 +231,7 @@ The DS animal network is shown in @fig-fluency-dsmin.
 With large, deeply connected clusters centered around contexts animals are found in @fig-fluency-dsmin looks very similar to the network recovered to make Fig. 4 in [@semanticorganizationanimal_Goni2011].
 Clusters approximate animal types by their location relative to humans: farm/livestock, ocean/water creatures, "African" and jungle animals, small indoor mammals, small outdoor mammals, etc. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-dsmin >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-dsmin >}}
 
 This is largely how the literature on semantic fluency leaves their network recovery solution, with clusters based on human proximity or physical location.
 However, there are other ways people might relate animals than simply by location.
@@ -245,19 +245,19 @@ Clusters are largely intact, instead represented by large branches/subtrees off 
 However, some community relationships have been sacrificed to maintain strong individual edges, such as _monkey_+_giraffe_ for location similarity at the expense of separating two halves of the pink cluster across a wide distance.
 More alternate paths between creatures (i.e. loops) are needed to better represent our perception of animal relationships.  
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-tree >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-tree >}}
 
 The other dependency network recovery method is GLASSO, which we have similarly thresholded at the minimum-connected point.
 It only slightly improves on connective efficiency ($\psi=0.44$), though the cliques are replaced with much more dispersed connections throughout the graph.
 We also see that reasonable inter-group connections are better represented, such as _rabbit_+_squirrel_, though _cat_ and _dog_ are still isolated due to overrepresentation throughout the dataset. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-glassomin >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-glassomin >}}
 Subjectively, the GLASSO network is still difficult for an analyst to synthesize into useful knowledge, with so many edges, while the DS network only really managed to communicate one "kind" of knowledge (the context clusters). 
 We would ideally prefer a backbone that provides a wider diversity of important edge "types", for an analyst to better understand the kinds of animal relationships humans perceive.
 
 To illustrate this, we show the _Forest Pursuit_(FP) network in @fig-fluency-fpmin.
 It has also been filtered to minimum-connected, like DS and GLASSO, though in this case the connective efficiency to reach that threshold is a staggering $\psi=0.88$. 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-fpmin >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-fpmin >}}
 
 Unlike the other networks that push "generalist" nodes like _cat_ and _dog_ onto long, distant chains, those chains are used in the FP network to hold rare subgroups of clusters, treating them as "gated" by the prominent "hubs" of those groups.
 For example, _cat_ is correctly linked to _mouse_ and _lion_ (in addition to _bird_), while _lemur_ is pushed down a longer chain of primates, "gated" by _gorilla_.
@@ -280,7 +280,7 @@ An analyst has an easier job of creating "edge-type inventories", making the FP 
 This is further reflected in how FP alters the way _centrality_ measures behave.
 Replicating @fig-lesmis-centrality for these graphs, @fig-animal-centrality shows the change in rank across the top 15 animals for the DS, GLASSO, and FP networks. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-animal-centrality >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-animal-centrality >}}
 
 The DS centrality finds the most densely connected clique and gives all of its members incredibly high values.
 Meanwhile, the none of the top 5 most common animals (_dog,cat,lion,tiger,bear_)[^dog] have high centrality _at all_.
@@ -298,13 +298,13 @@ Another beneficial feature of _Forest Pursuit_ is how it fares under increased t
 Because co-occurrence methods prioritize cliques, those cliques will remain connected as other edges are removed, effectively destroying the global structure of the animal network past a certain threshold.
 As seen in @fig-fluency-preservation, in keeping only the top 2% of edges, they are used to connect separated islands of animal communities. 
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-preservation >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-preservation >}}
 
 Meanwhile, the FP network is quite robust to this excessive thresholding, with the global structure preserved at 2%.
 The removed edges have simply detached some of the rarer animals from the network entirely.
 These isolates not only reflect a more metrologically-sound idea (that rarer nodes would be disconnected at higher certainty thresholds), but are also beneficial to analysts, since manually re-connecting isolates of rare animals is simpler than manually determining a global reconnection strategy for island groups. 
 
-<!-- {{< embed ../codefigs/results.qmd#fig-fp-compare >}} -->
+<!-- {{< embed /content/codefigs/results.qmd#fig-fp-compare >}} -->
 
 ### Forest Pursuit as Preprocessing {#sec-fp-preprocess}
 
@@ -315,7 +315,7 @@ By supplying _other algorithms_ with this new estimate for $X$, this makes FP a 
 We can do this to bias the other methods toward greater sparsity in the backbone, without explicitly relying on point estimates for each observation (any tree with those node degrees would do the same).
 As shown in @fig-fluency-preprocess, GLASSO and DS both increase their connective efficiency under FP preprocessing.
 
-{{< embed ../codefigs/qualitative.qmd#fig-fluency-preprocess >}}
+{{< embed /content/codefigs/qualitative.qmd#fig-fluency-preprocess >}}
 
 This is likely due to the increase in "signal-to-noise" ratio for each datapoint, since observations are only similar when they have a node interacting the same "amount", not merely when similar nodes are activated. 
 

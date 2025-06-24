@@ -17,7 +17,7 @@ If that relational asymmetry is available, our "edges" are now _directed_, and w
 Additionally, the time span is assumed to be "for the duration of observation" (did the students _ever_ interact), but if observation time was significantly longer, say, multiple years, we might question the credulity of treating a social interaction 2 years ago as equally important to an interaction immediately preceding the split.
 This is now a "dynamic" graph; or, if we only measure relative to the time of separation, at the very least a "weighted" one.  
 
-{{< embed codefigs/graphs.qmd#fig-karate-club >}}
+{{< embed /content/codefigs/graphs.qmd#fig-karate-club >}}
 
 
 This observation raises an interesting metrology problem: _We do not know if any of these are true_.
@@ -52,7 +52,7 @@ famously, we might build a network of collaboration strength between academic au
 Such networks are derived from what we will call _node activation_ data, _i.e._, records of what entities happened "together", whether contemporaneously, or in some other context or artifact.
 For this class, _precision_ might be easy to assess, having oft-repeated activations.
 
-{{< embed codefigs/graphs.qmd#fig-obs-set >}}
+{{< embed /content/codefigs/graphs.qmd#fig-obs-set >}}
 
 These networkx are naturally represented as "bipartite" networks, having separate entites for, say, "papers" and "authors", and connecting them with edges (paper 1 is "connected" to its authors E,H,C, etc.).
 But analysts are typically seeking the collaboration network connecting authors (or papers) themselves!
@@ -60,9 +60,9 @@ Networks of relationships in this situation are not directly observed, but which
 Common practice assumes that co-authorship in any paper is sufficient evidence of at least some level of social "acquaintance", where more papers shared means more "connected".
 
 :::{#fig-toy layout="[1,1]"}
-{{< embed codefigs/graphs.qmd#fig-collab  >}}
+{{< embed /content/codefigs/graphs.qmd#fig-collab  >}}
 
-{{< embed codefigs/graphs.qmd#fig-colleague >}}
+{{< embed /content/codefigs/graphs.qmd#fig-colleague >}}
 
 Co-authorship vs. collaborator network
 :::
@@ -92,7 +92,7 @@ What goes wrong when we use co-occurrence/activation data to estimate the depend
 What goes wrong when we wish to use co-occurrences for metrics like centrality and assortativity, or for exploratory analyses like building relationship type inventories?
 
 
-{{< embed codefigs/graphs.qmd#fig-recover >}}
+{{< embed /content/codefigs/graphs.qmd#fig-recover >}}
  
 
 Even more practically, networks created directly from bipartite-style data are notorious for quickly becoming far too dense for useful analysis, earning them the (not-so-)loving moniker "hairballs".

@@ -1,4 +1,5 @@
 % Options for packages loaded elsewhere
+% Options for packages loaded elsewhere
 \PassOptionsToPackage{unicode}{hyperref}
 \PassOptionsToPackage{hyphens}{url}
 \PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
@@ -9,21 +10,22 @@
 		oneside,
 		letterpaper
 ]{book}
-
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
 \usepackage{iftex}
 \ifPDFTeX
   \usepackage[T1]{fontenc}
   \usepackage[utf8]{inputenc}
   \usepackage{textcomp} % provide euro and other symbols
 \else % if luatex or xetex
-  \usepackage{unicode-math}
+  \usepackage{unicode-math} % this also loads fontspec
   \defaultfontfeatures{Scale=MatchLowercase}
   \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
 \fi
 \usepackage{lmodern}
-\ifPDFTeX\else  
-    % xetex/luatex font selection
+\ifPDFTeX\else
+  % xetex/luatex font selection
 \fi
 % Use upquote if available, for straight quotes in verbatim environments
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
@@ -31,13 +33,9 @@
   \usepackage[]{microtype}
   \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
 }{}
-\usepackage{xcolor}
-\setlength{\emergencystretch}{3em} % prevent overfull lines
-\setcounter{secnumdepth}{5}
 
 
-\providecommand{\tightlist}{%
-  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{longtable,booktabs,array}
 \usepackage{calc} % for calculating minipage widths
 % Correct order of tables after \paragraph or \subparagraph
 \usepackage{etoolbox}
@@ -62,6 +60,22 @@
 % Set default figure placement to htbp
 \def\fps@figure{htbp}
 \makeatother
+
+
+
+
+
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+
+
+ 
+\usepackage[style=ieee,backend=biber,sorting=ydnt,isbn=true]{biblatex}
+\addbibresource{resource/pubs.bib}
+
 
 \directlua{pdf.setminorversion(6)}
 % \usepackage[T1]{fontenc}
@@ -186,13 +200,9 @@
 \makeatother
 \newcounter{quartocalloutnteno}
 \newcommand{\quartocalloutnte}[1]{\refstepcounter{quartocalloutnteno}\label{#1}}
-
-\usepackage[style=ieee,backend=biber,sorting=ydnt,isbn=true]{biblatex}
-\addbibresource{resource/pubs.bib}
 \usepackage{bookmark}
-
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
-\urlstyle{same} % disable monospaced font for URLs
+\urlstyle{same}
 \hypersetup{
   pdftitle={Measuring Network Dependencies from Node Activations},
   pdfauthor={Rachael T.B. Sexton},
@@ -207,7 +217,6 @@
 \title{Measuring Network Dependencies from Node Activations}
 \author{Rachael T.B. Sexton}
 \date{2025-06-12}
-
 \begin{document}
 
 % \frontmatter
@@ -466,7 +475,7 @@ to the time of separation, at the very least a ``weighted'' one.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-karate-club-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/-content-codefigs-graphs-fig-karate-club-output-1.pdf}}
 
 }
 
@@ -540,7 +549,7 @@ oft-repeated activations.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-obs-set-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/-content-codefigs-graphs-fig-obs-set-output-1.pdf}}
 
 }
 
@@ -569,7 +578,7 @@ means more ``connected''.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-collab-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/-content-codefigs-graphs-fig-collab-output-1.pdf}}
 
 }
 
@@ -582,7 +591,7 @@ observations}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-colleague-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/-content-codefigs-graphs-fig-colleague-output-1.pdf}}
 
 }
 
@@ -652,7 +661,7 @@ analyses like building relationship type inventories?
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/codefigs-graphs-fig-recover-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/00-intro_files/figure-latex/-content-codefigs-graphs-fig-recover-output-1.pdf}}
 
 }
 
@@ -1208,7 +1217,7 @@ no spring connects them!
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-01-matrix-meas_files/figure-latex/..-codefigs-graphs-fig-springs-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-01-matrix-meas_files/figure-latex/-content-codefigs-graphs-fig-springs-output-1.pdf}}
 
 }
 
@@ -1429,6 +1438,60 @@ can be derived, even if negative incidence values are not in
   inverse operations. In this case we would limit ourselves to the
   oriented incidence.}
 
+\begin{figure}
+
+\centering{
+
+\centering{
+
+\[
+\small
+B^{\omega \times n} =
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } e_1\\e_2\\e_3\\e_4\\e_5\\e_6\\e_7\\e_8\\e_9\\e_{10}\\e_{11}\\ \vdots \\e_\omega\\\end{array} &
+\left[
+\begin{array}{cccccccccc}
+  1  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  . \\
+  1  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  1  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  .  &  . \\
+  .  &  1  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1 \\
+  .  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1 \\
+  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1  &  .  &  . \\
+  .  &  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  . \\
+  &&&& \vdots &&&&&
+  \\
+  &&&& \vdots &&&&&
+   \end{array}
+\right]
+\end{array}
+\]
+
+}
+
+\subcaption{\label{fig-incidence-mat}: Network \(G\) as an
+\emph{incidence matrix} \(B\).}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-02-graph-obs_files/figure-latex/-content-codefigs-graphs-fig-colleague-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-colleague}graph of mutual collaboration
+relationships i.e.~the ``ground truth'' social network}
+
+}
+
+\caption{\label{fig-incidence-graph}: Incidence matrix representation of
+a graph}
+
+\end{figure}%
+
 But, now that we have removed the information on ``which nodes an edge
 connects'' from our definition of edges (since every edge is a scalar
 ID), how do we construct \(V_e\) without a circular dependency on \(B\)
@@ -1527,7 +1590,52 @@ flexibly growing when new nodes arrive.\footnote{ For instance, say
   arrives. First, the participating nodes can be recovered in a
   vectorized manner through Equation~\ref{eq-sq-id}. Then, a new node id
   increases \(n\), followed by reassignment of the edge IDs with
-  \(e_n(u,v)\).}
+  \(e_n(u,v)\).} We are now able to encode the kinds of observations our
+hypothetical social scientist would be making of author collaboration
+interactions \emph{as vectors}, shown in Figure~\ref{fig-incidence-rep}.
+
+\begin{figure}
+
+\centering{
+
+\centering{
+
+\[
+\small
+%X(\{1,2,3,4,\cdots\})=\\
+R^{n\times\omega}=
+\begin{array}{c c}\small
+ & \begin{array}{ccccccccccc} e_1 & e_2 & e_3 & e_4 & e_5 & e_6 & e_7 & e_8 & e_9 & e_{10} & e_{11}\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\ \vdots \end{array} &
+\left[
+\begin{array}{ccccccccccc}
+ \  .\; &  \;. \; &  \;. \; &  \;. \; &  \;1 \; &  \;. \; &  \;. \; &  \;. \; &  \;1 \; &  \;1 \; &  . \ \\
+ \  .\; &  \;. \; &  \;. \; &  \;1 \; &  \;. \; &  \;. \; &  \;1 \; &  \;1 \; &  \;. \; &  \;. \; &  . \ \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+\]
+
+}
+
+\subcaption{\label{fig-edge-mat}: Observations embedded in ``edge
+space''}
+
+\centering{
+
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-02-graph-obs_files/figure-latex/-content-codefigs-graphs-fig-socsci-output-1.pdf}}
+
+}
+
+\subcaption{\label{fig-socsci}(hypothetical) edge-based observations}
+
+}
+
+\caption{\label{fig-incidence-rep}: Possible edge-based embedding of
+observations.}
+
+\end{figure}%
 
 \section{Node activation, bipartite graphs, and
 hypergraphs}\label{node-activation-bipartite-graphs-and-hypergraphs}
@@ -1564,16 +1672,20 @@ Figure~\ref{fig-incidence-struct}.
 \centering{
 
 \[
+\small
+X^{m\times n}=
 %X(\{1,2,3,4,\cdots\})=\\
 \begin{array}{c c}
 & \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \\ x_m\end{array} &
 \left[
 \begin{array}{c c c c c c c c c c}
-  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
-  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
-  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
+  .  & .   &  1  & .   &  1  & .   &  1  &  1  & .   & .  \\
+  1  & .   & .   & .   &  1  &  1  & .   & .   & .   & .  \\
+  .  &  1  & .   & .   & .   &  1  & .   & .   &  1  &  1 \\
+  .  & .   & .   &  1  &  1  & .   & .   &  1  & .   & .  \\
+  &&&& \vdots &&&&&
+  \\
   &&&& \vdots &&&&&
 \end{array}
 \right]
@@ -1582,8 +1694,7 @@ Figure~\ref{fig-incidence-struct}.
 
 }
 
-\subcaption{\label{fig-biadj-mat}: \(X\) as a (bipartite) incidence
-matrix.}
+\subcaption{\label{fig-biadj-mat}: \(X\) as a (bi-adjacency) matrix.}
 
 \end{minipage}%
 %
@@ -1591,7 +1702,7 @@ matrix.}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-02-graph-obs_files/figure-latex/..-codefigs-graphs-fig-bipartite-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-02-graph-obs_files/figure-latex/-content-codefigs-graphs-fig-bipartite-output-1.pdf}}
 
 }
 
@@ -1599,6 +1710,9 @@ matrix.}
 ``activation'' data}
 
 \end{minipage}%
+
+\caption{\label{fig-incidence-struct}: Bipartite representation of
+binary design matrix}
 
 \end{figure}%
 
@@ -1767,7 +1881,7 @@ However, for very rare co-occurrences, we need to correct for
 rate-imbalance of the nodes in much the same way correlation normalizes
 covariance. This idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1794,7 +1908,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-or} 
 
@@ -1820,7 +1934,7 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1845,7 +1959,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1883,7 +1997,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1908,7 +2022,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1935,7 +2049,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1968,7 +2082,7 @@ undirected generalizations of bayes nets
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -2004,7 +2118,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -2068,8 +2182,7 @@ separated into two categories, based on whether hypergraphic/bipartite
 observations are assumed to be in \emph{data space}, or in \emph{model
 space}.
 
-\subsection{Observation space
-assumptions}\label{observation-space-assumptions}
+\subsection{Data assumptions}\label{data-assumptions}
 
 Recall from Section~\ref{sec-lin-ops}: an operator takes our model
 parameters and maps them to data space. The implication for inverse
@@ -2150,9 +2263,6 @@ inconsistency and struggle has at its heart a communication and
 technology transfer problem, which standardization and community toolkit
 support can hopefully work toward fixing.
 
-\subsection{Filling the local+data
-``gap''}\label{filling-the-localdata-gap}
-
 With this in mind, we show in Table~\ref{tbl-roads} an overview of the
 covered approaches, and whether the method presumes operation on
 observations in the same space as the \emph{model}, or if some inverse
@@ -2169,7 +2279,7 @@ space and level}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-03-recovery-road_files/figure-latex/..-codefigs-graphs-tbl-roads-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part1/1-03-recovery-road_files/figure-latex/-content-codefigs-graphs-tbl-roads-output-1.pdf}}
 
 }
 
@@ -2186,16 +2296,71 @@ alone.\footnote{note that any of these could make use of the bipartite
   selection}\autocite{StabilitySelection_Meinshausen2010} by subsampling
   it multiple times and repeating the algorithm accordingly.}
 
+\subsection{Model vs Estimation
+Approach}\label{model-vs-estimation-approach}
+
+Because network reconstruction can be such a computationally intense
+problem, special consideration must be paid to not only the model, but
+to the \emph{approach} taken to estimate the model. Many of the methods
+described conflate the two, since models are often constructed
+\emph{because} of the estimation approaches they enable. It is worth
+distinguishing the two ideas before moving to the next chapter: a
+\emph{model} is a conceptual paradigm for what a recovered network
+\emph{represents}, while an \emph{approach} is a mechanism to estimate
+that model's parameters.
+
+For instance, GLASSO is often thought of as a ``model'', and this is
+somewhat true, but the model is a combination of using the Markov Random
+Field assumption with a definition of ``goodness'' based on minimizing
+the Frobenius norm between an estimate and our observations. The
+\emph{approach} is to add a regularization term (L1), and pick one of
+many techniques to minimize the total loss function, \emph{e.g.}
+coordinate-descent (CD). The model makes assumptions about global
+properties (MRF) of the graph, while the approach determines the
+computational complexity and can allow for certain types of information
+to be utilized. Coordinate descent operates node-wise, meaning our
+complexity will scale with network size, but can also allow data to be
+split along the observation dimension to allow bootstrapping techniques
+like Stability Selection \autocite{StabilitySelection_Meinshausen2010}.
+
+Recent advances have focused on generalizing \emph{approaches} to
+improve performance of techniques like CD. Greedy coordinate-descent
+(GCD) has been proposed as a way to achieve sub-quadratic convergence
+time (in network-size), by utilizing NN-descent to approximate a set of
+edge candidates at each iteration
+\autocite{Scalablenetworkreconstruction_Peixoto2024}. In a follow-up
+work, a generic approach to applying GCD to arbitraty network
+probability model used the \emph{minimum description length} principle
+to overcome overfitting issues in \(L_1\)-based regularization schemes
+like GLASSO \autocite{Networkreconstructionvia_Peixoto2024}. While still
+limited by super-linear scaling in network size, the performance and
+accuracy gains using this approach are \emph{considerable}, once an
+appropriate modeling framework is selected to apply it to (\emph{e.g.}
+SBM or Ising).
+
+\subsection{Filling the ``gap''}\label{filling-the-gap}
+
 In the next sections, we focus on filling a gap for models that only
-make local assumptions and preserve additivity, but \emph{assumes that
-data is not represented directly in the network model-space}. Much like
-the role that nonparametric estimators like KDE/Nadarya-Watson play in
-regression, or Kaplan-Meier estimators in survival
-analysis,\autocite{Topicsadvancedeconometrics_Bierens1996,NonparametricEstimationIncomplete_Kaplan1958}
+make local assumptions and preserve additivity, but \emph{assume that
+data is not represented directly in the network model-space}
+(\emph{i.e.} data-space assumption). First, we need a modeling framework
+for network recovery that retains additivity in a principled way. Much
+like the role that nonparametric estimators like KDE/Nadarya-Watson play
+in regression, or Kaplan-Meier estimators in survival analysis
+\autocite{Topicsadvancedeconometrics_Bierens1996,NonparametricEstimationIncomplete_Kaplan1958},
 additive models only make assumptions about local structure. But from
 these assumptions, they can provide critical insight into data and its
 structure, and push analysts to make regular ``sanity checks'' when
-results or assumptions conflict.
+results or assumptions conflict. Chapter~\ref{sec-desirepath} will cover
+\emph{Desire Path Densities}, our modeling framework for additive,
+data-space model specifications.
+
+Next, an \emph{approach} to estimating model parameters is needed. By
+exploiting a common class of domain-informed constraints---namely, node
+activation \_via spreading process---we can build an algorithm for
+network reconstruction that scales linearly in observation count, while
+remaining approximately \emph{constant} in network size. This will be
+covered in Chapter~\ref{sec-fp}.
 
 \part{Nonparametric Network Recovery With Random Spanning Forests}
 
@@ -2308,7 +2473,7 @@ the times in each observation that two nodes were activated together.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-outerprod-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/-content-codefigs-graphs-fig-stack-outerprod-output-1.pdf}}
 
 }
 
@@ -2337,7 +2502,7 @@ illustrated in Figure~\ref{fig-stacked-graphs}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-obs-set-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/-content-codefigs-graphs-fig-obs-set-output-1.pdf}}
 
 }
 
@@ -2349,7 +2514,7 @@ illustrated in Figure~\ref{fig-stacked-graphs}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/..-codefigs-graphs-fig-stack-bow-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-04-rand-sf_files/figure-latex/-content-codefigs-graphs-fig-stack-bow-output-1.pdf}}
 
 }
 
@@ -2844,7 +3009,7 @@ the carrier structure, \emph{not a graph}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-graphs-fig-stack-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-graphs-fig-stack-tree-output-1.pdf}}
 
 }
 
@@ -3306,7 +3471,7 @@ have been included in the MENDR testbench. They are all functions of the
 True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN)
 values.
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-precision} 
 
@@ -3317,7 +3482,7 @@ predictive value'' (PPV) \[P= \frac{TP}{TP+FP}\]
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-recall} 
 
@@ -3329,7 +3494,7 @@ TP-rate (TPR), and has an inherent trade-off with precision.
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-mcc} 
 
@@ -3342,7 +3507,7 @@ Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
+\begin{tcolorbox}[enhanced jigsaw, opacityback=0, colframe=quarto-callout-note-color-frame, arc=.35mm, leftrule=.75mm, breakable, bottomrule=.15mm, left=2mm, colback=white, toprule=.15mm, rightrule=.15mm]
 
 \quartocalloutnte{nte-fm} 
 
@@ -3415,7 +3580,7 @@ summarized accross all experiments in Table~\ref{tbl-fp}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-tbl-fp-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-tbl-fp-output-1.pdf}}
 
 }
 
@@ -3442,7 +3607,7 @@ equally well is discussed in Section~\ref{sec-fpi}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-overall-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-fp-overall-output-1.pdf}}
 
 }
 
@@ -3454,7 +3619,7 @@ equally well is discussed in Section~\ref{sec-fpi}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-thres-mcc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-thres-mcc-output-1.pdf}}
 
 }
 
@@ -3475,7 +3640,7 @@ consistently explained with the same set of incidences.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-fp-compare-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-fp-compare-output-1.pdf}}
 
 }
 
@@ -3496,7 +3661,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-mendr-trends-output-1.pdf}}
 
 }
 
@@ -3504,7 +3669,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-mendr-trends-output-2.pdf}}
 
 }
 
@@ -3512,7 +3677,7 @@ network inference better or worse.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-mendr-trends-output-3.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-mendr-trends-output-3.pdf}}
 
 }
 
@@ -3544,7 +3709,7 @@ after controlling for the others.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-mcc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-partials-mcc-output-1.pdf}}
 
 }
 
@@ -3587,7 +3752,7 @@ dominance of network size for its runtime.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-runtime-output-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-runtime-output-1.png}}
 
 }
 
@@ -3608,7 +3773,7 @@ log-log plot is \(\gamma\).
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/..-codefigs-results-fig-partials-runtime-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-05-forest-pursuit_files/figure-latex/-content-codefigs-results-fig-partials-runtime-output-1.pdf}}
 
 }
 
@@ -3714,7 +3879,7 @@ desired, e.g.~if Poisson or Exponential occurrence models are desired.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-tbl-fpi-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-tbl-fpi-output-1.pdf}}
 
 }
 
@@ -3730,7 +3895,7 @@ desired, e.g.~if Poisson or Exponential occurrence models are desired.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-fpi-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-fig-fpi-output-1.pdf}}
 
 }
 
@@ -3774,7 +3939,7 @@ that many walks.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/../images/PR.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/images/PR.pdf}}
 
 }
 
@@ -3858,7 +4023,7 @@ Figure~\ref{fig-obs-set}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-graphs-fig-inject-plan-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-graphs-fig-inject-plan-output-1.pdf}}
 
 }
 
@@ -4079,7 +4244,7 @@ Figure~\ref{fig-efm-mcc}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-mcc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-fig-efm-mcc-output-1.pdf}}
 
 }
 
@@ -4100,7 +4265,7 @@ histogram in Figure~\ref{fig-efm-logits}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-logits-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-fig-efm-logits-output-1.pdf}}
 
 }
 
@@ -4126,7 +4291,7 @@ convergence and might take much longer, overall.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-runtime-output-1.png}}
+\pandocbounded{\includegraphics[keepaspectratio]{content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-fig-efm-runtime-output-1.png}}
 
 }
 
@@ -4139,7 +4304,7 @@ GLASSO)}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/..-codefigs-results-fig-efm-partials-runtime-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part2/2-06-latent-forest-alloc_files/figure-latex/-content-codefigs-results-fig-efm-partials-runtime-output-1.pdf}}
 
 }
 
@@ -4222,7 +4387,7 @@ quotient network of the communities themselves.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-cooc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-netsci-cooc-output-1.pdf}}
 
 }
 
@@ -4235,7 +4400,7 @@ co-authorship}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-netsci-tree-output-1.pdf}}
 
 }
 
@@ -4287,7 +4452,7 @@ expect from social systems.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-fp-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-netsci-fp-output-1.pdf}}
 
 }
 
@@ -4319,7 +4484,7 @@ node, which is summarized in Figure~\ref{fig-netsci-degree}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-netsci-degree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-netsci-degree-output-1.pdf}}
 
 }
 
@@ -4383,7 +4548,7 @@ quotient graphs.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-cooc-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-lesmis-cooc-output-1.pdf}}
 
 }
 
@@ -4423,7 +4588,7 @@ the original community partition) in Figure~\ref{fig-lesmis-fp}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-fp-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-lesmis-fp-output-1.pdf}}
 
 }
 
@@ -4487,7 +4652,7 @@ degree in the FP estimate.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/..-codefigs-qualitative-fig-lesmis-centrality-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-07-qualitative_files/figure-latex/-content-codefigs-qualitative-fig-lesmis-centrality-output-1.pdf}}
 
 }
 
@@ -4575,7 +4740,7 @@ pointing to the right).
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-fig-obs-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-graphs-fig-obs-tree-output-1.pdf}}
 
 }
 
@@ -4641,7 +4806,7 @@ data}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-tbl-mwo-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-graphs-tbl-mwo-output-1.pdf}}
 
 }
 
@@ -4667,7 +4832,7 @@ reduced recall as shown in Figure~\ref{fig-stack-markov}.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-graphs-fig-stack-markov-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-graphs-fig-stack-markov-output-1.pdf}}
 
 }
 
@@ -4845,7 +5010,7 @@ Figure~\ref{fig-excavate-f1kl}).
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/../images/F1_KL_ntags3_freq5_topn50_thres60_saveTrue.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/images/F1_KL_ntags3_freq5_topn50_thres60_saveTrue.pdf}}
 
 }
 
@@ -4853,7 +5018,7 @@ Figure~\ref{fig-excavate-f1kl}).
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/../images/ternary_ntags3_freq5_topn50_thres60_saveTrue.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/images/ternary_ntags3_freq5_topn50_thres60_saveTrue.pdf}}
 
 }
 
@@ -4974,7 +5139,7 @@ effects of this preprocessing on marginal distributions.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-workingmemory-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-workingmemory-output-1.pdf}}
 
 }
 
@@ -5029,7 +5194,7 @@ mammals, small outdoor mammals, etc.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-dsmin-output-1.pdf}}
 
 }
 
@@ -5066,7 +5231,7 @@ relationships.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-tree-output-1.pdf}}
 
 }
 
@@ -5088,7 +5253,7 @@ the dataset.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-glassomin-output-1.pdf}}
 
 }
 
@@ -5114,7 +5279,7 @@ connective efficiency to reach that threshold is a staggering
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-fpmin-output-1.pdf}}
 
 }
 
@@ -5172,7 +5337,7 @@ rank across the top 15 animals for the DS, GLASSO, and FP networks.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-animal-centrality-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-animal-centrality-output-1.pdf}}
 
 }
 
@@ -5217,7 +5382,7 @@ islands of animal communities.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-preservation-output-1.pdf}}
 
 }
 
@@ -5226,7 +5391,7 @@ local communities at the cost of global structure}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-preservation-output-2.pdf}}
 
 }
 
@@ -5274,7 +5439,7 @@ connective efficiency under FP preprocessing.
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-preprocess-output-1.pdf}}
 
 }
 
@@ -5283,7 +5448,7 @@ with FP (node degree) preprocessing}
 
 \centering{
 
-\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/..-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
+\pandocbounded{\includegraphics[keepaspectratio]{index_files/mediabag/content/part3/3-08-ordered_files/figure-latex/-content-codefigs-qualitative-fig-fluency-preprocess-output-2.pdf}}
 
 }
 

@@ -130,6 +130,18 @@ In other words, while the unoriented incidence matrix is the "foundational" repr
  In this case we would limit ourselves to the oriented incidence.
 ]
 
+::::{#fig-incidence-graph}
+
+{{< include /content/part1/fig-incidence.qmd >}}
+
+{{< embed /content/codefigs/graphs.qmd#fig-colleague >}}
+
+: Incidence matrix representation of a graph
+
+::::
+
+
+
 But, now that we have removed the information on "which nodes an edge connects" from our definition of edges (since every edge is a scalar ID), how do we construct $V_e$ without a circular dependency on $B$ to find non-zero entries?
 Because of our unique identification of edges up to the combinatoric limit, we can still actually provide a unique ordering of the nodes in $V_e$, without searching over the entirety of $B$'s domain.
 Using an identity from @ParallelEuclideandistance_Angeletti2019, we have a closed-form equation both to retrieve the IDs of nodes $u,v$ (given an edge $e$), and an edge $e$ (given two nodes $u,v$), for any simple graph with $n$ vertices.
@@ -145,7 +157,6 @@ $$
 B = B_u + B_e \qquad B_o \equiv B_u - B_v
 $$
 
-<!-- ![Edge Relation Observational Model](../images/relation-observations.png) -->
 
 ### Inner products on $B$
 
@@ -207,14 +218,24 @@ In addition, it allows for repeated measurements of edges over the same set of n
  First, the participating nodes can be recovered in a vectorized manner through @eq-sq-id.
  Then, a new node id increases $n$, followed by reassignment of the edge IDs with $e_n(u,v)$.
 ]
+We are now able to encode the kinds of observations our hypothetical social scientist would be making of author collaboration interactions _as vectors_, shown in @fig-incidence-rep.
+
+::::{#fig-incidence-rep}
+
+{{< include /content/part1/fig-edgespace.qmd >}}
+
+{{< embed /content/codefigs/graphs.qmd#fig-socsci >}}
+
+: Possible edge-based embedding of observations.
+
+::::
+
 
 ## Node activation, bipartite graphs, and hypergraphs 
 
 What if an incidence structure allows for more than two incidences for the "line" set?
 In our binary design matrix, we might consider each observation its own "line", such that it is incident to all the activated nodes.
 This is no longer a graph of edges and nodes, but rather a more general object. 
-
-<!-- ![Hyperedge Relation Observational Model](../images/hypergraph-observations.png) -->
 
 Every incidence structure can be seen as an incidence matrix, which additionally can be thought of as a _bipartite_ graph.
 In this sense, the incidence matrix is thought of as a bi-adjacency matrix, which is a subset of a larger adjacency having two off-diagonal non-zero blocks 
@@ -232,29 +253,11 @@ The resulting structure for our toy example is shown next to the incidence matri
 
 ::::{#fig-incidence-struct layout="[[1,1]]"}
 
-::: {#fig-biadj-mat}
-$$
-%X(\{1,2,3,4,\cdots\})=\\
-\begin{array}{c c}
-& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
-\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \end{array} &
-\left[
-\begin{array}{c c c c c c c c c c}
-  0  &  0  &  1  &  0  &  1  &  0  &  1  &  1  &  0  &  0 \\
-  1  &  0  &  0  &  0  &  1  &  1  &  0  &  0  &  0  &  0 \\
-  0  &  1  &  0  &  0  &  0  &  1  &  0  &  0  &  1  &  1 \\
-  0  &  0  &  0  &  1  &  1  &  0  &  0  &  1  &  0  &  0 \\
-  &&&& \vdots &&&&&
-\end{array}
-\right]
-\end{array}
-$$
+{{< include fig-biadj.qmd >}}
 
-: $X$ as a (bipartite) incidence matrix. 
+{{< embed /content/codefigs/graphs.qmd#fig-bipartite >}}
 
-:::
-
-{{< embed ../codefigs/graphs.qmd#fig-bipartite >}}
+: Bipartite representation of binary design matrix
 
 ::::
 

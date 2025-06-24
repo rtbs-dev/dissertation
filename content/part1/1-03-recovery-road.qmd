@@ -210,13 +210,13 @@ They don't constrain the graph class itself, but instead prescribe a generative 
 These have very nice properties for bayesian inference of structure, and can be modularly combined or nested for varying levels of specificity and hierarchical structure, sometimes with incredible computational efficiency. [@ReconstructingNetworksUnknown_Peixoto2018;@NetworkReconstructionCommunity_Peixoto2019]
 
 
+
 ## A Path Forward
 
 In addition to the categories above, there is a second "axis" that practitioners should keep in mind when selecting their recovery algorithm of choice.
 Each of the above listed techniques can be mostly separated into two categories, based on whether hypergraphic/bipartite observations are assumed to be in _data space_, or in _model space_.
 
-
-### Observation space assumptions
+### Data  assumptions
 Recall from @sec-lin-ops: an operator takes our model parameters and maps them to data space.
 The implication for inverse problems is a need to _remove the effect_ of the operator, because we cannot directly observe phenomena in a way compatible with our model (_e.g._, which might model underlying causal effects).
 
@@ -259,21 +259,44 @@ Once again from the @Statisticalinferencelinks_Peel2022 review:
 In a similar vein, we believe that a large amount of metrological inconsistency and struggle has at its heart a communication and technology transfer problem, which standardization and community toolkit support can hopefully work toward fixing.
 
 
-### Filling the local+data "gap"
 
 With this in mind, we show in @tbl-roads an overview of the covered approaches, and whether the method presumes operation on observations in the same space as the _model_, or if some inverse problem is needed. 
   
-{{< embed ../codefigs/graphs.qmd#tbl-roads >}}
+{{< embed /content/codefigs/graphs.qmd#tbl-roads >}}
 
 To add to the point, the last column in @tbl-roads shows whether the full bipartite representation is even needed to perform the technique, or if it is possible with the gram matrix or marginal values alone.^[note that any of these could make use of the bipartite "design matrix", _e.g._, to estimate the edge support with _stability selection_[@StabilitySelection_Meinshausen2010] by subsampling it multiple times and repeating the algorithm accordingly. 
 ]
 
 
 
-<!-- ![Relating Graphs and Hypergraph/bipartite structures as adjoint operators](../images/adjoint-cheatsheet.png) -->
+### Model vs Estimation Approach
 
-In the next sections, we focus on filling a gap for models that only make local assumptions and preserve additivity, but _assumes that data is not represented directly in the network model-space_. 
-Much like the role that nonparametric estimators like KDE/Nadarya-Watson play in regression, or Kaplan-Meier estimators in survival analysis,[@Topicsadvancedeconometrics_Bierens1996; @NonparametricEstimationIncomplete_Kaplan1958] additive models only make assumptions about local structure.
+Because network reconstruction can be such a computationally intense problem, special consideration must be paid to not only the model, but to the _approach_ taken to estimate the model.
+Many of the methods described conflate the two, since models are often constructed _because_ of the estimation approaches they enable. 
+It is worth distinguishing the two ideas before moving to the next chapter: a _model_ is a conceptual paradigm for what a recovered network _represents_, while an _approach_ is a mechanism to estimate that model's parameters. 
+
+For instance, GLASSO is often thought of as a "model", and this is somewhat true, but the model is a combination of using the Markov Random Field assumption with a definition of "goodness" based on minimizing the Frobenius norm between an estimate and our observations. 
+The _approach_ is to add a regularization term (L1), and pick one of many techniques to minimize the total loss function, _e.g._ coordinate-descent (CD).
+The model makes assumptions about global properties (MRF) of the graph, while the approach determines the computational complexity and can allow for certain types of information to be utilized.
+Coordinate descent operates node-wise, meaning our complexity will scale with network size, but can also allow data to be split along the observation dimension to allow bootstrapping techniques like Stability Selection [@StabilitySelection_Meinshausen2010]. 
+
+Recent advances have focused on generalizing _approaches_ to improve performance of techniques like CD.
+Greedy coordinate-descent (GCD) has been proposed as a way to achieve sub-quadratic convergence time (in network-size), by utilizing NN-descent to approximate a set of edge candidates at each iteration [@Scalablenetworkreconstruction_Peixoto2024].
+In a follow-up work, a generic approach to applying GCD to arbitraty network probability model used the _minimum description length_ principle to overcome overfitting issues in $L_1$-based regularization schemes like GLASSO [@Networkreconstructionvia_Peixoto2024].
+While still limited by super-linear scaling in network size, the performance and accuracy gains using this approach are _considerable_, once an appropriate modeling framework is selected to apply it to (_e.g._ SBM or Ising). 
+
+
+
+### Filling the "gap"
+
+In the next sections, we focus on filling a gap for models that only make local assumptions and preserve additivity, but _assume that data is not represented directly in the network model-space_ (_i.e._ data-space assumption). 
+First, we need a modeling framework for network recovery that retains additivity in a principled way.
+ Much like the role that nonparametric estimators like KDE/Nadarya-Watson play in regression, or Kaplan-Meier estimators in survival analysis [@Topicsadvancedeconometrics_Bierens1996; @NonparametricEstimationIncomplete_Kaplan1958], additive models only make assumptions about local structure.
 But from these assumptions, they can provide critical insight into data and its structure, and push analysts to make regular "sanity checks" when results or assumptions conflict.
+@sec-desirepath will cover _Desire Path Densities_, our modeling framework for additive, data-space model specifications.
+
+Next, an _approach_ to estimating model parameters is needed.
+By exploiting a common class of domain-informed constraints---namely, node activation _via spreading process---we can build an algorithm for network reconstruction that scales linearly in observation count, while remaining approximately _constant_ in network size.
+This will be covered in @sec-fp. 
 
 

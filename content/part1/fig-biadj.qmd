@@ -1,0 +1,25 @@
+::: {#fig-biadj-mat}
+$$
+\small
+X^{m\times n}=
+%X(\{1,2,3,4,\cdots\})=\\
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } x_1\\x_2\\x_3\\x_4\\ \vdots \\ x_m\end{array} &
+\left[
+\begin{array}{c c c c c c c c c c}
+  .  & .   &  1  & .   &  1  & .   &  1  &  1  & .   & .  \\
+  1  & .   & .   & .   &  1  &  1  & .   & .   & .   & .  \\
+  .  &  1  & .   & .   & .   &  1  & .   & .   &  1  &  1 \\
+  .  & .   & .   &  1  &  1  & .   & .   &  1  & .   & .  \\
+  &&&& \vdots &&&&&
+  \\
+  &&&& \vdots &&&&&
+\end{array}
+\right]
+\end{array}
+$$
+
+: $X$ as a (bi-adjacency) matrix. 
+
+:::

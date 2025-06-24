@@ -34,9 +34,9 @@ Still, the difference is small enough, and at such a significant penaly to MCC a
 
 ::: {layout-ncol=1}
 
-{{< embed ../codefigs/results.qmd#tbl-fpi >}}
+{{< embed /content/codefigs/results.qmd#tbl-fpi >}}
 
-{{< embed ../codefigs/results.qmd#fig-fpi >}}
+{{< embed /content/codefigs/results.qmd#fig-fpi >}}
 :::
 
 
@@ -55,7 +55,7 @@ In the second, `SC-N300S01` is a 300-node scale-free network with 281 walks.
 Both FP and FPi show significantly better recovery capability, since enough walks have visited a variety of nodes to give FP better edge coverage.
 In this graph, no algorithm comes within 0.25 of FP's impressive 0.88 APS, especially with 300 nodes and fewer than that many walks. 
 
-![P-R curves for two experiments](../images/PR.svg){#fig-pr-curves}
+![P-R curves for two experiments](/content/images/PR.svg){#fig-pr-curves}
 
 ## Generative Model for Correlated Binary Data {#sec-lfa-like}
 
@@ -88,7 +88,7 @@ A "rooted tree" is a tree with a marked node.
 In @fig-inject-plan we see this illustrated, where a randomly sampled tree on the graph augmented with R leads to many subtrees in the original graph.
 Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to record $x_1$ back in @fig-obs-set. 
 
-{{< embed ../codefigs/graphs.qmd#fig-inject-plan >}}
+{{< embed /content/codefigs/graphs.qmd#fig-inject-plan >}}
 
 Note that the marked node does not necessarily need to be the one that the source "injected" to, since the observed activations set is equivalent for any of (d,h,e) being marked.
 This is an important symmetry when we will not know which node "actually" started each cascade, during inference.  
@@ -162,8 +162,6 @@ x_{i\in I,j\in J} &\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
 \end{aligned}
 $$ 
 
-<!-- ![Explanation of the RSFm distribution for binary activation observations](../images/random-spanning-forests.png) -->
-
 The above still has the problem of needing an estimate for $Q=(I+\beta L_z)$ based on the graph described by the active edges in $z$.
 It could be done with a monte-carlo sampler, though the nested likelihood may prove difficult. 
 
@@ -212,14 +210,14 @@ There are no generic guarantees for EM convergence, though anecdotally the numbe
 
 The distribution of E[MCC] score change vs. FP is shown in @fig-efm-mcc.  
 
-{{< embed ../codefigs/results.qmd#fig-efm-mcc  >}}
+{{< embed /content/codefigs/results.qmd#fig-efm-mcc  >}}
 
 While useful, it's not clear whether individual edges are more likely to be "true" edges, _given_ a bigger change in EFM score.
 To test this, a logistic regression was performed for every experiment in MENDR against the true edge values, using the change in scores on those edges between FP and EFM as training data.
 To avoid overfitting, a significant amount of regularization was applied, chosen using 5-fold crossvalidation.
 The coefficients for all experiments are shown as a histogram in @fig-efm-logits.
 
-{{< embed ../codefigs/results.qmd#fig-efm-logits  >}}
+{{< embed /content/codefigs/results.qmd#fig-efm-logits  >}}
 
 The graph kind did not make a significant difference to EFM improvement, but overall log-odds improvement is very low.Still, the value is positive accross the entire dataset, so EFM does have a very small-but-nonzero impact on improving edge prediction.  
 
@@ -227,8 +225,8 @@ The runtime graphs can also be updated, with EFM shown in @fig-efm-runtime and @
 EFM still ran significantly faster than GLASSO in this region.
 However, the scaling with network size is no longer constant-time, especially since convergence used above is the max-abs error, which requires that _every node_ reach a minimum level of convergence and might take much longer, overall. 
 
-{{< embed ../codefigs/results.qmd#fig-efm-runtime >}}
+{{< embed /content/codefigs/results.qmd#fig-efm-runtime >}}
 
-{{< embed ../codefigs/results.qmd#fig-efm-partials-runtime >}}
+{{< embed /content/codefigs/results.qmd#fig-efm-partials-runtime >}}
 
 

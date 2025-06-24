@@ -1,0 +1,33 @@
+
+::: {#fig-incidence-mat}
+
+$$
+\small
+B^{\omega \times n} =
+\begin{array}{c c}
+& \begin{array}{cccccccccc} a & b & c & d & e & f & g & h & i & j\\ \end{array} \\
+\begin{array}{c c } e_1\\e_2\\e_3\\e_4\\e_5\\e_6\\e_7\\e_8\\e_9\\e_{10}\\e_{11}\\ \vdots \\e_\omega\\\end{array} &
+\left[
+\begin{array}{cccccccccc}
+  1  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  . \\
+  1  &  .  &  .  &  .  &  1  &  .  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  1  &  .  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  1  &  .  &  .  &  1  &  .  &  . \\
+  .  &  1  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1 \\
+  .  &  .  &  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1 \\
+  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  .  &  . \\
+  .  &  .  &  .  &  .  &  .  &  .  &  1  &  1  &  .  &  . \\
+  .  &  .  &  .  &  1  &  .  &  .  &  .  &  1  &  .  &  . \\
+  &&&& \vdots &&&&&
+  \\
+  &&&& \vdots &&&&&
+   \end{array}
+\right]
+\end{array}
+$$
+
+: Network $G$ as an _incidence matrix_ $B$. 
+
+:::

@@ -16,6 +16,7 @@ jupyter:
     name: pixi-kernel-python3
 ---
 
+
 ```{python}
 import pandas as pd
 import awkward as ak
@@ -991,18 +992,18 @@ TexFragment(
 #| label: fig-fpi
 #| fig-cap: FPi shows improved APS, optimal MCC, and MCC (min-connect)
 
-f,ax = plt.subplots(ncols=4, figsize=((8,2.5)), sharey=True)
-for a in ax: 
+f,ax = plt.subplots(ncols=2, nrows=2, figsize=((4,4)), sharey=True)
+for a in ax.flatten(): 
     a.axvline(0.5, color='0.9')
-compare_algs_single(tidy, ['FPi']+alg_order, ax=ax[1])
+compare_algs_single(tidy, ['FPi']+alg_order, ax=ax.flatten()[1])
 # ax[0].set_xlabel('E[MCC]');
 
-compare_algs_single(tidy, ['FPi']+alg_order, metric='MCC-max', ax=ax[2])
-compare_algs_single(tidy, ['FPi']+alg_order, metric='MCC-min', ax=ax[3])
+compare_algs_single(tidy, ['FPi']+alg_order, metric='MCC-max', ax=ax.flatten()[2])
+compare_algs_single(tidy, ['FPi']+alg_order, metric='MCC-min', ax=ax.flatten()[3])
 
 # ax[1].set_xlabel('E[F-M]');
 
-compare_algs_single(tidy, ['FPi']+alg_order, metric='APS', ax=ax[0])
+compare_algs_single(tidy, ['FPi']+alg_order, metric='APS', ax=ax.flatten()[0])
 # ax[2].set_xlabel('APS');
 
 plt.tight_layout()
