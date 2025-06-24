@@ -15,24 +15,38 @@ Because of this:
 
 \doublespacing 
 
-<!-- ## Limitations of _Forest Pursuit_ {#sec-issues} -->
 
-<!-- ## Future Work -->
 
 ## Discussion and limitations
 
-key assumptions made and where/why they break
+Much of our discussion on _Forest Pursuit_ and its extensions has revolved around assumptions about data availability and generation.
+Practitioners often face situations where networks are recovered in essentially "unsupervised" settings, and their data could reasonably be modeled as arising from a spreading process on the graph they wish to recover. 
+However, these assumptions do not hold in general, and it's worth discussion how they impact the application of Forest Pursuit and where future research could fill in theoretical and practical gaps. 
 
 ### Validation and Network Dynamics
 
-- how to validate real-world nets?
-- metamorphic tests?
-- predict links in future
-- issues with dynamic nets, and true-negative/imbalance as network grows. 
+We largely assumed that real-world network recovery is predominantly _unsupervised_, so that results verification is very difficult in practice.
+The MENDR dataset provides an initial foray into standardized reference problems, each having a "ground-truth", but this becomes much more complicated when real-world datasets do not.
 
-@METTLEMETamorphicTesting_Xie2020
+One approach to verification would be to do forecasting on dependencies.
+For collaboration networks, for instance, if two authors publish together, we are assuming they are conditionally dependent on each other (when there are no "hidden" node activations).  
+These links (the two-author papers) can be used as an incomplete "ground-truth", so we could theoretically test each algorithm's ability to predict dependencies when the two-author examples are either held out or predicted using all preceding papers. 
 
-@Dynamictopicmodels_Blei2006
+One difficulty with this is the sheer number of true-negatives we expect in a sparse graph as the number of nodes increases.
+In general a sparse connected graph's edge count only must grow linearly with node count, but the non-edge count grows quadratically.
+This makes the chance that any two authors with a possible dependency _do_ coauthor exclusively together vanishingly small, in general. 
+Not all conditional dependencies within a department will lead to pair-papers, since some individuals will only publish in larger groups, for instance.
+To add to the trouble, relationship networks over time have a good chance of being _dynamic_: people move to new institutions, students graduate, etc.
+Using predictions of _future_ two-author collaboration will risk running into errors from network dynamics like these.
+It may be possible to include network dynamics into the relationship inference itself, such as with Dynamic Topic Models [@Dynamictopicmodels_Blei2006], but just as before we are left with the difficulty of verifying and validating a (now more complex) unsupervised model.
+
+Within this train-of-thought, however, lies a possibility to create what are called _metamorphic tests_ suitable for verification of unsupervised models [@METTLEMETamorphicTesting_Xie2020].
+Rather than look for a ground-truth the measure our network against, we can define properties of our network reconstruction that we know must hold given our modeling assumptions or domain knowledge.
+For the co-author network case, instead of predicting any two-author paper, instead we might construct a list of all student-advisor pairs.
+Because we know that their relationship is very likely to be dependent, these pairs should be recovered from an algorithm that is reconstructing author dependencies. 
+Algorithms could be tested against each other for performance on these kinds of metamorphic conditions, ensuring correctness in cases we specify.
+Such metamorphic tests would be a valuable addition to the network reconstruction community, especially if individual domains could compile lists of relevant conditions that _should_ hold in any given reconstruction attempt. 
+
 
 ### Spreading process assumption
 
@@ -41,14 +55,11 @@ Consequently, our validation through synthetic datasets provided in MENDR used r
 The results presented here verify Forest Pursuit's ability to recover structure in this setting, which also helps validate our design given the domain-based constraint (spreading-process generation).  
 
 However, other methods do exist for generating (correlated) binary activation data, and adding other types of datasets to the MENDR catalog would provide a mechanism to verify model recovery capability under other generation settings. 
-The addition of thresholded multivariate-normal samples [@generationcorrelatedartificial_Leisch1998] would be a reasonable next-step to increasing the scope of possible verification for thesis algorithms 
+The addition of thresholded multivariate-normal samples [@generationcorrelatedartificial_Leisch1998] would be a reasonable next-step to increasing the scope of possible verification for thesis algorithms. 
 Validation in these cases would need more theoretical work to provide a framework for understanding the expected behavior of Forest Pursuit under non-spreading assumptions.
 However, we also hope to see further development of additive/local Desire Path Density models by the community that estimate relationships under other common generative schemes.
 It is possible that planar graphs and path-graphs are a class that appropriately model MVL (Ising) and Markov (sequential) generation schemes, respectively.
 More work is needed to show the behavior of Desire Path Densities with other graph classes. 
-
-
-
 
 
 

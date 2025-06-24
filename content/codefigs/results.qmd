@@ -16,7 +16,6 @@ jupyter:
     name: pixi-kernel-python3
 ---
 
-
 ```{python}
 import pandas as pd
 import awkward as ak
@@ -31,6 +30,7 @@ import matplotlib.pyplot as plt
 import matplotlib as m
 
 from jupyter_tikz import TexFragment, TexDocument
+from IPython.display import HTML,Markdown
 
 # from mendr.experiments import (
 #     load_graph, _datasets#,_estimators, _metrics,_sq, _dataset_paths
@@ -334,9 +334,6 @@ g = compare_algs(tidy, alg_order, graph_order, metric_order,aspect=1.2)
 ```
 
 ```{python}
-
-
-
 # Custom formatting function
 from typing import NamedTuple
 
@@ -355,7 +352,12 @@ class MedIQR(NamedTuple):
     @classmethod
     def from_series(cls, s): 
         return cls(s.median(), s.quantile(0.75)-s.quantile(0.25))
-    
+```
+
+```{python}
+#| label: tbl-fp
+#| tbl-cap: Comparing median(IQR) scores for various metrics
+#| tbl-subcap: none
 
 tex_tab = pd.concat([
     tidy.groupby(['metric','name'], observed=True)['score'].agg(MedIQR.from_series).unstack()[alg_order],#.round(2)
@@ -372,18 +374,27 @@ TexFragment(
 ```
 
 ```{python}
-#| label: tbl-fp
-#| tbl-cap: Comparing median(IQR) scores for various metrics
+# HTML(tidy
+#     .groupby(['metric','name'], observed=True)['score']
+#     .agg(MedIQR.from_series)
+#     .unstack()[alg_order]
+#     .T[metric_order]
+#     .rename_axis('method')
+#     .style.highlight_max(props='textbf:--rwrap;font-weight: bold;')
+#     .to_html()
+# )
+```
 
-(tidy
-    .groupby(['metric','name'], observed=True)['score']
-    .agg(MedIQR.from_series)
-    .unstack()[alg_order]
-    .T[metric_order]
-    .rename_axis('method')
-    .style.highlight_max(props='textbf:--rwrap;font-weight: bold;')
-    # .to_latex(hrules=True,column_format='lcccccc')
-)#.to_latex(hrules=True)
+```{python}
+# from great_tables import GT
+# HTML(GT(tidy
+#     .groupby(['metric','name'], observed=True)['score']
+#     .agg(MedIQR.from_series)
+#     .unstack()[alg_order]
+#     .T[metric_order]
+#     .rename_axis('method').reset_index(),
+#    rowname_col='method'
+# ).as_raw_html()
 ```
 
 ```{python}
