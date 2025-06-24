@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.7.31">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -52,15 +52,16 @@ div.csl-indent {
 <meta name="quarto:offset" content="../../">
 <link href="../../content/part3/3-07-qualitative.html" rel="next">
 <link href="../../content/part2/2-05-forest-pursuit.html" rel="prev">
-<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="../../site_libs/quarto-html/popper.min.js"></script>
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e1a5c8363afafaef2c763b6775fbf3ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-4dc29b23d4f30288a9c18b6eeca51034.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-f91b2398c79eec4d1ce5be6f8babce21.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script src="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.js"></script>
 <link href="../../site_libs/quarto-contrib/pseudocode-2.4.1/pseudocode.min.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
@@ -131,7 +132,7 @@ window.Quarto = {
 
 </head>
 
-<body class="nav-sidebar floating slimcontent">
+<body class="nav-sidebar floating slimcontent quarto-light">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
@@ -273,7 +274,7 @@ window.Quarto = {
   <li><a href="#simulation-study-revisited" id="toc-simulation-study-revisited" class="nav-link" data-scroll-target="#simulation-study-revisited">Simulation Study Revisited</a></li>
   <li><a href="#simulation-case-study" id="toc-simulation-case-study" class="nav-link" data-scroll-target="#simulation-case-study">Simulation Case Study</a></li>
   </ul></li>
-  <li><a href="#sec-lfa-like" id="toc-sec-lfa-like" class="nav-link" data-scroll-target="#sec-lfa-like">Generative Model</a>
+  <li><a href="#sec-lfa-like" id="toc-sec-lfa-like" class="nav-link" data-scroll-target="#sec-lfa-like">Generative Model for Correlated Binary Data</a>
   <ul class="collapse">
   <li><a href="#marked-random-spanning-forest-rsfm-distribution" id="toc-marked-random-spanning-forest-rsfm-distribution" class="nav-link" data-scroll-target="#marked-random-spanning-forest-rsfm-distribution">Marked Random Spanning Forest (RSFm) distribution</a></li>
   <li><a href="#sec-lfa-gibbs" id="toc-sec-lfa-gibbs" class="nav-link" data-scroll-target="#sec-lfa-gibbs">Model Specification</a></li>
@@ -328,164 +329,45 @@ window.Quarto = {
 </div></div><section id="simulation-study-revisited" class="level3">
 <h3 class="anchored" data-anchor-id="simulation-study-revisited">Simulation Study Revisited</h3>
 <p>By doing this simple re-weighting, FPi actually beats GLASSO’s median APS for the dataset, but at the cost of MCC and F-M scores (which both drop to between FP and GLASSO), as <a href="#fig-fpi" class="quarto-xref">Figure&nbsp;<span>7.1</span></a> demonstrates. Similarly, the individual breakdown by graph kind in <a href="#tbl-fpi" class="quarto-xref">Table&nbsp;<span>7.1</span></a> shows a similar pattern, with FPi coming close to GLASSO for scale-free networks, but exceeding it for trees and matching for block graphs. Still, the difference is small enough, and at such a significant penaly to MCC and F-M scores over a variety of thresholds, that it is hard to recommend the FPi re-weighting unless rate-based edge analysis is desired, e.g.&nbsp;if Poisson or Exponential occurrence models are desired.</p>
-<div>
-
-</div>
-<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-panel" data-layout-ncol="1">
 <div class="quarto-layout-row">
-<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-tbl-fpi" style="flex-basis: 50.0%;justify-content: center;">
-<div class="cell" data-execution_count="28">
-<div id="tbl-fpi" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="28">
+<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-tbl-fpi" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div class="cell" data-execution_count="33">
+<div id="tbl-fpi" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-execution_count="33">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Table&nbsp;7.1: Comparing scores for FP, FPi and GLASSO
+Table&nbsp;7.1: Comparing median(IQR) scores against FPi
 </figcaption>
 <div aria-describedby="tbl-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-display">
-<div id="fymuxhtemw" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>
-#fymuxhtemw table {
-          font-family: 'Bitstream Charter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-        }
-
-#fymuxhtemw thead, tbody, tfoot, tr, td, th { border-style: none; }
- tr { background-color: transparent; }
-#fymuxhtemw p { margin: 0; padding: 0; }
- #fymuxhtemw .gt_table { display: table; border-collapse: collapse; line-height: normal; margin-left: auto; margin-right: auto; color: #333333; font-size: 16px; font-weight: normal; font-style: normal; background-color: white; width: auto; border-top-style: solid; border-top-width: 2px; border-top-color: #A8A8A8; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #A8A8A8; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; }
- #fymuxhtemw .gt_caption { padding-top: 4px; padding-bottom: 4px; }
- #fymuxhtemw .gt_title { color: #333333; font-size: 125%; font-weight: initial; padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; border-bottom-color: white; border-bottom-width: 0; }
- #fymuxhtemw .gt_subtitle { color: #333333; font-size: 85%; font-weight: initial; padding-top: 1px; padding-bottom: 3px; padding-left: 5px; padding-right: 5px; border-top-color: white; border-top-width: 0; }
- #fymuxhtemw .gt_heading { background-color: white; text-align: center; border-bottom-color: white; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #fymuxhtemw .gt_bottom_border { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #fymuxhtemw .gt_col_headings { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; }
- #fymuxhtemw .gt_col_heading { color: #333333; background-color: white; font-size: 100%; font-weight: normal; text-transform: inherit; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: bottom; padding-top: 3px; padding-bottom: 3px; padding-left: 5px; padding-right: 5px; overflow-x: hidden; }
- #fymuxhtemw .gt_column_spanner_outer { color: #333333; background-color: white; font-size: 100%; font-weight: normal; text-transform: inherit; padding-top: 0; padding-bottom: 0; padding-left: 4px; padding-right: 4px; }
- #fymuxhtemw .gt_column_spanner_outer:first-child { padding-left: 0; }
- #fymuxhtemw .gt_column_spanner_outer:last-child { padding-right: 0; }
- #fymuxhtemw .gt_column_spanner { border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: bottom; padding-top: 3px; padding-bottom: 3px; overflow-x: hidden; display: inline-block; width: 100%; }
- #fymuxhtemw .gt_spanner_row { border-bottom-style: hidden; }
- #fymuxhtemw .gt_group_heading { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; color: #333333; background-color: white; font-size: 100%; font-weight: initial; text-transform: inherit; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 1px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 1px; border-right-color: #D3D3D3; vertical-align: middle; text-align: left; }
- #fymuxhtemw .gt_empty_group_heading { padding: 0.5px; color: #333333; background-color: white; font-size: 100%; font-weight: initial; border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; vertical-align: middle; }
- #fymuxhtemw .gt_from_md> :first-child { margin-top: 0; }
- #fymuxhtemw .gt_from_md> :last-child { margin-bottom: 0; }
- #fymuxhtemw .gt_row { padding-top: 4px; padding-bottom: 4px; padding-left: 5px; padding-right: 5px; margin: 10px; border-top-style: solid; border-top-width: 1px; border-top-color: white; border-left-style: none; border-left-width: 1px; border-left-color: white; border-right-style: none; border-right-width: 1px; border-right-color: white; vertical-align: middle; overflow-x: hidden; }
- #fymuxhtemw .gt_stub { color: #333333; background-color: white; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; }
- #fymuxhtemw .gt_stub_row_group { color: #333333; background-color: white; font-size: 100%; font-weight: initial; text-transform: inherit; border-right-style: solid; border-right-width: 2px; border-right-color: #D3D3D3; padding-left: 5px; padding-right: 5px; vertical-align: top; }
- #fymuxhtemw .gt_row_group_first td { border-top-width: 2px; }
- #fymuxhtemw .gt_row_group_first th { border-top-width: 2px; }
- #fymuxhtemw .gt_striped { background-color: rgba(128,128,128,0.05); }
- #fymuxhtemw .gt_table_body { border-top-style: solid; border-top-width: 2px; border-top-color: #D3D3D3; border-bottom-style: solid; border-bottom-width: 2px; border-bottom-color: #D3D3D3; }
- #fymuxhtemw .gt_sourcenotes { color: #333333; background-color: white; border-bottom-style: none; border-bottom-width: 2px; border-bottom-color: #D3D3D3; border-left-style: none; border-left-width: 2px; border-left-color: #D3D3D3; border-right-style: none; border-right-width: 2px; border-right-color: #D3D3D3; }
- #fymuxhtemw .gt_sourcenote { font-size: 90%; padding-top: 2px; padding-bottom: 2px; padding-left: 5px; padding-right: 5px; text-align: left; }
- #fymuxhtemw .gt_left { text-align: left; }
- #fymuxhtemw .gt_center { text-align: center; }
- #fymuxhtemw .gt_right { text-align: right; font-variant-numeric: tabular-nums; }
- #fymuxhtemw .gt_font_normal { font-weight: normal; }
- #fymuxhtemw .gt_font_bold { font-weight: bold; }
- #fymuxhtemw .gt_font_italic { font-style: italic; }
- #fymuxhtemw .gt_super { font-size: 65%; }
- #fymuxhtemw .gt_footnote_marks { font-size: 75%; vertical-align: 0.4em; position: initial; }
- #fymuxhtemw .gt_asterisk { font-size: 100%; vertical-align: 0; }
- 
-</style>
-
-<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="gt_col_headings header">
-<th class="gt_col_heading gt_columns_bottom_border gt_left" style="text-align: left;" data-quarto-table-cell-role="th" scope="col"></th>
-<th id="FP" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">FP</th>
-<th id="FPi" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">FPi</th>
-<th id="GL" class="gt_col_heading gt_columns_bottom_border gt_right" style="text-align: left;" data-quarto-table-cell-role="th" scope="col">GL</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="gt_group_heading_row odd">
-<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">Block</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.78</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.9</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.9</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.74</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.57</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.51</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.7</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.55</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.46</td>
-</tr>
-<tr class="gt_group_heading_row odd">
-<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">ScaleFree</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.69</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.76</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.81</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.67</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.46</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.44</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.63</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.43</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.36</td>
-</tr>
-<tr class="gt_group_heading_row odd">
-<td colspan="4" class="gt_group_heading" style="text-align: left;" data-quarto-table-cell-role="th">Tree</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">APS</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.9</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.92</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.88</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">F-M</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.81</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.66</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.53</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_left gt_stub" style="text-align: left;" data-quarto-table-cell-role="th">MCC</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.78</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.65</td>
-<td class="gt_row gt_right" style="text-align: left; background-color: rgba(0, 0, 0, 0);">0.49</td>
-</tr>
-</tbody>
-</table>
-
-
+<div id="tbl-fpi-1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-fpi-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+<div aria-describedby="tbl-fpi-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-tbl-fpi-output-1.svg" id="tbl-fpi-1" class="img-fluid figure-img" data-ref-parent="tbl-fpi">
 </div>
-        
+</figure>
+</div>
 </div>
 </div>
 </figure>
 </div>
 </div>
 </div>
-<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fpi" style="flex-basis: 50.0%;justify-content: flex-start;">
-<div id="cell-fig-fpi" class="cell" data-execution_count="31">
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-embed-nb-cell quarto-layout-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-fpi" style="flex-basis: 100.0%;justify-content: flex-start;">
+<div id="cell-fig-fpi" class="cell" data-execution_count="34">
 <div class="cell-output cell-output-display">
 <div id="fig-fpi" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-results-fig-fpi-output-1.svg" class="img-fluid figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-fig-fpi-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fpi-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;7.1: FPi shows best APS, lower MCC,F-M
+Figure&nbsp;7.1: FPi shows improved APS, optimal MCC, and MCC (min-connect)
 </figcaption>
 </figure>
 </div>
@@ -494,6 +376,7 @@ Figure&nbsp;7.1: FPi shows best APS, lower MCC,F-M
 </div>
 </div>
 </div>
+<p>Consistent with the increased APS, however, we also see an improvement in MCC-min and MCC-max. If there is a domain-driven reason to select <em>specific</em> thresholds, or if GLASSO is known to provide reasonable results for a given problem, FPi stands a good chance of improving on the optimal or min-connected MCC score.</p>
 </section>
 <section id="simulation-case-study" class="level3">
 <h3 class="anchored" data-anchor-id="simulation-case-study">Simulation Case Study</h3>
@@ -502,7 +385,7 @@ Figure&nbsp;7.1: FPi shows best APS, lower MCC,F-M
 <div id="fig-pr-curves" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pr-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="../images/PR.svg" class="img-fluid figure-img">
+<img src="../../content/images/PR.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pr-curves-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.2: P-R curves for two experiments
@@ -512,21 +395,36 @@ Figure&nbsp;7.2: P-R curves for two experiments
 </section>
 </section>
 <section id="sec-lfa-like" class="level2 page-columns page-full">
-<h2 class="anchored" data-anchor-id="sec-lfa-like">Generative Model</h2>
-<p>Symmetry of marked directed and undirected trees (symmetry in <span class="math inline">\(Q\)</span>)<span class="citation" data-cites="MatrixForestTheorem_Chebotarev2006"><a href="#ref-MatrixForestTheorem_Chebotarev2006" role="doc-biblioref">[1]</a></span></p>
-<div class="no-row-height column-margin column-container"></div><section id="marked-random-spanning-forest-rsfm-distribution" class="level3 page-columns page-full">
+<h2 class="anchored" data-anchor-id="sec-lfa-like">Generative Model for Correlated Binary Data</h2>
+<p>Generating multivariate, <em>correlated</em> binary data is of interest across many of the fields discussed in this work, since such models can be used as foundations structural inference (especially if they have a defined likelihood function). One of the foundational generative models for correlated binary data makes direct use of the multivariate-normal’s precision matrix buy sampling directly from it and thresholding values to be binary <span class="citation" data-cites="generationcorrelatedartificial_Leisch1998"><a href="#ref-generationcorrelatedartificial_Leisch1998" role="doc-biblioref">[4]</a></span>. In a related sense, the multivariate probit (MVP) is used to analyse such data, treating the likelihood of observed binary outcomes as probabilities from the cumulative distribution function of the underlying multivariate normal.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-generationcorrelatedartificial_Leisch1998" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">F. Leisch, A. Weingessel, and K. Hornik, <span>“On the generation of correlated artificial binary data.”</span> Vienna University of Economics; Business, 1998. doi: <a href="https://doi.org/10.57938/6884F809-93BC-4497-AB2B-FC1611198F5B">10.57938/6884F809-93BC-4497-AB2B-FC1611198F5B</a>.</div>
+</div><div id="ref-Inversestatisticalproblems_Nguyen2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">H. C. Nguyen, R. Zecchina, and J. Berg, <span>“Inverse statistical problems: From the inverse ising problem to data science,”</span> <em>Advances in Physics</em>, vol. 66, no. 3, pp. 197–261, Jun. 2017, doi: <a href="https://doi.org/10.1080/00018732.2017.1341604">10.1080/00018732.2017.1341604</a>.</div>
+</div><div id="ref-Assortmentoptimizationgiven_Vasilyev2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">A. Vasilyev, S. Maier, and R. W. Seifert, <span>“Assortment optimization given basket shopping behavior using the ising model,”</span> Feb. 2025, doi: <a href="https://doi.org/10.48550/ARXIV.2502.16260">10.48550/ARXIV.2502.16260</a>.</div>
+</div></div><p>Another generative model is the <em>Ising Model</em>, which has long been used as a tool for modeling particle spins in lattice structures, but in the inverse setting is seeing increased application in data science for recovering network structure <span class="citation" data-cites="Inversestatisticalproblems_Nguyen2017"><a href="#ref-Inversestatisticalproblems_Nguyen2017" role="doc-biblioref">[5]</a></span> While techniques like Gibbs sampling might be used to sample from the Ising distribution, a common technique to estimate the structure of the lattice is to perform logistic regression on each node’s activation values using the activation of all other nodes. The equivalence of this Multivariate Logit (MVL) to the Ising model is discussed in <span class="citation" data-cites="Assortmentoptimizationgiven_Vasilyev2025"><a href="#ref-Assortmentoptimizationgiven_Vasilyev2025" role="doc-biblioref">[6]</a></span></p>
+<p>As was briefly mentioned in <a href="../part1/1-03-recovery-road.html" class="quarto-xref"><span>Roads to Network Recovery</span></a>, another class of models makes use of the bipartite structures implied by the binary activation data. These degree sequence methods can synthesize other bipartite structures (and therefore, generate binary observations) that match a desired degree distribution <span class="citation" data-cites="fastballfastalgorithm_Godard2022 Randomlysamplingbipartite_Neal2023"><a href="#ref-fastballfastalgorithm_Godard2022" role="doc-biblioref">[7]</a>, <a href="#ref-Randomlysamplingbipartite_Neal2023" role="doc-biblioref">[8]</a></span>. If the case that the true number of nodes is unknown (or should be approximately inferred), a class of models known as the <em>Indian Buffet Process</em> <span class="citation" data-cites="IndianBuffetProcess_Griffiths2011"><a href="#ref-IndianBuffetProcess_Griffiths2011" role="doc-biblioref">[9]</a></span> is s distribution over all binary matrices with a finite number of rows. It can therefore sample entire datasets, like the degree sequence models, but with more flexibility in inferring the number of necessary nodes.</p>
+<div class="no-row-height column-margin column-container"><div id="ref-fastballfastalgorithm_Godard2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">K. Godard and Z. P. Neal, <span>“Fastball: A fast algorithm to randomly sample bipartite graphs with fixed degree sequences,”</span> <em>Journal of Complex Networks</em>, vol. 10, no. 6, Oct. 2022, doi: <a href="https://doi.org/10.1093/comnet/cnac049">10.1093/comnet/cnac049</a>.</div>
+</div><div id="ref-Randomlysamplingbipartite_Neal2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">Z. P. Neal, <span>“Randomly sampling bipartite networks with fixed degree sequences,”</span> May 2023, doi: <a href="https://doi.org/10.48550/ARXIV.2305.04937">10.48550/ARXIV.2305.04937</a>.</div>
+</div><div id="ref-IndianBuffetProcess_Griffiths2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[9] </div><div class="csl-right-inline">T. L. Griffiths and Z. Ghahramani, <span>“The indian buffet process: An introduction and review,”</span> <em>J. Mach. Learn. Res.</em>, vol. 12, no. null, pp. 1185–1224, Jul. 2011.</div>
+</div></div><p>For all of these generative models, there is a lack of model that takes into account the underlying information available to us when we <em>know</em> that the activation structures arise from a <em>spreading process</em> (like random walk visits). Here we propose a compound distribution with a reasonable likelihood that can not only model and generate correlated binary outcomes, but also be inferred using the techniques first discussed for <em>Forest Pursuit</em>. We accomplish this by exploiting the isometry between distributions over random spanning forests and spanning tree distributions over an augmented graph. We are able to derive a simple likelihood and a rapid inference scheme using the Matrix Forest Theorem of Chebotarev and Shamis <span class="citation" data-cites="MatrixForestTheorem_Chebotarev2006"><a href="#ref-MatrixForestTheorem_Chebotarev2006" role="doc-biblioref">[1]</a></span></p>
+<section id="marked-random-spanning-forest-rsfm-distribution" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="marked-random-spanning-forest-rsfm-distribution">Marked Random Spanning Forest (RSFm) distribution</h3>
-<p>Every spanning forest on a graph described by <span class="math inline">\(Q\)</span> can be thought of as an equivalent spanning tree over a graph augmented with an extra “source” node, which is connected to every other node with a weight <span class="math inline">\(\tfrac{1}{\beta}\)</span>. Sampling random spanning trees on the augmented graph is equivalent to random spanning forests on the original.<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[4]</a></span> We can use this fact to create a distribution for node activation sets based on <em>co-occurrence on a rooted tree</em>.</p>
+<p>Every spanning forest on a graph described by <span class="math inline">\(Q\)</span> can be thought of as an equivalent spanning tree over a graph augmented with an extra “source” node, which is connected to every other node with a weight <span class="math inline">\(\tfrac{1}{\beta}\)</span>. Sampling random spanning trees on the augmented graph is equivalent to random spanning forests on the original.<span class="citation" data-cites="Semisupervisedlearning_Avrachenkov2017"><a href="#ref-Semisupervisedlearning_Avrachenkov2017" role="doc-biblioref">[10]</a></span> We can use this fact to create a distribution for node activation sets based on <em>co-occurrence on a rooted tree</em>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-Semisupervisedlearning_Avrachenkov2017" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[4] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
+<div class="csl-left-margin">[10] </div><div class="csl-right-inline">K. Avrachenkov, P. Chebotarev, and A. Mishenin, <span>“Semi-supervised learning with regularized laplacian,”</span> <em>Optimization Methods and Software</em>, vol. 32, no. 2, pp. 222–236, Mar. 2017, doi: <a href="https://doi.org/10.1080/10556788.2016.1193176">10.1080/10556788.2016.1193176</a>.</div>
 </div></div><p>A “rooted tree” is a tree with a marked node. In <a href="#fig-inject-plan" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> we see this illustrated, where a randomly sampled tree on the graph augmented with R leads to many subtrees in the original graph. Marking one node (d) at random selects the tree that contains (d,h,e), which corresponds to record <span class="math inline">\(x_1\)</span> back in <a href="2-04-rand-sf.html#fig-obs-set" class="quarto-xref">Figure&nbsp;<span>5.2 (a)</span></a>.</p>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-inject-plan">
-<div id="cell-fig-inject-plan" class="cell" data-editable="true" data-slideshow="{&quot;slide_type&quot;:&quot;&quot;}" data-execution_count="22">
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/graphs.qmd" data-notebook-title="Source for figures" data-notebook-cellid="cell-fig-inject-plan">
+<div id="cell-fig-inject-plan" class="cell" data-editable="true" data-quarto-private-1="{&quot;key&quot;:&quot;quarto-private-1&quot;,&quot;value&quot;:{&quot;key&quot;:&quot;slideshow&quot;,&quot;value&quot;:{&quot;slide_type&quot;:&quot;&quot;}}}" data-execution_count="23">
 <div class="cell-output cell-output-display">
 <div id="fig-inject-plan" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-inject-plan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-graphs-fig-inject-plan-output-1.svg" class="img-fluid figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-graphs-fig-inject-plan-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-inject-plan-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.3: Dissemination plan as rooted RST on augmented graph
@@ -542,9 +440,9 @@ It means that the node activation set and the graph structure are conditionally 
 <span class="math display">\[
 P(x_{ij}|z_E, \phi_{ij}) = \sum_{T\in\mathcal{T}_{+R}}P(x_{ij}| T,\phi_{ij}) P(T|z_E)
 \]</span></p>
-<p>Incredibly, the probabilities for <span class="math inline">\(P(T|z_E)\)</span> and <span class="math inline">\(P(x|T,\phi)\)</span> all have closed form representations. The spanning tree distribution discussed elsewhere<span class="citation" data-cites="BayesianSpanningTree_Duan2021 EfficientComputationExpectations_Zmigrod2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[5]</a>, <a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[6]</a></span> can be used to motivate a spanning forest distribution, which is based on the Laplacian of the augmented graph <span class="math inline">\(L_+\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This means that the probability of a spanning tree in the augmented graph is proportional to the probability of a forest in the original, or, <span class="math inline">\(P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)\)</span>.</p>
+<p>Incredibly, the probabilities for <span class="math inline">\(P(T|z_E)\)</span> and <span class="math inline">\(P(x|T,\phi)\)</span> all have closed form representations. The spanning tree distribution discussed elsewhere<span class="citation" data-cites="BayesianSpanningTree_Duan2021 EfficientComputationExpectations_Zmigrod2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[11]</a>, <a href="#ref-EfficientComputationExpectations_Zmigrod2021" role="doc-biblioref">[12]</a></span> can be used to motivate a spanning forest distribution, which is based on the Laplacian of the augmented graph <span class="math inline">\(L_+\)</span>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This means that the probability of a spanning tree in the augmented graph is proportional to the probability of a forest in the original, or, <span class="math inline">\(P(T\in\mathcal{T}_{+R}|z_E) \propto P(F\in\mathcal{F}|z_E)\)</span>.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-EfficientComputationExpectations_Zmigrod2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[6] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
+<div class="csl-left-margin">[12] </div><div class="csl-right-inline">R. Zmigrod, T. Vieira, and R. Cotterell, <span>“Efficient computation of expectations under spanning tree distributions,”</span> <em>Transactions of the Association for Computational Linguistics</em>, vol. 9, pp. 675–690, Jul. 2021, doi: <a href="https://doi.org/10.1162/tacl_a_00391">10.1162/tacl_a_00391</a>.</div>
 </div><div id="fn1"><p><sup>1</sup>&nbsp;Here, <span class="math inline">\(L_+(G)\)</span> and <span class="math inline">\(L_+(G/e)\)</span> represent the Laplacian of <span class="math inline">\(G_{+R}\)</span> and <span class="math inline">\(G_{+R}\)</span> without edge <span class="math inline">\(e\)</span>, respectively.</p></div></div><p><span class="math display">\[
 P(x_{ij}|z_E, \phi_{ij}) = \sum_{F\in\mathcal{F}}P(x_{ij}| F,\phi_{ij}) P(F|z_E)
 \]</span></p>
@@ -582,30 +480,26 @@ z_{e\in E} &amp;\sim \operatorname{Bernoulli}_E(\pi_e)             \\
 x_{i\in I,j\in J} &amp;\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
 \end{aligned}
 \]</span></p>
-<!-- ![Explanation of the RSFm distribution for binary activation observations](../images/random-spanning-forests.png) -->
 <p>The above still has the problem of needing an estimate for <span class="math inline">\(Q=(I+\beta L_z)\)</span> based on the graph described by the active edges in <span class="math inline">\(z\)</span>. It could be done with a monte-carlo sampler, though the nested likelihood may prove difficult.</p>
 <p>The conditional independence mentioned previously could lend itself to a collapsed Gibbs-sampling scheme. Each observation is a marked node and a sampled random spanning forest, which can equivalently be described as a sampled spanning tree over the activated nodes, like originally discussed in <a href="2-04-rand-sf.html#eq-subgraph-prob" class="quarto-xref">Equation&nbsp;<span>5.2</span></a>. This works because we can marginalize out the equal marked-node probability <span class="math inline">\(\phi\)</span> if we assume a uniform probability of selection for each node, and because we can jointly use the desire-path model to derive an estimate for z_E from the <em>internal</em> edge samples of RSFm.</p>
-<p>Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the <em>Bayesian Spanning Tree</em> distribution from <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[5]</a></span>. Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated, and sampling can continue. This would be very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation<span class="citation" data-cites="Latentdirichletallocation_Blei2003"><a href="#ref-Latentdirichletallocation_Blei2003" role="doc-biblioref">[7]</a></span>, but with edges selected from a spanning forest distribution instead of “topics” from a multinomial. Derivations and implementation of such a scheme is left for future work.</p>
+<p>Beginning with the FP point estimate, each edge in every spanning subtree can be efficiently resampled according to the <em>Bayesian Spanning Tree</em> distribution from <span class="citation" data-cites="BayesianSpanningTree_Duan2021"><a href="#ref-BayesianSpanningTree_Duan2021" role="doc-biblioref">[11]</a></span>. Once every edge in a tree has been resampled, the overall estimate for the desire path network can be updated, and sampling can continue. This would be very similar to the way collapsed Gibbs sampling works for Latent Dirichlet Allocation<span class="citation" data-cites="Latentdirichletallocation_Blei2003"><a href="#ref-Latentdirichletallocation_Blei2003" role="doc-biblioref">[13]</a></span>, but with edges selected from a spanning forest distribution instead of “topics” from a multinomial. Derivations and implementation of such a scheme is left for future work.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-BayesianSpanningTree_Duan2021" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[5] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
+<div class="csl-left-margin">[11] </div><div class="csl-right-inline">L. L. Duan and D. B. Dunson, <span>“Bayesian spanning tree: Estimating the backbone of the dependence graph,”</span> <span>arXiv</span>, <span>arXiv</span>:2106.16120, Jun. 2021. doi: <a href="https://doi.org/10.48550/arXiv.2106.16120">10.48550/arXiv.2106.16120</a>.</div>
 </div><div id="ref-Latentdirichletallocation_Blei2003" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[7] </div><div class="csl-right-inline">D. M. Blei, A. Y. Ng, and M. I. Jordan, <span>“Latent dirichlet allocation,”</span> <em>Journal of machine Learning research</em>, vol. 3, no. Jan, pp. 993–1022, 2003, doi: <a href="https://doi.org/10.7551/mitpress/1120.003.0082">10.7551/mitpress/1120.003.0082</a>.</div>
+<div class="csl-left-margin">[13] </div><div class="csl-right-inline">D. M. Blei, A. Y. Ng, and M. I. Jordan, <span>“Latent dirichlet allocation,”</span> <em>Journal of machine Learning research</em>, vol. 3, no. Jan, pp. 993–1022, 2003, doi: <a href="https://doi.org/10.7551/mitpress/1120.003.0082">10.7551/mitpress/1120.003.0082</a>.</div>
 </div></div></section>
 </section>
 <section id="expected-forest-maximization" class="level2 page-columns page-full">
 <h2 class="anchored" data-anchor-id="expected-forest-maximization">Expected Forest Maximization</h2>
-<p>Another possibility is to approach the problem as a kind of matrix factorization, jointly estimating <span class="math inline">\(B\)</span> and <span class="math inline">\(R\)</span> in an alternating manner. Where <em>Forest Pursuit</em> was an empirical Bayes estimate for <span class="math inline">\(R\)</span>, alternating from there between <span class="math inline">\(B\)</span> and <span class="math inline">\(R\)</span> leads to a simple Expectation Maximization scheme:</p>
-<blockquote class="blockquote">
-<p><em>Alternate embedding the node activations as edge activations and combining these under a desire path model to estimate the graph structure.</em></p>
-</blockquote>
+<p>Another possibility is to approach the problem as a kind of matrix factorization, jointly estimating <span class="math inline">\(B\)</span> and <span class="math inline">\(R\)</span> in an alternating manner. Where <em>Forest Pursuit</em> was an empirical Bayes estimate for <span class="math inline">\(R\)</span>, alternating from there between <span class="math inline">\(B\)</span> and <span class="math inline">\(R\)</span> leads to a simple Expectation Maximization scheme.</p>
 <section id="factorization-dictionary-learning" class="level3 page-columns page-full">
 <h3 class="anchored" data-anchor-id="factorization-dictionary-learning">Factorization &amp; Dictionary Learning</h3>
-<p>Jointly finding a sparse representation of data using a linear combination of basis vectors (called a “dictionary”), <em>and</em> finding an optimal dictionary with which to do the embedding, is called “sparse dictionary learning”. One of the original proposed methods to solve this was the Method of Optimal Directions (MOD)<span class="citation" data-cites="Methodoptimaldirections_Engan1999"><a href="#ref-Methodoptimaldirections_Engan1999" role="doc-biblioref">[8]</a></span>, which uses a sparse “pursuit”-like method to find the representation vectors, and then uses that representation to find <span class="math inline">\(\hat{B}\gets XR^+\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> However, our desire path estimation for independent (arcsine) Bernoulli edges gives an efficient workaround to needing the pseudo-inverse. Based on our interpretation of the forest kernel, counting co-occurrences on trees is equivalent to estimating the inverse of the regularized graph laplacian, anyway. Each Forest Pursuit estimate can yield a new distance <span class="math inline">\(d_Q(u,v)\)</span>, which can be used as a regularized shortest-path distance for small enough <span class="math inline">\(\beta\)</span>. Then, new steiner tree estimates will approximate the modes of each spanning tree distribution, which can be used for a new desire-path estimate of the edges, and so-on.</p>
+<p>Jointly finding a sparse representation of data using a linear combination of basis vectors (called a “dictionary”), <em>and</em> finding an optimal dictionary with which to do the embedding, is called “sparse dictionary learning”. One of the original proposed methods to solve this was the Method of Optimal Directions (MOD)<span class="citation" data-cites="Methodoptimaldirections_Engan1999"><a href="#ref-Methodoptimaldirections_Engan1999" role="doc-biblioref">[14]</a></span>, which uses a sparse “pursuit”-like method to find the representation vectors, and then uses that representation to find <span class="math inline">\(\hat{B}\gets XR^+\)</span>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> However, our desire path estimation for independent (arcsine) Bernoulli edges gives an efficient workaround to needing the pseudo-inverse. Based on our interpretation of the forest kernel, counting co-occurrences on trees is equivalent to estimating the inverse of the regularized graph laplacian, anyway. Each Forest Pursuit estimate can yield a new distance <span class="math inline">\(d_Q(u,v)\)</span>, which can be used as a regularized shortest-path distance for small enough <span class="math inline">\(\beta\)</span>. Then, new steiner tree estimates will approximate the modes of each spanning tree distribution, which can be used for a new desire-path estimate of the edges, and so-on.</p>
 <div class="no-row-height column-margin column-container"><div id="ref-Methodoptimaldirections_Engan1999" class="csl-entry" role="listitem">
-<div class="csl-left-margin">[8] </div><div class="csl-right-inline">K. Engan, S. O. Aase, and J. Hakon Husoy, <span>“Method of optimal directions for frame design,”</span> in <em>1999 IEEE international conference on acoustics, speech, and signal processing. Proceedings. ICASSP99 (cat. no.99CH36258)</em>, IEEE, 1999. doi: <a href="https://doi.org/10.1109/icassp.1999.760624">10.1109/icassp.1999.760624</a>.</div>
+<div class="csl-left-margin">[14] </div><div class="csl-right-inline">K. Engan, S. O. Aase, and J. Hakon Husoy, <span>“Method of optimal directions for frame design,”</span> in <em>1999 IEEE international conference on acoustics, speech, and signal processing. Proceedings. ICASSP99 (cat. no.99CH36258)</em>, IEEE, 1999. doi: <a href="https://doi.org/10.1109/icassp.1999.760624">10.1109/icassp.1999.760624</a>.</div>
 </div><div id="fn2"><p><sup>2</sup>&nbsp; <span class="math inline">\(R^+\)</span> is the pseudo-inverse of <span class="math inline">\(R\)</span>.<br>
 </p></div></div><p>Probabilistically, we are finding the expectation over spanning forests (collapsing over uniform <span class="math inline">\(\phi\)</span>) in the form of calculating <span class="math inline">\(Q\)</span>, and then maximizing the likelihood of each observation through <em>Forest Pursuit</em>. The proposed algorithm <em>Expected Forest Maximization</em> is outlined in <a href="#alg-efm" class="quarto-xref">Algorithm 1</a>.</p>
-<div id="alg-efm" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-indent-size="1.2em" data-line-number-punc=":" data-pseudocode-number="1" data-no-end="false" data-line-number="true" data-comment-delimiter="//">
+<div id="alg-efm" class="pseudocode-container quarto-float" data-caption-prefix="Algorithm" data-no-end="false" data-pseudocode-number="1" data-comment-delimiter="//" data-indent-size="1.2em" data-line-number="true" data-line-number-punc=":">
 <div class="pseudocode">
 \begin{algorithm} \caption{Expected Forest Maximization (EFM)} \begin{algorithmic} \Require $X\in \mathbb{B}^{m\times n}, d_K\in \mathbb{R}_{\geq 0}^{n\times n}, 0&lt;\alpha&lt;1$ \Ensure $R \in \mathbb{B}^{m \times {n\choose 2}}$ \Procedure{EFM}{$X, d_K, \alpha, \beta, \epsilon$} \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha$} \While {$\|\hat{\alpha}-\alpha\|_{\infty}&gt;\epsilon$} \State $\alpha_m \gets \hat{\alpha}_m$ \State $Q \gets (I+\beta L_{\text{sym}}(\alpha_m))^{-1}$ \State $d_K \gets d_Q$ \State $R \gets $\Call{ForestPursuit}{$X, d_K$} \State $\hat{\alpha}_m\gets$\Call{DesirePathBeta}{$X,R, \alpha_m$} \EndWhile \State \textbf{return} $\hat{\alpha}_m$ \EndProcedure \end{algorithmic} \end{algorithm}
 </div>
@@ -616,13 +510,13 @@ x_{i\in I,j\in J} &amp;\sim \operatorname{RSFm}_K(\beta, z_e, \phi_n) \\
 <h3 class="anchored" data-anchor-id="efm-simulation-study">EFM Simulation Study</h3>
 <p>One-shot Forest Pursuit appears to perform quite well, so it’s useful to quantify the expected gain in performance by repeating it an unknown number of times. There are no generic guarantees for EM convergence, though anecdotally the number of iterations was limited in our experiments to under a thousand, and that limit was never hit while using a covergence parameter of <span class="math inline">\(\epsilon=1\mathrm{e}-5\)</span>.</p>
 <p>The distribution of E[MCC] score change vs.&nbsp;FP is shown in <a href="#fig-efm-mcc" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>.</p>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-mcc">
-<div id="cell-fig-efm-mcc" class="cell" data-execution_count="35">
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-mcc">
+<div id="cell-fig-efm-mcc" class="cell" data-execution_count="40">
 <div class="cell-output cell-output-display">
 <div id="fig-efm-mcc" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-efm-mcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-results-fig-efm-mcc-output-1.svg" class="img-fluid figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-fig-efm-mcc-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-efm-mcc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.4: Change in Expected MCC (EFM vs FP)
@@ -633,13 +527,13 @@ Figure&nbsp;7.4: Change in Expected MCC (EFM vs FP)
 </div>
 </div>
 <p>While useful, it’s not clear whether individual edges are more likely to be “true” edges, <em>given</em> a bigger change in EFM score. To test this, a logistic regression was performed for every experiment in MENDR against the true edge values, using the change in scores on those edges between FP and EFM as training data. To avoid overfitting, a significant amount of regularization was applied, chosen using 5-fold crossvalidation. The coefficients for all experiments are shown as a histogram in <a href="#fig-efm-logits" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>.</p>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-logits">
-<div id="cell-fig-efm-logits" class="cell" data-execution_count="36">
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-logits">
+<div id="cell-fig-efm-logits" class="cell" data-execution_count="41">
 <div class="cell-output cell-output-display">
 <div id="fig-efm-logits" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-efm-logits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-results-fig-efm-logits-output-1.svg" class="img-fluid figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-fig-efm-logits-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-efm-logits-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.5: Logistic Regression Coef. (EFM - FP) vs.&nbsp;(Ground Truth)
@@ -651,13 +545,13 @@ Figure&nbsp;7.5: Logistic Regression Coef. (EFM - FP) vs.&nbsp;(Ground Truth)
 </div>
 <p>The graph kind did not make a significant difference to EFM improvement, but overall log-odds improvement is very low.Still, the value is positive accross the entire dataset, so EFM does have a very small-but-nonzero impact on improving edge prediction.</p>
 <p>The runtime graphs can also be updated, with EFM shown in <a href="#fig-efm-runtime" class="quarto-xref">Figure&nbsp;<span>7.6</span></a> and <a href="#fig-efm-partials-runtime" class="quarto-xref">Figure&nbsp;<span>7.7</span></a> against FP and Glasso. EFM still ran significantly faster than GLASSO in this region. However, the scaling with network size is no longer constant-time, especially since convergence used above is the max-abs error, which requires that <em>every node</em> reach a minimum level of convergence and might take much longer, overall.</p>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-runtime">
-<div id="cell-fig-efm-runtime" class="cell" data-execution_count="38">
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-runtime">
+<div id="cell-fig-efm-runtime" class="cell" data-execution_count="43">
 <div class="cell-output cell-output-display">
 <div id="fig-efm-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-efm-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-results-fig-efm-runtime-output-1.png" width="578" height="491" class="figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-fig-efm-runtime-output-1.png" width="578" height="491" class="figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-efm-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.6: Runtime Scaling (Forest-Pursuit vs GLASSO)
@@ -667,13 +561,13 @@ Figure&nbsp;7.6: Runtime Scaling (Forest-Pursuit vs GLASSO)
 </div>
 </div>
 </div>
-<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/syncthing/docs/professional/publications/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-partials-runtime">
-<div id="cell-fig-efm-partials-runtime" class="cell" data-execution_count="39">
+<div class="quarto-embed-nb-cell" data-notebook="/home/rtbs/code/thesis/dissertation/content/codefigs/results.qmd" data-notebook-title="Source for results" data-notebook-cellid="cell-fig-efm-partials-runtime">
+<div id="cell-fig-efm-partials-runtime" class="cell" data-execution_count="44">
 <div class="cell-output cell-output-display">
 <div id="fig-efm-partials-runtime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-efm-partials-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="2-06-latent-forest-alloc_files/figure-html/..-codefigs-results-fig-efm-partials-runtime-output-1.svg" class="img-fluid figure-img">
+<img src="2-06-latent-forest-alloc_files/figure-html/-content-codefigs-results-fig-efm-partials-runtime-output-1.svg" class="img-fluid figure-img">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-efm-partials-runtime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Figure&nbsp;7.7: Partial Residuals (regression on computation time)
@@ -692,236 +586,242 @@ Figure&nbsp;7.7: Partial Residuals (regression on computation time)
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
-window.document.addEventListener("DOMContentLoaded", function (event) {
-  const toggleBodyColorMode = (bsSheetEl) => {
-    const mode = bsSheetEl.getAttribute("data-mode");
-    const bodyEl = window.document.querySelector("body");
-    if (mode === "dark") {
-      bodyEl.classList.add("quarto-dark");
-      bodyEl.classList.remove("quarto-light");
-    } else {
-      bodyEl.classList.add("quarto-light");
-      bodyEl.classList.remove("quarto-dark");
-    }
-  }
-  const toggleBodyColorPrimary = () => {
-    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
-    if (bsSheetEl) {
-      toggleBodyColorMode(bsSheetEl);
-    }
-  }
-  toggleBodyColorPrimary();  
-  const icon = "";
-  const anchorJS = new window.AnchorJS();
-  anchorJS.options = {
-    placement: 'right',
-    icon: icon
-  };
-  anchorJS.add('.anchored');
-  const isCodeAnnotation = (el) => {
-    for (const clz of el.classList) {
-      if (clz.startsWith('code-annotation-')) {                     
-        return true;
-      }
-    }
-    return false;
-  }
-  const onCopySuccess = function(e) {
-    // button target
-    const button = e.trigger;
-    // don't keep focus
-    button.blur();
-    // flash "checked"
-    button.classList.add('code-copy-button-checked');
-    var currentTitle = button.getAttribute("title");
-    button.setAttribute("title", "Copied!");
-    let tooltip;
-    if (window.bootstrap) {
-      button.setAttribute("data-bs-toggle", "tooltip");
-      button.setAttribute("data-bs-placement", "left");
-      button.setAttribute("data-bs-title", "Copied!");
-      tooltip = new bootstrap.Tooltip(button, 
-        { trigger: "manual", 
-          customClass: "code-copy-button-tooltip",
-          offset: [0, -8]});
-      tooltip.show();    
-    }
-    setTimeout(function() {
-      if (tooltip) {
-        tooltip.hide();
-        button.removeAttribute("data-bs-title");
-        button.removeAttribute("data-bs-toggle");
-        button.removeAttribute("data-bs-placement");
-      }
-      button.setAttribute("title", currentTitle);
-      button.classList.remove('code-copy-button-checked');
-    }, 1000);
-    // clear code selection
-    e.clearSelection();
-  }
-  const getTextToCopy = function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-  }
-  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
-    text: getTextToCopy
-  });
-  clipboard.on('success', onCopySuccess);
-  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
-      text: getTextToCopy,
-      container: window.document.getElementById('quarto-embedded-source-code-modal')
-    });
-    clipboardModal.on('success', onCopySuccess);
-  }
-    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
-    var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
-    var isInternal = (href) => {
-        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
-    }
-    // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
-    for (var i=0; i<links.length; i++) {
-      const link = links[i];
-      if (!isInternal(link.href)) {
-        // undo the damage that might have been done by quarto-nav.js in the case of
-        // links that we want to consider external
-        if (link.dataset.originalHref !== undefined) {
-          link.href = link.dataset.originalHref;
-        }
-      }
-    }
-  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
-    const config = {
-      allowHTML: true,
-      maxWidth: 500,
-      delay: 100,
-      arrow: false,
-      appendTo: function(el) {
-          return el.parentElement;
-      },
-      interactive: true,
-      interactiveBorder: 10,
-      theme: 'quarto',
-      placement: 'bottom-start',
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
     };
-    if (contentFn) {
-      config.content = contentFn;
-    }
-    if (onTriggerFn) {
-      config.onTrigger = onTriggerFn;
-    }
-    if (onUntriggerFn) {
-      config.onUntrigger = onUntriggerFn;
-    }
-    window.tippy(el, config); 
-  }
-  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
-  for (var i=0; i<noterefs.length; i++) {
-    const ref = noterefs[i];
-    tippyHover(ref, function() {
-      // use id or data attribute instead here
-      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
-      try { href = new URL(href).hash; } catch {}
-      const id = href.replace(/^#\/?/, "");
-      const note = window.document.getElementById(id);
-      if (note) {
-        return note.innerHTML;
-      } else {
-        return "";
-      }
-    });
-  }
-  const xrefs = window.document.querySelectorAll('a.quarto-xref');
-  const processXRef = (id, note) => {
-    // Strip column container classes
-    const stripColumnClz = (el) => {
-      el.classList.remove("page-full", "page-columns");
-      if (el.children) {
-        for (const child of el.children) {
-          stripColumnClz(child);
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
         }
       }
+      return false;
     }
-    stripColumnClz(note)
-    if (id === null || id.startsWith('sec-')) {
-      // Special case sections, only their first couple elements
-      const container = document.createElement("div");
-      if (note.children && note.children.length > 2) {
-        container.appendChild(note.children[0].cloneNode(true));
-        for (let i = 1; i < note.children.length; i++) {
-          const child = note.children[i];
-          if (child.tagName === "P" && child.innerText === "") {
-            continue;
-          } else {
-            container.appendChild(child.cloneNode(true));
-            break;
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
           }
         }
-        if (window.Quarto?.typesetMath) {
-          window.Quarto.typesetMath(container);
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
         }
-        return container.innerHTML
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
       } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
         if (window.Quarto?.typesetMath) {
           window.Quarto.typesetMath(note);
         }
-        return note.innerHTML;
-      }
-    } else {
-      // Remove any anchor links if they are present
-      const anchorLink = note.querySelector('a.anchorjs-link');
-      if (anchorLink) {
-        anchorLink.remove();
-      }
-      if (window.Quarto?.typesetMath) {
-        window.Quarto.typesetMath(note);
-      }
-      if (note.classList.contains("callout")) {
-        return note.outerHTML;
-      } else {
-        return note.innerHTML;
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
       }
     }
-  }
-  for (var i=0; i<xrefs.length; i++) {
-    const xref = xrefs[i];
-    tippyHover(xref, undefined, function(instance) {
-      instance.disable();
-      let url = xref.getAttribute('href');
-      let hash = undefined; 
-      if (url.startsWith('#')) {
-        hash = url;
-      } else {
-        try { hash = new URL(url).hash; } catch {}
-      }
-      if (hash) {
-        const id = hash.replace(/^#\/?/, "");
-        const note = window.document.getElementById(id);
-        if (note !== null) {
-          try {
-            const html = processXRef(id, note.cloneNode(true));
-            instance.setContent(html);
-          } finally {
-            instance.enable();
-            instance.show();
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
           }
         } else {
-          // See if we can fetch this
-          fetch(url.split('#')[0])
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
           .then(res => res.text())
           .then(html => {
             const parser = new DOMParser();
             const htmlDoc = parser.parseFromString(html, "text/html");
-            const note = htmlDoc.getElementById(id);
+            const note = htmlDoc.querySelector('main.content');
             if (note !== null) {
-              const html = processXRef(id, note);
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
               instance.setContent(html);
             } 
           }).finally(() => {
@@ -929,185 +829,161 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             instance.show();
           });
         }
-      } else {
-        // See if we can fetch a full url (with no hash to target)
-        // This is a special case and we should probably do some content thinning / targeting
-        fetch(url)
-        .then(res => res.text())
-        .then(html => {
-          const parser = new DOMParser();
-          const htmlDoc = parser.parseFromString(html, "text/html");
-          const note = htmlDoc.querySelector('main.content');
-          if (note !== null) {
-            // This should only happen for chapter cross references
-            // (since there is no id in the URL)
-            // remove the first header
-            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
-              note.children[0].remove();
-            }
-            const html = processXRef(null, note);
-            instance.setContent(html);
-          } 
-        }).finally(() => {
-          instance.enable();
-          instance.show();
-        });
-      }
-    }, function(instance) {
-    });
-  }
-      let selectedAnnoteEl;
-      const selectorForAnnotation = ( cell, annotation) => {
-        let cellAttr = 'data-code-cell="' + cell + '"';
-        let lineAttr = 'data-code-annotation="' +  annotation + '"';
-        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
-        return selector;
-      }
-      const selectCodeLines = (annoteEl) => {
-        const doc = window.document;
-        const targetCell = annoteEl.getAttribute("data-target-cell");
-        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
-        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
-        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
-        const lineIds = lines.map((line) => {
-          return targetCell + "-" + line;
-        })
-        let top = null;
-        let height = null;
-        let parent = null;
-        if (lineIds.length > 0) {
-            //compute the position of the single el (top and bottom and make a div)
-            const el = window.document.getElementById(lineIds[0]);
-            top = el.offsetTop;
-            height = el.offsetHeight;
-            parent = el.parentElement.parentElement;
-          if (lineIds.length > 1) {
-            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
-            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
-            height = bottom - top;
-          }
-          if (top !== null && height !== null && parent !== null) {
-            // cook up a div (if necessary) and position it 
-            let div = window.document.getElementById("code-annotation-line-highlight");
-            if (div === null) {
-              div = window.document.createElement("div");
-              div.setAttribute("id", "code-annotation-line-highlight");
-              div.style.position = 'absolute';
-              parent.appendChild(div);
-            }
-            div.style.top = top - 2 + "px";
-            div.style.height = height + 4 + "px";
-            div.style.left = 0;
-            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
-            if (gutterDiv === null) {
-              gutterDiv = window.document.createElement("div");
-              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
-              gutterDiv.style.position = 'absolute';
-              const codeCell = window.document.getElementById(targetCell);
-              const gutter = codeCell.querySelector('.code-annotation-gutter');
-              gutter.appendChild(gutterDiv);
-            }
-            gutterDiv.style.top = top - 2 + "px";
-            gutterDiv.style.height = height + 4 + "px";
-          }
-          selectedAnnoteEl = annoteEl;
-        }
-      };
-      const unselectCodeLines = () => {
-        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
-        elementsIds.forEach((elId) => {
-          const div = window.document.getElementById(elId);
-          if (div) {
-            div.remove();
-          }
-        });
-        selectedAnnoteEl = undefined;
-      };
-        // Handle positioning of the toggle
-    window.addEventListener(
-      "resize",
-      throttle(() => {
-        elRect = undefined;
-        if (selectedAnnoteEl) {
-          selectCodeLines(selectedAnnoteEl);
-        }
-      }, 10)
-    );
-    function throttle(fn, ms) {
-    let throttle = false;
-    let timer;
-      return (...args) => {
-        if(!throttle) { // first call gets through
-            fn.apply(this, args);
-            throttle = true;
-        } else { // all the others get throttled
-            if(timer) clearTimeout(timer); // cancel #2
-            timer = setTimeout(() => {
-              fn.apply(this, args);
-              timer = throttle = false;
-            }, ms);
-        }
-      };
-    }
-      // Attach click handler to the DT
-      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
-      for (const annoteDlNode of annoteDls) {
-        annoteDlNode.addEventListener('click', (event) => {
-          const clickedEl = event.target;
-          if (clickedEl !== selectedAnnoteEl) {
-            unselectCodeLines();
-            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
-            if (activeEl) {
-              activeEl.classList.remove('code-annotation-active');
-            }
-            selectCodeLines(clickedEl);
-            clickedEl.classList.add('code-annotation-active');
-          } else {
-            // Unselect the line
-            unselectCodeLines();
-            clickedEl.classList.remove('code-annotation-active');
-          }
-        });
-      }
-  const findCites = (el) => {
-    const parentEl = el.parentElement;
-    if (parentEl) {
-      const cites = parentEl.dataset.cites;
-      if (cites) {
-        return {
-          el,
-          cites: cites.split(' ')
-        };
-      } else {
-        return findCites(el.parentElement)
-      }
-    } else {
-      return undefined;
-    }
-  };
-  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
-  for (var i=0; i<bibliorefs.length; i++) {
-    const ref = bibliorefs[i];
-    const citeInfo = findCites(ref);
-    if (citeInfo) {
-      tippyHover(citeInfo.el, function() {
-        var popup = window.document.createElement('div');
-        citeInfo.cites.forEach(function(cite) {
-          var citeDiv = window.document.createElement('div');
-          citeDiv.classList.add('hanging-indent');
-          citeDiv.classList.add('csl-entry');
-          var biblioDiv = window.document.getElementById('ref-' + cite);
-          if (biblioDiv) {
-            citeDiv.innerHTML = biblioDiv.innerHTML;
-          }
-          popup.appendChild(citeDiv);
-        });
-        return popup.innerHTML;
+      }, function(instance) {
       });
     }
-  }
-});
-</script>
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
 <nav class="page-navigation column-body">
   <div class="nav-page nav-page-previous">
       <a href="../../content/part2/2-05-forest-pursuit.html" class="pagination-link" aria-label="Approximate Recovery in Near-linear Time by _Forest Pursuit_">
