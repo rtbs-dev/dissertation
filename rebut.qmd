@@ -1,0 +1,58 @@
+---
+title: Summary of Dissertation Revisions
+format: typst
+date: Jun 24, 2025
+brand: _brand.yml
+mainfont: Bitstream Charter
+bibliography: resource/pubs.bib
+csl: resource/ieee.csl
+output-dir: rebut
+output-file: rebut.pdf
+columns: 2
+---
+
+_Following committee member feedback, several changes and improvements have been made to the dissertation document, primarily involving additions to the literature review, and a discussion on implications and constraints of the current experiment settings.
+Other changes have been added to improve readability of the text, and several new figures and tables have been added to summarize key concepts and results._
+
+
+## Literature Review Extensions
+
+The committee requested an improved discussion of more recent progress in the network recovery space.
+A new section (4.2.2) has been added elucidating the distinction between network _model_ frameworks and estimation _approaches_.
+This is relevant when discussing the most recent advances in network recovery that involve Greedy Coordinate Descent (GCD) [@Scalablenetworkreconstruction_Peixoto2024] and its application to estimation using the principle of Minimum Description Length [@Networkreconstructionvia_Peixoto2024].
+We classify GCD as an estimation approach, since it is compatible with any number of network model specifications, and the authors do not spend time on the network models themselves. 
+
+Consequently, I have added relevant context for our work, portraying Desire Path Densities as a modeling framework (much like stochastic Block Models or Markov Random Fields), while Forest Pursuit is an estimation approach (like GCD) that has good properties.
+Clarity on this point is added in Section 4.2.3. 
+
+
+## Discussion Extensions
+
+In terms of validating network recovery results, committee members requested elaboration on how various assumption made in the course of this work would impact the results.
+Section 10.1 has been added as a discussion of limitations and possible next steps for Forest Pursuit, in terms of relaxing the assumptions that bound our methods applicability. 
+
+### Model Validation
+
+
+First, the use future dyadic pairs (e.g. two-author papers) that occur after edge prediction would theoretically serve to validate real-world network recovery.
+I have added section 10.1.1, which discusses the difficulty with forecasting when false-negatives are increasingly prevalent with increased network size.
+However, I then build on this suggestion to recommend a future focus on assembling suites of _metamorphic tests_ for these unsupervised algorithms [@METTLEMETamorphicTesting_Xie2020]. 
+
+
+### Generative Model Comparisons
+
+Next, the committee has brought attention to the design of _Forest Pursuit_ as specifically addressing the case that domain knowledge indicates possible _spreading processes_ (like random walks) are the cause of node activations.
+Since MENDR is designed to synthesize datasets using random walks, this could be seen as a source of bias, as soon as practitioners wish to use MENDR to infer performance of network recovery approaches in other generative settings.
+
+I have added new background context to section 7.2 on the state of generative modeling for _correlated binary data_, which falls into several categories and do not always include a mechanism for inference [@generationcorrelatedartificial_Leisch1998; @IndianBuffetProcess_Griffiths2011; @Inversestatisticalproblems_Nguyen2017; @Randomlysamplingbipartite_Neal2023].
+I have clarified that the contribution of our generative model is in _using_ the prior information on spreading processes, if it applies.
+
+Furthermore, section 10.1.2 is now a broader discussion on how violations of that assumption might be investigated, going forward. 
+
+## Other Updates
+
+- Various minor errors in index notation and ambiguous wording have been corrected. 
+- FP and FPi have been highlighted in Figures 6.2, 6.4, and 7.1 for clarity.
+- Results tables 6.3 and 7.1 have been added using median(IQR) format, with maximum values highlighted for legibility and ease of comparison.  
+- Some figure scalings have been increased for legibility of node labels.
+
