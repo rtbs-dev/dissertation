@@ -180,11 +180,7 @@ Derivations and implementation of such a scheme is left for future work.
 ##  Expected Forest Maximization 
 
 Another possibility is to approach the problem as a kind of matrix factorization, jointly estimating $B$ and $R$ in an alternating manner.
-Where _Forest Pursuit_ was an empirical Bayes estimate for $R$, alternating from there between $B$ and $R$ leads to a simple Expectation Maximization scheme:
-
-#TODO FIXME make me pretty
-
-> _Alternate embedding the node activations as edge activations and combining these under a desire path model to estimate the graph structure._ 
+Where _Forest Pursuit_ was an empirical Bayes estimate for $R$, alternating from there between $B$ and $R$ leads to a simple Expectation Maximization scheme. 
 
 ### Factorization & Dictionary Learning
 Jointly finding a sparse representation of data using a linear combination of basis vectors (called a "dictionary"), _and_ finding an optimal dictionary with which to do the embedding, is called "sparse dictionary learning".
