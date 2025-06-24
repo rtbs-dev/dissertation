@@ -377,33 +377,34 @@ Automation Conference.
 
 \includepdf[pages=-]{resource/prev-pub-letter.pdf}
 
+\thispagestyle{empty}
+\singlespacing
+\small\normalsize
 \addcontentsline{toc}{chapter}{Table of Contents}
     \renewcommand{\contentsname}{Table of Contents}
 \tableofcontents %(required, lower-case Roman)
-\newpage
+\clearpage
 
-\singlespacing
-\small\normalsize
 
 \phantomsection %create the correct anchor for the bookmark
 \addcontentsline{toc}{chapter}{List of Tables}
     \renewcommand{\contentsname}{List of Tables}
 \listoftables %(if present, lower-case Roman)
-\newpage
+\clearpage
 
 \phantomsection %create the correct anchor for the bookmark
 \addcontentsline{toc}{chapter}{List of Figures}
     \renewcommand{\contentsname}{List of Figures}
 \listoffigures %(if present, lower-case Roman)
-\newpage
+\clearpage
 
 % LIST OF ABBREVIATIONS
-\phantomsection %create the correct anchor for the bookmark
+%\phantomsection %create the correct anchor for the bookmark
 % \addcontentsline{toc}{chapter}{List of Abbreviations}
 % \include{Abbreviations-supertabular}
 % TODO use acronym extension??
 
-\newpage
+%\newpage
 \setlength{\parskip}{0em}
 \doublespacing
 \small\normalsize
@@ -1766,7 +1767,7 @@ However, for very rare co-occurrences, we need to correct for
 rate-imbalance of the nodes in much the same way correlation normalizes
 covariance. This idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1793,7 +1794,7 @@ smoothing. To do this, the goemetric mean of marginal counts acts as a
 this is a powerful approximation with good performance characteristics,
 for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-or} 
 
@@ -1819,7 +1820,7 @@ with association strength in an intuitive way, so that proximity to 1 or
 Another association measure, based in information theory, asks ``how
 much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1844,7 +1845,7 @@ overcounting relationships with very well-connected nodes. This was
 brought up with respect to the normalized Laplacian before, but we could
 also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1882,7 +1883,7 @@ might say each author splits their time among all of the papers they are
 on, and in turn every co-author ``receives'' an evenly divided
 proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1907,7 +1908,7 @@ marginals to convergence is known as the Sinkhorn-Knopp algorithm, which
 converges to a doubly-stochastic matrix (both marginal directions sum to
 1).
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1934,7 +1935,7 @@ action'' to bias recovery toward edges along these geodesics.
 A more direct way to do this, perhaps, is to find the shortest paths
 from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1967,7 +1968,7 @@ undirected generalizations of bayes nets
 One of the original structures for MRFs that we could recover from
 observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -2003,7 +2004,7 @@ frobenius-norm of \(\Theta\) with the sample covariance
   ``covariance shrinkage'', though we more specifically care about
   \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -3305,7 +3306,7 @@ have been included in the MENDR testbench. They are all functions of the
 True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN)
 values.
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-precision} 
 
@@ -3316,7 +3317,7 @@ predictive value'' (PPV) \[P= \frac{TP}{TP+FP}\]
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-recall} 
 
@@ -3328,7 +3329,7 @@ TP-rate (TPR), and has an inherent trade-off with precision.
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-mcc} 
 
@@ -3341,7 +3342,7 @@ Balances all of TP,TN,FP,FN. Preferred for class-imbalanced problems
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, opacityback=0, arc=.35mm, colback=white, colframe=quarto-callout-note-color-frame, toprule=.15mm, breakable, leftrule=.75mm, rightrule=.15mm, bottomrule=.15mm, left=2mm]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, rightrule=.15mm, colback=white, breakable, toprule=.15mm, arc=.35mm, opacityback=0, left=2mm, leftrule=.75mm, colframe=quarto-callout-note-color-frame]
 
 \quartocalloutnte{nte-fm} 
 
@@ -3995,15 +3996,7 @@ Another possibility is to approach the problem as a kind of matrix
 factorization, jointly estimating \(B\) and \(R\) in an alternating
 manner. Where \emph{Forest Pursuit} was an empirical Bayes estimate for
 \(R\), alternating from there between \(B\) and \(R\) leads to a simple
-Expectation Maximization scheme:
-
-\#TODO FIXME make me pretty
-
-\begin{quote}
-\emph{Alternate embedding the node activations as edge activations and
-combining these under a desire path model to estimate the graph
-structure.}
-\end{quote}
+Expectation Maximization scheme.
 
 \subsection{Factorization \& Dictionary
 Learning}\label{factorization-dictionary-learning}
