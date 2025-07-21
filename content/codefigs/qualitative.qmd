@@ -680,6 +680,36 @@ sns.despine(left=True)
 plt.gca().get_yaxis().set_visible(False)
 ```
 
+```{python}
+plt.figure(figsize=(2,6))
+
+important_chars = [
+    'Jean Valjean',
+    'Javert',
+    'Eponine',
+    'Cosette',
+    'Fantine',
+    'Marius',
+    "Th'enardier",
+    "Mme. Th'enardier",
+    "Gavroche",
+    "Bishop Myriel",
+]
+
+lw = defaultdict(lambda: 1)
+for c in important_chars:
+    lw[c] = 4
+bumpsplot(
+    cent_df[['Orig.','FP']],
+    color_dict=colors,
+    labels=cent_df.index,
+    linewidth_dict=lw,
+)#['rank'].unstack())
+sns.despine(left=True)
+plt.gca().get_yaxis().set_visible(False)
+plt.savefig('../images/lesmis-cent-topchars.pdf', bbox_inches='tight')
+```
+
 ## Semantic Fluency (SNAFU)
 
 ```{python}
@@ -1095,7 +1125,6 @@ axs[0,1].set_title('Forest Pursuit (min-connect filter)')
 # animalfig_ds.axes[0]
 plt.tight_layout(pad=-1)
 f
-
 ```
 
 TODO: edge type annotation? 
