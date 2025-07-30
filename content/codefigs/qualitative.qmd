@@ -30,6 +30,7 @@ from pathlib import Path
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import matplotlib.patheffects as path_effects
 import matplotlib as mpl
 import affinis.associations as asc
 from affinis.utils import _sq, n_nodes_from_edges
@@ -63,13 +64,13 @@ nxlabel_kws={
     "font_color": "0.3",
     "font_family":"Bitstream Charter",
     "font_weight":'bold',
-    "font_size": 6,
+    "font_size": 8,
 }
 
 nxdraw_kws = {
-    "node_size": 10, 
+    "node_size": 75, 
     # "node_color": "xkcd:slate",
-    "edgecolors": "grey",
+    # "edgecolors": "grey",
     "edge_color": "grey",
     "linewidths": 1,
     "width": 2,
@@ -208,25 +209,45 @@ def draw_graph_communities(G, pos, colors, ax=None):
         G, pos=pos, 
         with_labels=False, 
         node_color=[colors[i] for i in G.nodes], 
+        # node_color=None,
         ax=ax,
         **nxdraw_kws
     )
+    # nx.draw_networkx_edges(
+    #     G, pos=pos,
+    #     # "edgecolors": "grey",
+    #     edge_color= "grey",
+    #     # width=1,
+    #     width=2,
+    # )
 # nx.connected.is_connected(G)
     labels=nx.draw_networkx_labels(
         G, pos=pos,
-        bbox=dict(edgecolor='grey',boxstyle='round,pad=0.2', alpha=0.5), 
+        # bbox=dict(edgecolor='grey',boxstyle='round,pad=0.2', alpha=0.5), 
+        # bbox=dict(boxstyle='round,pad=0.2', alpha=0.5, facecolor='white'), 
+        horizontalalignment='right',
         ax=ax,
         **nxlabel_kws
     )
     #iterate over the labels (key = label, value=matplotlib Text object)
     ax.margins(0)
-    labels=adjust_text(list(labels.values()), ax=ax)
-    for t in labels[0]:
+    labels = list(labels.values())
+    labels=adjust_text(labels, ax=ax)[0]
+    for t in labels:
         #manipulate indiviual text objects
         # print(t)
-        t.set_backgroundcolor(colors[t.get_text()])
+        t.set_path_effects([path_effects.Stroke(linewidth=1, foreground='white'),
+                       path_effects.Normal()])
+        # t.set_backgroundcolor(colors[t.get_text()])
+        # t.set_color(colors[t.get_text()])
+
+
     sns.despine(ax=ax, left=True, bottom=True)
     return ax
+```
+
+```{python}
+(-np.log(pd.DataFrame(asc.ochiai(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns)).unstack().pipe(lambda s: s.loc[s<0]))
 ```
 
 ```{python}
@@ -244,7 +265,7 @@ s_subs=pd.Series(list(subset), dtype=authortype)
 # G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
 # list(nx.neighbors(G, 'newman, m.'))
 
-pos_cos = nx.kamada_kawai_layout(G)
+pos_cos = nx.kamada_kawai_layout(G, )
 G = G.subgraph(subset)
 
 commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
