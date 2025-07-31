@@ -16,12 +16,13 @@ jupyter:
       extension: .qmd
       format_name: quarto
       format_version: '1.0'
-      jupytext_version: 1.16.7
+      jupytext_version: 1.17.2
   kernelspec:
     display_name: Python (Pixi)
     language: python
     name: pixi-kernel-python3
 ---
+
 
 ```{python}
 import awkward as ak
@@ -61,14 +62,15 @@ mpl.rcParams["axes.facecolor"] = (1.0, 1.0, 1.0, 0.0)
 
 nxlabel_kws={
     # "font_color": "white",
-    "font_color": "0.3",
-    "font_family":"Bitstream Charter",
-    "font_weight":'bold',
-    "font_size": 8,
+    "font_color": "0.5",
+    # "font_family":"Bitstream Charter",
+    "font_family":"Cooper Hewitt",
+    "font_weight":'heavy',
+    "font_size": 6,
 }
 
 nxdraw_kws = {
-    "node_size": 75, 
+    "node_size": 100, 
     # "node_color": "xkcd:slate",
     # "edgecolors": "grey",
     "edge_color": "grey",
@@ -120,6 +122,7 @@ df = df[~df.index.duplicated(keep='last')]
 # (~df2.index.isin(df1.index)).sum()
 
 # df[df.index.duplicated(keep=False)]
+# df
 ```
 
 ```{python}
@@ -132,14 +135,25 @@ tidy=(df
      author=lambda df: (
          df.author
          .str.capitalize()
+         # .str.split(', ')
+         # .str[0]
+         # .str[:-4]
          # .astype('category')
      )
  )
  # .set_index(['id','author'])
  # ['coauth'].unstack().fillna(0)
 )
+# tidy = tidy[~tidy.set_index(['id','author'])['coauth'].index.duplicated()]
 # tidy.iloc[tidy.set_index(['id','author']).index.duplicated()]
 # df.loc['WOS:000226704200004']
+# pd.Series.duplicated(
+```
+
+```{python}
+# filt = tidy.set_index(['id','author'])['coauth'].index.duplicated(keep=False)
+
+# pd.Series.duplicated()
 ```
 
 ```{python}
@@ -202,52 +216,111 @@ f
 
 ```{python}
 # figsize=(10,8)
-def draw_graph_communities(G, pos, colors, ax=None):
+
+def log_lin_norm(a, vmin=2, vmax=10): 
+    ln_a = np.log(1+a)
+    med = (vmax-vmin)/2
+    spread = med-vmin
+    # a_std =  (ln_a - ln_a.min())/(ln_a.max()-ln_a.min())
+    a_std =  (ln_a - ln_a.mean())/ln_a.std()
+    return a_std*spread+med
+    # return a_std*(vmax - vmin) + vmin
+
+
+def draw_graph_communities(
+    G, pos, colors, 
+    ax=None, 
+    commun=None, 
+    annot='',
+    insax_bound = [0,0,0.2,0.3],
+    adjust_labels=True,
+):
     if ax is None: 
         ax = plt.gca()
-    nx.draw_networkx(
+    grph = nx.draw_networkx_nodes(
         G, pos=pos, 
-        with_labels=False, 
+        # with_labels=False, 
         node_color=[colors[i] for i in G.nodes], 
         # node_color=None,
         ax=ax,
-        **nxdraw_kws
+        node_size=nxdraw_kws['node_size'],
+        # **nxdraw_kws
     )
-    # nx.draw_networkx_edges(
-    #     G, pos=pos,
-    #     # "edgecolors": "grey",
-    #     edge_color= "grey",
-    #     # width=1,
-    #     width=2,
-    # )
+    nx.draw_networkx_edges(
+        G, pos=pos,
+        # "edgecolors": "grey",
+        edge_color= "grey",
+        # width=1,
+        width=2,
+        ax=ax,
+    )
 # nx.connected.is_connected(G)
     labels=nx.draw_networkx_labels(
         G, pos=pos,
         # bbox=dict(edgecolor='grey',boxstyle='round,pad=0.2', alpha=0.5), 
         # bbox=dict(boxstyle='round,pad=0.2', alpha=0.5, facecolor='white'), 
-        horizontalalignment='right',
+        horizontalalignment='center',
         ax=ax,
         **nxlabel_kws
     )
     #iterate over the labels (key = label, value=matplotlib Text object)
     ax.margins(0)
     labels = list(labels.values())
-    labels=adjust_text(labels, ax=ax)[0]
+    
     for t in labels:
         #manipulate indiviual text objects
         # print(t)
-        t.set_path_effects([path_effects.Stroke(linewidth=1, foreground='white'),
-                       path_effects.Normal()])
         # t.set_backgroundcolor(colors[t.get_text()])
+        t.set_path_effects([
+            path_effects.Stroke(linewidth=1.5, foreground='white'),
+            path_effects.Normal()
+        ])
         # t.set_color(colors[t.get_text()])
-
+        # t.set_text(t.get_text()[:-3])
+    
 
     sns.despine(ax=ax, left=True, bottom=True)
-    return ax
-```
+    obj_avoid=None
+    if commun: 
+        insax = ax.inset_axes(insax_bound)
+        QG = nx.quotient_graph(G,commun, relabel=True)
+        qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+        sns.color_palette(n_colors=len(commun))
+        edge_weights = np.array(list(nx.get_edge_attributes(QG,'weight').values()))
+        node_weights = np.array(list(nx.get_node_attributes(QG,'nnodes').values()))
+        nx.draw_networkx(
+            QG, pos=qpos, node_color=pal, 
+            node_size=log_lin_norm(node_weights, vmin=50,vmax=300),
+            width=log_lin_norm(edge_weights),
+            edge_color='grey', with_labels=False,
+            ax=insax,
+        )
+        insax.set_title('Community Block\nQuotient Graph')
+        insax_annot = insax.annotate(
+            # f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+            annot,
+            (0.05,-0.1),xycoords='axes fraction', fontsize=9,
+        )
+        obj_avoid = [insax, insax_annot]
+    if adjust_labels:
+        labels, label_links = adjust_text(
+            labels, ax=ax,
+            arrowprops=dict(arrowstyle="-", color='0.5', lw=0.6), 
+            objects=obj_avoid,
+            # avoid_self=False,
+            # pull_threshold=50,
+            # max_move=50,
+            time_lim=4,
+            # force_pull = (.2,0.2),
+            # force_text=(.5,1),
+            # force_explode=(0.7,.7),
+            # force_static=(0.1,.2),
+            # expand=(2,2),
+            expand_axes=True,
+        )
 
-```{python}
-(-np.log(pd.DataFrame(asc.ochiai(X, pseudocts=0.5), index=Xdf.columns, columns=Xdf.columns)).unstack().pipe(lambda s: s.loc[s<0]))
+        
+    return ax
 ```
 
 ```{python}
@@ -265,7 +338,9 @@ s_subs=pd.Series(list(subset), dtype=authortype)
 # G = nx.from_pandas_adjacency((Xhyp.T@Xhyp - np.diag(np.diag(Xhyp.T@Xhyp)))>0.1)
 # list(nx.neighbors(G, 'newman, m.'))
 
-pos_cos = nx.kamada_kawai_layout(G, )
+pos_cos = nx.kamada_kawai_layout(G)
+# pos_cos = nx.fruchterman_reingold_layout(G, seed=2)
+# pos_cos = nx.forceatlas2_layout(G, seed=1, dissuade_hubs=True,distributed_action=True,)
 G = G.subgraph(subset)
 
 commun = list(list(i) for i in nx.community.greedy_modularity_communities(G))
@@ -273,27 +348,33 @@ pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 plt.figure()
 
-ax = draw_graph_communities(G,pos_cos,colors)
+ax = draw_graph_communities(
+    G,pos_cos,colors, 
+    commun=commun, 
+    annot= f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+    # adjust_labels=False
+    # insax_bound=[0,0.7,0.2,0.3],
+)
 
         
 # print(len(subset))
 
-insax = ax.inset_axes([0,0,0.3,0.3])
+# insax = ax.inset_axes([0,0,0.2,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
-insax.set_title('Community Block Quotient Graph')
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-);
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block\nQuotient Graph')
+# insax.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+#     (0.05,0.9),xycoords='axes fraction', fontsize=9,
+# );
 ```
 
 ```{python}
@@ -308,31 +389,36 @@ G = G.subgraph(subset)
 # nx.draw_networkx(G, pos=pos_tree, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
 plt.figure()
-
-ax = draw_graph_communities(G, pos_tree, colors)
-nx.connected.is_connected(G)
-# plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
-# plt.title(
-#     'Network Scientist Collaborator Chow-Liu Tree '
-#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
-#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-# );
-insax = ax.inset_axes([0,0,0.3,0.3])
-
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
+ax = draw_graph_communities(
+    G,pos_tree,colors, 
+    commun=commun, 
+    # insax_bound=[0,0.7,0.2,0.3],
+    annot= f'r = {nx.degree_assortativity_coefficient(G):.3f}'
 )
-insax.set_title('Community Block Quotient Graph')
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-);
+# ax = draw_graph_communities(G, pos_tree, colors)
+# nx.connected.is_connected(G)
+# # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
+# # plt.title(
+# #     'Network Scientist Collaborator Chow-Liu Tree '
+# #     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+# #     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# # );
+# insax = ax.inset_axes([0,0,0.2,0.3])
+
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos_tree[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block\nQuotient Graph')
+# insax.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+#     (0.05,0.9),xycoords='axes fraction', fontsize=9,
+# );
 ```
 
 ```{python}
@@ -348,30 +434,34 @@ G = nx.from_pandas_adjacency(A_fp>0.01)
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure()
-
-ax = draw_graph_communities(G,pos,colors)
-# plt.title(
-#     'Network Scientist Collaboration Network Estimate '
-#     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
-#     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
-# );
-
-insax = ax.inset_axes([.05,.05,0.3,0.3])
-
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
+ax = draw_graph_communities(
+    G,pos,colors, 
+    commun=commun, 
+    annot= f'r = {nx.degree_assortativity_coefficient(G):.3f}'
 )
-insax.set_title('Community Block Quotient Graph')
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G):.3f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-);
+# ax = draw_graph_communities(G,pos,colors)
+# # plt.title(
+# #     'Network Scientist Collaboration Network Estimate '
+# #     f'(r = {nx.degree_assortativity_coefficient(G):.3f})'
+# #     # f'(p = {powerlaw.fit([d for n,d in nx.degree(G)])[0]:.3f})'
+# # );
+
+# insax = ax.inset_axes([0,0,0.2,0.3])
+
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block\nQuotient Graph')
+# insax.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
+#     (0.05,0.9),xycoords='axes fraction', fontsize=9,
+# );
 ```
 
 ```{python}
@@ -507,7 +597,7 @@ JeanTidy
 # plt.figure(figsize=(20,20))
 
 G = nx.from_pandas_adjacency((JeanDF.T@JeanDF - np.diag(JeanDF.sum())))
-pos_cos = nx.spring_layout(G, weight='weight', seed=2, iterations=1000)
+pos_cos = nx.spring_layout(G, weight='weight', seed=6, iterations=1000)
 # pos_cos = nx.kamada_kawai_layout(G)
 commun = list(list(i) for i in nx.community.greedy_modularity_communities(G, weight='weight'))
 # import itertools
@@ -517,22 +607,30 @@ commun = list(list(i) for i in nx.community.greedy_modularity_communities(G, wei
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 plt.figure()
-ax = draw_graph_communities(G,pos_cos,colors)
+
+
+ax = draw_graph_communities(
+    G,pos_cos,colors, 
+    commun=commun,
+    insax_bound=[0,0.7,0.2,0.3],
+
+)
+
 cent=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(10)#.rank(ascending=False)
 # plt.figure(figsize=(3,4))
 # sns.barplot(cent, orient='h')
-insax = ax.inset_axes([-.1,0.45,0.3,0.3])
+# insax = ax.inset_axes([-.1,0.45,0.3,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=.1*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
-insax.set_title('Community Block Quotient Graph')
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos_cos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=.1*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block Quotient Graph')
 # plt.tight_layout()
 # plt.annotate(
 #     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
@@ -572,21 +670,21 @@ G = nx.from_pandas_adjacency(pd.DataFrame(_sq(evd_L_pursuit>=np.percentile(evd_L
 # G = G.subgraph(subset)
 pos = nx.kamada_kawai_layout(G, pos=pos_cos)
 plt.figure()
-ax = draw_graph_communities(G, pos, colors)
-centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
+ax = draw_graph_communities(G, pos, colors, commun=commun)
+# centFP=pd.Series(nx.centrality.eigenvector_centrality(G)).sort_values(ascending=False)#.head(15)
 
-insax = ax.inset_axes([-.15,0.35,0.3,0.3])
+# insax = ax.inset_axes([-.15,0.35,0.3,0.3])
 
-QG = nx.quotient_graph(G,commun, relabel=True)
-qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
-nx.draw_networkx(
-    QG, pos=qpos, node_color=pal, 
-    node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
-    width=.5*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
-    edge_color='grey', with_labels=False,
-    ax=insax,
-)
-insax.set_title('Community Block Quotient Graph')
+# QG = nx.quotient_graph(G,commun, relabel=True)
+# qpos={n:np.mean([pos[i] for i in g.nodes], axis=0) for n,g in nx.get_node_attributes(QG, 'graph').items()}
+# nx.draw_networkx(
+#     QG, pos=qpos, node_color=pal, 
+#     node_size=10*np.array(list(nx.get_node_attributes(QG,'nnodes').values())),
+#     width=.5*np.array(list(nx.get_edge_attributes(QG,'weight').values())),
+#     edge_color='grey', with_labels=False,
+#     ax=insax,
+# )
+# insax.set_title('Community Block Quotient Graph')
 # plt.annotate(
 #     f'r = {nx.degree_assortativity_coefficient(G):.3f}',
 #     (0.5,0.95),xycoords='axes fraction', fontsize=12,
@@ -917,8 +1015,15 @@ commun = list(list(i) for i in nx.community.greedy_modularity_communities(G_ds))
 pal = sns.color_palette(n_colors=len(commun))
 colors = pd.DataFrame({'color':pal,'nodes':commun}).explode('nodes').set_index('nodes').to_dict()['color']
 animalfig_ds = plt.figure()
-
-ax = draw_graph_communities(G_ds,pos_cos,colors)
+annot = (
+    f'r = {nx.degree_assortativity_coefficient(G_ds):.2f}\t'
+    fr'$\psi$ = {connective_efficiency(e_cooc):.2f}'
+)
+ax = draw_graph_communities(
+    G_ds,pos_cos,colors,
+    commun=commun,
+    annot= annot,
+)
 
 # plt.title(
 #     'Verbal Fluency Animals (DS-filtered) Co-Occurrence Graph '
@@ -938,12 +1043,12 @@ ax = draw_graph_communities(G_ds,pos_cos,colors)
 #     ax=insax,
 # )
 # insax.set_title('Community Block Quotient Graph')
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G_ds):.2f} \t'
-    fr'$\psi$ = {connective_efficiency(e_cooc):.2f}',
-    (0.5,1.),xycoords='axes fraction', fontsize=12,
-    horizontalalignment='center'
-);
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G_ds):.2f} \t'
+#     fr'$\psi$ = {connective_efficiency(e_cooc):.2f}',
+#     (0.5,1.),xycoords='axes fraction', fontsize=12,
+#     horizontalalignment='center'
+# );
 ```
 
 ```{python}
@@ -967,8 +1072,15 @@ pos_tree = nx.kamada_kawai_layout(G_tr, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos_tree, node_color='w')
 # nx.draw_networkx_labels(G, pos=pos_tree, font_color=colors);
 animalfig_tr = plt.figure()
-
-ax = draw_graph_communities(G_tr, pos_tree, colors)
+annot = (
+    f'r = {nx.degree_assortativity_coefficient(G_tr):.2f}\t'
+    fr'$\psi$ = {connective_efficiency(e_tree):.2f}'
+)
+ax = draw_graph_communities(
+    G_tr, pos_tree, colors,
+    annot = annot,
+    commun=commun,
+)
 nx.connected.is_connected(G_tr)
 # plt.annotate(f'r = {nx.degree_assortativity_coefficient(G):.3f}', (0.25, 0.5), xycoords='axes fraction', size=20)
 # plt.title(
@@ -988,12 +1100,12 @@ nx.connected.is_connected(G_tr)
 #     edge_color='grey', with_labels=False,
 #     ax=insax,
 # )
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G_tr):.2f} \t'
-    fr'$\psi$ = {connective_efficiency(e_tree):.2f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-    horizontalalignment='center'
-);
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G_tr):.2f} \t'
+#     fr'$\psi$ = {connective_efficiency(e_tree):.2f}',
+#     (0.5,0.95),xycoords='axes fraction', fontsize=12,
+#     horizontalalignment='center'
+# );
 ```
 
 ```{python}
@@ -1028,8 +1140,15 @@ pos_gl = nx.kamada_kawai_layout(G_gl, pos=pos_cos)
 # nx.draw_networkx(G, pos=pos, node_color='w')
 # nx.connected.is_connected(G)
 animalfig_gl = plt.figure()
-
-ax = draw_graph_communities(G_gl,pos_gl,colors)
+annot = (
+    f'r = {nx.degree_assortativity_coefficient(G_gl):.2f}\t'
+    fr'$\psi$ = {connective_efficiency(e_gl):.2f}'
+)
+ax = draw_graph_communities(
+    G_gl,pos_gl,colors,
+    commun=commun,
+    annot=annot,
+)
 # plt.title(
 #     'Verbal Fluency Animal Dependencies (GLASSO) Network '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -1047,12 +1166,12 @@ ax = draw_graph_communities(G_gl,pos_gl,colors)
 #     ax=insax,
 # )
 # plt.Text()
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G_gl):.2f} \t'
-    fr'$\psi$ = {connective_efficiency(e_gl):.2f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-    horizontalalignment='center'
-);
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G_gl):.2f} \t'
+#     fr'$\psi$ = {connective_efficiency(e_gl):.2f}',
+#     (0.5,0.95),xycoords='axes fraction', fontsize=12,
+#     horizontalalignment='center'
+# );
 ```
 
 ```{python}
@@ -1086,7 +1205,16 @@ pos_fp = nx.kamada_kawai_layout(G_fp, pos=pos_cos)
 # pos = nx.spring_layout(G, pos=pos_cos, seed=2, iterations=1000, k=.5)
 animalfig_fp = plt.figure()
 
-ax = draw_graph_communities(G_fp,pos_fp,colors)
+
+annot = (
+    f'r = {nx.degree_assortativity_coefficient(G_fp):.2f}\t'
+    fr'$\psi$ = {connective_efficiency(e_fp):.2f}'
+)
+ax = draw_graph_communities(
+    G_fp,pos_fp,colors,
+    commun=commun,
+    annot=annot
+)
 # plt.title(
 #     'Verbal Fluency Animal Dependencies (FP) Network Estimate '
 #     f'(r = {nx.degree_assortativity_coefficient(G):.2f})'
@@ -1107,12 +1235,12 @@ ax = draw_graph_communities(G_fp,pos_fp,colors)
 #     ax=insax,
 # )
 
-plt.annotate(
-    f'r = {nx.degree_assortativity_coefficient(G_fp):.2f} \t'
-    fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
-    (0.5,0.95),xycoords='axes fraction', fontsize=12,
-    horizontalalignment='center'
-);
+# plt.annotate(
+#     f'r = {nx.degree_assortativity_coefficient(G_fp):.2f} \t'
+#     fr'$\psi$ = {connective_efficiency(e_fp):.2f}',
+#     (0.5,0.95),xycoords='axes fraction', fontsize=12,
+#     horizontalalignment='center'
+# );
 ```
 
 ```{python}
