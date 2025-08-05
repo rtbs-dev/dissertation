@@ -227,7 +227,7 @@
 \begin{tabular}{p{0.35\linewidth}p{0.6\linewidth}}
 Title of Dissertation:     & {\large \uppercase{Measuring Network Dependencies from Node Activations}}\\
                            & {\large  Rachael T.B. Sexton } \\
-                           & {\large Doctor of Philosophy, } \\
+                           & {\large Doctor of Philosophy, 2025} \\
 \                         \\
 Dissertation Directed by:  & {\large Professor Mark D. Fuge } \\
                            & {\large Department of Mechanical Engineering} \\
@@ -286,7 +286,7 @@ Dissertation submitted to the Faculty of the Graduate School of the \\
 University of Maryland, College Park in partial fulfillment \\
 of the requirements for the degree of \\
 Doctor of Philosophy \\
-
+2025
 \end{center}
 
 \vspace{7.5em}
@@ -318,6 +318,7 @@ Doctor of Philosophy \\
 \markboth{Foreward}{Foreward}
 
 \pagenumbering{roman}
+\setcounter{page}{2}
 
 \begin{quote}
 DISCLAIMER FOR PRIOR WORK
@@ -1287,7 +1288,7 @@ The most basic would be to count co-occurrences, and consequently the co-occurre
 However, for very rare co-occurrences, we need to correct for rate-imbalance of the nodes in much the same way correlation normalizes covariance.
 This idea leads to ``cosine similarity''
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-cs} 
 
@@ -1306,7 +1307,7 @@ The geometric mean as a pooling operator is conserved through Bayesian updates \
 To do this, the goemetric mean of marginal counts acts as a ``psedovariable'' for exposure somewhere between A and B.
 Empirically, this is a powerful approximation with good performance characteristics, for relatively little effort.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-or} 
 
@@ -1323,7 +1324,7 @@ Yule's Y, also called the ``coefficient of colligation'', tends to scale with as
 
 Another association measure, based in information theory, asks ``how much can I learn about one variable by observing another?''
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-mi} 
 
@@ -1342,7 +1343,7 @@ There are many other information-theoretic measures related to MI, but we specif
 Sometimes, especially in social networks, we might want to avoid overcounting relationships with very well-connected nodes.
 This was brought up with respect to the normalized Laplacian before, but we could also perform a normalization on the underlying bipartite adjacencies.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-hyp} 
 
@@ -1365,7 +1366,7 @@ This is accomplished by imagining nodes as having some amount of a resource (lik
 First, closely related to hyperbolic re-weighting, we can imagine the bipartite connections as evenly dividing each nodes' resources, before reallocating them to the nodes they touch, in turn.
 For instance, we might say each author splits their time among all of the papers they are on, and in turn every co-author ``receives'' an evenly divided proportion of everyone's time they are co-authoring with.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-rp} 
 
@@ -1382,7 +1383,7 @@ The final matrix is asymmetric, so a symmetric edge strength estimate is often r
 
 Rather than stop after two iterations, continuing to enforce unit marginals to convergence is known as the Sinkhorn-Knopp algorithm, which converges to a doubly-stochastic matrix (both marginal directions sum to 1).
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-ot} 
 
@@ -1399,7 +1400,7 @@ By focusing on best-case cost, we enforce a kind of ``principle of least action'
 
 A more direct way to do this, perhaps, is to find the shortest paths from every node to each other node, and aggregate them.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-hss} 
 
@@ -1422,7 +1423,7 @@ To provide a foundation to formalize this notion, one framework is that of Marko
 
 One of the original structures for MRFs that we could recover from observed data was a \emph{tree}.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-chowliu} 
 
@@ -1446,7 +1447,7 @@ Exploiting this fact leads to a semidifinite program to minimize the frobenius-n
   Since the sample covariance will not give an unbiased estimate for precision, these problems often require significant regularization.
   This class of problems is called ``covariance shrinkage'', though we more specifically care about \emph{precision shrinkage} as illustrated in Note~\ref{nte-glasso}.}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-glasso} 
 
@@ -2234,7 +2235,7 @@ New graphs kinds and sizes are simple to add for future benchmarking capability.
 To compare each algorithm consistently, several performance measures have been included in the MENDR testbench.
 They are all functions of the True Positive/Negative (TP/TN) and False Positive/Negative (FP/FN) values.
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-precision} 
 
@@ -2244,7 +2245,7 @@ Fraction of positive predictions that are true, also called ``positive predictiv
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-recall} 
 
@@ -2255,7 +2256,7 @@ Also called the TP-rate (TPR), and has an inherent trade-off with precision. \[R
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-mcc} 
 
@@ -2267,7 +2268,7 @@ Preferred for class-imbalanced problems (like sparse recovery) \autocite{statist
 
 \end{tcolorbox}
 
-\begin{tcolorbox}[enhanced jigsaw, toprule=.15mm, left=2mm, leftrule=.75mm, rightrule=.15mm, colframe=quarto-callout-note-color-frame, arc=.35mm, colback=white, opacityback=0, bottomrule=.15mm, breakable]
+\begin{tcolorbox}[enhanced jigsaw, bottomrule=.15mm, colback=white, breakable, toprule=.15mm, colframe=quarto-callout-note-color-frame, leftrule=.75mm, arc=.35mm, opacityback=0, rightrule=.15mm, left=2mm]
 
 \quartocalloutnte{nte-fm} 
 
